@@ -1,7 +1,7 @@
 """Download hum datasets and write the shared pairs manifest."""
 
 import argparse
-import base64
+import csv
 import os
 import shutil
 from pathlib import Path
@@ -17,10 +17,9 @@ LOGGER = get_logger(__name__)
 
 DEFAULT_DATA_ROOT = "/lambda/nfs/hum2song-data"
 RENDER_SAMPLE_RATE = 24000
-KAGGLE_URL = (
-    "https://www.kaggle.com/api/v1/datasets/download/jesusrequena/mlend-hums-and-whistles"
-)
-KAGGLE_FILENAME = "mlend-hums-and-whistles.zip"
+MLEND_RAW = "https://raw.githubusercontent.com/MLEndDatasets/HumsAndWhistles/main"
+MLEND_CSV_NAME = "MLEndHWD_audio_attributes.csv"
+MLEND_AUDIO_DIR = "MLEndHWD_audiofiles"
 LICENSES = {
     "mirqbsh": "research-only",
     "humtrans": "cc-by-nc-4.0",
@@ -166,8 +165,8 @@ def _dataset_names(text: str) -> list[str]:
 def _log_plan(names: list[str]) -> None:
     for name in names:
         if name == "mlend":
-            state = "present" if _kaggle_header() else "missing"
-            LOGGER.info("dry-run mlend %s credentials %s", KAGGLE_URL, state)
+            LOGGER.info("dry-run mlend %s/%s", MLEND_RAW, MLEND_CSV_NAME)
+            LOGGER.info("dry-run mlend audio %s/%s/<file>.wav", MLEND_RAW, MLEND_AUDIO_DIR)
             continue
         for remote in DATASET_FILES[name]:
             LOGGER.info("dry-run %s %s -> raw/%s/%s", name, remote.url, name, remote.filename)
@@ -178,10 +177,7 @@ def _collect_examples(names: list[str], root: Path) -> list[RawExample]:
     for name in names:
         roots = fetch_dataset(name, root)
         if roots is None:
-            LOGGER.warning(
-                "skipped %s: set KAGGLE_USERNAME and KAGGLE_KEY to download it",
-                name,
-            )
+            LOGGER.warning("skipped %s", name)
             continue
         parsed = parse_dataset(name, roots)
         LOGGER.info("parsed %s rows from %s", len(parsed), name)
@@ -209,26 +205,45 @@ def fetch_dataset(name: str, root: Path) -> list[Path] | None:
     return roots
 
 
-def _fetch_mlend(root: Path) -> list[Path] | None:
-    header = _kaggle_header()
-    if header is None:
-        return None
+def _fetch_mlend(root: Path) -> list[Path]:
+    """Download MLEnd from the public GitHub repo. No Kaggle credentials."""
     raw_dir = root / "raw" / "mlend"
-    dest = raw_dir / KAGGLE_FILENAME
-    status = download_file(KAGGLE_URL, dest, headers={"Authorization": header})
-    LOGGER.info("mlend %s %s", status, dest)
-    extracted = root / "extracted" / "mlend" / Path(KAGGLE_FILENAME).stem
-    extract_archive(dest, extracted)
-    return [raw_dir, extracted]
+    csv_path = raw_dir / MLEND_CSV_NAME
+    status = download_file(f"{MLEND_RAW}/{MLEND_CSV_NAME}", csv_path)
+    LOGGER.info("mlend csv %s %s", status, csv_path)
+    audio_dir = raw_dir / MLEND_AUDIO_DIR
+    missing = save_mlend_audio(_mlend_filenames(csv_path), audio_dir, download_file)
+    if missing:
+        LOGGER.warning("mlend skipped %s files that returned HTTP 404", missing)
+    return [raw_dir]
 
 
-def _kaggle_header() -> str | None:
-    username = os.environ.get("KAGGLE_USERNAME", "").strip()
-    key = os.environ.get("KAGGLE_KEY", "").strip()
-    if not username or not key:
-        return None
-    token = base64.b64encode(f"{username}:{key}".encode()).decode("ascii")
-    return f"Basic {token}"
+def save_mlend_audio(filenames: list[str], audio_dir: Path, fetch) -> int:
+    """Download each clip. A 404 is skipped and counted. Returns the skip count."""
+    missing = 0
+    for name in filenames:
+        url = f"{MLEND_RAW}/{MLEND_AUDIO_DIR}/{name}"
+        try:
+            fetch(url, audio_dir / name)
+        except RuntimeError as exc:
+            if "HTTP 404" not in str(exc):
+                raise
+            missing += 1
+            LOGGER.warning("mlend audio missing (404), skipping %s", name)
+    return missing
+
+
+def _mlend_filenames(path: Path) -> list[str]:
+    names: list[str] = []
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            cleaned = {
+                (key or "").strip().lower(): (value or "").strip() for key, value in row.items()
+            }
+            filename = cleaned.get("filename") or cleaned.get("public filename") or ""
+            if filename:
+                names.append(Path(filename).name)
+    return names
 
 
 def _materialize_one(

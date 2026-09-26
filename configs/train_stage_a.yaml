@@ -1,4 +1,4 @@
-# Stage A: real queries only. MIR-QBSH / MTG-QBH / MLEnd are held out of training.
+# Stage A. num_workers null picks min(cpu_count - 2, 28).
 stage: A
 encoder: mert
 mert_name: m-a-p/MERT-v1-95M
@@ -25,7 +25,8 @@ conf_gamma: 2.0
 proj_dim: 256
 proj_hidden: 512
 seed: 0
-num_workers: 4
+# null -> min(cpu_count - 2, 28), with pin_memory and persistent workers
+num_workers: null
 log_every: 20
 save_every: 500
 manifest: null

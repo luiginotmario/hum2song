@@ -1,6 +1,7 @@
 """Embed queries and references, then write a JSON report next to the CHAD numbers."""
 
 import json
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import numpy as np
@@ -11,10 +12,12 @@ from hum2song.config import EvalConfig
 from hum2song.eval.metrics import (
     CHAD_TOP10,
     MATCHING_NOTE,
+    MIRQBSH_PROTOCOL_SONGS,
     MISSING_RANK,
     PRIMARY_CHAD_TOP10,
     PROTOCOL_NOTE,
     RetrievalScores,
+    chad_comparability,
     ranks_for_queries,
     retrieval_scores,
 )
@@ -22,7 +25,6 @@ from hum2song.logutil import get_logger
 from hum2song.manifest import QTYPES, PairRecord, read_jsonl, read_pairs
 
 LOGGER = get_logger(__name__)
-COMPARABLE_DISTRACTORS = 2000
 
 
 def evaluate_pairs(model: torch.nn.Module, pairs: list[PairRecord], config: EvalConfig) -> dict:
@@ -54,15 +56,24 @@ def _evaluate_group(
     targets = {pair.song_id for pair in pairs}
     distractors = _distractors(config, targets)
     ref_paths, ref_ids = _references(pairs, distractors, config.resolved_data_root())
+    distractor_count = len({song_id for song_id in ref_ids if song_id not in targets})
+    target_songs = len({song_id for song_id in ref_ids if song_id in targets})
+    if not pairs or not ref_paths:
+        reason = _skip_reason(set_name) if not ref_paths else "no test queries"
+        LOGGER.warning(reason)
+        return _report_body(
+            set_name,
+            retrieval_scores([]),
+            _empty_per_qtype(),
+            distractor_count,
+            target_songs,
+            missing_refs=not ref_paths,
+            skipped=True,
+            skip_reason=reason,
+        )
     query_paths = [pair.query_path for pair in pairs]
     query_ids = [pair.song_id for pair in pairs]
     query_types = [pair.qtype for pair in pairs]
-    distractor_count = len({song_id for song_id in ref_ids if song_id not in targets})
-    if not pairs or not ref_paths:
-        scores = retrieval_scores([])
-        return _report_body(
-            set_name, scores, {}, distractor_count, len(set(ref_ids)), missing_refs=not ref_paths
-        )
     query_emb = _embed_paths(model, query_paths, config, device)
     ref_emb = _embed_paths(model, ref_paths, config, device)
     ranks = ranks_for_queries(query_emb, query_ids, ref_emb, ref_ids)
@@ -75,8 +86,10 @@ def _evaluate_group(
         retrieval_scores(ranks),
         per_qtype,
         distractor_count,
-        len(set(ref_ids)),
+        target_songs,
         missing_refs=False,
+        skipped=False,
+        skip_reason=None,
     )
 
 
@@ -85,23 +98,34 @@ def _report_body(
     scores: RetrievalScores,
     per_qtype: dict,
     distractor_count: int,
-    reference_songs: int,
+    target_songs: int,
     missing_refs: bool,
+    skipped: bool,
+    skip_reason: str | None,
 ) -> dict:
     baseline = PRIMARY_CHAD_TOP10.get(set_name)
     ours = scores.top10
     delta = None
     if ours is not None and baseline is not None:
         delta = round(ours - baseline, 6)
-    comparable = set_name == "mirqbsh" and distractor_count >= COMPARABLE_DISTRACTORS
+    comparable, label = chad_comparability(set_name, target_songs, distractor_count)
+    if skipped:
+        comparable = False
+        label = f"not comparable to CHAD 0.921: {skip_reason}"
+    LOGGER.info(label)
     return {
         "set": set_name,
         "split": "test",
         "count": scores.count,
-        "reference_songs": reference_songs,
+        "reference_songs": target_songs,
+        "target_songs": target_songs,
+        "protocol_songs": MIRQBSH_PROTOCOL_SONGS if set_name == "mirqbsh" else None,
         "distractor_count": distractor_count,
         "missing_references": missing_refs,
+        "skipped": skipped,
+        "skip_reason": skip_reason,
         "comparable_to_chad": comparable,
+        "chad_comparison": label,
         "metrics": scores.as_dict(),
         "per_query_type": per_qtype,
         "per_qtype": per_qtype,
@@ -113,14 +137,20 @@ def _report_body(
     }
 
 
+def _skip_reason(set_name: str) -> str:
+    return (
+        f"skipping {set_name}: no reference audio on disk. "
+        "MLEnd and MTG-QBH ship queries only, so those sets are not scored "
+        "until song audio is added."
+    )
+
+
+def _empty_per_qtype() -> dict:
+    return {name: retrieval_scores([]).as_dict() for name in QTYPES}
+
+
 def _embed_paths(model, paths: list[str], config: EvalConfig, device: torch.device) -> np.ndarray:
-    target = max(int(round(config.crop_seconds * config.sample_rate)), 1)
-    rng = np.random.default_rng(0)
-    waves = []
-    root = config.resolved_data_root()
-    for path in paths:
-        audio = load_audio(root / path, config.sample_rate, trim=True)
-        waves.append(torch.from_numpy(fit_length(audio, target, rng, random_start=False)))
+    waves = _load_waves(paths, config)
     chunks: list[np.ndarray] = []
     with torch.inference_mode():
         for start in range(0, len(waves), config.batch_size):
@@ -129,6 +159,24 @@ def _embed_paths(model, paths: list[str], config: EvalConfig, device: torch.devi
     if not chunks:
         return np.zeros((0, 1), dtype=np.float32)
     return np.concatenate(chunks, axis=0)
+
+
+def _load_waves(paths: list[str], config: EvalConfig) -> list[torch.Tensor]:
+    target = max(int(round(config.crop_seconds * config.sample_rate)), 1)
+    root = str(config.resolved_data_root())
+    jobs = [(path, root, config.sample_rate, target) for path in paths]
+    workers = config.resolved_num_workers()
+    if workers <= 1 or len(jobs) <= 1:
+        return [_load_fitted_wave(job) for job in jobs]
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        return list(pool.map(_load_fitted_wave, jobs))
+
+
+def _load_fitted_wave(job: tuple[str, str, int, int]) -> torch.Tensor:
+    path, root, sample_rate, target = job
+    rng = np.random.default_rng(0)
+    audio = load_audio(Path(root) / path, sample_rate, trim=True)
+    return torch.from_numpy(fit_length(audio, target, rng, random_start=False))
 
 
 def _references(

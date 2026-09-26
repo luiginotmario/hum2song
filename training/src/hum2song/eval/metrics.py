@@ -5,6 +5,8 @@ from dataclasses import asdict, dataclass
 import numpy as np
 
 MISSING_RANK = 10**9
+MIRQBSH_PROTOCOL_SONGS = 48
+COMPARABLE_DISTRACTORS = 2000
 CHAD_TOP10 = {
     "chad_top10_jang_midi": 0.921,
     "chad_top10_jang_real": 0.868,
@@ -40,6 +42,36 @@ class RetrievalScores:
 
     def as_dict(self) -> dict:
         return asdict(self)
+
+
+def chad_comparability(
+    set_name: str,
+    target_songs: int,
+    distractor_count: int,
+) -> tuple[bool, str]:
+    """Say whether a top-10 can be read next to CHAD's Jang MIDI 0.921.
+
+    The protocol in docs/SPEC.md is the 48 MIR-QBSH songs plus at least 2000
+    distractor songs. Anything short of that is labeled not comparable.
+    """
+    if set_name != "mirqbsh":
+        return False, (
+            f"not comparable to CHAD 0.921: that number is the MIR-QBSH Jang MIDI "
+            f"protocol, not the {set_name} set"
+        )
+    songs_ok = target_songs >= MIRQBSH_PROTOCOL_SONGS
+    distractors_ok = distractor_count >= COMPARABLE_DISTRACTORS
+    if songs_ok and distractors_ok:
+        return True, (
+            f"comparable to CHAD 0.921: {target_songs} MIR-QBSH songs plus "
+            f"{distractor_count} distractor songs"
+        )
+    return False, (
+        "not comparable to CHAD 0.921: "
+        f"{target_songs} of {MIRQBSH_PROTOCOL_SONGS} MIR-QBSH songs and "
+        f"{distractor_count} distractor songs "
+        f"(need {MIRQBSH_PROTOCOL_SONGS} songs plus at least {COMPARABLE_DISTRACTORS} distractors)"
+    )
 
 
 def retrieval_scores(ranks: list[int]) -> RetrievalScores:

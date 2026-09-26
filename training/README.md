@@ -13,9 +13,6 @@ export H2S_DATA=/lambda/nfs/hum2song-data
 # optional
 export WANDB_API_KEY=...
 export WANDB_PROJECT=hum2song
-# MLEnd only; the downloader skips it when these are unset
-export KAGGLE_USERNAME=...
-export KAGGLE_KEY=...
 ```
 
 ## Commands
@@ -101,11 +98,14 @@ pytest
 - Matching is melody only. Sung queries may use the right lyrics, the wrong words, or nonsense. `hum2song.synth.augment_lyric_agnostic` is the Stage 2 stub that will keep a melody and replace the words. It is not implemented.
 - MIR-QBSH wav stem (`00001`–`00048`) is the song id and matches `midiFile/`. `waveFile/year2006a` is the supplementary English-song session (`2006a-MIR補錄英文歌` in `yearDirInfo.txt`) and is labeled `sing`. Every other MIR-QBSH clip is `hum`, because the archive has no per-clip hum/sing flag.
 - Songs that have a MIR-QBSH `sing` clip (stems `00001`–`00010`) are hash-split so those sung clips can train. Hum clips of the same song share that split. The other 38 MIR-QBSH songs stay in `test`. MTG-QBH and all 8 MLEnd songs stay in `test`. HumTrans keeps its official split, reconciled so one composition id cannot land in two splits. There is no title table in HumTrans, so cross-dataset title dedupe only runs when a title is present.
-- Eval JSON reports top-1, top-3, top-10, and MRR for the set and again under `per_query_type` for hum, whistle, and sing (count 0 when that type is absent). `per_qtype` is the same object.
-- MTG-QBH queries are `sing`. The song id is the class label (the piece), not the collection recording id. Those commercial tracks are not in the archive, so the pairs have no `song_path` and eval will say references are missing until song audio is added.
-- MLEnd comes from Kaggle (`jesusrequena/mlend-hums-and-whistles`) using `KAGGLE_USERNAME` and `KAGGLE_KEY`. Missing credentials skip that dataset and leave the process successful.
-- MIDI references are rendered with a harmonic series at 24 kHz. That is the closed-set MIR-QBSH reference, not Stage 2 Demucs/CREPE synthesis. CHAD's 0.921 used about 2600 MIDI distractors; the default eval is the 48-song closed set, so `comparable_to_chad` is false until `--distractors` supplies a real impostor pool.
-- Stage A trains on rows with `split=train` (HumTrans). The song tower sees `song_path` when it exists, otherwise another query of the same song.
+- Eval JSON reports top-1, top-3, top-10, and MRR for the set and again under `per_query_type` for hum, whistle, and sing (count 0 when that type is absent). `per_qtype` is the same object. `chad_comparison` says whether the MIR-QBSH number is comparable to CHAD top-10 0.921. That label is true only for the SPEC protocol: all 48 MIR-QBSH songs in the reference set plus at least 2000 distractor songs. `configs/eval.yaml` requests 2000 distractors. Fewer songs or fewer distractors stays `comparable_to_chad: false` with the counts in the sentence.
+- Sets with no reference audio (MLEnd, MTG-QBH) are skipped before any audio is loaded. The report records `skipped` and `skip_reason`.
+- MTG-QBH queries are `sing`. The song id is the class label (the piece). Those commercial tracks are not in the archive.
+- MLEnd comes from the public GitHub repo `MLEndDatasets/HumsAndWhistles` (`MLEndHWD_audio_attributes.csv` and `MLEndHWD_audiofiles`). Kaggle credentials are not required. CSV rows whose wav returns HTTP 404 are skipped.
+- An extract directory that already contains files, or whose `.extract_ok` marker records the archive size, is not unpacked again. The marker ignores mtime.
+- `num_workers: null` means `min(cpu_count - 2, 28)`. The loader uses `pin_memory` on CUDA and `persistent_workers` when that count is above zero. Crops are seeded from the epoch and the worker id.
+- MIDI references are rendered with a harmonic series at 24 kHz. That is the closed-set MIR-QBSH reference, not Stage 2 synthesis. CHAD's 0.921 used about 2600 MIDI distractors.
+- Stage A trains on rows with `split=train` (HumTrans, plus MIR-QBSH songs that have a sung clip). The song tower sees `song_path` when it exists, otherwise another query of the same song. MERT `layerdrop` is forced to 0 so unfreezing does not skip hooked layers.
 - Codec augmentation runs only when `ffmpeg` is on `PATH`. The other augmentations are in-process.
 - Loudness is peak normalization to 0.95, not EBU R128.
 - Checkpoints store the git SHA and the manifest sha256. W&B is off unless `WANDB_API_KEY` is set.

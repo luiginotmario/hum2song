@@ -39,6 +39,7 @@ def test_report_places_our_top10_next_to_chad(tmp_path: Path) -> None:
         data_root=str(root),
         sets="mirqbsh",
         distractors=0,
+        num_workers=2,
         batch_size=2,
         crop_seconds=0.25,
         sample_rate=24000,
@@ -57,4 +58,44 @@ def test_report_places_our_top10_next_to_chad(tmp_path: Path) -> None:
     assert result["per_qtype"] == result["per_query_type"]
     assert "melody" in report["matching"]
     assert result["comparable_to_chad"] is False
+    assert result["skipped"] is False
+    assert "not comparable to CHAD 0.921" in result["chad_comparison"]
+    assert "2 of 48" in result["chad_comparison"]
+    assert "0 distractor" in result["chad_comparison"]
     assert report["baselines"]["chad_top10_jang_midi"] == 0.921
+
+
+def test_sets_without_reference_audio_are_skipped(tmp_path: Path) -> None:
+    root = tmp_path / "data"
+    pairs = [
+        PairRecord(
+            pair_id="mlend:0000",
+            query_path="queries/missing.wav",
+            qtype="whistle",
+            qsource="real",
+            song_id="mlend:Potter",
+            song_start_s=None,
+            song_dur_s=None,
+            split="test",
+            group="mlend",
+            song_path=None,
+            title="Potter",
+        )
+    ]
+    encoder = TinyEncoder(n_layers=2, hidden=32)
+    model = RetrievalModel(encoder, hidden_dim=32, n_layers=2, proj_hidden=32, proj_dim=32)
+    config = EvalConfig(
+        data_root=str(root),
+        sets="mlend",
+        distractors=0,
+        batch_size=2,
+        crop_seconds=0.25,
+        sample_rate=24000,
+        num_workers=0,
+    )
+    result = evaluate_pairs(model, pairs, config)["results"][0]
+    assert result["skipped"] is True
+    assert result["missing_references"] is True
+    assert "no reference audio" in result["skip_reason"]
+    assert "not comparable to CHAD 0.921" in result["chad_comparison"]
+    assert result["metrics"]["count"] == 0

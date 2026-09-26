@@ -7,6 +7,7 @@ from pathlib import Path
 import yaml
 
 DEFAULT_DATA_ROOT = "/lambda/nfs/hum2song-data"
+MAX_DATA_WORKERS = 28
 
 
 @dataclass
@@ -41,7 +42,7 @@ class TrainConfig:
     proj_dim: int = 256
     proj_hidden: int = 512
     seed: int = 0
-    num_workers: int = 4
+    num_workers: int | None = None
     log_every: int = 20
     save_every: int = 500
     manifest: str | None = None
@@ -86,6 +87,10 @@ class TrainConfig:
             return Path(self.ckpt_dir)
         return self.resolved_data_root() / "ckpt" / self.run_name
 
+    def resolved_num_workers(self) -> int:
+        """YAML null uses min(cpu_count - 2, 28). An explicit integer is kept."""
+        return resolved_worker_count(self.num_workers)
+
 
 @dataclass
 class EvalConfig:
@@ -95,9 +100,10 @@ class EvalConfig:
     data_root: str | None = None
     ckpt: str | None = None
     sets: str = "mirqbsh"
-    distractors: int = 0
+    distractors: int = 2000
     out: str | None = None
     batch_size: int = 16
+    num_workers: int | None = None
     crop_seconds: float = 10.0
     sample_rate: int = 24000
     songs: str | None = None
@@ -127,6 +133,25 @@ class EvalConfig:
         if self.sets.strip() == "all":
             return ["all"]
         return [part.strip() for part in self.sets.split(",") if part.strip()]
+
+    def resolved_num_workers(self) -> int:
+        """YAML null uses min(cpu_count - 2, 28). An explicit integer is kept."""
+        return resolved_worker_count(self.num_workers)
+
+
+def default_num_workers(cpu_count: int | None = None) -> int:
+    """Leave two cores free and cap the pool at 28. Never return a negative count."""
+    count = os.cpu_count() if cpu_count is None else cpu_count
+    if not count or count < 1:
+        return 0
+    return max(min(count - 2, MAX_DATA_WORKERS), 0)
+
+
+def resolved_worker_count(value: int | None) -> int:
+    """None selects the machine default. Zero disables worker processes."""
+    if value is None:
+        return default_num_workers()
+    return max(int(value), 0)
 
 
 def train_config_from_mapping(payload: dict) -> TrainConfig:

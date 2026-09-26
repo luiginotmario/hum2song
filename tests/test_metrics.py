@@ -3,7 +3,12 @@
 import numpy as np
 import pytest
 
-from hum2song.eval.metrics import CHAD_TOP10, ranks_for_queries, retrieval_scores
+from hum2song.eval.metrics import (
+    CHAD_TOP10,
+    chad_comparability,
+    ranks_for_queries,
+    retrieval_scores,
+)
 
 
 def test_known_ranks() -> None:
@@ -30,3 +35,19 @@ def test_best_clip_groups_by_song() -> None:
 
 def test_chad_midi_baseline_is_the_published_top10() -> None:
     assert CHAD_TOP10["chad_top10_jang_midi"] == 0.921
+
+
+def test_chad_protocol_needs_48_songs_and_2000_distractors() -> None:
+    ok, label = chad_comparability("mirqbsh", 48, 2000)
+    assert ok is True
+    assert label.startswith("comparable to CHAD 0.921")
+    short_songs, song_label = chad_comparability("mirqbsh", 38, 2000)
+    assert short_songs is False
+    assert "not comparable to CHAD 0.921" in song_label
+    assert "38 of 48" in song_label
+    short_pool, pool_label = chad_comparability("mirqbsh", 48, 0)
+    assert short_pool is False
+    assert "0 distractor" in pool_label
+    other, other_label = chad_comparability("mtgqbh", 118, 5000)
+    assert other is False
+    assert "not comparable to CHAD 0.921" in other_label

@@ -149,7 +149,8 @@ def parse_mlend(roots: list[Path]) -> list[RawExample]:
         stem = Path(filename).stem
         wav = wavs.get(stem)
         if wav is None:
-            raise FileNotFoundError(f"MLEnd audio missing for {filename}")
+            LOGGER.warning("MLEnd audio missing for %s; skipping that row", filename)
+            continue
         song = _column(row, "song")
         interpretation = _column(row, "interpretation")
         qtype = QTYPE_FROM_MLEND.get(interpretation.lower())

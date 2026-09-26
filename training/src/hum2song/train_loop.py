@@ -41,14 +41,8 @@ def run_training(config: TrainConfig, model: torch.nn.Module, tracker=None) -> P
     if records is None:
         return ckpt_dir / "last.pt"
     dataset = PairDataset(records, config.resolved_data_root(), config, training=True)
-    loader = DataLoader(
-        dataset,
-        batch_size=config.batch_size,
-        shuffle=True,
-        num_workers=config.num_workers,
-        collate_fn=collate_pairs,
-        drop_last=False,
-    )
+    loader = _make_loader(dataset, config, device)
+    steps_per_epoch = max(len(loader), 1)
     optimizer = torch.optim.AdamW(
         _param_groups(model, config),
         weight_decay=config.weight_decay,
@@ -82,6 +76,7 @@ def run_training(config: TrainConfig, model: torch.nn.Module, tracker=None) -> P
         optimizer.zero_grad(set_to_none=True)
         metric_rows: list[dict[str, float]] = []
         for _micro in range(max(config.grad_accum_steps, 1)):
+            dataset.set_epoch(step // steps_per_epoch)
             batch = _move_batch(next(batches), device)
             loss, metrics = _forward_loss(model, batch, config, device, use_amp, amp_dtype)
             _backward(loss / max(config.grad_accum_steps, 1), scaler)
@@ -105,6 +100,27 @@ def run_training(config: TrainConfig, model: torch.nn.Module, tracker=None) -> P
             )
     active.finish()
     return ckpt_dir / "last.pt"
+
+
+def _make_loader(dataset, config: TrainConfig, device: torch.device) -> DataLoader:
+    workers = config.resolved_num_workers()
+    kwargs = {
+        "batch_size": config.batch_size,
+        "shuffle": True,
+        "num_workers": workers,
+        "collate_fn": collate_pairs,
+        "drop_last": False,
+        "pin_memory": device.type == "cuda",
+    }
+    if workers > 0:
+        kwargs["persistent_workers"] = True
+    LOGGER.info(
+        "data loader workers %s pin_memory %s persistent_workers %s",
+        workers,
+        kwargs["pin_memory"],
+        workers > 0,
+    )
+    return DataLoader(dataset, **kwargs)
 
 
 def _check_stage(stage: str) -> None:

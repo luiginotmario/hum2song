@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from hum2song.data.download import build_pairs, fetch_dataset, run_download
+from hum2song.data.download import build_pairs, run_download, save_mlend_audio
 from hum2song.data.fetch import Checksum, assert_member_safe, download_file, extract_archive
 from hum2song.data.sources import parse_dataset
 from hum2song.data.splits import assert_no_song_leakage
@@ -179,13 +179,52 @@ def test_mlend_rows_are_test_and_keep_hum_versus_whistle(tmp_path: Path) -> None
     assert all(record.song_path is None for record in records)
 
 
-def test_mlend_without_credentials_is_skipped(
-    tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    monkeypatch.delenv("KAGGLE_USERNAME", raising=False)
-    monkeypatch.delenv("KAGGLE_KEY", raising=False)
-    assert fetch_dataset("mlend", tmp_path) is None
+def test_mlend_404_audio_is_skipped(tmp_path: Path) -> None:
+    def fetch(url: str, dest: Path) -> str:
+        if url.endswith("0002.wav"):
+            raise RuntimeError(f"download failed for {url}: HTTP 404")
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(b"wav")
+        return "downloaded"
+
+    missing = save_mlend_audio(["0000.wav", "0002.wav"], tmp_path / "audio", fetch)
+    assert missing == 1
+    assert (tmp_path / "audio" / "0000.wav").is_file()
+    assert not (tmp_path / "audio" / "0002.wav").exists()
+
+
+def test_mlend_parser_skips_rows_whose_audio_is_missing(tmp_path: Path) -> None:
+    root = tmp_path / "mlend"
+    audio = root / "audio"
+    audio.mkdir(parents=True)
+    write_tone(audio / "0000.wav", 200.0)
+    (root / "MLEndHWD_audio_attributes.csv").write_text(
+        "filename,Interpreter,Song,Interpretation\n"
+        "0000.wav,1,Potter,Hum\n"
+        "0002.wav,1,Potter,Whistle\n",
+        encoding="utf-8",
+    )
+    records, _songs = build_pairs(parse_dataset("mlend", [root]), tmp_path / "data", None)
+    assert [record.pair_id for record in records] == ["mlend:0000"]
+
+
+def test_extract_ignores_mtime_and_an_existing_tree(tmp_path: Path) -> None:
+    archive = tmp_path / "ok.zip"
+    with zipfile.ZipFile(archive, "w") as bundle:
+        bundle.writestr("note.txt", "from-zip")
+    dest = tmp_path / "out"
+    assert extract_archive(archive, dest) == "extracted"
+    archive.touch()
+    assert extract_archive(archive, dest) == "cached"
+    marker = dest / ".extract_ok"
+    marker.write_text(f"{archive.stat().st_size}:999\n", encoding="utf-8")
+    assert extract_archive(archive, dest) == "cached"
+    seeded = tmp_path / "seeded"
+    seeded.mkdir()
+    (seeded / "already.txt").write_text("keep", encoding="utf-8")
+    assert extract_archive(archive, seeded) == "cached"
+    assert (seeded / "already.txt").read_text(encoding="utf-8") == "keep"
+    assert not (seeded / "note.txt").exists()
 
 
 def test_dry_run_prints_urls_without_downloading(
@@ -196,6 +235,7 @@ def test_dry_run_prints_urls_without_downloading(
     run_download(["--datasets", "mirqbsh,mlend", "--out", str(tmp_path), "--dry-run"])
     assert not any(tmp_path.rglob("*"))
     assert "music-ir.org" in caplog.text
+    assert "raw.githubusercontent.com/MLEndDatasets/HumsAndWhistles" in caplog.text
 
 
 def test_max_items_keeps_each_split(tmp_path: Path) -> None:

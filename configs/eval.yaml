@@ -2,7 +2,8 @@ manifest: null
 data_root: null
 ckpt: null
 sets: mirqbsh
-distractors: 0
+# CHAD 0.921 needs the 48 MIR-QBSH songs plus at least 2000 distractors.
+distractors: 2000
 out: null
 batch_size: 16
 crop_seconds: 10.0

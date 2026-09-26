@@ -6,7 +6,11 @@ MERT's remote code on transformers 5.x returns hidden_states=None, so the
 
 import torch
 from torch import nn
-from transformers import AutoModel
+
+try:
+    from transformers import AutoModel
+except ImportError:
+    AutoModel = None
 
 MERT_HIDDEN = 768
 MERT_LAYERS = 12
@@ -50,16 +54,26 @@ class MertEncoder(nn.Module):
 
 def load_mert_encoder(model_name: str = MERT_NAME) -> MertEncoder:
     """Download m-a-p/MERT-v1-95M and wrap it. Requires trust_remote_code."""
+    if AutoModel is None:
+        raise ImportError("transformers is required to load MERT")
     mert = AutoModel.from_pretrained(model_name, trust_remote_code=True)
     return MertEncoder(mert)
 
 
 def _disable_spec_augment(mert: nn.Module) -> None:
+    """Turn off SpecAugment and LayerDrop.
+
+    HubertEncoder (which MERT subclasses) skips a block when ``training`` is true
+    and ``torch.rand(()) < config.layerdrop``. The published MERT-v1-95M config
+    sets layerdrop to 0.05, so a train-mode forward after unfreezing often runs
+    11 of the 12 hooked layers.
+    """
     config = mert.config
     if hasattr(config, "mask_time_prob"):
         config.mask_time_prob = 0.0
     if hasattr(config, "mask_feature_prob"):
         config.mask_feature_prob = 0.0
+    config.layerdrop = 0.0
 
 
 def _layer_hidden(output: object) -> torch.Tensor:

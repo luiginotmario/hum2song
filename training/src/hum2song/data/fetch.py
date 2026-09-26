@@ -8,10 +8,13 @@ import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 
+from hum2song.logutil import get_logger
 from hum2song.manifest import file_hash
 
+LOGGER = get_logger(__name__)
 USER_AGENT = "hum2song-download/0.1"
 CHUNK_BYTES = 1 << 20
+EXTRACT_MARKER = ".extract_ok"
 
 
 @dataclass(frozen=True)
@@ -75,11 +78,20 @@ def download_file(
 
 
 def extract_archive(archive: Path, dest: Path) -> str:
-    """Extract a zip or tar into dest. Returns 'cached' when the marker matches."""
+    """Extract a zip or tar into dest. Returns 'cached' when dest is already filled.
+
+    The marker records the archive size, not its mtime, so an NFS timestamp change
+    does not unpack tens of gigabytes again. A directory that already holds files
+    is also left as-is.
+    """
     dest.mkdir(parents=True, exist_ok=True)
-    marker = dest / ".extract_ok"
-    stamp = f"{archive.stat().st_size}:{archive.stat().st_mtime_ns}"
-    if marker.exists() and marker.read_text(encoding="utf-8") == stamp:
+    marker = dest / EXTRACT_MARKER
+    stamp = str(archive.stat().st_size)
+    if _marker_matches(marker, stamp):
+        return "cached"
+    if _has_extracted_payload(dest):
+        LOGGER.info("already extracted %s; not extracting %s again", dest, archive.name)
+        marker.write_text(stamp, encoding="utf-8")
         return "cached"
     _extractor_for(archive)(archive, dest)
     marker.write_text(stamp, encoding="utf-8")
@@ -92,6 +104,23 @@ def assert_member_safe(name: str) -> None:
         raise RuntimeError(f"unsafe archive member: {name}")
     if ".." in Path(name).parts:
         raise RuntimeError(f"unsafe archive member: {name}")
+
+
+def _marker_matches(marker: Path, stamp: str) -> bool:
+    if not marker.is_file():
+        return False
+    recorded = marker.read_text(encoding="utf-8").strip()
+    if recorded == stamp:
+        return True
+    size = recorded.split(":", 1)[0]
+    return size.isdigit() and size == stamp
+
+
+def _has_extracted_payload(dest: Path) -> bool:
+    for path in dest.rglob("*"):
+        if path.is_file() and path.name != EXTRACT_MARKER:
+            return True
+    return False
 
 
 def _partial_mode(status: int, existing: int) -> tuple[str, int]:

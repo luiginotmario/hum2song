@@ -1,11 +1,12 @@
 """Pair dataset: query crop plus a song-side positive."""
 
+import multiprocessing
 from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, get_worker_info
 
 from hum2song.audio import fit_length, load_audio
 from hum2song.augment import augment_wave
@@ -28,13 +29,30 @@ class PairDataset(Dataset):
         self.config = config
         self.training = training
         self.partners = _partner_index(self.records)
+        self._epoch = multiprocessing.Value("i", 0)
+        self._rng: np.random.Generator | None = None
+        self._rng_key: tuple[int, int] | None = None
+
+    def set_epoch(self, epoch: int) -> None:
+        """Reseed crops and augmentation. Workers read this shared counter."""
+        self._epoch.value = int(epoch)
+
+    def _generator(self) -> np.random.Generator:
+        """One stream per epoch and worker. It advances across items in that epoch."""
+        worker_id = _worker_id()
+        epoch = int(self._epoch.value)
+        key = (epoch, worker_id)
+        if self._rng is None or self._rng_key != key:
+            self._rng = np.random.default_rng([self.config.seed, epoch, worker_id])
+            self._rng_key = key
+        return self._rng
 
     def __len__(self) -> int:
         return len(self.records)
 
     def __getitem__(self, index: int) -> dict:
         record = self.records[index]
-        rng = np.random.default_rng(self.config.seed + index)
+        rng = self._generator()
         query = load_audio(self.data_root / record.query_path, self.config.sample_rate)
         if self.training:
             query = augment_wave(query, self.config.sample_rate, rng, self.config)
@@ -50,6 +68,13 @@ class PairDataset(Dataset):
             "qtype": QTYPE_TO_INDEX[record.qtype],
             "song_id": record.song_id,
         }
+
+
+def _worker_id() -> int:
+    info = get_worker_info()
+    if info is None:
+        return 0
+    return int(info.id)
 
 
 def collate_pairs(rows: list[dict]) -> dict:
