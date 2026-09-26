@@ -91,3 +91,38 @@ CREPE stays in the codebase as a swappable baseline and will be reported in the 
 **Practical alternative for "don't update the whole network."** Freeze the lower MERT layers or train LoRA adapters with backprop. Both are candidates for an ablation.
 
 **Revisit when.** Predictive coding is shown to match backprop on transformer-scale models, or as a separate follow-up experiment.
+
+---
+
+## D-005 · All 48 MIR-QBSH songs held out for a valid CHAD comparison (supersedes part of D-003)
+**Date:** 2026-09-26
+
+**Context.** D-003 let the ten English songs with sung clips (`00001`–`00010`) be hash-split, so some could land in train. CHAD's 0.921 top-10 on MIR-QBSH is measured with all 48 songs as queries plus at least 2,000 distractor songs. If any of the 48 appear in training, our number is not comparable, and the eval now reports `comparable_to_chad: false` in that case.
+
+**Options.**
+- **Keep D-003:** about 130 more training clips, including the only real sung MIR-QBSH clips, but no valid CHAD comparison.
+- **Hold out all of MIR-QBSH:** every MIR-QBSH clip goes to test.
+
+**Decision.** Every MIR-QBSH song and clip is in test. None are in train or val.
+
+**Trade-off / what we gave up.** About 130 training clips (under 1% of roughly 13,000), including 64 real sung clips. Real sung training data drops to almost nothing until Stage 2.
+
+**Revisit when.** Stage 2 adds sung queries from separated vocals, or we report a separate non-CHAD experiment that trains on the sung clips.
+
+---
+
+## D-006 · MERT layerdrop disabled during fine-tuning
+**Date:** 2026-09-26
+
+**Context.** MERT-v1-95M ships with `layerdrop: 0.05`. In train mode, each of its 12 transformer layers (attention plus feed-forward block) is skipped with 5% probability on every forward pass. It is a regularizer used in pretraining. Our encoder captures all 12 layer outputs with forward hooks and mixes them with learned weights, because pitch and timbre live in lower layers and structure in higher ones. When the top 6 layers unfroze (step 1,000 in Stage A), the encoder switched to train mode and layerdrop began skipping layers. A pass then returned 11 outputs instead of 12 and training crashed (`hooks captured 11 layers`). Across 12 layers, about 46% of passes skip at least one, since \(1 - 0.95^{12} \approx 0.46\). A GPU smoke test with the unfreeze moved to step 30 caught it before the full run.
+
+**Options.**
+- **Set layerdrop to 0:** every layer always runs, so the layer mix is always complete and deterministic.
+- **Keep layerdrop and tolerate missing layers:** fill in or renormalize the skipped slots. This adds complexity and noise to the learned layer weights, and it changes what the model sees between train and eval.
+- **Use only the last layer:** avoids the crash but throws away the lower layers, where most of the pitch information lives.
+
+**Decision.** `config.layerdrop = 0.0`, set alongside the other pretraining-time masking we already disable in `_disable_spec_augment`. A unit test unfreezes the top layers, runs the encoder in train mode, and asserts that all 12 are captured.
+
+**Trade-off / what we gave up.** One source of regularization during fine-tuning. We judge the cost small because fine-tuning uses a low learning rate, only the top 6 layers train, and dropout plus audio augmentation (pitch shift, noise, crops) still regularize.
+
+**Revisit when.** Stage A shows overfitting (val loss rising while train loss falls). Then we try a small nonzero layerdrop with a layer-mix that handles missing layers, as an ablation.
