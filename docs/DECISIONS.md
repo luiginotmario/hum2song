@@ -34,3 +34,18 @@ Sources: CREPE arXiv 1802.06182; SPICE arXiv 1910.11664 and [Google blog](https:
 **Caveats.** MIR-1K appears in the training data of several of these models, so their MIR-1K scores are optimistic.
 
 **Revisit when.** We pursue on-device inference, or an ablation shows a lighter extractor produces equally good training data. Plan: keep the extractor swappable and report an RMVPE vs CREPE vs SwiftF0 ablation in the paper.
+
+---
+
+## D-002 · Where inference runs: server-first
+**Date:** 2026-09-26
+
+**Context.** We considered running the model on the phone (Apple Neural Engine) for faster results.
+
+**Analysis.** Speed barely changes: uploading a ~10 s clip and getting a response takes a few hundred ms, about the same as running MERT-95M on-device. Battery cost per search is small (one or two seconds of Neural Engine compute). The real blocker is the catalog: matching needs the full vector index of song chunks (gigabytes, constantly growing), which can't ship inside an app, so search must hit a server regardless.
+
+**Decision.** Server-first: embedding and search both run server-side.
+
+**Trade-off / what we gave up.** Privacy (raw audio leaves the phone), lower server cost, and partial offline support, which a hybrid design (embed on phone, search on server) would provide.
+
+**Revisit when.** Server cost or privacy becomes a priority; then move embedding on-device (Core ML) and keep search server-side.
