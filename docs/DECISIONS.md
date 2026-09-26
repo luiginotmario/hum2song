@@ -126,3 +126,39 @@ CREPE stays in the codebase as a swappable baseline and will be reported in the 
 **Trade-off / what we gave up.** One source of regularization during fine-tuning. We judge the cost small because fine-tuning uses a low learning rate, only the top 6 layers train, and dropout plus audio augmentation (pitch shift, noise, crops) still regularize.
 
 **Revisit when.** Stage A shows overfitting (val loss rising while train loss falls). Then we try a small nonzero layerdrop with a layer-mix that handles missing layers, as an ablation.
+
+---
+
+## D-007 · Whistle F0: spectral peak with a tonal-ratio voicing gate, not RMVPE at half speed
+**Date:** 2026-09-26
+
+**Context.** The paper's contour figure extracts whistle F0 with RMVPE. At normal speed RMVPE reports mostly the lower octave on whistles, so the figure feeds whistles at half speed and doubles the result ("RMVPE-fix"; definitions and math in `docs/paper/SIGNALS.md` §S6). A 12-clip spot check looked good. We then ran the check on every MLEnd whistle: 1,797 listed, 1,702 analyzed, 95 excluded because RMVPE-fix voiced under 1 s. Details and all numbers are in SIGNALS §S8, from `validate_whistle_f0.py`.
+
+**Options.**
+- **RMVPE, normal speed.**
+  - A median 55.4% of voiced frames per clip are octave errors, and only 6.8% are within 0.5 st of the spectral peak.
+  - In the contour-retrieval test (hum vs same-performer whistle, same song vs other songs) it is at chance: AUC 0.49 / 0.52 / 0.57 on Potter / StarWars / Hakuna.
+- **RMVPE, half speed, ×2 (the current method).**
+  - Per clip, a median 98.2% of frames are within 0.5 st of the spectral peak (IQR 96.7–99.1%), and 91.1% of clips exceed 90%.
+  - It still fails on whistles above about 2 kHz. Clips with a median peak of 2–2.5 kHz have a median agreement of 20.7%, and most of the 95 excluded clips are higher still (median 3.74 kHz). The spectrum shows no energy where RMVPE-fix puts F0, so these are a second octave error.
+  - On synthetic tones it is correct up to 1.4 kHz, 74–85% at 2 kHz and ≤ 10% at ≥ 2.8 kHz.
+  - Retrieval AUC is 0.766 / 0.711 / 0.798 on common pairs.
+- **Spectral peak with a voicing gate.** F0 is the STFT argmax in 200–6000 Hz with parabolic interpolation. A frame is voiced when ≥ 6 dB more energy lies within ±50 cents of the peak than in the rest of the band.
+  - It agrees with RMVPE-fix on a median 99.7% of jointly voiced frames and has no octave ceiling.
+  - Retrieval AUC is 0.840 / 0.773 / 0.827: +0.073, +0.063 and +0.029 over RMVPE-fix, with 95% performer-bootstrap CIs excluding 0 on all three songs.
+- **RMVPE with a per-clip speed factor** (for example ×4 for whistles above about 2 kHz). This is plausible but untested.
+
+**Decision.** Use the spectral peak with the 6 dB tonal-ratio gate as the whistle F0 in the paper, followed by the same contour cleaning as for hums. Keep RMVPE (normal speed) for hums, where the spectral peak is not F0 in 20.6% of voiced frames (SIGNALS §S2–S3). Report RMVPE-fix agreement as a cross-check.
+
+**Trade-off / what we gave up.**
+- **One estimator for all query types.** Whistles and hums now go through different front ends, so the paper must describe both.
+- **Low-SNR robustness.** With the 6 dB gate the peak voices nothing on synthetic tones at 0 dB broadband SNR, where RMVPE-fix still voices tones up to 1.4 kHz.
+- **Harmonic-rich "whistles."** In about 0.3% of frames the peak sits on the 3rd harmonic, where RMVPE is plausibly right. This happens mostly for one performer.
+- **Stable background tones** can capture the peak.
+- **Threshold sensitivity.** A too-strict gate (prominence ≥ 60 dB) is worse than RMVPE-fix. The 6 dB rule was one of four pre-listed rules, not tuned on the retrieval test, but chosen after seeing its voicing agreement on the same whistles.
+- **Figure consistency.** The existing figure (median r 0.80 vs 0.57, AUC 0.75) was made with RMVPE-fix. It must be regenerated with the peak method or labeled as RMVPE-fix.
+
+**Revisit when.**
+- A whistle corpus with reference F0 exists, so we can measure accuracy instead of agreement.
+- We test the per-clip speed-factor variant of RMVPE.
+- Low-SNR or phone-microphone whistles (our target use) show the 6 dB gate dropping too many frames.
