@@ -70,3 +70,24 @@ CREPE stays in the codebase as a swappable baseline and will be reported in the 
 **Trade-off / what we gave up.** The full 48-song Jang holdout. Ten English-song ids can appear in train. Unlabeled course recordings of those same songs are called `hum` and follow the song into that split. Clips outside `year2006a` that were actually sung stay labeled `hum` until a real per-clip label exists.
 
 **Revisit when.** A hum/sing label file is available, or a sung corpus with song-disjoint audio (for example separated vocals) replaces the `year2006a` heuristic.
+
+---
+
+## D-004 · Optimization method: backpropagation, not predictive coding
+**Date:** 2026-09-26
+
+**Context.** We asked whether predictive coding, where each layer learns from local prediction errors instead of a single global error passed backward through the whole network, could replace backprop for fine-tuning MERT.
+
+**Options.**
+- **Backpropagation + AdamW**: the standard, proven method for fine-tuning transformers; what every baseline we compare against (CHAD, MERT) uses.
+- **Predictive coding**: biologically inspired local learning; an active research area.
+
+**Decision.** Backpropagation with AdamW.
+
+**Why not predictive coding.** It needs many iterative settling steps per example, which makes it slow on current GPUs; demonstrated results are on small networks; and nobody has shown it matching backprop on a transformer the size of MERT-95M. For a paper we want to publish and benchmark against CHAD, it would add risk without payoff.
+
+**Trade-off / what we gave up.** Exploring a biologically plausible, local learning rule that could, in principle, avoid a full backward pass.
+
+**Practical alternative for "don't update the whole network."** Freeze the lower MERT layers or train LoRA adapters with backprop. Both are candidates for an ablation.
+
+**Revisit when.** Predictive coding is shown to match backprop on transformer-scale models, or as a separate follow-up experiment.
