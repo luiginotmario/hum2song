@@ -1,0 +1,237 @@
+{
+ "rmvpe_fix": {
+  "n_same": 424,
+  "n_other": 806,
+  "mae_median_same": 1.536246765594272,
+  "r_median_same": 0.8235321328821543,
+  "mae_median_other": 2.3676221032825238,
+  "r_median_other": 0.5885694925630235,
+  "auc_by_mae": 0.7913672222482326,
+  "auc_by_mae_ci95": [
+   0.7497802710113641,
+   0.8376452022677675
+  ],
+  "auc_by_r": 0.8217876539163819,
+  "n_pairs": 1230,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 189
+ },
+ "rmvpe_raw": {
+  "n_same": 330,
+  "n_other": 592,
+  "mae_median_same": 2.665876678376722,
+  "r_median_same": 0.5188420419517749,
+  "mae_median_other": 2.649319732162594,
+  "r_median_other": 0.5325600946024681,
+  "auc_by_mae": 0.4911803849303849,
+  "auc_by_mae_ci95": [
+   0.4451227782864886,
+   0.5393144833445186
+  ],
+  "auc_by_r": 0.4961097461097461,
+  "n_pairs": 922,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 824
+ },
+ "peak_prom40": {
+  "n_same": 440,
+  "n_other": 858,
+  "mae_median_same": 1.4354983237003092,
+  "r_median_same": 0.8289887172806429,
+  "mae_median_other": 2.408288857074135,
+  "r_median_other": 0.5501937878988813,
+  "auc_by_mae": 0.8211856325492689,
+  "auc_by_mae_ci95": [
+   0.7846769322894042,
+   0.8571267313085492
+  ],
+  "auc_by_r": 0.7995020131383768,
+  "n_pairs": 1298,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 50
+ },
+ "peak_prom50": {
+  "n_same": 432,
+  "n_other": 828,
+  "mae_median_same": 1.4719031194236767,
+  "r_median_same": 0.8275028776277932,
+  "mae_median_other": 2.356793708313896,
+  "r_median_other": 0.5785747977898135,
+  "auc_by_mae": 0.8155556673823582,
+  "auc_by_mae_ci95": [
+   0.7770364139242821,
+   0.8521681928288207
+  ],
+  "auc_by_r": 0.8087733718017535,
+  "n_pairs": 1260,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 189
+ },
+ "peak_prom60": {
+  "n_same": 366,
+  "n_other": 682,
+  "mae_median_same": 1.7529519751187896,
+  "r_median_same": 0.7680628150905877,
+  "mae_median_other": 2.425814609206995,
+  "r_median_other": 0.5517753145701549,
+  "auc_by_mae": 0.7473438776981876,
+  "auc_by_mae_ci95": [
+   0.6991084519480677,
+   0.796289491987885
+  ],
+  "auc_by_r": 0.7770299504831498,
+  "n_pairs": 1048,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 515
+ },
+ "peak_tonal_db6": {
+  "n_same": 440,
+  "n_other": 848,
+  "mae_median_same": 1.4197449669840516,
+  "r_median_same": 0.8541678317387613,
+  "mae_median_other": 2.3475472327628024,
+  "r_median_other": 0.5889731162809657,
+  "auc_by_mae": 0.8280070754716982,
+  "auc_by_mae_ci95": [
+   0.7897166542479243,
+   0.8645180892772116
+  ],
+  "auc_by_r": 0.8410832975986278,
+  "n_pairs": 1288,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 116
+ },
+ "peakF0_fixVoicing": {
+  "n_same": 424,
+  "n_other": 806,
+  "mae_median_same": 1.5207251154373118,
+  "r_median_same": 0.828098143841274,
+  "mae_median_other": 2.367356341104962,
+  "r_median_other": 0.5877305027893478,
+  "auc_by_mae": 0.8064194250667166,
+  "auc_by_mae_ci95": [
+   0.7672192934932436,
+   0.8486551751669371
+  ],
+  "auc_by_r": 0.8336122945830797,
+  "n_pairs": 1230,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 189
+ },
+ "fixF0_peakVoicing_tonal_db6": {
+  "n_same": 440,
+  "n_other": 848,
+  "mae_median_same": 1.6724255374936539,
+  "r_median_same": 0.7814510115765139,
+  "mae_median_other": 2.4026632105838575,
+  "r_median_other": 0.5663676694382984,
+  "auc_by_mae": 0.760380038593482,
+  "auc_by_mae_ci95": [
+   0.7166598505493952,
+   0.8043324204772139
+  ],
+  "auc_by_r": 0.7511363636363636,
+  "n_pairs": 1288,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 116
+ },
+ "paired_auc_by_mae_common_pairs": {
+  "peak_prom40_minus_rmvpe_fix": {
+   "n_common_pairs": 1044,
+   "n_performers": 112,
+   "auc_method": 0.8479436005171299,
+   "auc_rmvpe_fix": 0.811178894634777,
+   "diff": 0.03676470588235292,
+   "ci95": [
+    0.011307475514497683,
+    0.06286866532136173
+   ],
+   "frac_boot_diff_le_0": 0.004
+  },
+  "peak_prom50_minus_rmvpe_fix": {
+   "n_common_pairs": 1044,
+   "n_performers": 112,
+   "auc_method": 0.8359324499030382,
+   "auc_rmvpe_fix": 0.811178894634777,
+   "diff": 0.024753555268261174,
+   "ci95": [
+    0.0020024069161999917,
+    0.04870477854143092
+   ],
+   "frac_boot_diff_le_0": 0.011
+  },
+  "peak_prom60_minus_rmvpe_fix": {
+   "n_common_pairs": 1044,
+   "n_performers": 112,
+   "auc_method": 0.7472123464770524,
+   "auc_rmvpe_fix": 0.811178894634777,
+   "diff": -0.06396654815772462,
+   "ci95": [
+    -0.10006624658363493,
+    -0.02947943008096457
+   ],
+   "frac_boot_diff_le_0": 1.0
+  },
+  "peak_tonal_db6_minus_rmvpe_fix": {
+   "n_common_pairs": 1044,
+   "n_performers": 112,
+   "auc_method": 0.8514625080801551,
+   "auc_rmvpe_fix": 0.811178894634777,
+   "diff": 0.04028361344537812,
+   "ci95": [
+    0.01993467808567466,
+    0.06288163379043649
+   ],
+   "frac_boot_diff_le_0": 0.0
+  },
+  "peakF0_fixVoicing_minus_rmvpe_fix": {
+   "n_common_pairs": 1044,
+   "n_performers": 112,
+   "auc_method": 0.8256464124111182,
+   "auc_rmvpe_fix": 0.811178894634777,
+   "diff": 0.014467517776341254,
+   "ci95": [
+    0.001419411300171894,
+    0.027739965282696618
+   ],
+   "frac_boot_diff_le_0": 0.014
+  },
+  "fixF0_peakVoicing_tonal_db6_minus_rmvpe_fix": {
+   "n_common_pairs": 1044,
+   "n_performers": 112,
+   "auc_method": 0.7888453458306399,
+   "auc_rmvpe_fix": 0.811178894634777,
+   "diff": -0.02233354880413707,
+   "ci95": [
+    -0.043242132756997564,
+    -0.0032262329782278944
+   ],
+   "frac_boot_diff_le_0": 0.997
+  },
+  "rmvpe_raw_minus_rmvpe_fix": {
+   "n_common_pairs": 918,
+   "n_performers": 100,
+   "auc_method": 0.4895021645021645,
+   "auc_rmvpe_fix": 0.8252886002886003,
+   "diff": -0.3357864357864358,
+   "ci95": [
+    -0.39932401953039476,
+    -0.2713189378973977
+   ],
+   "frac_boot_diff_le_0": 1.0
+  }
+ },
+ "settings": {
+  "song": "Potter",
+  "null_songs": [
+   "Hakuna",
+   "StarWars"
+  ],
+  "peak_rules": "prom:40,prom:50,prom:60,tonal_db:6",
+  "control_rule": "tonal_db:6",
+  "hum_cache": "/workspace/wval/f0cache_potter",
+  "n_boot": 1000,
+  "dtw": "query resampled to reference length, then slope-constrained DTW (steps (1,1),(1,2),(2,1), band 25%); no fallback, unalignable pairs counted in n_unaligned",
+  "ci": "95% percentile interval, performer-level bootstrap"
+ }
+}

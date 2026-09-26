@@ -1,0 +1,74 @@
+{
+ "song": "Potter",
+ "pitch_model": "RMVPE (RVC rmvpe.pt), CPU",
+ "conf_threshold": 0.3,
+ "featured_interpreter": "213",
+ "reference_hum": "0491",
+ "featured_clips": {
+  "hum": [
+   "0091",
+   "0491"
+  ],
+  "whistle": [
+   "0008",
+   "0681"
+  ]
+ },
+ "featured_stats": {
+  "whistle": {
+   "clip": "0681",
+   "mae": 0.5103200185119678,
+   "r": 0.9867004624013309,
+   "offset": 27.9345756332431
+  }
+ },
+ "dataset_summary": {
+  "whistle": {
+   "n_pairs": 424,
+   "n_interpreters": 111,
+   "mae_median": 1.6267802326380798,
+   "mae_mean": 1.7847747132276235,
+   "r_median": 0.7975712601244285,
+   "offset_median": 35.24561428723335,
+   "offset_iqr": [
+    31.192046452462755,
+    37.339104975217936
+   ]
+  },
+  "ceiling_hum_vs_hum_same_performer": {
+   "n_pairs": 654,
+   "mae_median": 0.7454415878426257,
+   "r_median": 0.9493866216173552
+  },
+  "null_hum_vs_hum_other_song_same_performer": {
+   "songs": [
+    "Hakuna",
+    "StarWars"
+   ],
+   "n_pairs": 3644,
+   "mae_median": 2.226657691801359,
+   "r_median": 0.6417926739134403
+  },
+  "null_hum_vs_whistle_other_song_same_performer": {
+   "songs": [
+    "Hakuna",
+    "StarWars"
+   ],
+   "n_pairs": 806,
+   "mae_median": 2.337335288518748,
+   "r_median": 0.5655810243271684
+  },
+  "auc_same_vs_other_song_whistle_by_mae": 0.7495640011236481
+ },
+ "panel_c_interpreters": [
+  "213",
+  "111",
+  "136",
+  "146",
+  "170",
+  "97",
+  "90",
+  "49"
+ ],
+ "notes": "featured performer chosen by recording quality + hum/whistle agreement; panel (c) performers chosen by pitch-track jitter only; dataset_summary uses all performers"
+}

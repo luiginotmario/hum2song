@@ -1,0 +1,179 @@
+{
+ "rmvpe_fix": {
+  "n_same": 404,
+  "n_other": 810,
+  "mae_median_same": 1.0913732960973421,
+  "r_median_same": 0.7841536847301436,
+  "mae_median_other": 1.727913089131258,
+  "r_median_other": 0.5728070535327657,
+  "auc_by_mae": 0.7893167094487227,
+  "auc_by_mae_ci95": [
+   0.7372524055057214,
+   0.8414354432603295
+  ],
+  "auc_by_r": 0.737269282483804,
+  "n_pairs": 1214,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 132
+ },
+ "rmvpe_raw": {
+  "n_same": 292,
+  "n_other": 607,
+  "mae_median_same": 2.049667886185788,
+  "r_median_same": 0.4402217788782854,
+  "mae_median_other": 2.1345458752754176,
+  "r_median_other": 0.47438471303354585,
+  "auc_by_mae": 0.5026855634041208,
+  "auc_by_mae_ci95": [
+   0.43796648782267655,
+   0.5620816785761887
+  ],
+  "auc_by_r": 0.4521619913791158,
+  "n_pairs": 899,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 762
+ },
+ "peak_prom50": {
+  "n_same": 419,
+  "n_other": 820,
+  "mae_median_same": 1.1174117929726628,
+  "r_median_same": 0.7582122880190436,
+  "mae_median_other": 1.7322100689032571,
+  "r_median_other": 0.5916191788976751,
+  "auc_by_mae": 0.7768700157168636,
+  "auc_by_mae_ci95": [
+   0.7260622209991533,
+   0.8266850864024201
+  ],
+  "auc_by_r": 0.7165958437627336,
+  "n_pairs": 1239,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 150
+ },
+ "peak_tonal_db6": {
+  "n_same": 423,
+  "n_other": 842,
+  "mae_median_same": 1.088249414583872,
+  "r_median_same": 0.7822549357189653,
+  "mae_median_other": 1.7198010120231322,
+  "r_median_other": 0.5882723887861223,
+  "auc_by_mae": 0.812239236760387,
+  "auc_by_mae_ci95": [
+   0.7690223777825552,
+   0.856867202999964
+  ],
+  "auc_by_r": 0.7605947788390807,
+  "n_pairs": 1265,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 88
+ },
+ "peakF0_fixVoicing": {
+  "n_same": 404,
+  "n_other": 810,
+  "mae_median_same": 1.0922524017453996,
+  "r_median_same": 0.7887231257614409,
+  "mae_median_other": 1.7172768870741557,
+  "r_median_other": 0.5754451414828378,
+  "auc_by_mae": 0.7967791223566801,
+  "auc_by_mae_ci95": [
+   0.7453792281149929,
+   0.844106957427855
+  ],
+  "auc_by_r": 0.7450403373670701,
+  "n_pairs": 1214,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 132
+ },
+ "fixF0_peakVoicing_tonal_db6": {
+  "n_same": 423,
+  "n_other": 842,
+  "mae_median_same": 1.158739373170278,
+  "r_median_same": 0.7224556331883129,
+  "mae_median_other": 1.8542011934155496,
+  "r_median_other": 0.5414323650039401,
+  "auc_by_mae": 0.7730917605835481,
+  "auc_by_mae_ci95": [
+   0.7214950589751545,
+   0.8254087681158484
+  ],
+  "auc_by_r": 0.708178209037359,
+  "n_pairs": 1265,
+  "n_unaligned": 0,
+  "n_pairs_length_ratio_outside_half_to_2": 88
+ },
+ "paired_auc_by_mae_common_pairs": {
+  "peak_prom50_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.7959503028929107,
+   "auc_rmvpe_fix": 0.7954591251999346,
+   "diff": 0.0004911776929761302,
+   "ci95": [
+    -0.018015155900080668,
+    0.020115302906598263
+   ],
+   "frac_boot_diff_le_0": 0.481
+  },
+  "peak_tonal_db6_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.8230752761300235,
+   "auc_rmvpe_fix": 0.7954591251999346,
+   "diff": 0.027616150930088956,
+   "ci95": [
+    0.009248130656441974,
+    0.04781634445777151
+   ],
+   "frac_boot_diff_le_0": 0.0
+  },
+  "peakF0_fixVoicing_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.8040232490774676,
+   "auc_rmvpe_fix": 0.7954591251999346,
+   "diff": 0.008564123877533025,
+   "ci95": [
+    -0.001987595188937252,
+    0.02277955484281302
+   ],
+   "frac_boot_diff_le_0": 0.063
+  },
+  "fixF0_peakVoicing_tonal_db6_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.7928017279379352,
+   "auc_rmvpe_fix": 0.7954591251999346,
+   "diff": -0.002657397261999317,
+   "ci95": [
+    -0.020075823320614274,
+    0.014097835618041003
+   ],
+   "frac_boot_diff_le_0": 0.609
+  },
+  "rmvpe_raw_minus_rmvpe_fix": {
+   "n_common_pairs": 896,
+   "n_performers": 100,
+   "auc_method": 0.5072595953780291,
+   "auc_rmvpe_fix": 0.858205594477349,
+   "diff": -0.3509459990993199,
+   "ci95": [
+    -0.43163627366452423,
+    -0.2581625843786383
+   ],
+   "frac_boot_diff_le_0": 1.0
+  }
+ },
+ "settings": {
+  "song": "Hakuna",
+  "null_songs": [
+   "Potter",
+   "StarWars"
+  ],
+  "peak_rules": "prom:50,tonal_db:6",
+  "control_rule": "tonal_db:6",
+  "hum_cache": "/workspace/wval/f0cache_Hakuna",
+  "n_boot": 1000,
+  "dtw": "query resampled to reference length, then slope-constrained DTW (steps (1,1),(1,2),(2,1), band 25%); no fallback, unalignable pairs counted in n_unaligned",
+  "ci": "95% percentile interval, performer-level bootstrap"
+ }
+}

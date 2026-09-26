@@ -137,15 +137,15 @@ CREPE stays in the codebase as a swappable baseline and will be reported in the 
 **Options.**
 - **RMVPE, normal speed.**
   - A median 55.4% of voiced frames per clip are octave errors, and only 6.8% are within 0.5 st of the spectral peak.
-  - In the contour-retrieval test (hum vs same-performer whistle, same song vs other songs) it is at chance: AUC 0.49 / 0.52 / 0.57 on Potter / StarWars / Hakuna.
+  - In the contour-retrieval test (hum vs same-performer whistle, same song vs other songs) it is at chance: AUC 0.49 / 0.53 / 0.50 on Potter / StarWars / Hakuna (0.49 / 0.52 / 0.57 before the D-008 DTW fix).
 - **RMVPE, half speed, ×2 (the current method).**
   - Per clip, a median 98.2% of frames are within 0.5 st of the spectral peak (IQR 96.7–99.1%), and 91.1% of clips exceed 90%.
   - It still fails on whistles above about 2 kHz. Clips with a median peak of 2–2.5 kHz have a median agreement of 20.7%, and most of the 95 excluded clips are higher still (median 3.74 kHz). The spectrum shows no energy where RMVPE-fix puts F0, so these are a second octave error.
   - On synthetic tones it is correct up to 1.4 kHz, 74–85% at 2 kHz and ≤ 10% at ≥ 2.8 kHz.
-  - Retrieval AUC is 0.766 / 0.711 / 0.798 on common pairs.
+  - Retrieval AUC is 0.811 / 0.717 / 0.795 on common pairs (0.766 / 0.711 / 0.798 before D-008).
 - **Spectral peak with a voicing gate.** F0 is the STFT argmax in 200–6000 Hz with parabolic interpolation. A frame is voiced when ≥ 6 dB more energy lies within ±50 cents of the peak than in the rest of the band.
   - It agrees with RMVPE-fix on a median 99.7% of jointly voiced frames and has no octave ceiling.
-  - Retrieval AUC is 0.840 / 0.773 / 0.827: +0.073, +0.063 and +0.029 over RMVPE-fix, with 95% performer-bootstrap CIs excluding 0 on all three songs.
+  - Retrieval AUC is 0.851 / 0.773 / 0.823: +0.040, +0.056 and +0.028 over RMVPE-fix, with 95% performer-bootstrap CIs excluding 0 on all three songs (+0.020 to +0.063, +0.027 to +0.086, +0.009 to +0.048). Before the D-008 DTW fix these were 0.840 / 0.773 / 0.827 and +0.073 / +0.063 / +0.029; the Potter gap roughly halved but the ranking held.
 - **RMVPE with a per-clip speed factor** (for example ×4 for whistles above about 2 kHz). This is plausible but untested.
 
 **Decision.** Use the spectral peak with the 6 dB tonal-ratio gate as the whistle F0 in the paper, followed by the same contour cleaning as for hums. Keep RMVPE (normal speed) for hums, where the spectral peak is not F0 in 20.6% of voiced frames (SIGNALS §S2–S3). Report RMVPE-fix agreement as a cross-check.
@@ -156,9 +156,37 @@ CREPE stays in the codebase as a swappable baseline and will be reported in the 
 - **Harmonic-rich "whistles."** In about 0.3% of frames the peak sits on the 3rd harmonic, where RMVPE is plausibly right. This happens mostly for one performer.
 - **Stable background tones** can capture the peak.
 - **Threshold sensitivity.** A too-strict gate (prominence ≥ 60 dB) is worse than RMVPE-fix. The 6 dB rule was one of four pre-listed rules, not tuned on the retrieval test, but chosen after seeing its voicing agreement on the same whistles.
-- **Figure consistency.** The existing figure (median r 0.80 vs 0.57, AUC 0.75) was made with RMVPE-fix. It must be regenerated with the peak method or labeled as RMVPE-fix.
+- **Figure consistency.** The first figure (median r 0.80 vs 0.57, AUC 0.75) was made with RMVPE-fix. It has been regenerated with the peak method and the D-008 DTW: median r 0.85 vs 0.59, AUC 0.828 (`docs/paper/results/fig_contours_potter_stats.json`).
 
 **Revisit when.**
 - A whistle corpus with reference F0 exists, so we can measure accuracy instead of agreement.
 - We test the per-clip speed-factor variant of RMVPE.
 - Low-SNR or phone-microphone whistles (our target use) show the 6 dB gate dropping too many frames.
+
+---
+
+## D-008 · Contour DTW: length-normalize, then always slope-constrain (no silent fallback)
+**Date:** 2026-09-26
+
+**Context.** The paper's contour comparison (SIGNALS §S7) aligns two key-normalized contours with DTW whose steps (1,1),(1,2),(2,1) limit the local tempo ratio to 1/2–2. A slope-limited path cannot exist when the two voiced sequences differ in length by more than 2×. The first implementation then caught the failure and silently re-ran DTW with standard steps (1,0),(0,1),(1,1), which have no slope limit. In the Potter hum-vs-whistle statistics this affected 189 of 1,230 pairs with RMVPE-fix whistles, and 824 of 922 with normal-speed RMVPE. Those pairs were scored under a different, looser alignment than the rest, and the figure's numbers did not say so. The contour figure and the whistle-F0 validation each carried a copy of this logic.
+
+**Options.**
+- **Keep the fallback, report the count.** No code change, but two alignment rules stay mixed in one statistic. Unconstrained steps fit different songs well: normal-speed RMVPE, mostly on the fallback, scored median r 0.80 same-song vs 0.79 other-song.
+- **Drop pairs outside the 1/2–2 length ratio.** Every scored pair is constrained, but it removes about 15% of pairs (189 of 1,230 with RMVPE-fix whistles) and the removal depends on the F0 method's voicing, so methods would be compared on different pairs.
+- **Resample only the pairs outside 1/2–2.** Fixes the failures but still treats two groups of pairs differently.
+- **Always resample the query to the reference length, then slope-constrained DTW** (linear scaling + DTW, as in pitch-vector QBSH systems). Every pair gets the same rule, and with equal lengths a constrained path always exists.
+- **Subsequence DTW** (query may match any part of the reference). Handles partial renditions, but adds free endpoints that also help wrong songs match; untested.
+
+**Decision.** Always resample the query to the reference length, then run slope-constrained DTW (steps (1,1),(1,2),(2,1), weights 1/1.5/1.5, 25% Sakoe–Chiba band). There is no fallback: a pair without a valid path is returned as unaligned, counted (`n_unaligned`) and left out. One shared function (`score_pair` in `docs/paper/scripts/contour_pipeline.py`) is used by both `contour_figure.py` and `validate_whistle_f0.py downstream`.
+
+Measured result: 0 unaligned pairs in every run (contour figure: 5,586 pairs; downstream: 8 whistle-F0 variants on Potter, 6 each on StarWars and Hakuna). Pairs that used to fall back and are now constrained: 189 of 1,230 (Potter, RMVPE-fix), 116 of 1,288 (Potter, spectral peak), 154 of 1,222 and 132 of 1,214 (StarWars, Hakuna, RMVPE-fix). Effect, Potter, RMVPE-fix whistles: AUC 0.750 → 0.791, median r same song 0.80 → 0.82, other song 0.57 → 0.59. Normal-speed RMVPE: r 0.80 / 0.79 → 0.52 / 0.53, so the fallback had been hiding its failure. The spectral peak's AUC advantage over RMVPE-fix (D-007) shrank from +0.073 to +0.040 on Potter and stayed significant on all three songs. Sources: `docs/paper/results/` (current) vs `docs/paper/results/superseded/*_v1.json` (before), details in `docs/paper/WHISTLE_F0_VALIDATION.md`.
+
+**Trade-off / what we gave up.**
+- **Global tempo as evidence.** Linear resampling removes the overall tempo and voiced-duration difference, so a whistle with far less voiced material than the hum is no longer penalized for it.
+- **Partial renditions.** Linear scaling assumes both clips cover the same stretch of melody. A clip covering only part of the tune gets stretched over the whole reference. We have not measured how often this happens in MLEnd.
+- **Comparability with the first figure.** All contour numbers changed (see the old-vs-new table in `docs/paper/REFERENCES_and_CAPTION.md`); the first version is kept only as superseded files.
+
+**Revisit when.**
+- Any run reports `n_unaligned > 0`.
+- Queries are partial or much shorter than the reference (e.g. real user hums against full songs); then test subsequence DTW with the same slope limit.
+- The retrieval model replaces DTW scoring in the paper's main results, leaving this only for the figure.

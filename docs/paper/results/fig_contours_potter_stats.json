@@ -1,0 +1,160 @@
+{
+ "song": "Potter",
+ "pitch_model": {
+  "hum": "RMVPE (RVC rmvpe.pt), CPU, normal speed",
+  "whistle": "spectral peak, tonal ratio >= 6 dB (D-007)"
+ },
+ "whistle_f0": "peak",
+ "conf_threshold": 0.3,
+ "whistle_peak_rule": [
+  "tonal_db",
+  6.0
+ ],
+ "dtw": {
+  "steps": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    2,
+    1
+   ]
+  ],
+  "step_weights": [
+   1.0,
+   1.5,
+   1.5
+  ],
+  "band_radius": 0.25,
+  "frame_s": 0.02,
+  "length_normalization": "query linearly resampled to reference length",
+  "fallback": "none: unalignable pairs are counted (n_unaligned), not scored"
+ },
+ "featured_interpreter": "213",
+ "featured_selection": "user",
+ "featured_is_best_case": true,
+ "reference_hum": "0491",
+ "featured_clips": {
+  "hum": [
+   "0091",
+   "0491"
+  ],
+  "whistle": [
+   "0008",
+   "0681"
+  ]
+ },
+ "featured_stats": {
+  "whistle": {
+   "clip": "0008",
+   "mae": 0.436442997229305,
+   "r": 0.9811717923802824,
+   "offset": 28.16256706218337
+  }
+ },
+ "featured_all_pairs": [
+  {
+   "ref": "0091",
+   "qry": "0008",
+   "mae": 0.5358907754687677,
+   "r": 0.9814233745999349
+  },
+  {
+   "ref": "0091",
+   "qry": "0681",
+   "mae": 0.5070457308099353,
+   "r": 0.9758562726988027
+  },
+  {
+   "ref": "0491",
+   "qry": "0008",
+   "mae": 0.436442997229305,
+   "r": 0.9811717923802824
+  },
+  {
+   "ref": "0491",
+   "qry": "0681",
+   "mae": 0.45792090592767176,
+   "r": 0.9824764045310026
+  }
+ ],
+ "featured_rank": {
+  "rank_by_mean_mae": 1,
+  "n_ranked": 114,
+  "top5": [
+   "213",
+   "231",
+   "54",
+   "83",
+   "123"
+  ]
+ },
+ "dataset_summary": {
+  "whistle": {
+   "n_pairs": 440,
+   "n_unaligned": 0,
+   "n_length_ratio_outside_half_to_2": 25,
+   "n_interpreters": 114,
+   "mae_median": 1.4197449669840516,
+   "mae_mean": 1.5471385568950706,
+   "r_median": 0.8541678317387613,
+   "offset_median": 35.78848837595551,
+   "offset_iqr": [
+    32.140389562612285,
+    38.64794664985537
+   ]
+  },
+  "ceiling_hum_vs_hum_same_performer": {
+   "n_pairs": 654,
+   "n_unaligned": 0,
+   "n_length_ratio_outside_half_to_2": 2,
+   "n_interpreters": 212,
+   "mae_median": 0.7281656629701037,
+   "mae_mean": 0.8751602564655361,
+   "r_median": 0.950175575476999
+  },
+  "null_hum_vs_hum_other_song_same_performer": {
+   "n_pairs": 3644,
+   "n_unaligned": 0,
+   "n_length_ratio_outside_half_to_2": 8,
+   "n_interpreters": 216,
+   "mae_median": 2.1597300201306804,
+   "mae_mean": 2.2268175183582555,
+   "r_median": 0.6629743252212501,
+   "songs": [
+    "Hakuna",
+    "StarWars"
+   ]
+  },
+  "null_hum_vs_whistle_other_song_same_performer": {
+   "n_pairs": 848,
+   "n_unaligned": 0,
+   "n_length_ratio_outside_half_to_2": 91,
+   "n_interpreters": 116,
+   "mae_median": 2.3475472327628024,
+   "mae_mean": 2.3872953188523947,
+   "r_median": 0.5889731162809657,
+   "songs": [
+    "Hakuna",
+    "StarWars"
+   ]
+  },
+  "auc_same_vs_other_song_whistle_by_mae": 0.8280070754716982
+ },
+ "panel_c_interpreters": [
+  "213",
+  "170",
+  "90",
+  "97",
+  "136",
+  "52",
+  "49",
+  "207"
+ ],
+ "notes": "featured performer is a best case (chosen for recording quality and hum/whistle agreement); panel (c) performers chosen by pitch-track jitter only; dataset_summary uses all performers"
+}

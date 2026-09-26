@@ -7,7 +7,7 @@ Tags used below:
 - **[PV]** means partly verified. The bibliographic data was checked, but the specific claim was taken from the abstract, a secondary source, or our earlier notes.
 - **[ours]** means we measured it on MLEnd. The script and output file are named, and every number is copied from that output.
 
-Paths like `figures/...` refer to the paper-figure workspace (`contour_figure.py`, `validate_whistle_f0.py` and their JSON/CSV outputs). It is not part of this repository yet.
+Paths are repository paths. Scripts are in `docs/paper/scripts/` (`contour_pipeline.py` shared contour cleaning, spectral-peak track and DTW; `contour_figure.py`; `validate_whistle_f0.py`), outputs in `docs/paper/results/` (JSON/CSV) and `docs/paper/figures/` (PNG/PDF). Notes: `docs/paper/WHISTLE_F0_VALIDATION.md`, `docs/paper/REFERENCES_and_CAPTION.md`.
 
 ---
 
@@ -29,11 +29,11 @@ We use the hum's harmonic structure, measured on our own data, rather than a cit
 - On 607 MLEnd *Potter* hums (752,679 voiced frames), the spectral peak in 50–6000 Hz is on the 1st harmonic ($F_0$ itself) in 79.4% of frames. It is on the 2nd harmonic in 12.7%, the 3rd in 3.3%, and on no harmonic in 3.1%.
 - Per clip, the peak equals $F_0$ in a median 88.4% of frames (IQR 68.6–96.0%).
 
-**[ours]** (`validate_whistle_f0.py humpeak`, `figures/hum_spectral_peak_check.json`; $F_0$ from RMVPE at normal speed, salience ≥ 0.3.) So hums are dominated by low harmonics, but not so completely that the spectral peak can stand in for $F_0$.
+**[ours]** (`validate_whistle_f0.py humpeak`, `docs/paper/results/hum_spectral_peak_check.json`; $F_0$ from RMVPE at normal speed, salience ≥ 0.3.) So hums are dominated by low harmonics, but not so completely that the spectral peak can stand in for $F_0$.
 
 **Whistle: a near-sinusoidal tone from an airflow-driven resonance.** Air forced through the lip orifice excites a resonance of the mouth cavity. Rayleigh and Wilson et al. (1971) identified it as close to a Helmholtz resonance. Shigetomi & Mori (2016) show with vocal-tract models that an air-column resonance also contributes when the tract is long. They note that the sound source is turbulence at the mouth orifice. They also write that "because the amplitude and period of the human whistling sound fluctuate to a minor extent, the sound is close to a (sine wave) pure tone", and they measure whistle $F_0$ as the peak of the FFT power spectrum. **[V]** Shigetomi & Mori (full text read). **[PV]** Wilson et al. (1971) is cited here as summarized by Shigetomi & Mori; we did not read the original. Nilsson et al. (2008) describe human whistling as "typically single frequency dominated signals ... although harmonics might occur". **[V]**
 
-On MLEnd, the 2nd-harmonic level of whistles is a median −45.0 dB relative to the peak (IQR −49.5 to −40.6 dB) over the 1,702 analyzed whistles. **[ours]** (`figures/whistle_f0_validation_clips.csv`, column `median_h2_db`, voiced frames of RMVPE-fix.)
+On MLEnd, the 2nd-harmonic level of whistles is a median −45.0 dB relative to the peak (IQR −49.5 to −40.6 dB) over the 1,702 analyzed whistles. **[ours]** (`docs/paper/results/whistle_f0_validation_clips.csv`, column `median_h2_db`, voiced frames of RMVPE-fix.)
 
 ## S3. Why the spectral peak equals F0 for whistles but not for voices
 
@@ -45,7 +45,7 @@ Measured:
 - On MLEnd whistles, the spectral peak and RMVPE-fix agree within 0.5 semitone on a median 99.7% of the frames both call voiced (IQR 99.1–99.9%, 1,702 clips).
 - For hums the peak is off $F_0$ in 20.6% of voiced frames (§S2).
 
-**[ours]** (`figures/whistle_f0_validation.json`, `peak_only.per_clip_within05_on_both_voiced`; `figures/hum_spectral_peak_check.json`.)
+**[ours]** (`docs/paper/results/whistle_f0_validation.json`, `peak_only.per_clip_within05_on_both_voiced`; `docs/paper/results/hum_spectral_peak_check.json`.)
 
 **Exception.** Some MLEnd "whistles" are harmonic-rich. In 0.29% of voiced frames the peak sits about 19 st (a factor of 3) above RMVPE-fix. In a clip we inspected by eye (0236, performer 170), components appear near 0.9, 1.9 and 2.8 kHz. There the peak is plausibly on the 3rd harmonic, and RMVPE, not the peak, is right (§S8).
 
@@ -59,9 +59,9 @@ Measured:
 | Whistle $F_0$ | "typically located in the range of 500–5000 Hz" (20 subjects asked to whistle as high and as low as possible; "some people might exceed these limits, such as trained whistlers") (Nilsson et al., 2008) | **[V]** full text read |
 
 **MLEnd, measured [ours]:**
-- **Hum:** median $F_0$ 178.7 Hz. This is the median over 607 *Potter* hums of each clip's median voiced $F_0$ (RMVPE at normal speed). `figures/hum_spectral_peak_check.json`.
-- **Whistle:** median 1,338 Hz (RMVPE-fix) or 1,359 Hz (spectral peak), taken as the median of per-clip medians over the 1,702 analyzed whistles of all 8 songs. The 5th–95th percentile of per-clip median peak frequency is 1,024–1,959 Hz. The 95 excluded clips (§S8) are mostly higher, with a median of 3.74 kHz. `figures/whistle_f0_validation.json`.
-- **Whistle minus hum, same performer, *Potter*:** median offset +35.2 st (IQR +31.2 to +37.3 st, 424 pairs), i.e. about 2.5–3 octaves. The offset is each clip's median semitone value, whistle minus hum. `figures/fig_contours_potter_stats.json`. As a consistency check, $12\log_2(1338/178.7) = 34.9$ st.
+- **Hum:** median $F_0$ 178.7 Hz. This is the median over 607 *Potter* hums of each clip's median voiced $F_0$ (RMVPE at normal speed). `docs/paper/results/hum_spectral_peak_check.json`.
+- **Whistle:** median 1,338 Hz (RMVPE-fix) or 1,359 Hz (spectral peak), taken as the median of per-clip medians over the 1,702 analyzed whistles of all 8 songs. The 5th–95th percentile of per-clip median peak frequency is 1,024–1,959 Hz (`docs/paper/results/whistle_f0_validation_clips.csv`, column `median_peak_hz`). The 95 excluded clips (§S8) are mostly higher, with a median of 3.74 kHz. `docs/paper/results/whistle_f0_validation.json`.
+- **Whistle minus hum, same performer, *Potter*:** median offset +35.8 st (IQR +32.1 to +38.6 st, 440 pairs, whistle F0 = spectral peak), i.e. about 2.5–3 octaves. The offset is each clip's median semitone value, whistle minus hum. `docs/paper/results/fig_contours_potter_stats.json`. With RMVPE-fix whistles it is +35.2 st (IQR +31.2 to +37.3, 424 pairs; `docs/paper/results/fig_contours_potter_rmvpefix_stats.json`). As a consistency check, $12\log_2(1359/178.7) = 35.1$ st.
 
 ## S5. Semitones, cents, key normalization, transposition invariance
 
@@ -78,7 +78,7 @@ $$\tilde s(t) = s(t) - \operatorname{median}_{t' \in \text{voiced}} s(t').$$
 1. An octave error that holds for the *entire* clip is also a constant shift, so key normalization removes it.
 2. *Intermittent* octave errors, where the estimate jumps between $f$ and $f/2$, are not constant and are not removed. They are what damage contour matching (§S6, §S8).
 
-Our contour cleaning (in `contour_figure.py`) does three things:
+Our contour cleaning (in `docs/paper/scripts/contour_pipeline.py`, used for hums and whistles alike) does three things:
 - It drops voiced runs shorter than 50 ms.
 - It folds isolated jumps of more than 9 st from a 0.5 s running median back by a multiple of 12 st.
 - It applies a 5-frame median filter.
@@ -113,21 +113,26 @@ Our contour cleaning (in `contour_figure.py`) does three things:
 
 We compare two key-normalized contours (§S5) with dynamic time warping (DTW).
 
-**Setup** (as implemented in `contour_figure.py`):
+**Setup** (as implemented in `docs/paper/scripts/contour_pipeline.py`, `score_pair`; used by both the contour figure and the validation):
 - **Sequences:** voiced frames only, averaged to 20 ms frames.
+- **Length normalization:** the query sequence is linearly resampled to the length of the reference sequence. This removes the global tempo difference (and the difference in voiced duration) before warping.
 - **Local cost:** $|\tilde s_{\text{ref}}(i) - \tilde s_{\text{qry}}(j)|$ in st.
 - **Steps:** $(1,1)$, $(1,2)$, $(2,1)$ with multiplicative weights 1, 1.5, 1.5, inside a Sakoe–Chiba band of radius 25% of the sequence length.
 - **Scoring:** the query is mapped onto the reference's frame grid (mean of matched frames), then we report MAE (st) and Pearson $r$.
 
-The step set limits the local tempo ratio to between 1/2 and 2. This is the idea of the slope constraint of Sakoe & Chiba (1978), who restrict the warping-path slope "so as to improve discrimination between words in different categories". **[V]** (abstract). Their P = 1 condition allows the same 1/2–2 slope range. **[PV]** (from the dtw-python documentation of their Table I, not re-derived.) Our step weights are our own.
+The step set limits the local tempo ratio to between 1/2 and 2. This is the idea of the slope constraint of Sakoe & Chiba (1978), who restrict the warping-path slope "so as to improve discrimination between words in different categories". **[V]** (abstract). Their P = 1 condition allows the same 1/2–2 slope range. **[PV]** (from the dtw-python documentation of their Table I, not re-derived.) Our step weights are our own. Linear length scaling before DTW is also used in pitch-vector QBSH matching (Jang & Lee, 2008, "linear scaling + DTW"). **[PV]** (see `docs/paper/REFERENCES_and_CAPTION.md`, ref. 8.)
 
-**Why unconstrained DTW was dropped.** With standard steps $(1,0)$, $(0,1)$, $(1,1)$ and no slope limit, DTW could also fit contours of *different* songs well (median $r \approx 0.88$–$0.91$). A high $r$ therefore did not show that two renditions shared a melody. This is from an earlier internal run, recorded in `figures/REFERENCES_and_CAPTION.md`. Its per-pair output is not in the stats JSON, and we did not re-run it here.
+**The constraint always applies.** After length normalization both sequences have the same length, so the diagonal path is valid and a slope-constrained path always exists. There is no fallback. A pair with no valid path would be returned as unaligned, counted (`n_unaligned` in every stats JSON) and left out of the statistics. In all runs reported here, 0 pairs were unaligned. **[ours]** (D-008.)
 
-**Caveat (measured).** When the two voiced-sequence lengths differ by more than a factor of 2, no path with slope in [1/2, 2] exists. The code then falls back to standard steps, which have no slope limit, inside the band. In the *Potter* hum-vs-whistle analysis (RMVPE-fix whistles), this happens for 189 of 1,230 pairs: 424 same-song plus 806 other-song. **[ours]** (`figures/whistle_f0_downstream.json`.) The published figure's statistics include those pairs. A whistle F0 method that voices fewer frames makes sequences shorter and triggers more fallbacks.
+**What changed (measured).** The first version aligned the raw sequences. When their lengths differed by more than a factor of 2, no path with slope in [1/2, 2] exists, and the code silently fell back to standard steps $(1,0)$, $(0,1)$, $(1,1)$, which have no slope limit. In the *Potter* hum-vs-whistle analysis with RMVPE-fix whistles this affected 189 of 1,230 pairs (45 of 424 same-song, 144 of 806 other-song); with spectral-peak whistles 116 of 1,288 (25 of 440, 91 of 848); hum-vs-hum pairs 2 of 654 (ceiling) and 8 of 3,644 (null). **[ours]** (`n_length_ratio_outside_half_to_2` / `n_pairs_length_ratio_outside_half_to_2` in `docs/paper/results/fig_contours_potter_stats.json`, `fig_contours_potter_rmvpefix_stats.json`, `whistle_f0_downstream.json`.) Those pairs are now length-normalized and slope-constrained like every other pair. Effect on the figure's statistics (RMVPE-fix whistles, same pairs): AUC 0.750 → 0.791, median $r$ same song 0.80 → 0.82, other song 0.57 → 0.59 (`docs/paper/results/superseded/fig_contours_potter_stats_v1.json` vs `docs/paper/results/fig_contours_potter_rmvpefix_stats.json`).
+
+**Why unconstrained DTW was dropped.** Without a slope limit, DTW also fits contours of *different* songs well, so a high $r$ does not show that two renditions share a melody. Measured: RMVPE at normal speed (whose whistle tracks are mostly octave errors and short, so 824 of 922 *Potter* pairs fell back to unconstrained steps in the first version) scored median $r$ 0.80 same-song vs 0.79 other-song; with the constrained DTW it scores 0.52 vs 0.53. **[ours]** (`docs/paper/results/superseded/whistle_f0_downstream_v1.json` vs `docs/paper/results/whistle_f0_downstream.json`, method `rmvpe_raw`.) An earlier internal run of fully unconstrained DTW gave median $r \approx 0.88$–$0.91$ for different songs; its output was not kept, so that number is not traceable to a file.
+
+**What length normalization gives up.** It assumes both renditions cover the same stretch of melody. If one clip covers only part of the melody, linear stretching misplaces it and the 1/2–2 local warping may not recover. The voiced-length ratio also no longer counts against a pair. We have not measured how often partial renditions occur in MLEnd.
 
 ## S8. Validation of the whistle F0 (all MLEnd whistles)
 
-All numbers in this section are **[ours]**, from `validate_whistle_f0.py` (outputs: `figures/whistle_f0_validation.json`, `figures/whistle_f0_validation_clips.csv`, `figures/fig_whistle_f0_validation.pdf`, `figures/whistle_f0_downstream*.json`, `figures/whistle_f0_synth.json`). MLEnd has no ground-truth F0, so we measure agreement between two independent estimators: RMVPE (a neural network) and the plain STFT spectral peak. A known-F0 synthetic check backs this up.
+All numbers in this section are **[ours]**, from `docs/paper/scripts/validate_whistle_f0.py` (outputs in `docs/paper/results/`: `whistle_f0_validation.json`, `whistle_f0_validation_clips.csv`, `whistle_f0_downstream*.json` with per-pair `whistle_f0_downstream_pairs*.csv`, `whistle_f0_synth.json`; figure `docs/paper/figures/fig_whistle_f0_validation.pdf`). MLEnd has no ground-truth F0, so we measure agreement between two independent estimators: RMVPE (a neural network) and the plain STFT spectral peak. A known-F0 synthetic check backs this up.
 
 **Estimators and voicing rules:**
 - **RMVPE-fix:** half speed, ×2 (§S6). Voiced when salience ≥ 0.3 and 50 < $\hat f$ < 4,200 Hz.
@@ -180,31 +185,41 @@ With the 6 dB tonal gate the spectral peak voices nothing at 0 dB broadband SNR,
 - Voicing: per-clip median precision 0.82, recall 0.93.
 - Pitch: median 99.7% of jointly voiced frames within 0.5 st.
 
-We then ran the contour-retrieval test behind the paper's figure: each performer's hum against their own whistle of the same song vs their whistles of two other songs, scored by AUC of MAE. On the pairs every method can score, with a 95% CI from a performer-level bootstrap:
+We then ran the contour-retrieval test behind the paper's figure: each performer's hum against their own whistle of the same song vs their whistles of two other songs, scored by AUC of MAE, with the length-normalized slope-constrained DTW of §S7 (0 unaligned pairs). On the pairs every method can score (1,044 / 1,204 / 1,196 pairs from 112 / 118 / 116 performers), with a 95% CI from a performer-level bootstrap:
 
 | target song | spectral peak | RMVPE-fix | difference (95% CI) |
 |---|---|---|---|
-| *Potter* | 0.840 | 0.766 | +0.073 (+0.029 to +0.122) |
-| *StarWars* | 0.773 | 0.711 | +0.063 (+0.024 to +0.102) |
-| *Hakuna* | 0.827 | 0.798 | +0.029 (+0.005 to +0.054) |
+| *Potter* | 0.851 | 0.811 | +0.040 (+0.020 to +0.063) |
+| *StarWars* | 0.773 | 0.717 | +0.056 (+0.027 to +0.086) |
+| *Hakuna* | 0.823 | 0.795 | +0.028 (+0.009 to +0.048) |
 
-- **Controls:** swapping in only the peak's $F_0$ values (RMVPE's voicing) changes AUC by +0.009, +0.009 and −0.001. Swapping in only the peak's voicing (RMVPE's $F_0$) changes it by +0.013, −0.003 and −0.001. Neither is significant. The gain comes from the peak's $F_0$ and its own voicing used together.
-- **Threshold sensitivity:** a too-strict peak gate (prominence ≥ 60 dB) is *worse* than RMVPE-fix on *Potter* (−0.069), partly through more DTW fallbacks (§S7).
-- **No fix:** RMVPE at normal speed is at chance (AUC 0.49, 0.52, 0.57).
+Each method on all the pairs it can score (AUC by MAE, 95% performer-bootstrap CI):
+
+| method | *Potter* | *StarWars* | *Hakuna* |
+|---|---|---|---|
+| spectral peak, tonal ≥ 6 dB | 0.828 (0.790–0.865) | 0.757 (0.709–0.799) | 0.812 (0.769–0.857) |
+| RMVPE-fix | 0.791 (0.750–0.838) | 0.713 (0.669–0.758) | 0.789 (0.737–0.841) |
+| RMVPE, normal speed | 0.491 (0.445–0.539) | 0.534 (0.490–0.575) | 0.503 (0.438–0.562) |
+
+- **Effect of the DTW fix:** with the old fallback DTW the paired differences were +0.073 / +0.063 / +0.029. The *Potter* advantage roughly halved, which fits RMVPE-fix having the largest share of fallback pairs on *Potter* (189 of 1,230, vs 154 of 1,222 and 132 of 1,214); it still excludes 0 on all three songs (`docs/paper/results/superseded/whistle_f0_downstream*_v1.json`).
+- **Controls:** swapping in only the peak's $F_0$ values (RMVPE's voicing) changes AUC by +0.014 (CI +0.001 to +0.028), +0.018 (+0.005 to +0.034) and +0.009 (−0.002 to +0.023). Swapping in only the peak's voicing (RMVPE's $F_0$) changes it by −0.022 (−0.043 to −0.003), −0.011 (−0.033 to +0.009) and −0.003 (−0.020 to +0.014). The peak's $F_0$ values alone give a small gain; its voicing alone does not help. Most of the gain comes from the two used together.
+- **Threshold sensitivity:** a too-strict peak gate (prominence ≥ 60 dB) is *worse* than RMVPE-fix on *Potter* (−0.064, CI −0.100 to −0.029). It voices fewer frames: 515 of 1,048 of its pairs have a voiced-length ratio outside [1/2, 2], vs 116 of 1,288 for the 6 dB gate.
+- **No fix:** RMVPE at normal speed is at chance (AUC 0.49, 0.53, 0.50; paired vs RMVPE-fix −0.336, −0.239, −0.351).
 - **Choice of rule:** the 6 dB gate was one of four pre-listed rules. It was not tuned on the retrieval test, but it was chosen after seeing its voicing agreement with RMVPE on the same whistles.
 
 **Chosen method: see DECISIONS D-007.**
 
-**Caveats that apply to every number in the paper's contour figure:**
-- The figure's featured performer (213; whistle 0681 vs reference hum 0491: MAE 0.51 st, $r$ = 0.99) was picked for clean recordings *and* good hum/whistle agreement. It is a best case and illustrative only.
-- The honest numbers are dataset-wide, over 111 *Potter* performers and 424 same-performer hum–whistle pairs:
-  - median $r$ 0.80 same song vs 0.57 different song (806 pairs)
-  - median MAE 1.63 vs 2.34 st
-  - AUC 0.75
-  - ceiling (two hums of the same performer, same song): median $r$ 0.95, MAE 0.75 st
+**Caveats that apply to every number in the paper's contour figure** (whistle F0 = spectral peak, D-007; DTW of §S7, D-008):
+- The figure's featured performer (213; whistle 0008 vs reference hum 0491: MAE 0.44 st, $r$ = 0.98, offset +28.2 st) is a **best case**: it ranks 1st of 114 performers by mean hum–whistle MAE and was picked for clean recordings *and* good agreement. It is illustrative only. (`featured_stats`, `featured_rank` in `docs/paper/results/fig_contours_potter_stats.json`.)
+- The honest numbers are dataset-wide, over 114 *Potter* performers and 440 same-performer hum–whistle pairs:
+  - median $r$ 0.85 same song vs 0.59 different song (848 pairs)
+  - median MAE 1.42 vs 2.35 st
+  - AUC 0.828 (95% CI 0.790–0.865)
+  - ceiling (two hums of the same performer, same song, 654 pairs): median $r$ 0.95, MAE 0.73 st
+  - null hum vs hum of another song (3,644 pairs): median $r$ 0.66, MAE 2.16 st
 
-  Sources: `figures/fig_contours_potter_stats.json`, `figures/REFERENCES_and_CAPTION.md`. Re-running the pipeline with RMVPE-fix whistles reproduces $r$ 0.7976 / 0.5656 and AUC 0.7496 exactly (`figures/whistle_f0_downstream.json`).
-- Those figure numbers use RMVPE-fix whistles, so they inherit the high-pitch failures and exclusions described above and the DTW fallback in §S7.
+  Sources: `docs/paper/results/fig_contours_potter_stats.json` (and `whistle_f0_downstream.json`, method `peak_tonal_db6`, which reproduces $r$ 0.854 / 0.589 and AUC 0.828 and adds the CI). The same pipeline with RMVPE-fix whistles gives $r$ 0.82 / 0.59 and AUC 0.791 (`fig_contours_potter_rmvpefix_stats.json`). The first version of the figure (RMVPE-fix, fallback DTW) reported $r$ 0.80 / 0.57, MAE 1.63 / 2.34, AUC 0.75 (`docs/paper/results/superseded/fig_contours_potter_stats_v1.json`); it is superseded.
+- The spectral-peak whistles inherit the peak's limits (§S3, D-007): harmonic-rich clips where the peak sits on the 3rd harmonic (performer 170 appears in panel c), and no voicing in low-SNR frames.
 
 ---
 
@@ -213,12 +228,13 @@ We then ran the contour-retrieval test behind the paper's figure: each performer
 1. de Cheveigné, A. (2005). Pitch perception models. In *Pitch: Neural Coding and Perception* (Springer Handbook of Auditory Research), 169–233. doi:10.1007/0-387-28958-5_6. **[PV]** bibliographic data only.
 2. de Cheveigné, A., & Kawahara, H. (2002). YIN, a fundamental frequency estimator for speech and music. *JASA* 111(4), 1917–1930. doi:10.1121/1.1458024. **[V]** full text, Step 4 ("octave error" wording) and the evaluation section (too-low/too-high gross errors).
 3. Fant, G. (1960; reprint 1971). *Acoustic Theory of Speech Production*. De Gruyter Mouton. doi:10.1515/9783110873429. **[PV]** bibliographic data only.
-4. Nilsson, M., Bartůněk, J. S., Nordberg, J., & Claesson, I. (2008). Human whistle detection and frequency estimation. *Proc. CISP 2008*, 737–741. doi:10.1109/CISP.2008.415. **[V]** full text (DiVA copy), §2 and §7.
-5. Peterson, G. E., & Barney, H. L. (1952). Control methods used in a study of the vowels. *JASA* 24(2), 175–184. doi:10.1121/1.1906875. **[V]** full text, Table II.
-6. Sakoe, H., & Chiba, S. (1978). Dynamic programming algorithm optimization for spoken word recognition. *IEEE TASSP* 26(1), 43–49. doi:10.1109/TASSP.1978.1163055. **[V]** abstract and "P = 1 is optimum" passage. **[PV]** the P = 1 slope range (1/2 to 2) is from secondary documentation.
-7. Shigetomi, T., & Mori, M. (2016). Principles of sound resonance in human whistling using physical models of human vocal tract. *Acoust. Sci. & Tech.* 37(2), 83–86. doi:10.1250/ast.37.83. **[V]** full text.
-8. Titze, I. R. (2001). Acoustic interpretation of resonant voice. *J. Voice* 15(4), 519–528. doi:10.1016/S0892-1997(01)00052-2. **[PV]** abstract page only.
-9. Wei, H., Cao, X., Dan, T., & Chen, Y. (2023). RMVPE: A robust model for vocal pitch estimation in polyphonic music. *Interspeech 2023*, 5421–5425. arXiv:2306.15412, doi:10.21437/Interspeech.2023-528. **[V]** full text (arXiv), §2.2 and §3.1.
-10. Wilson, T. A., Beavers, G. S., DeCoster, M. A., Holger, D. K., & Regenfuss, M. D. (1971). Experiments on the fluid mechanics of whistling. *JASA* 50(1B), 366–372. doi:10.1121/1.1912641. **[PV]** cited via Shigetomi & Mori (2016); original not read.
+4. Jang, J.-S. R., & Lee, H.-R. (2008). A general framework of progressive filtering and its application to query by singing/humming. *IEEE TASLP* 16(2), 350–358. doi:10.1109/TASL.2007.913035. **[PV]** citation and DOI checked; "linear scaling + DTW" matching from secondary summaries, not the full text.
+5. Nilsson, M., Bartůněk, J. S., Nordberg, J., & Claesson, I. (2008). Human whistle detection and frequency estimation. *Proc. CISP 2008*, 737–741. doi:10.1109/CISP.2008.415. **[V]** full text (DiVA copy), §2 and §7.
+6. Peterson, G. E., & Barney, H. L. (1952). Control methods used in a study of the vowels. *JASA* 24(2), 175–184. doi:10.1121/1.1906875. **[V]** full text, Table II.
+7. Sakoe, H., & Chiba, S. (1978). Dynamic programming algorithm optimization for spoken word recognition. *IEEE TASSP* 26(1), 43–49. doi:10.1109/TASSP.1978.1163055. **[V]** abstract and "P = 1 is optimum" passage. **[PV]** the P = 1 slope range (1/2 to 2) is from secondary documentation.
+8. Shigetomi, T., & Mori, M. (2016). Principles of sound resonance in human whistling using physical models of human vocal tract. *Acoust. Sci. & Tech.* 37(2), 83–86. doi:10.1250/ast.37.83. **[V]** full text.
+9. Titze, I. R. (2001). Acoustic interpretation of resonant voice. *J. Voice* 15(4), 519–528. doi:10.1016/S0892-1997(01)00052-2. **[PV]** abstract page only.
+10. Wei, H., Cao, X., Dan, T., & Chen, Y. (2023). RMVPE: A robust model for vocal pitch estimation in polyphonic music. *Interspeech 2023*, 5421–5425. arXiv:2306.15412, doi:10.21437/Interspeech.2023-528. **[V]** full text (arXiv), §2.2 and §3.1.
+11. Wilson, T. A., Beavers, G. S., DeCoster, M. A., Holger, D. K., & Regenfuss, M. D. (1971). Experiments on the fluid mechanics of whistling. *JASA* 50(1B), 366–372. doi:10.1121/1.1912641. **[PV]** cited via Shigetomi & Mori (2016); original not read.
 
 Singing-range figures (E2–C6) come from a secondary summary of the voice-range literature and are **[PV]**. For a primary source, use a voice-range-profile study read in full (candidate: Lamarche, Ternström & Pabon, 2010, *J. Voice* 24(4), 410–426, doi:10.1016/j.jvoice.2008.12.008, whose bibliographic data was checked but full text not read).

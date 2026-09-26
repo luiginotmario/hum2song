@@ -1,0 +1,129 @@
+{
+ "rmvpe_fix": {
+  "n_same": 404,
+  "n_other": 810,
+  "mae_median_same": 1.1070584932030956,
+  "r_median_same": 0.794326237154777,
+  "mae_median_other": 1.7785841206925432,
+  "r_median_other": 0.5435617596560072,
+  "auc_by_mae": 0.7876298740985209,
+  "auc_by_r": 0.7494163305219411,
+  "n_pairs_length_ratio_outside_half_to_2": 132
+ },
+ "rmvpe_raw": {
+  "n_same": 292,
+  "n_other": 607,
+  "mae_median_same": 1.261096697328301,
+  "r_median_same": 0.7531715191289523,
+  "mae_median_other": 1.3251911706727995,
+  "r_median_other": 0.7234934435064372,
+  "auc_by_mae": 0.5660389068177202,
+  "auc_by_r": 0.5485996705107083,
+  "n_pairs_length_ratio_outside_half_to_2": 762
+ },
+ "peak_prom50": {
+  "n_same": 419,
+  "n_other": 820,
+  "mae_median_same": 1.10802836339,
+  "r_median_same": 0.7899827082935259,
+  "mae_median_other": 1.751917323631081,
+  "r_median_other": 0.5786898342048421,
+  "auc_by_mae": 0.7839193201001222,
+  "auc_by_r": 0.725103323825601,
+  "n_pairs_length_ratio_outside_half_to_2": 150
+ },
+ "peak_tonal_db6": {
+  "n_same": 423,
+  "n_other": 842,
+  "mae_median_same": 1.0861919591598854,
+  "r_median_same": 0.801133982184487,
+  "mae_median_other": 1.7707227657224842,
+  "r_median_other": 0.5576677065078737,
+  "auc_by_mae": 0.8198536637410646,
+  "auc_by_r": 0.7606453170712533,
+  "n_pairs_length_ratio_outside_half_to_2": 88
+ },
+ "peakF0_fixVoicing": {
+  "n_same": 404,
+  "n_other": 810,
+  "mae_median_same": 1.1028314154590473,
+  "r_median_same": 0.8020698099351191,
+  "mae_median_other": 1.767504763565304,
+  "r_median_other": 0.5526894612466013,
+  "auc_by_mae": 0.7862669600293363,
+  "auc_by_r": 0.7468096809680969,
+  "n_pairs_length_ratio_outside_half_to_2": 132
+ },
+ "fixF0_peakVoicing_tonal_db6": {
+  "n_same": 423,
+  "n_other": 842,
+  "mae_median_same": 1.1483295613448936,
+  "r_median_same": 0.7361739432415941,
+  "mae_median_other": 1.8868221165344745,
+  "r_median_other": 0.5142136458404811,
+  "auc_by_mae": 0.7863383927719098,
+  "auc_by_r": 0.7162081725936782,
+  "n_pairs_length_ratio_outside_half_to_2": 88
+ },
+ "paired_auc_by_mae_common_pairs": {
+  "peak_prom50_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.7965768693089508,
+   "auc_rmvpe_fix": 0.7975088474956235,
+   "diff": -0.0009319781866726773,
+   "ci95": [
+    -0.029868073555411552,
+    0.02952930448180872
+   ],
+   "frac_boot_diff_le_0": 0.525
+  },
+  "peak_tonal_db6_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.8266426115540106,
+   "auc_rmvpe_fix": 0.7975088474956235,
+   "diff": 0.02913376405838719,
+   "ci95": [
+    0.00497634629575282,
+    0.05432358823424493
+   ],
+   "frac_boot_diff_le_0": 0.009
+  },
+  "peakF0_fixVoicing_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.7969200639790431,
+   "auc_rmvpe_fix": 0.7975088474956235,
+   "diff": -0.0005887835165803157,
+   "ci95": [
+    -0.006066670719019712,
+    0.004868593995550382
+   ],
+   "frac_boot_diff_le_0": 0.567
+  },
+  "fixF0_peakVoicing_tonal_db6_minus_rmvpe_fix": {
+   "n_common_pairs": 1196,
+   "n_performers": 116,
+   "auc_method": 0.7966146522084104,
+   "auc_rmvpe_fix": 0.7975088474956235,
+   "diff": -0.0008941952872130177,
+   "ci95": [
+    -0.03508908009062224,
+    0.03359239321121588
+   ],
+   "frac_boot_diff_le_0": 0.507
+  }
+ },
+ "settings": {
+  "song": "Hakuna",
+  "null_songs": [
+   "Potter",
+   "StarWars"
+  ],
+  "peak_rules": "prom:50,tonal_db:6",
+  "hum_cache": "f0cache_Hakuna",
+  "n_boot": 1000,
+  "note": "same pipeline as contour_figure.py (clean_semitones, median key-norm, slope DTW, ds=2); pairs whose voiced-length ratio is outside [1/2, 2] use dtw_align's fallback (standard steps)"
+ }
+}

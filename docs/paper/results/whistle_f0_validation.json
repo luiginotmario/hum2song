@@ -1,0 +1,1017 @@
+{
+ "n_whistles_listed": 1797,
+ "n_files_missing": 0,
+ "missing_ids": [],
+ "n_extracted": 1797,
+ "n_analyzed": 1702,
+ "excluded_few_voiced": [
+  "1089",
+  "1170",
+  "1726",
+  "3179",
+  "3270",
+  "3431",
+  "3569",
+  "3744",
+  "4440",
+  "4992",
+  "5492",
+  "5868",
+  "6088",
+  "0708",
+  "0757",
+  "1280",
+  "1327",
+  "1463",
+  "1654",
+  "2146",
+  "2359",
+  "2652",
+  "2902",
+  "2977",
+  "3259",
+  "3525",
+  "3782",
+  "3835",
+  "3985",
+  "4186",
+  "4191",
+  "4383",
+  "4521",
+  "4711",
+  "4867",
+  "4919",
+  "5045",
+  "5343",
+  "5413",
+  "5627",
+  "6073",
+  "6188",
+  "6235",
+  "3961",
+  "0158",
+  "4088",
+  "5451",
+  "6287",
+  "6563",
+  "5699",
+  "0365",
+  "1354",
+  "0514",
+  "2606",
+  "2618",
+  "2281",
+  "6562",
+  "6162",
+  "5723",
+  "3291",
+  "4065",
+  "4721",
+  "3001",
+  "4979",
+  "5116",
+  "3099",
+  "5751",
+  "3542",
+  "0450",
+  "3993",
+  "5987",
+  "6159",
+  "0850",
+  "1287",
+  "0168",
+  "3755",
+  "2219",
+  "0940",
+  "4994",
+  "0904",
+  "3607",
+  "2624",
+  "2424",
+  "1581",
+  "1434",
+  "2419",
+  "2645",
+  "5180",
+  "0745",
+  "4013",
+  "3147",
+  "2106",
+  "0642",
+  "4389",
+  "4419"
+ ],
+ "settings": {
+  "conf_thr": 0.3,
+  "f0_limits_hz": [
+   50.0,
+   4200.0
+  ],
+  "stft": {
+   "sr": 32000,
+   "n_fft": 8192,
+   "win": 2048,
+   "hop_s": 0.01,
+   "band_hz": [
+    200.0,
+    6000.0
+   ],
+   "interp": "parabolic on dB"
+  },
+  "peak_voicing_rule": {
+   "feature": "tonal_db",
+   "threshold": 6.0
+  },
+  "octave_error_def": "|d-12n|<1 st for integer n!=0, d=12log2(f_est/f_peak)",
+  "failure_thresholds": {
+   "min_voiced": 100,
+   "octave": 0.1,
+   "snr": 15.0,
+   "tonal": 0.0,
+   "high_hz": 2000.0
+  },
+  "failure_def": "clip with fix_within05 < 0.9"
+ },
+ "per_clip_fix_within05": {
+  "n": 1702,
+  "median": 0.9822623384068965,
+  "q25": 0.966597068336268,
+  "q75": 0.9905783651714252,
+  "mean": 0.9397261332793713,
+  "frac_over_0p9": 0.9106933019976499,
+  "frac_over_0p8": 0.9459459459459459
+ },
+ "per_clip_fix_within1": {
+  "n": 1702,
+  "median": 0.9946369953368511,
+  "q25": 0.9836483719224347,
+  "q75": 0.9980615455755306,
+  "mean": 0.9510812461547835,
+  "frac_over_0p9": 0.9206815511163338,
+  "frac_over_0p8": 0.9488836662749707
+ },
+ "per_clip_fix_octave_err": {
+  "n": 1702,
+  "median": 0.0,
+  "q25": 0.0,
+  "q75": 0.003435103331186699,
+  "mean": 0.034375091490259434,
+  "frac_over_0p9": 0.004112808460634548,
+  "frac_over_0p8": 0.012925969447708578
+ },
+ "per_clip_raw_within05_same_frames": {
+  "n": 1702,
+  "median": 0.06803197266659025,
+  "q25": 0.01707736341864366,
+  "q75": 0.16725352112676056,
+  "mean": 0.13295473765587512,
+  "frac_over_0p9": 0.002937720329024677,
+  "frac_over_0p8": 0.01410105757931845
+ },
+ "per_clip_raw_within1_same_frames": {
+  "n": 1702,
+  "median": 0.06880535232961109,
+  "q25": 0.01734940969045015,
+  "q75": 0.16948081619445945,
+  "mean": 0.1347381193973215,
+  "frac_over_0p9": 0.004112808460634548,
+  "frac_over_0p8": 0.01410105757931845
+ },
+ "per_clip_raw_octave_err_same_frames": {
+  "n": 1702,
+  "median": 0.5541439093015558,
+  "q25": 0.37568467758668467,
+  "q75": 0.6639983988759456,
+  "mean": 0.5087265878286346,
+  "frac_over_0p9": 0.00881316098707403,
+  "frac_over_0p8": 0.04700352526439483
+ },
+ "per_clip_raw_octave_down_same_frames": {
+  "n": 1702,
+  "median": 0.5541439093015558,
+  "q25": 0.37568467758668467,
+  "q75": 0.6638660119681657,
+  "mean": 0.5086057471662606,
+  "frac_over_0p9": 0.00881316098707403,
+  "frac_over_0p8": 0.046415981198589897
+ },
+ "per_clip_raw_within05_own_voicing": {
+  "n": 1679,
+  "median": 0.10434782608695652,
+  "q25": 0.023835347588059084,
+  "q75": 0.28280936360295156,
+  "mean": 0.20027424566692167,
+  "frac_over_0p9": 0.022632519356759976,
+  "frac_over_0p8": 0.048243001786777845
+ },
+ "per_clip_raw_octave_err_own_voicing": {
+  "n": 1679,
+  "median": 0.6308243727598566,
+  "q25": 0.3713436716501068,
+  "q75": 0.7817798353909464,
+  "mean": 0.560811622214439,
+  "frac_over_0p9": 0.06551518761167362,
+  "frac_over_0p8": 0.21858248957712925
+ },
+ "per_clip_voiced_frac": {
+  "fix": {
+   "n": 1702,
+   "median": 0.5276570048309179,
+   "q25": 0.44104820557408997,
+   "q75": 0.60442996245564,
+   "mean": 0.5113476231769087,
+   "frac_over_0p9": 0.0,
+   "frac_over_0p8": 0.0005875440658049354
+  },
+  "raw": {
+   "n": 1702,
+   "median": 0.16578655638803885,
+   "q25": 0.07622293011046702,
+   "q75": 0.2578582425528937,
+   "mean": 0.18077249621286962,
+   "frac_over_0p9": 0.0,
+   "frac_over_0p8": 0.0
+  },
+  "peak": {
+   "n": 1702,
+   "median": 0.5982209580166138,
+   "q25": 0.5208465033644581,
+   "q75": 0.6735399674871463,
+   "mean": 0.589093716365806,
+   "frac_over_0p9": 0.0,
+   "frac_over_0p8": 0.023501762632197415
+  }
+ },
+ "pooled_frames": {
+  "fix_within05": 0.959149433427762,
+  "raw_within05": 0.14244759206798868,
+  "fix_octave_err": 0.021048866855524078,
+  "raw_octave_err": 0.5292896600566572
+ },
+ "peak_only": {
+  "threshold_sweep": [
+   {
+    "feature": "prom",
+    "threshold": 20,
+    "precision_vs_rmvpe": 0.5077564000887101,
+    "recall_vs_rmvpe": 0.9998678540486834,
+    "f1": 0.6734958007513142,
+    "frames_within05_on_both": 0.9575098150772308
+   },
+   {
+    "feature": "prom",
+    "threshold": 25,
+    "precision_vs_rmvpe": 0.5424472170342226,
+    "recall_vs_rmvpe": 0.998915272538658,
+    "f1": 0.7030906919133979,
+    "frames_within05_on_both": 0.9577246780661971
+   },
+   {
+    "feature": "prom",
+    "threshold": 30,
+    "precision_vs_rmvpe": 0.590516668991608,
+    "recall_vs_rmvpe": 0.99615151416647,
+    "f1": 0.741483418146949,
+    "frames_within05_on_both": 0.9582876957215094
+   },
+   {
+    "feature": "prom",
+    "threshold": 35,
+    "precision_vs_rmvpe": 0.6431806595909819,
+    "recall_vs_rmvpe": 0.9896586959809257,
+    "f1": 0.7796594694742842,
+    "frames_within05_on_both": 0.9592464804622455
+   },
+   {
+    "feature": "prom",
+    "threshold": 40,
+    "precision_vs_rmvpe": 0.6952923037687073,
+    "recall_vs_rmvpe": 0.9748371495482304,
+    "f1": 0.8116697375315188,
+    "frames_within05_on_both": 0.9605833733238419
+   },
+   {
+    "feature": "prom",
+    "threshold": 45,
+    "precision_vs_rmvpe": 0.7475905541095427,
+    "recall_vs_rmvpe": 0.9432005608076308,
+    "f1": 0.8340803587971896,
+    "frames_within05_on_both": 0.9627533761636292
+   },
+   {
+    "feature": "prom",
+    "threshold": 50,
+    "precision_vs_rmvpe": 0.7995515058835161,
+    "recall_vs_rmvpe": 0.8800969824083352,
+    "f1": 0.8378930145363281,
+    "frames_within05_on_both": 0.9668129886376319
+   },
+   {
+    "feature": "prom",
+    "threshold": 55,
+    "precision_vs_rmvpe": 0.8481997337645627,
+    "recall_vs_rmvpe": 0.7546551414668342,
+    "f1": 0.7986977485829079,
+    "frames_within05_on_both": 0.9742301346363097
+   },
+   {
+    "feature": "prom",
+    "threshold": 60,
+    "precision_vs_rmvpe": 0.889776801751425,
+    "recall_vs_rmvpe": 0.5566029869224974,
+    "f1": 0.6848165736652749,
+    "frames_within05_on_both": 0.9836297848028946
+   },
+   {
+    "feature": "prom",
+    "threshold": 65,
+    "precision_vs_rmvpe": 0.9178404672298828,
+    "recall_vs_rmvpe": 0.3322771079399224,
+    "f1": 0.48791790797749096,
+    "frames_within05_on_both": 0.9882158032862193
+   },
+   {
+    "feature": "prom",
+    "threshold": 70,
+    "precision_vs_rmvpe": 0.9340284415336154,
+    "recall_vs_rmvpe": 0.15882883353991445,
+    "f1": 0.271491348862379,
+    "frames_within05_on_both": 0.9915331532886336
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": -12,
+    "precision_vs_rmvpe": 0.4966403639953714,
+    "recall_vs_rmvpe": 0.9999710268235081,
+    "f1": 0.6636672389279633,
+    "frames_within05_on_both": 0.95749582526831
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": -9,
+    "precision_vs_rmvpe": 0.5287867533121019,
+    "recall_vs_rmvpe": 0.9995639890269394,
+    "f1": 0.6916687143113862,
+    "frames_within05_on_both": 0.9577832214551586
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": -6,
+    "precision_vs_rmvpe": 0.5800415629679786,
+    "recall_vs_rmvpe": 0.9982312229083133,
+    "f1": 0.7337332353705794,
+    "frames_within05_on_both": 0.9586634281915816
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": -3,
+    "precision_vs_rmvpe": 0.6324051829317597,
+    "recall_vs_rmvpe": 0.9948272280019391,
+    "f1": 0.7732563472590465,
+    "frames_within05_on_both": 0.9602019346745447
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 0,
+    "precision_vs_rmvpe": 0.6804873398227232,
+    "recall_vs_rmvpe": 0.9835771555689978,
+    "f1": 0.8044301214971743,
+    "frames_within05_on_both": 0.9637248520327446
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 3,
+    "precision_vs_rmvpe": 0.727061512605042,
+    "recall_vs_rmvpe": 0.9553233618495345,
+    "f1": 0.8257074335840502,
+    "frames_within05_on_both": 0.9683522206112969
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 6,
+    "precision_vs_rmvpe": 0.7709025331874145,
+    "recall_vs_rmvpe": 0.9074568476335981,
+    "f1": 0.8336245390505082,
+    "frames_within05_on_both": 0.9713599097920482
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 9,
+    "precision_vs_rmvpe": 0.8100147948468368,
+    "recall_vs_rmvpe": 0.8391783772477178,
+    "f1": 0.824338728279963,
+    "frames_within05_on_both": 0.9723373778865757
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 12,
+    "precision_vs_rmvpe": 0.8415086289923317,
+    "recall_vs_rmvpe": 0.7471023290193922,
+    "f1": 0.7915003398905762,
+    "frames_within05_on_both": 0.971465892817619
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 15,
+    "precision_vs_rmvpe": 0.866549933315833,
+    "recall_vs_rmvpe": 0.6368388992454255,
+    "f1": 0.7341450112195983,
+    "frames_within05_on_both": 0.9698266296194373
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 18,
+    "precision_vs_rmvpe": 0.8856628390361618,
+    "recall_vs_rmvpe": 0.5078149843615514,
+    "f1": 0.6455113288536226,
+    "frames_within05_on_both": 0.9683597500730577
+   },
+   {
+    "feature": "tonal_db",
+    "threshold": 21,
+    "precision_vs_rmvpe": 0.8998007142996823,
+    "recall_vs_rmvpe": 0.35767457045499196,
+    "f1": 0.5118761980996263,
+    "frames_within05_on_both": 0.968402397727138
+   }
+  ],
+  "chosen_rule": {
+   "feature": "tonal_db",
+   "threshold": 6.0
+  },
+  "chosen_by": "user",
+  "per_clip_within05_on_both_voiced": {
+   "n": 1702,
+   "median": 0.9967845659163987,
+   "q25": 0.9910813819752982,
+   "q75": 0.9989183332845305,
+   "mean": 0.9545363987543919,
+   "frac_over_0p9": 0.9259694477085781,
+   "frac_over_0p8": 0.9518213866039953
+  },
+  "per_clip_voicing_precision_vs_rmvpe": {
+   "n": 1702,
+   "median": 0.8153742483931163,
+   "q25": 0.719782477947073,
+   "q75": 0.8847161278767798,
+   "mean": 0.7838770512799638,
+   "frac_over_0p9": 0.2044653349001175,
+   "frac_over_0p8": 0.554641598119859
+  },
+  "per_clip_voicing_recall_vs_rmvpe": {
+   "n": 1702,
+   "median": 0.9252704140817214,
+   "q25": 0.8825230543872693,
+   "q75": 0.9526317420775993,
+   "mean": 0.9011889052815829,
+   "frac_over_0p9": 0.6603995299647474,
+   "frac_over_0p8": 0.9136310223266745
+  }
+ },
+ "median_whistle_f0_hz": {
+  "rmvpe_fix": 1338.1385498046875,
+  "peak": 1358.8310546875
+ },
+ "by_pitch_band_of_spectral_peak": {
+  "0-1000Hz": {
+   "n": 76,
+   "fix_within05_median": 0.9849276185069543,
+   "frac_over_0p9": 0.9605263157894737
+  },
+  "1000-1500Hz": {
+   "n": 1162,
+   "fix_within05_median": 0.9846003419845835,
+   "frac_over_0p9": 0.9870912220309811
+  },
+  "1500-2000Hz": {
+   "n": 382,
+   "fix_within05_median": 0.9737181196125477,
+   "frac_over_0p9": 0.8534031413612565
+  },
+  "2000-2500Hz": {
+   "n": 70,
+   "fix_within05_median": 0.2071224601867106,
+   "frac_over_0p9": 0.05714285714285714
+  },
+  "2500-100000Hz": {
+   "n": 12,
+   "fix_within05_median": 0.022200615783503484,
+   "frac_over_0p9": 0.0
+  }
+ },
+ "excluded_clips": {
+  "n": 95,
+  "peak_voiced_frac_median": 0.23812423873325214,
+  "peak_median_hz_median": 3516.287353515625,
+  "frac_peak_median_over_2khz": 0.9578947368421052,
+  "n_peak_voiced_under_5pct": 24,
+  "note": "RMVPE-fix voices < 100 frames; mostly very high whistles (above RMVPE-fix's ~4 kHz ceiling) or clips with little whistling"
+ },
+ "frame_disagreement_fix_vs_peak": {
+  "n_frames": 1412000,
+  "within05": 0.959149433427762,
+  "near_minus12": 0.020610481586402267,
+  "near_minus24": 0.0001246458923512748,
+  "near_plus12": 1.841359773371105e-05,
+  "near_minus19p02_peak_is_3x": 0.0029029745042492916,
+  "near_plus19p02": 5.099150141643059e-05,
+  "other": 0.01714305949008499,
+  "level_at_half_peak_freq_db": {
+   "failing_clips_octave_down_frames_median": -55.21455764770508,
+   "n_failing_clips": 135,
+   "passing_clips_median": -55.427127838134766,
+   "note": "spectral level at f_peak/2 relative to the peak; if RMVPE's octave-down value were the true F0, a component would be expected there"
+  }
+ },
+ "failures": {
+  "n": 152,
+  "frac": 0.08930669800235018,
+  "label_counts": {
+   "residual_octave_error": 123,
+   "very_high_pitch": 78,
+   "low_snr": 2,
+   "breathy_noisy": 2,
+   "unexplained": 26
+  },
+  "frac_with_median_peak_over_2khz": 0.5131578947368421,
+  "top_interpreters": [
+   [
+    "220",
+    16
+   ],
+   [
+    "111",
+    15
+   ],
+   [
+    "170",
+    12
+   ],
+   [
+    "134",
+    11
+   ],
+   [
+    "214",
+    10
+   ],
+   [
+    "232",
+    9
+   ],
+   [
+    "198",
+    6
+   ],
+   [
+    "106",
+    6
+   ],
+   [
+    "69",
+    6
+   ],
+   [
+    "166",
+    5
+   ]
+  ],
+  "feature_contrast": {
+   "snr_db": {
+    "pass_median": 38.94051170349121,
+    "fail_median": 34.16339302062988
+   },
+   "median_tonal_db": {
+    "pass_median": 18.12143898010254,
+    "fail_median": 19.557153701782227
+   },
+   "median_flatness": {
+    "pass_median": 0.0001848847750807181,
+    "fail_median": 0.0005288834508974105
+   },
+   "median_prom_db": {
+    "pass_median": 61.7000846862793,
+    "fail_median": 56.67069625854492
+   },
+   "median_h2_db": {
+    "pass_median": -44.765207290649414,
+    "fail_median": -47.59909629821777
+   },
+   "median_f0_fix_hz": {
+    "pass_median": 1337.8600463867188,
+    "fail_median": 1367.5636596679688
+   },
+   "voiced_frac_fix": {
+    "pass_median": 0.5394643641979374,
+    "fail_median": 0.31624341124456506
+   },
+   "fix_mean_conf": {
+    "pass_median": 0.7843868732452393,
+    "fail_median": 0.5479517579078674
+   }
+  },
+  "spearman_with_fix_within05": {
+   "snr_db": 0.11025150866573424,
+   "median_tonal_db": 0.21987461091959754,
+   "median_flatness": -0.24952761529975231,
+   "median_prom_db": 0.2509260417514473,
+   "median_f0_fix_hz": -0.15596688312643323,
+   "voiced_frac_fix": 0.3864115874040674,
+   "fix_mean_conf": 0.4389874133248541
+  },
+  "worst_25": [
+   {
+    "id": "2258",
+    "song": "Panther",
+    "interpreter": "9",
+    "fix_within05": 0.0,
+    "fix_within1": 0.0,
+    "fix_oct_err": 0.5754716981132075,
+    "snr_db": 31.8272705078125,
+    "median_tonal_db": 19.498613357543945,
+    "median_f0_fix_hz": 2014.8118896484375,
+    "median_peak_hz": 4080.039306640625,
+    "voiced_frac_fix": 0.06901041666666667,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "3828",
+    "song": "Hakuna",
+    "interpreter": "80",
+    "fix_within05": 0.0,
+    "fix_within1": 0.0,
+    "fix_oct_err": 0.19607843137254902,
+    "snr_db": 45.12800216674805,
+    "median_tonal_db": 0.4791121184825897,
+    "median_f0_fix_hz": 561.171630859375,
+    "median_peak_hz": 3653.46337890625,
+    "voiced_frac_fix": 0.06614785992217899,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "5435",
+    "song": "Showman",
+    "interpreter": "170",
+    "fix_within05": 0.0,
+    "fix_within1": 0.0,
+    "fix_oct_err": 0.3681592039800995,
+    "snr_db": 44.6529655456543,
+    "median_tonal_db": 20.113094329833984,
+    "median_f0_fix_hz": 907.4949340820312,
+    "median_peak_hz": 2710.94970703125,
+    "voiced_frac_fix": 0.1333775713337757,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "5812",
+    "song": "Frozen",
+    "interpreter": "170",
+    "fix_within05": 0.004454342984409799,
+    "fix_within1": 0.004454342984409799,
+    "fix_oct_err": 0.5679287305122495,
+    "snr_db": 30.852445602416992,
+    "median_tonal_db": 18.480262756347656,
+    "median_f0_fix_hz": 1271.3939208984375,
+    "median_peak_hz": 2689.197998046875,
+    "voiced_frac_fix": 0.2955892034233048,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "0236",
+    "song": "Potter",
+    "interpreter": "170",
+    "fix_within05": 0.012077294685990338,
+    "fix_within1": 0.012077294685990338,
+    "fix_oct_err": 0.026570048309178744,
+    "snr_db": 37.04781723022461,
+    "median_tonal_db": 14.733785629272461,
+    "median_f0_fix_hz": 899.99755859375,
+    "median_peak_hz": 2688.34423828125,
+    "voiced_frac_fix": 0.2582657517155334,
+    "failure": "very_high_pitch"
+   },
+   {
+    "id": "2899",
+    "song": "Rain",
+    "interpreter": "170",
+    "fix_within05": 0.015384615384615385,
+    "fix_within1": 0.015384615384615385,
+    "fix_oct_err": 0.3487179487179487,
+    "snr_db": 35.281715393066406,
+    "median_tonal_db": 21.938262939453125,
+    "median_f0_fix_hz": 835.2745361328125,
+    "median_peak_hz": 2426.1240234375,
+    "voiced_frac_fix": 0.13140161725067384,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "6234",
+    "song": "Frozen",
+    "interpreter": "220",
+    "fix_within05": 0.01646090534979424,
+    "fix_within1": 0.019204389574759947,
+    "fix_oct_err": 0.9780521262002744,
+    "snr_db": 21.403745651245117,
+    "median_tonal_db": 19.016658782958984,
+    "median_f0_fix_hz": 1140.2296142578125,
+    "median_peak_hz": 2292.268310546875,
+    "voiced_frac_fix": 0.43522388059701494,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "3482",
+    "song": "Hakuna",
+    "interpreter": "170",
+    "fix_within05": 0.0196078431372549,
+    "fix_within1": 0.0196078431372549,
+    "fix_oct_err": 0.11764705882352941,
+    "snr_db": 26.833093643188477,
+    "median_tonal_db": 14.689780235290527,
+    "median_f0_fix_hz": 875.4353637695312,
+    "median_peak_hz": 2565.152099609375,
+    "voiced_frac_fix": 0.07193229901269393,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "5096",
+    "song": "Showman",
+    "interpreter": "170",
+    "fix_within05": 0.024793388429752067,
+    "fix_within1": 0.024793388429752067,
+    "fix_oct_err": 0.22727272727272727,
+    "snr_db": 36.93865203857422,
+    "median_tonal_db": 14.102775573730469,
+    "median_f0_fix_hz": 833.4090576171875,
+    "median_peak_hz": 2510.3720703125,
+    "voiced_frac_fix": 0.16429056347589951,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "3134",
+    "song": "Rain",
+    "interpreter": "170",
+    "fix_within05": 0.0364963503649635,
+    "fix_within1": 0.0364963503649635,
+    "fix_oct_err": 0.635036496350365,
+    "snr_db": 28.238771438598633,
+    "median_tonal_db": 22.92485237121582,
+    "median_f0_fix_hz": 1158.278564453125,
+    "median_peak_hz": 2346.23388671875,
+    "voiced_frac_fix": 0.04798598949211909,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "3568",
+    "song": "Hakuna",
+    "interpreter": "220",
+    "fix_within05": 0.03773584905660377,
+    "fix_within1": 0.0420899854862119,
+    "fix_oct_err": 0.9462989840348331,
+    "snr_db": 20.122222900390625,
+    "median_tonal_db": 15.744867324829102,
+    "median_f0_fix_hz": 1196.7457275390625,
+    "median_peak_hz": 2407.39453125,
+    "voiced_frac_fix": 0.41456077015643805,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "1565",
+    "song": "StarWars",
+    "interpreter": "170",
+    "fix_within05": 0.04672897196261682,
+    "fix_within1": 0.04672897196261682,
+    "fix_oct_err": 0.7327102803738318,
+    "snr_db": 46.252044677734375,
+    "median_tonal_db": 26.383766174316406,
+    "median_f0_fix_hz": 1284.468017578125,
+    "median_peak_hz": 2555.42333984375,
+    "voiced_frac_fix": 0.3176959619952494,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "5823",
+    "song": "Frozen",
+    "interpreter": "170",
+    "fix_within05": 0.04754601226993865,
+    "fix_within1": 0.04754601226993865,
+    "fix_oct_err": 0.39263803680981596,
+    "snr_db": 46.53806686401367,
+    "median_tonal_db": 26.74273681640625,
+    "median_f0_fix_hz": 857.7653198242188,
+    "median_peak_hz": 2520.10546875,
+    "voiced_frac_fix": 0.4801178203240059,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "4728",
+    "song": "Mamma",
+    "interpreter": "220",
+    "fix_within05": 0.04888888888888889,
+    "fix_within1": 0.05037037037037037,
+    "fix_oct_err": 0.9392592592592592,
+    "snr_db": 21.901517868041992,
+    "median_tonal_db": 19.92813491821289,
+    "median_f0_fix_hz": 1158.424560546875,
+    "median_peak_hz": 2327.8701171875,
+    "voiced_frac_fix": 0.4247954688483323,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "3181",
+    "song": "Rain",
+    "interpreter": "134",
+    "fix_within05": 0.05664488017429194,
+    "fix_within1": 0.05664488017429194,
+    "fix_oct_err": 0.9106753812636166,
+    "snr_db": 31.563199996948242,
+    "median_tonal_db": 20.990840911865234,
+    "median_f0_fix_hz": 1244.8446044921875,
+    "median_peak_hz": 2487.9287109375,
+    "voiced_frac_fix": 0.29843953185955785,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "2504",
+    "song": "Panther",
+    "interpreter": "134",
+    "fix_within05": 0.05675146771037182,
+    "fix_within1": 0.060665362035225046,
+    "fix_oct_err": 0.9393346379647749,
+    "snr_db": 38.78203582763672,
+    "median_tonal_db": 23.124502182006836,
+    "median_f0_fix_hz": 1152.508056640625,
+    "median_peak_hz": 2304.234619140625,
+    "voiced_frac_fix": 0.358093903293623,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "4500",
+    "song": "Mamma",
+    "interpreter": "111",
+    "fix_within05": 0.06060606060606061,
+    "fix_within1": 0.06060606060606061,
+    "fix_oct_err": 0.8016528925619835,
+    "snr_db": 55.8133544921875,
+    "median_tonal_db": 20.062667846679688,
+    "median_f0_fix_hz": 1156.440673828125,
+    "median_peak_hz": 2337.73828125,
+    "voiced_frac_fix": 0.21671641791044777,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "0668",
+    "song": "Potter",
+    "interpreter": "170",
+    "fix_within05": 0.06178489702517163,
+    "fix_within1": 0.06178489702517163,
+    "fix_oct_err": 0.8832951945080092,
+    "snr_db": 34.23119354248047,
+    "median_tonal_db": 23.267932891845703,
+    "median_f0_fix_hz": 1164.60400390625,
+    "median_peak_hz": 2337.232177734375,
+    "voiced_frac_fix": 0.2757097791798107,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "6357",
+    "song": "Frozen",
+    "interpreter": "220",
+    "fix_within05": 0.06676136363636363,
+    "fix_within1": 0.06818181818181818,
+    "fix_oct_err": 0.9318181818181818,
+    "snr_db": 26.16155242919922,
+    "median_tonal_db": 20.633453369140625,
+    "median_f0_fix_hz": 1150.727294921875,
+    "median_peak_hz": 2304.0361328125,
+    "voiced_frac_fix": 0.42358604091456076,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "1052",
+    "song": "StarWars",
+    "interpreter": "220",
+    "fix_within05": 0.07552083333333333,
+    "fix_within1": 0.0859375,
+    "fix_oct_err": 0.875,
+    "snr_db": 27.62771987915039,
+    "median_tonal_db": 17.561710357666016,
+    "median_f0_fix_hz": 1186.181640625,
+    "median_peak_hz": 2385.74951171875,
+    "voiced_frac_fix": 0.2421185372005044,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "2131",
+    "song": "Panther",
+    "interpreter": "134",
+    "fix_within05": 0.08860759493670886,
+    "fix_within1": 0.08860759493670886,
+    "fix_oct_err": 0.9113924050632911,
+    "snr_db": 36.25117492675781,
+    "median_tonal_db": 22.54834747314453,
+    "median_f0_fix_hz": 1154.130615234375,
+    "median_peak_hz": 2301.00390625,
+    "voiced_frac_fix": 0.41415465268676277,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "6174",
+    "song": "Frozen",
+    "interpreter": "198",
+    "fix_within05": 0.09473684210526316,
+    "fix_within1": 0.09473684210526316,
+    "fix_oct_err": 0.5263157894736842,
+    "snr_db": 36.01900100708008,
+    "median_tonal_db": 11.861934661865234,
+    "median_f0_fix_hz": 1308.909912109375,
+    "median_peak_hz": 2673.8603515625,
+    "voiced_frac_fix": 0.10462555066079295,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "4457",
+    "song": "Mamma",
+    "interpreter": "220",
+    "fix_within05": 0.09563758389261745,
+    "fix_within1": 0.09563758389261745,
+    "fix_oct_err": 0.8422818791946308,
+    "snr_db": 24.373844146728516,
+    "median_tonal_db": 20.354623794555664,
+    "median_f0_fix_hz": 1153.9805908203125,
+    "median_peak_hz": 2328.57275390625,
+    "voiced_frac_fix": 0.37578814627994955,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "3780",
+    "song": "Hakuna",
+    "interpreter": "134",
+    "fix_within05": 0.09788867562380038,
+    "fix_within1": 0.09788867562380038,
+    "fix_oct_err": 0.8771593090211133,
+    "snr_db": 36.54642105102539,
+    "median_tonal_db": 20.34677505493164,
+    "median_f0_fix_hz": 1165.606689453125,
+    "median_peak_hz": 2337.146240234375,
+    "voiced_frac_fix": 0.32891414141414144,
+    "failure": "residual_octave_error+very_high_pitch"
+   },
+   {
+    "id": "3912",
+    "song": "Hakuna",
+    "interpreter": "134",
+    "fix_within05": 0.09881422924901186,
+    "fix_within1": 0.09881422924901186,
+    "fix_oct_err": 0.8893280632411067,
+    "snr_db": 29.000307083129883,
+    "median_tonal_db": 20.40115737915039,
+    "median_f0_fix_hz": 1162.295166015625,
+    "median_peak_hz": 2319.943359375,
+    "voiced_frac_fix": 0.3320209973753281,
+    "failure": "residual_octave_error+very_high_pitch"
+   }
+  ]
+ },
+ "by_song": {
+  "Frozen": {
+   "n": 214,
+   "fix_within05_median": 0.9853966436732953,
+   "frac_over_0p9": 0.9018691588785047
+  },
+  "Hakuna": {
+   "n": 213,
+   "fix_within05_median": 0.984271523178808,
+   "frac_over_0p9": 0.9154929577464789
+  },
+  "Mamma": {
+   "n": 211,
+   "fix_within05_median": 0.9815384615384616,
+   "frac_over_0p9": 0.919431279620853
+  },
+  "Panther": {
+   "n": 226,
+   "fix_within05_median": 0.9771684737281068,
+   "frac_over_0p9": 0.8451327433628318
+  },
+  "Potter": {
+   "n": 221,
+   "fix_within05_median": 0.9854085603112841,
+   "frac_over_0p9": 0.9411764705882353
+  },
+  "Rain": {
+   "n": 202,
+   "fix_within05_median": 0.9838618983355825,
+   "frac_over_0p9": 0.900990099009901
+  },
+  "Showman": {
+   "n": 203,
+   "fix_within05_median": 0.9812981298129813,
+   "frac_over_0p9": 0.9359605911330049
+  },
+  "StarWars": {
+   "n": 212,
+   "fix_within05_median": 0.9793254699219426,
+   "frac_over_0p9": 0.9292452830188679
+  }
+ }
+}
