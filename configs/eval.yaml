@@ -1,0 +1,11 @@
+manifest: null
+data_root: null
+ckpt: null
+sets: mirqbsh
+distractors: 0
+out: null
+batch_size: 16
+crop_seconds: 10.0
+sample_rate: 24000
+songs: null
+dry_run: false
