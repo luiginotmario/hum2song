@@ -20,7 +20,7 @@ from hum2song.losses import (
     masked_logits,
     qtype_loss,
 )
-from hum2song.manifest import file_sha256, read_pairs
+from hum2song.manifest import QTYPES, file_sha256, read_pairs
 from hum2song.seed import seed_everything
 from hum2song.tracking import NullTracker
 
@@ -129,10 +129,11 @@ def _load_train_records(config: TrainConfig):
     if config.limit is not None:
         records = records[: config.limit]
     if records:
+        LOGGER.info("train query_type counts %s", _query_type_counts(records))
         return records
     message = (
-        "no train rows. MIR-QBSH, MTG-QBH, and MLEnd are held out; "
-        "HumTrans is the stage-A training source."
+        "no train rows. Stage A trains on HumTrans and on MIR-QBSH songs that "
+        "have sung clips. MTG-QBH, MLEnd, and the other MIR-QBSH songs stay in test."
     )
     if config.dry_run:
         LOGGER.warning(message)
@@ -142,6 +143,13 @@ def _load_train_records(config: TrainConfig):
 
 def _pair_id(record) -> str:
     return record.pair_id
+
+
+def _query_type_counts(records: list) -> dict[str, int]:
+    counts = {name: 0 for name in QTYPES}
+    for record in records:
+        counts[record.query_type] = counts.get(record.query_type, 0) + 1
+    return counts
 
 
 def _cycle(loader: DataLoader) -> Iterator:

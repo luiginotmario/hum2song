@@ -2,6 +2,9 @@
 
 Phase 1 does not generate these queries. Callers should catch NotImplementedError
 and keep training on real pairs only. The signatures are the Stage 2 contract.
+
+augment_lyric_agnostic is the hook for sung queries: same melody, different or
+nonsense words. Retrieval never uses the lyric text, including wrong words.
 """
 
 from dataclasses import dataclass
@@ -44,4 +47,18 @@ def synthesize_query(job: SynthJob, f0_path: str, out_wav: str) -> str:
     raise NotImplementedError(
         "Stage 2 query resynthesis is not implemented. "
         f"kind={job.kind} song_id={job.song_id} f0_path={f0_path} out_wav={out_wav}"
+    )
+
+
+def augment_lyric_agnostic(melody_wav: str, out_wav: str, lyric_text: str | None = None) -> str:
+    """Keep the melody and replace the words. Returns out_wav. Not implemented.
+
+    lyric_text is the replacement lyric. None means nonsense syllables.
+    The pitch contour of melody_wav must be preserved. Matching stays melody-only,
+    so wrong or nonsense words must not change the song id.
+    """
+    raise NotImplementedError(
+        "Lyric-agnostic augmentation is not implemented. "
+        "Keep the melody and replace the words, including nonsense lyrics. "
+        f"melody_wav={melody_wav} out_wav={out_wav} lyric_text={lyric_text!r}"
     )

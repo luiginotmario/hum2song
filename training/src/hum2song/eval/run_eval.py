@@ -1,7 +1,6 @@
 """Embed queries and references, then write a JSON report next to the CHAD numbers."""
 
 import json
-from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -11,6 +10,7 @@ from hum2song.audio import fit_length, load_audio
 from hum2song.config import EvalConfig
 from hum2song.eval.metrics import (
     CHAD_TOP10,
+    MATCHING_NOTE,
     MISSING_RANK,
     PRIMARY_CHAD_TOP10,
     PROTOCOL_NOTE,
@@ -19,7 +19,7 @@ from hum2song.eval.metrics import (
     retrieval_scores,
 )
 from hum2song.logutil import get_logger
-from hum2song.manifest import PairRecord, read_jsonl, read_pairs
+from hum2song.manifest import QTYPES, PairRecord, read_jsonl, read_pairs
 
 LOGGER = get_logger(__name__)
 COMPARABLE_DISTRACTORS = 2000
@@ -39,6 +39,8 @@ def evaluate_pairs(model: torch.nn.Module, pairs: list[PairRecord], config: Eval
         "results": results,
         "baselines": CHAD_TOP10,
         "protocol_note": PROTOCOL_NOTE,
+        "matching": MATCHING_NOTE,
+        "query_types": list(QTYPES),
     }
 
 
@@ -101,6 +103,7 @@ def _report_body(
         "missing_references": missing_refs,
         "comparable_to_chad": comparable,
         "metrics": scores.as_dict(),
+        "per_query_type": per_qtype,
         "per_qtype": per_qtype,
         "chad_top10": baseline,
         "ours_top10": ours,
@@ -185,10 +188,10 @@ def _result_names(pairs: list[PairRecord], set_names: list[str]) -> list[str]:
 
 
 def _ranks_by_qtype(ranks: list[int], qtypes: list[str]) -> dict[str, list[int]]:
-    grouped: dict[str, list[int]] = defaultdict(list)
+    grouped: dict[str, list[int]] = {name: [] for name in QTYPES}
     for rank, qtype in zip(ranks, qtypes, strict=True):
-        grouped[qtype].append(rank)
-    return dict(sorted(grouped.items()))
+        grouped.setdefault(qtype, []).append(rank)
+    return grouped
 
 
 def log_eval_plan(config: EvalConfig) -> None:

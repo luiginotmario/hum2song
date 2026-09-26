@@ -51,6 +51,18 @@ def test_title_overlap_moves_a_train_song_onto_the_eval_song() -> None:
     assert assigned["humtrans:0009"] == "test"
 
 
+def test_mirqbsh_singing_trains_without_leaking_the_held_out_song() -> None:
+    rows = [
+        SplitRow("mirqbsh:00001", "mirqbsh", None, "I'm the teapot", "sing"),
+        SplitRow("mirqbsh:00001", "mirqbsh", None, "I'm the teapot", "hum"),
+        SplitRow("mirqbsh:00014", "mirqbsh", None, "Twinkle", "hum"),
+    ]
+    assigned = assign_song_splits(rows)
+    assert assigned["mirqbsh:00001"] == hash_split("mirqbsh:00001")
+    assert assigned["mirqbsh:00001"] == "train"
+    assert assigned["mirqbsh:00014"] == "test"
+
+
 def test_leakage_check_rejects_a_song_in_two_splits() -> None:
     with pytest.raises(SplitLeakageError):
         assert_no_song_leakage([("song", "train"), ("song", "test")])

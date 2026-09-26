@@ -22,6 +22,10 @@ PROTOCOL_NOTE = (
     "numbers sit side by side in the report; they match the CHAD protocol only when the "
     "reference set does."
 )
+MATCHING_NOTE = (
+    "Matching uses the melody only. A query may be a hum, a whistle, or sung lyrics, "
+    "and the words may be wrong or nonsense."
+)
 
 
 @dataclass

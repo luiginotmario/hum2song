@@ -51,6 +51,10 @@ def test_report_places_our_top10_next_to_chad(tmp_path: Path) -> None:
     assert result["metrics"]["top10"] is not None
     assert 0.0 <= result["metrics"]["top10"] <= 1.0
     assert result["metrics"]["mrr"] is not None
-    assert result["per_qtype"]["hum"]["count"] == 2
+    assert result["per_query_type"]["hum"]["count"] == 2
+    assert result["per_query_type"]["whistle"]["count"] == 0
+    assert result["per_query_type"]["sing"]["count"] == 0
+    assert result["per_qtype"] == result["per_query_type"]
+    assert "melody" in report["matching"]
     assert result["comparable_to_chad"] is False
     assert report["baselines"]["chad_top10_jang_midi"] == 0.921

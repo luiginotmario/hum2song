@@ -100,29 +100,36 @@ def test_tar_extracts_a_nested_file(tmp_path: Path) -> None:
     assert (dest / "dir" / "note.txt").read_bytes() == payload
 
 
-def test_mirqbsh_manifest_holds_every_song_out(tmp_path: Path) -> None:
+def test_mirqbsh_sung_clips_train_and_other_songs_stay_held_out(tmp_path: Path) -> None:
     corpus = tmp_path / "corpus" / "MIR-QBSH-corpus"
     midi_dir = corpus / "midiFile"
     midi_dir.mkdir(parents=True)
     (midi_dir / "songList.txt").write_text(
-        "00001\tTwinkle, Twinkle, Little Star\t小星星\t2\n",
+        "00001\tI'm the teapot\t-\t2\n00014\tTwinkle, Twinkle, Little Star\t小星星\t1\n",
         encoding="utf-8",
     )
     write_quarter_note(midi_dir / "00001.mid")
-    for person in ("person00001", "person00002"):
-        wav = corpus / "waveFile" / "year2003" / person / "00001.wav"
-        write_tone(wav, 220.0)
+    write_quarter_note(midi_dir / "00014.mid")
+    write_tone(corpus / "waveFile" / "year2006a" / "person00001" / "00001.wav", 220.0)
+    write_tone(corpus / "waveFile" / "year2008" / "person00002" / "00001.wav", 330.0)
+    write_tone(corpus / "waveFile" / "year2003" / "person00001" / "00014.wav", 440.0)
     data_root = tmp_path / "data"
     examples = parse_dataset("mirqbsh", [corpus])
     records, songs = build_pairs(examples, data_root, max_items=None)
-    assert len(records) == 2
-    assert {record.split for record in records} == {"test"}
-    assert {record.song_id for record in records} == {"mirqbsh:00001"}
-    assert {record.qtype for record in records} == {"hum"}
+    by_song: dict[str, set[str]] = {}
+    types_by_song: dict[str, set[str]] = {}
+    for record in records:
+        by_song.setdefault(record.song_id, set()).add(record.split)
+        types_by_song.setdefault(record.song_id, set()).add(record.query_type)
+    assert by_song["mirqbsh:00001"] == {"train"}
+    assert types_by_song["mirqbsh:00001"] == {"hum", "sing"}
+    assert by_song["mirqbsh:00014"] == {"test"}
+    assert types_by_song["mirqbsh:00014"] == {"hum"}
     assert records[0].song_path is not None
     assert (data_root / records[0].song_path).exists()
     assert (data_root / records[0].query_path).exists()
-    assert songs[0]["title"] == "Twinkle, Twinkle, Little Star"
+    titles = {row["song_id"]: row["title"] for row in songs}
+    assert titles["mirqbsh:00014"] == "Twinkle, Twinkle, Little Star"
     assert_no_song_leakage([(record.song_id, record.split) for record in records])
 
 

@@ -60,7 +60,7 @@ def _manifest(root: Path) -> Path:
             PairRecord(
                 pair_id=f"fake:{index}",
                 query_path=query,
-                qtype="hum",
+                qtype="sing" if index == 2 else "hum",
                 qsource="real",
                 song_id=f"fake:{song}",
                 song_start_s=0.0,

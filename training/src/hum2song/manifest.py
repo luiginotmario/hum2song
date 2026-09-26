@@ -11,6 +11,7 @@ QSOURCES = ("real", "synth_hum", "synth_whistle", "sep_vocal", "aligned")
 PAIR_FIELDS = (
     "pair_id",
     "query_path",
+    "query_type",
     "qtype",
     "qsource",
     "song_id",
@@ -39,6 +40,11 @@ class PairRecord:
     song_path: str | None = None
     title: str | None = None
 
+    @property
+    def query_type(self) -> str:
+        """hum, whistle, or sing. Matching uses the melody, not the words."""
+        return self.qtype
+
 
 def validate_pair(record: PairRecord) -> None:
     """Raise ValueError when a row breaks the shared manifest contract."""
@@ -53,18 +59,19 @@ def validate_pair(record: PairRecord) -> None:
 
 
 def pair_to_dict(record: PairRecord) -> dict:
-    """Serialize a pair with the stable key set."""
+    """Serialize a pair. query_type and qtype are the same value."""
     validate_pair(record)
     payload = asdict(record)
+    payload["query_type"] = record.query_type
     return {field: payload[field] for field in PAIR_FIELDS}
 
 
 def pair_from_dict(payload: dict) -> PairRecord:
-    """Parse one manifest object."""
+    """Parse one manifest object. query_type is accepted on its own."""
     record = PairRecord(
         pair_id=str(payload["pair_id"]),
         query_path=str(payload["query_path"]),
-        qtype=str(payload["qtype"]),
+        qtype=_resolve_query_type(payload),
         qsource=str(payload["qsource"]),
         song_id=str(payload["song_id"]),
         song_start_s=payload.get("song_start_s"),
@@ -76,6 +83,18 @@ def pair_from_dict(payload: dict) -> PairRecord:
     )
     validate_pair(record)
     return record
+
+
+def _resolve_query_type(payload: dict) -> str:
+    qtype = payload.get("qtype")
+    query_type = payload.get("query_type")
+    pair_id = payload.get("pair_id", "")
+    if qtype and query_type and str(qtype) != str(query_type):
+        raise ValueError(f"qtype and query_type disagree on {pair_id}")
+    chosen = query_type or qtype
+    if not chosen:
+        raise ValueError(f"missing query_type on {pair_id}")
+    return str(chosen)
 
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:

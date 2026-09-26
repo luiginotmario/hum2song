@@ -97,9 +97,11 @@ pytest
 
 ## Assumptions
 
-- The shared manifest is `pairs_real.jsonl` using the `docs/SPEC.md` pair fields, plus `song_path` and `title`. `song_path` is the rendered MIDI reference when the dataset has no song audio.
-- MIR-QBSH does not label hum versus sing per clip. Every clip is `qtype=hum`. The wav stem (`00001`–`00048`) is the song id and matches `midiFile/`.
-- MIR-QBSH, MTG-QBH, and MLEnd are entirely in `test` (Jang holdout, the MTG eval set, and all 8 MLEnd songs). HumTrans keeps its official split, reconciled so one composition id cannot land in two splits. There is no title table in HumTrans, so cross-dataset title dedupe only runs when a title is present.
+- The shared manifest is `pairs_real.jsonl`. Each row has `query_type` (`hum`, `whistle`, or `sing`) and the same value in `qtype` (the SPEC name), plus `song_path` and `title`. `song_path` is the rendered MIDI reference when the dataset has no song audio.
+- Matching is melody only. Sung queries may use the right lyrics, the wrong words, or nonsense. `hum2song.synth.augment_lyric_agnostic` is the Stage 2 stub that will keep a melody and replace the words. It is not implemented.
+- MIR-QBSH wav stem (`00001`–`00048`) is the song id and matches `midiFile/`. `waveFile/year2006a` is the supplementary English-song session (`2006a-MIR補錄英文歌` in `yearDirInfo.txt`) and is labeled `sing`. Every other MIR-QBSH clip is `hum`, because the archive has no per-clip hum/sing flag.
+- Songs that have a MIR-QBSH `sing` clip (stems `00001`–`00010`) are hash-split so those sung clips can train. Hum clips of the same song share that split. The other 38 MIR-QBSH songs stay in `test`. MTG-QBH and all 8 MLEnd songs stay in `test`. HumTrans keeps its official split, reconciled so one composition id cannot land in two splits. There is no title table in HumTrans, so cross-dataset title dedupe only runs when a title is present.
+- Eval JSON reports top-1, top-3, top-10, and MRR for the set and again under `per_query_type` for hum, whistle, and sing (count 0 when that type is absent). `per_qtype` is the same object.
 - MTG-QBH queries are `sing`. The song id is the class label (the piece), not the collection recording id. Those commercial tracks are not in the archive, so the pairs have no `song_path` and eval will say references are missing until song audio is added.
 - MLEnd comes from Kaggle (`jesusrequena/mlend-hums-and-whistles`) using `KAGGLE_USERNAME` and `KAGGLE_KEY`. Missing credentials skip that dataset and leave the process successful.
 - MIDI references are rendered with a harmonic series at 24 kHz. That is the closed-set MIR-QBSH reference, not Stage 2 Demucs/CREPE synthesis. CHAD's 0.921 used about 2600 MIDI distractors; the default eval is the 48-song closed set, so `comparable_to_chad` is false until `--distractors` supplies a real impostor pool.

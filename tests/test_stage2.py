@@ -2,7 +2,13 @@
 
 import pytest
 
-from hum2song.synth import SynthJob, extract_f0, separate_vocals, synthesize_query
+from hum2song.synth import (
+    SynthJob,
+    augment_lyric_agnostic,
+    extract_f0,
+    separate_vocals,
+    synthesize_query,
+)
 
 
 def test_stage2_functions_are_not_implemented() -> None:
@@ -13,3 +19,5 @@ def test_stage2_functions_are_not_implemented() -> None:
         extract_f0("stems/vocals.wav", "f0/song.npz")
     with pytest.raises(NotImplementedError):
         synthesize_query(job, "f0/song.npz", "queries/synth/out.wav")
+    with pytest.raises(NotImplementedError):
+        augment_lyric_agnostic("melody.wav", "queries/synth/nonsense.wav", lyric_text=None)
