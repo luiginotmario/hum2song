@@ -155,15 +155,15 @@ def _stft(samples: np.ndarray) -> np.ndarray:
 
 def _interpolate_frames(spectrum: np.ndarray, positions: np.ndarray) -> np.ndarray:
     """Magnitudes interpolate between frames; phases advance by each bin's measured rate."""
+    magnitude_in = np.abs(spectrum).astype(np.float32)
+    phase_in = np.angle(spectrum).astype(np.float32)
     base = positions.astype(np.int64)
-    fraction = (positions - base)[:, None]
-    left = spectrum[base]
-    right = spectrum[base + 1]
-    magnitude = (1.0 - fraction) * np.abs(left) + fraction * np.abs(right)
-    deviation = np.angle(right) - np.angle(left) - PV_BIN_ADVANCE
+    fraction = (positions - base).astype(np.float32)[:, None]
+    magnitude = (1.0 - fraction) * magnitude_in[base] + fraction * magnitude_in[base + 1]
+    deviation = phase_in[base + 1] - phase_in[base] - PV_BIN_ADVANCE
     deviation -= 2.0 * np.pi * np.round(deviation / (2.0 * np.pi))
     advance = PV_BIN_ADVANCE + deviation
-    phase = np.angle(spectrum[0]) + np.concatenate(
+    phase = phase_in[0] + np.concatenate(
         [np.zeros((1, spectrum.shape[1])), np.cumsum(advance[:-1], axis=0)]
     )
     return magnitude * np.exp(1j * phase)
@@ -205,9 +205,14 @@ def _rir(samples: np.ndarray, sample_rate: int, rng: np.random.Generator) -> np.
     decay = np.exp(-np.linspace(0.0, 6.0, length))
     impulse = rng.normal(0.0, 1.0, size=length) * decay
     impulse[0] = 1.0
-    size = len(samples) + length
+    size = _fast_fft_size(len(samples) + length)
     wet = np.fft.irfft(np.fft.rfft(samples, n=size) * np.fft.rfft(impulse, n=size), n=size)
     return wet[: len(samples)].astype(np.float32)
+
+
+def _fast_fft_size(length: int) -> int:
+    """Next power of two: numpy's FFT is slow on lengths with large prime factors."""
+    return 1 << max(int(length) - 1, 0).bit_length()
 
 
 def _codec(samples: np.ndarray, sample_rate: int) -> np.ndarray:
