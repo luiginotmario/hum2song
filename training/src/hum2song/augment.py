@@ -83,9 +83,19 @@ def phase_vocoder_stretch(samples: np.ndarray, target_length: int) -> np.ndarray
         return resample_to_length(samples, target_length)
     spectrum = _stft(samples)
     speed = len(samples) / float(target_length)
-    positions = np.arange(0.0, spectrum.shape[0] - 1, speed)
+    positions = frame_positions(spectrum.shape[0], speed)
     stretched = _interpolate_frames(spectrum, positions)
     return _istft(stretched, target_length)
+
+
+def frame_positions(frame_count: int, speed: float) -> np.ndarray:
+    """Fractional input frames to read, strictly before the last frame.
+
+    np.arange with a float step can overshoot its stop by one element, which once
+    indexed past the spectrum mid-run, so the bound is enforced explicitly.
+    """
+    positions = np.arange(0.0, frame_count - 1, speed)
+    return positions[positions < frame_count - 1]
 
 
 def ffmpeg_command(ffmpeg: str, source: Path, dest: Path, *codec_args: str) -> list[str]:

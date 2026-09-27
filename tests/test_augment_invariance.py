@@ -9,6 +9,7 @@ from hum2song.augment import (
     draw_stretch,
     ffmpeg_command,
     ffmpeg_env,
+    frame_positions,
     phase_vocoder_stretch,
     transpose_and_stretch,
 )
@@ -71,3 +72,20 @@ def test_ffmpeg_env_caps_openmp_and_blas_threads() -> None:
     assert env["OMP_NUM_THREADS"] == "1"
     assert env["OPENBLAS_NUM_THREADS"] == "1"
     assert "PATH" in env
+
+
+def test_frame_positions_never_reach_the_last_frame() -> None:
+    overshooting = np.arange(0.0, 1133, 290048 / 225792)
+    assert overshooting[-1] >= 1133
+    assert float(frame_positions(1134, 290048 / 225792).max()) < 1133
+    for frame_count in range(3, 1400, 37):
+        for speed in np.linspace(0.3, 3.0, 97):
+            positions = frame_positions(frame_count, float(speed))
+            assert positions.size > 0
+            assert float(positions.max()) < frame_count - 1
+
+
+def test_stretch_handles_many_lengths() -> None:
+    wave = np.random.default_rng(0).normal(size=5000).astype(np.float32)
+    for target in range(2000, 16000, 997):
+        assert len(phase_vocoder_stretch(wave, target)) == target
