@@ -97,8 +97,11 @@ Then train (about 30 min for 6,000 steps) and evaluate a checkpoint on HumTrans 
 
 ```bash
 python training/scripts/train_contour.py --config configs/train_contour.yaml
-python training/scripts/eval_contour.py --ckpt "$H2S_DATA/ckpt/contour/best.pt" --split test
+python training/scripts/eval_contour.py --ckpt "$H2S_DATA/ckpt/contour/last.pt" --split test \
+  --distractors "$H2S_DATA/raw/essen_midi/deutschl" --distractor-count 2000
 ```
+
+HumTrans val saturates, so D-012 reports `last.pt`. The distractors are 2,000 Essen folk songs, as in MIREX QBSH. Convert them once with music21 (not a project dependency): clone `ccarh/essen-folksong-collection`, then run `training/scripts/essen_to_midi.py --essen <clone> --out "$H2S_DATA/raw/essen_midi/deutschl"`. `configs/train_contour_synth.yaml` adds MIDI-only synthetic pairs from the other Essen songs (D-012). The 2,000 distractors are always left out of training.
 
 Eval on MIR-QBSH. The JSON report includes top-1, top-10, and MRR next to the CHAD top-10 of **0.921**, plus a `targets_only` line (the 48 MIR-QBSH songs, no distractors). HumTrans songs are never used as distractors, so until other song audio exists `targets_only` is the headline number (`headline` field) and the result is not comparable to CHAD.
 

@@ -270,6 +270,8 @@ Recent query-by-humming work points the same way. CHAD (Amatov et al., ISMIR 202
 
 The best MIR value over all validation steps was `start_multi` top-1 0.951 / top-10 0.991. It is a best case because it was picked by looking at MIR. Under the same reference protocol (song start, tempo search), the encoder beats the RMVPE pitch baseline at top-1 (0.945 vs 0.903) and top-10 (0.991 vs 0.986). With a single 10 s window, as Stage A2 used, top-10 goes from 0.583 to 0.984. HumTrans no longer depends on key: shifted and unshifted scores match.
 
+**Full run (6,000 steps, W&B `hbufzlsf`; selected step 2,500; HumTrans test, not val).** MIR-48 `start10` 0.884 / 0.985, `start_multi` 0.949 / 0.991, `anywhere` 0.869 / 0.983 (top-1 / top-10). HumTrans test top-1 0.988, +7 semitones 0.980. With 2,000 Essen distractors (D-012), `start_multi` top-10 is 0.940. That run and the feasibility run have a bug, found afterwards and fixed in D-012: the dataloader workers never saw the epoch counter, so every epoch replayed the same crops and augmentations. The three runs first launched in parallel (`plc45h43`, `51adgn6y`, `nootcoi5`) ran out of GPU memory in their first steps. They show as crashed in W&B and have no results.
+
 **Trade-off / what we gave up.**
 - **Timbre and lyrics.** The encoder sees only the F0 track, so it cannot use lyrics, timbre or accompaniment. It depends on RMVPE: noisy rooms, heavy reverb or breathy humming that RMVPE cannot track give it nothing. Whistles need the spectral-peak F0 (D-007), which is not wired in yet. MLEnd whistles have no references to test against.
 - **Symbolic references.** References come from MIDI, not audio. Against real recordings, reference contours would come from a vocal-melody extractor with its own errors, and these numbers would drop.
@@ -280,3 +282,45 @@ The best MIR value over all validation steps was `start_multi` top-1 0.951 / top
 - We have ≥ 2,000 distractor melodies (e.g. the MIREX ~2,600 Essen/MIDI set). Then report the CHAD-comparable number.
 - Queries come from noisy or real-world audio, or references from real songs. Then test fusion with MERT embeddings, and a melody extractor on the reference side.
 - Whistle queries matter. Then feed the spectral-peak F0 (D-007) through the same encoder.
+
+---
+
+## D-012 · Contour encoder: fix epoch reseeding, add a MIREX-style distractor eval, keep training HumTrans-only
+**Date:** 2026-09-27
+
+**Context.** After D-011, the 48-target MIR-QBSH top-10 was already about 0.98 to 0.99 and no longer separated models. Two further problems came up.
+1. **The training data repeated itself.** `ContourPairDataset` stored its epoch as a plain attribute. The dataloader uses persistent workers, and workers only get a copy of the dataset, so they never saw the new epoch. Every epoch replayed the same crops and augmentations. Loss fell to about 0.01, a sign of memorization.
+2. **The eval had no distractors.** The 48-way closed set could not be read next to published QbH results. MIREX QBSH, and CHAD's 0.921 top-10, rank the MIR-QBSH queries against the 48 targets plus Essen folk-song MIDIs as distractors.
+
+**Options.**
+- **Epoch:** turn off persistent workers (respawns 16 workers every epoch), or keep the epoch in shared memory.
+- **More melodies:** HumTrans has about 1,000 distinct segments. Candidates for extra melodies: MIDI-only synthetic pairs from Essen (Jeong's self-supervised stage), Lakh MIDI melody tracks, or POP909. POP909 and Lakh would need an overlap check against the MIR-QBSH pop songs.
+- **Distractors:** the exact MIREX list (not available to us), or a documented stand-in of 2,000 Essen German songs.
+
+**Decision.**
+- **Epoch counter.** It now lives in shared memory (`EpochCounter`, a `multiprocessing.Value`). A test checks that persistent workers see a new epoch.
+- **Distractor eval.** `eval_contour.py --distractors raw/essen_midi/deutschl --distractor-count 2000` adds 2,000 Essen German songs, spread evenly over the sorted files, to the MIR-QBSH reference side. The files come from `ccarh/essen-folksong-collection` via `essen_to_midi.py` (music21, 120 bpm). The metrics are named `mir48+2000_*`.
+- **Synthetic pairs.** `SyntheticPairDataset` and `configs/train_contour_synth.yaml` build MIDI-only pairs: the query is the same melody window after `humanize` (glides and vibrato) and the usual augmentation. They use Essen German songs outside the 2,000 distractors plus Essen China, 5,605 melodies in all. An overlap check (`docs/paper/results/contour/essen_overlap.*`) compared each MIR-QBSH target with every training melody. MIR-QBSH 00040 was 0.47 semitones MAE from deut2282 ("Ich hab mich ergeben"). The next closest pair was 0.83, so deut2282 is excluded.
+- **Headline config: `configs/train_contour.yaml`, HumTrans-only, reporting `last.pt`.** HumTrans val is saturated (shifted top-1 ≥ 0.99 from step 1,000), so it cannot rank checkpoints. Selecting on it picked step 1,500 for `contour_v2_s0` because of a tie. `last.pt` (end of cosine decay) is the checkpoint chosen before looking at results, so it is the one reported. Checkpoint choice never uses MIR-QBSH.
+
+**Results.** HumTrans **test** and MIR-QBSH, all 4,431 queries, RMVPE F0 for every query. Values are top-1 / top-10. The three seeds of the headline config are W&B `f4086zb7`, `5wgj4pbq`, `3yx3d3nh` (mean ± sd). JSON files are in `docs/paper/results/contour/`.
+
+| | MIR-48 start10 | MIR-48 start_multi | MIR-48 anywhere | +2000 start10 | +2000 start_multi | +2000 anywhere | HumTrans test top-1 | +7 st top-1 |
+|---|---|---|---|---|---|---|---|---|
+| Stage A2 (MERT, best MIR step, best case) | – / 0.583 | | | | | | 0.936 (val) | 0.822 (val) |
+| Pitch baseline, RMVPE queries, 13 scales | | 0.903 / 0.986 | | | 0.722 / 0.899 | | | |
+| D-011 run with the epoch bug (`hbufzlsf`, step 2,500) | 0.884 / 0.985 | 0.949 / 0.991 | 0.869 / 0.983 | 0.639 / 0.854 | 0.805 / 0.940 | 0.616 / 0.851 | 0.988 | 0.980 |
+| **Epoch fix, HumTrans-only, `last.pt`, 3 seeds** | **0.961±0.005 / 0.994±0.000** | **0.977±0.001 / 0.995±0.000** | **0.959±0.004 / 0.993±0.001** | **0.853±0.008 / 0.955±0.002** | **0.922±0.003 / 0.974±0.002** | **0.866±0.009 / 0.958±0.003** | **0.996±0.002** | **0.993±0.001** |
+| + Essen synthetic pairs (`ezzpz0ff`, `last.pt`) | 0.967 / 0.995 | 0.977 / 0.994 | 0.958 / 0.994 | 0.847 / 0.962 | 0.918 / 0.974 | 0.876 / 0.956 | 0.996 | 0.995 |
+
+Synthetic pairs gave no clear gain (+0.007 on `start10` top-10, −0.002 on `anywhere` top-10, within seed noise). They also make the Essen distractors look like the training data. So the headline config stays HumTrans-only, and synthetic pairs remain an option.
+
+**Trade-off / what we gave up.**
+- **Not the official MIREX number.** The 2,000 distractors are a documented stand-in, not MIREX's list, and MIREX's collection has about 2,600 songs where ours has 2,048. The comparison with CHAD's 0.921 top-10 is close, not exact. Our closest protocol is `start_multi` (0.974), which assumes queries start at the song start, as MIR-QBSH queries do. `anywhere` (0.958) makes no such assumption.
+- **No checkpoint selection.** We report `last.pt` because the validation set is saturated. A harder validation set (HumTrans val plus distractors) would be needed to select checkpoints or tune hyperparameters again.
+- **Synthetic data unused.** We kept the code but not the data, so the headline model has seen only about 1,000 distinct melodies.
+
+**Revisit when.**
+- A harder validation set exists. Then select checkpoints and tune on it, never on MIR-QBSH.
+- Queries are no longer clean monophonic hums (noisy phones, whistles, real songs as references). Then test MERT fusion, spectral-peak F0 for whistles (D-007), and a vocal-melody extractor on the reference side.
+- The official MIREX distractor list turns up. Then rerun `eval_contour.py` with it.

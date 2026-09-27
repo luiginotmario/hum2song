@@ -1,0 +1,33 @@
+{
+  "ckpt": "../ckpt/contour_synth_s0/last.pt",
+  "distractor_count": 2000,
+  "distractors": "../raw/essen_midi/deutschl",
+  "metrics": {
+    "val/humtrans_test_mrr": 0.9973450368443867,
+    "val/humtrans_test_shift+7_mrr": 0.9966948417858691,
+    "val/humtrans_test_shift+7_top1": 0.9947984395318595,
+    "val/humtrans_test_shift+7_top10": 1.0,
+    "val/humtrans_test_top1": 0.9960988296488946,
+    "val/humtrans_test_top10": 1.0,
+    "val/mir48+2000_anywhere_mrr": 0.9054523020680806,
+    "val/mir48+2000_anywhere_top1": 0.8761002031144212,
+    "val/mir48+2000_anywhere_top10": 0.9564432408034304,
+    "val/mir48+2000_start10_mrr": 0.8923060958477238,
+    "val/mir48+2000_start10_top1": 0.8469871360866622,
+    "val/mir48+2000_start10_top10": 0.9616339426765967,
+    "val/mir48+2000_start_multi_mrr": 0.9393272962741157,
+    "val/mir48+2000_start_multi_top1": 0.9183028661701648,
+    "val/mir48+2000_start_multi_top10": 0.9738208079440307,
+    "val/mir48_anywhere_mrr": 0.9711454826445133,
+    "val/mir48_anywhere_top1": 0.9577973369442564,
+    "val/mir48_anywhere_top10": 0.9941322500564207,
+    "val/mir48_start10_mrr": 0.9776521331540518,
+    "val/mir48_start10_top1": 0.9672760099300384,
+    "val/mir48_start10_top10": 0.995260663507109,
+    "val/mir48_start_multi_mrr": 0.9834373092981527,
+    "val/mir48_start_multi_top1": 0.9765290002256827,
+    "val/mir48_start_multi_top10": 0.9943579327465584
+  },
+  "split": "test",
+  "step": 6000
+}

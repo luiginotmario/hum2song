@@ -1,0 +1,1 @@
+songs=2048 queries=4431 top1=0.7222 top10=0.8993 mrr=0.7854
