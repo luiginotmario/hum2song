@@ -6,6 +6,8 @@ import sys
 from dataclasses import asdict
 from pathlib import Path
 
+import yaml
+
 from hum2song.contour.config import load_contour_config
 from hum2song.contour.train import run_training
 from hum2song.logutil import configure_logging
@@ -23,7 +25,20 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--workers", type=int, default=None)
     parser.add_argument("--out", type=Path, default=None, help="Write the result JSON here")
+    parser.add_argument(
+        "--set",
+        action="append",
+        default=[],
+        metavar="KEY=VALUE",
+        help="Any config key (YAML value)",
+    )
     return parser.parse_args(argv)
+
+
+def parse_sets(items: list[str]) -> dict:
+    """KEY=VALUE pairs; values are parsed as YAML, so 0.3, true and text all work."""
+    pairs = [item.split("=", 1) for item in items]
+    return {key.strip(): yaml.safe_load(value) for key, value in pairs}
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -37,6 +52,7 @@ def main(argv: list[str] | None = None) -> None:
         "val_every": args.val_every,
         "seed": args.seed,
         "num_workers": args.workers,
+        **parse_sets(args.set),
     }
     config = load_contour_config(args.config, overrides)
     tracker = build_tracker(config.run_name, asdict(config))

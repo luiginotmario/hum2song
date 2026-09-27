@@ -15,7 +15,13 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from hum2song.contour.augment import ContourAugment, augment_contour, humanize
+from hum2song.contour.augment import (
+    ContourAugment,
+    WhistleAugment,
+    augment_contour,
+    humanize,
+    whistle_like,
+)
 from hum2song.contour.features import (
     FRAME_S,
     contour_features,
@@ -164,8 +170,10 @@ class ContourPairDataset(Dataset):
         augment: ContourAugment,
         windows: PairWindows,
         seed: int,
+        whistle: WhistleAugment | None = None,
     ) -> None:
         self.records = [r for r in records if r.query_path in queries and r.song_path in references]
+        self.whistle = whistle or WhistleAugment()
         self.queries = queries
         self.references = references
         self.augment = augment
@@ -183,6 +191,7 @@ class ContourPairDataset(Dataset):
             self.queries[record.query_path], self.references[record.song_path], rng, self.windows
         )
         query = augment_contour(query, rng, self.augment, FRAME_S)
+        query = whistle_like(query, rng, self.whistle, FRAME_S)
         return {
             "query": features_tensor(query),
             "song": features_tensor(reference),

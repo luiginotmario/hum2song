@@ -1,7 +1,10 @@
 """Contour-branch training: InfoNCE between hummed and MIDI contours (D-011).
 
-Checkpoint selection uses HumTrans val (key-shifted by default), never MIR-QBSH, so the
-MIR-QBSH numbers of the selected checkpoint stay a held-out result (D-005).
+Checkpoint selection uses validation data only, never MIR-QBSH or MLEnd test people, so
+those numbers stay held-out results (D-005). `select_metric` is one metric name or a
+comma list whose mean is used, e.g. HumTrans val plus MLEnd val whistles and hums (D-015).
+Optional whistle training (D-015): whistle-like augmentation of hum queries and pairs of
+MLEnd train-split whistles with other train-split people's hums.
 """
 
 import math
@@ -13,7 +16,7 @@ import numpy as np
 import torch
 from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
-from hum2song.contour.augment import ContourAugment
+from hum2song.contour.augment import ContourAugment, WhistleAugment
 from hum2song.contour.config import ContourConfig
 from hum2song.contour.data import (
     ContourPairDataset,
@@ -34,6 +37,7 @@ from hum2song.contour.evaluate import (
     whole_reference,
 )
 from hum2song.contour.features import midi_contour
+from hum2song.contour.mlend import MLEndValidation, training_pairs
 from hum2song.contour.model import ContourEncoder
 from hum2song.logutil import get_logger
 from hum2song.losses import info_nce_symmetric
@@ -78,6 +82,16 @@ def augment_spec(config: ContourConfig) -> ContourAugment:
     )
 
 
+def whistle_spec(config: ContourConfig) -> WhistleAugment:
+    return WhistleAugment(
+        probability=config.whistle_aug_prob,
+        compress_min=config.whistle_compress_min,
+        compress_max=config.whistle_compress_max,
+        gap_prob=config.whistle_gap_prob,
+        gap_max_s=config.whistle_gap_max_s,
+    )
+
+
 def window_spec(config: ContourConfig) -> PairWindows:
     return PairWindows(
         query_min_s=config.query_min_s,
@@ -117,23 +131,27 @@ def synthetic_melodies(root: Path, config: ContourConfig) -> dict[str, np.ndarra
 
 
 def training_dataset(root: Path, records, contours: dict, config: ContourConfig) -> Dataset:
-    """HumTrans hum pairs, plus MIDI-only synthetic pairs when synthetic_midi_dirs is set."""
-    humtrans = ContourPairDataset(
-        select(records, "humtrans", "train"),
-        contours["queries"],
-        contours["references"],
-        augment_spec(config),
-        window_spec(config),
-        config.seed,
-    )
+    """HumTrans hum pairs, plus MIDI-only synthetic pairs and MLEnd whistle pairs if enabled."""
+    parts: list[Dataset] = [
+        ContourPairDataset(
+            select(records, "humtrans", "train"),
+            contours["queries"],
+            contours["references"],
+            augment_spec(config),
+            window_spec(config),
+            config.seed,
+            whistle_spec(config),
+        )
+    ]
     melodies = synthetic_melodies(root, config)
-    LOGGER.info("training pairs: %s HumTrans, %s synthetic", len(humtrans), len(melodies))
-    if not melodies:
-        return humtrans
-    synthetic = SyntheticPairDataset(
-        melodies, augment_spec(config), window_spec(config), config.seed
-    )
-    return ConcatDataset([humtrans, synthetic])
+    if melodies:
+        parts.append(
+            SyntheticPairDataset(melodies, augment_spec(config), window_spec(config), config.seed)
+        )
+    if config.mlend_pairs:
+        parts.append(training_pairs(root, augment_spec(config), config.seed, config.mlend_repeat))
+    LOGGER.info("training pairs: %s", [f"{type(p).__name__}={len(p)}" for p in parts])
+    return parts[0] if len(parts) == 1 else ConcatDataset(parts)
 
 
 def select(records: list[PairRecord], group: str, split: str) -> list[PairRecord]:
@@ -194,11 +212,31 @@ def batches(loader: DataLoader, dataset: Dataset):
         epoch += 1
 
 
-def run_validation(model, sets, device, step: int, tracker, best: dict, config) -> dict:
+def selection_score(metrics: dict[str, float], select_metric: str) -> float:
+    """Mean of the comma-listed metrics; -inf when any is missing."""
+    names = split_list(select_metric)
+    if not names or any(name not in metrics for name in names):
+        return float("-inf")
+    return float(np.mean([metrics[name] for name in names]))
+
+
+def validation_metrics(model, sets, mlend: MLEndValidation | None, device) -> dict:
     metrics = evaluate(model, sets, device)
+    if mlend is None:
+        return metrics
+    was_training = model.training
+    model.eval()
+    metrics.update(mlend.metrics(model, device))
+    model.train(was_training)
+    return metrics
+
+
+def run_validation(model, sets, device, step: int, tracker, best: dict, config, mlend) -> dict:
+    metrics = validation_metrics(model, sets, mlend, device)
+    metrics["val/select"] = selection_score(metrics, config.select_metric)
     tracker.log(metrics, step=step)
     LOGGER.info("step %s %s", step, " ".join(f"{k}={v:.4f}" for k, v in sorted(metrics.items())))
-    score = metrics.get(config.select_metric, float("-inf"))
+    score = metrics["val/select"]
     if score > best.get("score", float("-inf")):
         best.update(score=score, step=step, metrics=metrics)
         save_checkpoint(config.resolved_ckpt_dir() / "best.pt", model, config, step, metrics)
@@ -215,6 +253,7 @@ def run_training(config: ContourConfig, tracker) -> dict:
     contours = load_contours(root, records, config.shift_semitones)
     dataset = training_dataset(root, records, contours, config)
     sets = validation_sets(records, contours, config)
+    mlend = MLEndValidation(root, "val") if config.mlend_val else None
     loader = DataLoader(
         dataset,
         batch_size=config.batch_size,
@@ -229,7 +268,7 @@ def run_training(config: ContourConfig, tracker) -> dict:
         model.parameters(), lr=config.lr, weight_decay=config.weight_decay
     )
     best: dict = {}
-    last_metrics = run_validation(model, sets, device, 0, tracker, best, config)
+    last_metrics = run_validation(model, sets, device, 0, tracker, best, config, mlend)
     started = time.time()
     stream = batches(loader, dataset)
     for step in range(1, config.steps + 1):
@@ -254,7 +293,7 @@ def run_training(config: ContourConfig, tracker) -> dict:
                 rate,
             )
         if step % config.val_every == 0 or step == config.steps:
-            last_metrics = run_validation(model, sets, device, step, tracker, best, config)
+            last_metrics = run_validation(model, sets, device, step, tracker, best, config, mlend)
     save_checkpoint(
         config.resolved_ckpt_dir() / "last.pt", model, config, config.steps, last_metrics
     )

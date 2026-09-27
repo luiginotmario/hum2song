@@ -2,7 +2,8 @@
 
 Operates on semitone contours (NaN = unvoiced) at features.FRAME_S. Key needs no
 augmentation because model input is median-normalized; these cover what remains:
-tempo (global and local), interval size, pitch drift, and voicing gaps.
+tempo (global and local), interval size, pitch drift, and voicing gaps. WhistleAugment
+turns a hum into a whistle-like contour (D-015).
 """
 
 from dataclasses import dataclass
@@ -27,6 +28,32 @@ class ContourAugment:
     dropout_prob: float = 0.5
     dropout_max_s: float = 0.4
     octave_error_prob: float = 0.1
+
+
+@dataclass(frozen=True)
+class WhistleAugment:
+    """Make a hum look whistled (D-015): compressed intervals and more dropouts.
+
+    MLEnd whistles span about 6.5 semitones (5-95 %) where hums of the same songs span
+    9.7, a factor near 0.67, and lose more frames to the tonal gate. A zero probability
+    disables it without drawing random numbers, so older configs replay exactly.
+    """
+
+    probability: float = 0.0
+    compress_min: float = 0.55
+    compress_max: float = 0.85
+    gap_prob: float = 0.9
+    gap_max_s: float = 0.6
+
+
+def whistle_like(
+    contour: np.ndarray, rng: np.random.Generator, spec: WhistleAugment, frame_s: float
+) -> np.ndarray:
+    if spec.probability <= 0.0 or float(rng.random()) >= spec.probability:
+        return contour
+    compressed = scale_intervals(contour, float(rng.uniform(spec.compress_min, spec.compress_max)))
+    gapped = voicing_gaps(compressed, rng, spec.gap_prob, spec.gap_max_s, frame_s)
+    return gapped.astype(np.float32)
 
 
 def augment_contour(

@@ -51,6 +51,14 @@ class ContourConfig:
     holdout_midi_dir: str = "raw/essen_midi/deutschl"
     holdout_count: int = 2000
     synthetic_exclude: str = ""
+    whistle_aug_prob: float = 0.0
+    whistle_compress_min: float = 0.55
+    whistle_compress_max: float = 0.85
+    whistle_gap_prob: float = 0.9
+    whistle_gap_max_s: float = 0.6
+    mlend_pairs: bool = False
+    mlend_repeat: int = 2
+    mlend_val: bool = False
 
     def resolved_data_root(self) -> Path:
         return Path(self.data_root or os.environ.get("H2S_DATA", DEFAULT_DATA_ROOT))

@@ -74,3 +74,38 @@ def test_pair_dataset_pairs_other_people_of_same_song():
     assert {dataset.partner(whistles[0], rng).path for _ in range(20)} == {"h2"}
     item = dataset[1]
     assert item["song_id"] == "mlend:Frozen" and item["query"].shape[1] == 2
+
+
+def test_whistle_like_compresses_range_and_is_off_at_zero():
+    from hum2song.contour.augment import WhistleAugment, whistle_like
+
+    contour = np.linspace(55.0, 65.0, 200)
+    rng = np.random.default_rng(0)
+    assert whistle_like(contour, rng, WhistleAugment(), 0.02) is contour
+    spec = WhistleAugment(probability=1.0, gap_prob=0.0)
+    out = whistle_like(contour, rng, spec, 0.02)
+    span = np.nanmax(out) - np.nanmin(out)
+    assert 0.55 * 10.0 - 1e-3 <= span <= 0.85 * 10.0 + 1e-3
+
+
+def test_selection_score_is_mean_of_listed_metrics():
+    from hum2song.contour.train import selection_score
+
+    metrics = {"a": 0.5, "b": 1.0}
+    assert selection_score(metrics, "a,b") == 0.75
+    assert selection_score(metrics, "a") == 0.5
+    assert selection_score(metrics, "a,c") == float("-inf")
+
+
+def test_parse_sets_reads_yaml_values():
+    import importlib.util
+    from pathlib import Path
+
+    script = Path(__file__).resolve().parents[1] / "training" / "scripts" / "train_contour.py"
+    spec = importlib.util.spec_from_file_location("train_contour_script", script)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert module.parse_sets(["whistle_aug_prob=0.3", "mlend_pairs=false"]) == {
+        "whistle_aug_prob": 0.3,
+        "mlend_pairs": False,
+    }

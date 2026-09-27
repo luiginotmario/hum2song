@@ -1,0 +1,61 @@
+# Contour encoder with whistle training (docs/DECISIONS.md D-015): the headline config
+# (D-011, D-012) plus whistle-like hum augmentation and MLEnd train-split whistle pairs.
+#   python training/scripts/train_contour.py --config configs/train_contour_whistle.yaml
+# Needs f0/rmvpe_mlend.npz and f0/peak_mlend.npz (extract_f0.py) and the fixed performer
+# split training/splits/mlend_performers.json.
+# Needs RMVPE tracks from training/scripts/extract_f0.py (plain, and --shift 7 for HumTrans val/test).
+run_name: contour_whistle
+steps: 6000
+batch_size: 256
+lr: 0.0003
+weight_decay: 0.05
+warmup_steps: 300
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 500
+# Checkpoint selection never looks at MIR-QBSH or MLEnd test people (D-005, D-015):
+# mean of HumTrans val (shifted) and MLEnd val-people whistle and hum top-1.
+select_metric: val/humtrans_val_shift+7_top1,val/mlend_val_whistle_top1,val/mlend_val_hum_top1
+mlend_val: true
+# Query augmentation (augment.py): duration factor, local tempo warp, interval scaling,
+# slow pitch drift, frame jitter, voicing gaps, short octave errors.
+stretch_min: 0.6
+stretch_max: 1.7
+warp_depth: 0.2
+interval_scale: 0.15
+drift_semitones: 0.7
+jitter_semitones: 0.15
+dropout_prob: 0.5
+octave_error_prob: 0.1
+# Pair windows (data.py), seconds.
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0
+# No MIDI-only synthetic pairs in the base config (see train_contour_synth.yaml).
+synthetic_midi_dirs: ""
+holdout_midi_dir: raw/essen_midi/deutschl
+holdout_count: 2000
+synthetic_exclude: ""
+# Whistle training (D-015). Values fixed before any MLEnd result was seen.
+# Whistle-like augmentation of HumTrans hum queries: intervals scaled by 0.55-0.85
+# (MLEnd whistle / hum range ratio is about 0.67) and extra voicing gaps.
+whistle_aug_prob: 0.3
+whistle_compress_min: 0.55
+whistle_compress_max: 0.85
+whistle_gap_prob: 0.9
+whistle_gap_max_s: 0.6
+# MLEnd train-split whistles (spectral-peak F0) paired with other train people's hums,
+# each whistle twice per epoch (about 2,300 of 15,400 pairs).
+mlend_pairs: true
+mlend_repeat: 2
