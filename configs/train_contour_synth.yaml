@@ -42,3 +42,6 @@ shift_semitones: 7.0
 synthetic_midi_dirs: raw/essen_midi/deutschl,raw/essen_midi/china
 holdout_midi_dir: raw/essen_midi/deutschl
 holdout_count: 2000
+# Essen stems left out because they resemble a MIR-QBSH target (D-012 overlap check:
+# deut2282 "Ich hab mich ergeben" is 0.47 semitones MAE from 00040; the next closest is 0.83).
+synthetic_exclude: deut2282

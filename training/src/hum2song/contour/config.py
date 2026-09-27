@@ -50,6 +50,7 @@ class ContourConfig:
     synthetic_midi_dirs: str = ""
     holdout_midi_dir: str = "raw/essen_midi/deutschl"
     holdout_count: int = 2000
+    synthetic_exclude: str = ""
 
     def resolved_data_root(self) -> Path:
         return Path(self.data_root or os.environ.get("H2S_DATA", DEFAULT_DATA_ROOT))

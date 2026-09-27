@@ -91,13 +91,18 @@ def load_contours(root: Path, records: list[PairRecord], shift: float) -> dict:
     return {"queries": queries, "shifted": shifted, "references": references}
 
 
+def split_list(text: str) -> list[str]:
+    return [part.strip() for part in text.split(",") if part.strip()]
+
+
 def synthetic_melodies(root: Path, config: ContourConfig) -> dict[str, np.ndarray]:
-    """Melody MIDIs for synthetic pairs, minus the held-out distractor selection."""
+    """Melody MIDIs for synthetic pairs, minus the held-out distractors and excluded stems."""
     held_out = set(distractor_paths(root / config.holdout_midi_dir, config.holdout_count))
+    excluded = set(split_list(config.synthetic_exclude))
     melodies: dict[str, np.ndarray] = {}
-    for folder in [name.strip() for name in config.synthetic_midi_dirs.split(",") if name.strip()]:
+    for folder in split_list(config.synthetic_midi_dirs):
         for path in sorted((root / folder).rglob("*.mid")):
-            if path not in held_out:
+            if path not in held_out and path.stem not in excluded:
                 melodies[f"synthetic:{path.stem}"] = midi_contour(parse_midi(path.read_bytes()))
     return melodies
 
