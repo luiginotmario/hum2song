@@ -9,18 +9,21 @@ QUERY_MAX_S). Reference protocols for MIR-QBSH, all against the 48 targets only:
   anywhere    windows of 6/10/14 s every 1 s over the whole song, best window. Does not
               assume the query starts at the beginning.
 HumTrans references are whole segment MIDIs; the shifted set uses RMVPE run on audio
-transposed by +7 semitones (extract_f0.py --shift 7).
+transposed by +7 semitones (extract_f0.py --shift 7). Distractor melodies (e.g. 2,000
+Essen folk songs, as in MIREX QBSH) can be added to the MIR-QBSH reference side.
 """
 
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 import torch
 
 from hum2song.contour.data import collate_contours, features_tensor, seconds_to_frames
-from hum2song.contour.features import trim_unvoiced
+from hum2song.contour.features import midi_contour, trim_unvoiced
 from hum2song.eval.metrics import ranks_for_queries, retrieval_scores
 from hum2song.manifest import PairRecord
+from hum2song.midi_render import parse_midi
 
 QUERY_MAX_S = 20.0
 START_MULTI_S = (6.0, 8.0, 10.0, 12.0, 15.0)
@@ -65,19 +68,28 @@ def build_set(
     queries: dict[str, np.ndarray],
     references: dict[str, np.ndarray],
     windows,
+    distractors: dict[str, np.ndarray] | None = None,
 ) -> ContourSet:
-    """`windows(contour) -> list of reference windows` sets the reference protocol."""
+    """`windows(contour) -> list of reference windows` sets the reference protocol.
+
+    `distractors` maps extra song ids to contours that are ranked alongside the targets.
+    """
     chosen = sorted(
         (r for r in records if r.query_path in queries and r.song_path in references),
         key=lambda record: record.pair_id,
     )
+    songs = {r.song_id: None for r in chosen}
     song_of = {str(r.song_path): r.song_id for r in chosen}
+    contours = [(song_of[path], references[path]) for path in sorted(song_of)]
+    contours += [
+        (song_id, c) for song_id, c in sorted((distractors or {}).items()) if song_id not in songs
+    ]
     refs: list[np.ndarray] = []
     ref_ids: list[str] = []
-    for song_path in sorted(song_of):
-        for window in windows(references[song_path]):
+    for song_id, contour in contours:
+        for window in windows(contour):
             refs.append(window)
-            ref_ids.append(song_of[song_path])
+            ref_ids.append(song_id)
     return ContourSet(
         name=name,
         queries=[query_contour(queries[r.query_path]) for r in chosen],
@@ -87,26 +99,32 @@ def build_set(
     )
 
 
-def mir_sets(records, queries, references) -> list[ContourSet]:
+def mir_protocols() -> dict:
+    """Reference-window functions for the three MIR-QBSH protocols (module docstring)."""
+    return {
+        "start10": lambda contour: start_windows(contour, (10.0,)),
+        "start_multi": lambda contour: start_windows(contour, START_MULTI_S),
+        "anywhere": lambda contour: sliding_windows(contour, ANYWHERE_S, ANYWHERE_HOP_S),
+    }
+
+
+def mir_sets(
+    records, queries, references, distractors: dict[str, np.ndarray] | None = None
+) -> list[ContourSet]:
+    """One set per protocol. With distractors the names read mir48+<count>_<protocol>."""
+    prefix = f"mir48+{len(distractors)}" if distractors else "mir48"
     return [
-        build_set(
-            "mir48_start10", records, queries, references, lambda c: start_windows(c, (10.0,))
-        ),
-        build_set(
-            "mir48_start_multi",
-            records,
-            queries,
-            references,
-            lambda c: start_windows(c, START_MULTI_S),
-        ),
-        build_set(
-            "mir48_anywhere",
-            records,
-            queries,
-            references,
-            lambda c: sliding_windows(c, ANYWHERE_S, ANYWHERE_HOP_S),
-        ),
+        build_set(f"{prefix}_{name}", records, queries, references, windows, distractors)
+        for name, windows in mir_protocols().items()
     ]
+
+
+def distractor_contours(midi_dir: Path, count: int) -> dict[str, np.ndarray]:
+    """`count` MIDIs spread evenly over the sorted files of midi_dir, keyed distractor:<stem>."""
+    paths = sorted(midi_dir.rglob("*.mid"))
+    if count < len(paths):
+        paths = [paths[int(i)] for i in np.linspace(0, len(paths) - 1, count).round()]
+    return {f"distractor:{p.stem}": midi_contour(parse_midi(p.read_bytes())) for p in paths}
 
 
 def whole_reference(contour: np.ndarray) -> list[np.ndarray]:

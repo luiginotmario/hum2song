@@ -3,9 +3,17 @@ import torch
 
 from hum2song.contour.augment import ContourAugment
 from hum2song.contour.data import ContourPairDataset, PairWindows, collate_pairs, seconds_to_frames
-from hum2song.contour.evaluate import build_set, score_set, sliding_windows, start_windows
+from hum2song.contour.evaluate import (
+    build_set,
+    distractor_contours,
+    mir_sets,
+    score_set,
+    sliding_windows,
+    start_windows,
+)
 from hum2song.contour.model import ContourEncoder
 from hum2song.manifest import PairRecord
+from tests.support import write_quarter_note
 
 
 def record(index: int, song: str) -> PairRecord:
@@ -59,3 +67,16 @@ def test_score_set_runs_end_to_end():
     metrics = score_set(model, item, torch.device("cpu"))
     assert set(metrics) == {"val/toy_top1", "val/toy_top10", "val/toy_mrr"}
     assert metrics["val/toy_top10"] == 1.0
+
+
+def test_distractors_join_the_reference_side(tmp_path):
+    for name in ("a", "b", "c"):
+        write_quarter_note(tmp_path / f"{name}.mid")
+    distractors = distractor_contours(tmp_path, 2)
+    assert sorted(distractors) == ["distractor:a", "distractor:c"]
+    queries, refs = contours()
+    records = [record(i, f"song{i}") for i in range(4)]
+    sets = mir_sets(records, queries, refs, distractors)
+    assert sets[0].name == "mir48+2_start10"
+    assert sets[0].ref_ids.count("distractor:a") == 1
+    assert len(set(sets[0].ref_ids)) == 6
