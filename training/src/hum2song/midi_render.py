@@ -5,6 +5,7 @@ MIDI is the reference side for contrastive pairs and for closed-set eval.
 This is not the Stage 2 Demucs/CREPE synthesizer.
 """
 
+import bisect
 import struct
 from dataclasses import dataclass
 from pathlib import Path
@@ -28,26 +29,68 @@ class MidiNote:
     velocity: int
 
 
+@dataclass(frozen=True)
+class TickNote:
+    """One note in absolute MIDI ticks, before the tempo map is applied."""
+
+    start_tick: int
+    end_tick: int
+    pitch: int
+    velocity: int
+
+
+@dataclass(frozen=True)
+class TempoMap:
+    """Piecewise-constant tempo. Converts absolute ticks to seconds for every track."""
+
+    ticks: tuple[int, ...]
+    seconds_at: tuple[float, ...]
+    seconds_per_tick: tuple[float, ...]
+
+    @classmethod
+    def build(cls, changes: list[tuple[int, int]], ticks_per_quarter: int) -> "TempoMap":
+        """Merge tempo events from all tracks. 120 bpm applies until the first event."""
+        by_tick = {0: DEFAULT_TEMPO_US}
+        for tick, tempo_us in sorted(changes, key=_first):
+            by_tick[tick] = tempo_us
+        ticks: list[int] = []
+        seconds_at: list[float] = []
+        rates: list[float] = []
+        elapsed = 0.0
+        for tick, tempo_us in by_tick.items():
+            if ticks:
+                elapsed += (tick - ticks[-1]) * rates[-1]
+            ticks.append(tick)
+            seconds_at.append(elapsed)
+            rates.append(tempo_us / 1_000_000.0 / float(ticks_per_quarter))
+        return cls(tuple(ticks), tuple(seconds_at), tuple(rates))
+
+    def seconds(self, tick: int) -> float:
+        """Absolute time in seconds of an absolute tick."""
+        index = bisect.bisect_right(self.ticks, tick) - 1
+        return self.seconds_at[index] + (tick - self.ticks[index]) * self.seconds_per_tick[index]
+
+
 def parse_midi(data: bytes) -> list[MidiNote]:
-    """Read note-on/note-off events from a Standard MIDI file."""
+    """Read notes from a Standard MIDI file, timed by one tempo map shared by all tracks.
+
+    Type-1 files keep their tempo events in track 0 and their notes in later tracks,
+    so tempo must be collected across every track before ticks become seconds.
+    """
     if data[:4] != b"MThd":
         raise ValueError("not a MIDI file")
     header_len = struct.unpack(">I", data[4:8])[0]
     _fmt, track_count, division = struct.unpack(">HHH", data[8 : 8 + header_len])
     if division & 0x8000:
         raise ValueError("SMPTE MIDI division is not supported")
-    cursor = 8 + header_len
-    notes: list[MidiNote] = []
-    for _track_index in range(track_count):
-        if data[cursor : cursor + 4] != b"MTrk":
-            raise ValueError("missing MIDI track")
-        cursor += 4
-        track_len = struct.unpack(">I", data[cursor : cursor + 4])[0]
-        cursor += 4
-        track_end = cursor + track_len
-        notes.extend(_parse_track(data[cursor:track_end], division))
-        cursor = track_end
-    return notes
+    tick_notes: list[TickNote] = []
+    tempo_changes: list[tuple[int, int]] = []
+    for track in _split_tracks(data, 8 + header_len, track_count):
+        notes, tempos = _parse_track(track)
+        tick_notes.extend(notes)
+        tempo_changes.extend(tempos)
+    tempo_map = TempoMap.build(tempo_changes, division)
+    return [_note_in_seconds(note, tempo_map) for note in tick_notes]
 
 
 def render_notes(notes: list[MidiNote], sample_rate: int) -> np.ndarray:
@@ -72,52 +115,71 @@ def render_midi_file(source: Path, dest: Path, sample_rate: int) -> float:
     return len(samples) / float(sample_rate)
 
 
-def _parse_track(track: bytes, ticks_per_quarter: int) -> list[MidiNote]:
+def _split_tracks(data: bytes, cursor: int, track_count: int) -> list[bytes]:
+    tracks: list[bytes] = []
+    for _track_index in range(track_count):
+        if data[cursor : cursor + 4] != b"MTrk":
+            raise ValueError("missing MIDI track")
+        track_len = struct.unpack(">I", data[cursor + 4 : cursor + 8])[0]
+        tracks.append(data[cursor + 8 : cursor + 8 + track_len])
+        cursor += 8 + track_len
+    return tracks
+
+
+def _parse_track(track: bytes) -> tuple[list[TickNote], list[tuple[int, int]]]:
+    """Notes and tempo changes of one track, both timed in absolute ticks."""
     cursor = 0
-    tempo_us = DEFAULT_TEMPO_US
-    seconds_per_tick = tempo_us / 1_000_000.0 / float(ticks_per_quarter)
+    tick = 0
     running: int | None = None
-    open_notes: dict[int, tuple[float, int]] = {}
-    notes: list[MidiNote] = []
-    elapsed_s = 0.0
+    open_notes: dict[int, tuple[int, int]] = {}
+    notes: list[TickNote] = []
+    tempos: list[tuple[int, int]] = []
     while cursor < len(track):
         delta, cursor = _read_varlen(track, cursor)
-        elapsed_s += delta * seconds_per_tick
+        tick += delta
         status_byte = track[cursor]
         if status_byte & 0x80:
             cursor += 1
             running = status_byte
         status = status_byte if status_byte & 0x80 else (running if running is not None else 0)
         if status == 0xFF:
-            cursor, tempo_us = _read_meta(track, cursor, tempo_us)
-            seconds_per_tick = tempo_us / 1_000_000.0 / float(ticks_per_quarter)
+            cursor, tempo_us = _read_meta(track, cursor)
+            if tempo_us is not None:
+                tempos.append((tick, tempo_us))
             continue
         if status in (0xF0, 0xF7):
             length, cursor = _read_varlen(track, cursor)
             cursor += length
             continue
-        event = status & 0xF0
-        cursor = _consume_channel_event(track, cursor, event, status, elapsed_s, open_notes, notes)
-    for pitch, (start_s, velocity) in open_notes.items():
-        notes.append(MidiNote(start_s, elapsed_s, pitch, velocity))
-    return notes
+        cursor = _consume_channel_event(track, cursor, status, tick, open_notes, notes)
+    for pitch, (start_tick, velocity) in open_notes.items():
+        notes.append(TickNote(start_tick, tick, pitch, velocity))
+    return notes, tempos
+
+
+def _note_in_seconds(note: TickNote, tempo_map: TempoMap) -> MidiNote:
+    return MidiNote(
+        tempo_map.seconds(note.start_tick),
+        tempo_map.seconds(note.end_tick),
+        note.pitch,
+        note.velocity,
+    )
 
 
 def _consume_channel_event(
     track: bytes,
     cursor: int,
-    event: int,
     status: int,
-    elapsed_s: float,
-    open_notes: dict[int, tuple[float, int]],
-    notes: list[MidiNote],
+    tick: int,
+    open_notes: dict[int, tuple[int, int]],
+    notes: list[TickNote],
 ) -> int:
+    event = status & 0xF0
     if event in (0x80, 0x90):
         pitch = track[cursor]
         velocity = track[cursor + 1]
-        cursor += 2
-        _apply_note(event, pitch, velocity, elapsed_s, open_notes, notes)
-        return cursor
+        _apply_note(event, pitch, velocity, tick, open_notes, notes)
+        return cursor + 2
     if event in (0xA0, 0xB0, 0xE0):
         return cursor + 2
     if event in (0xC0, 0xD0):
@@ -129,30 +191,35 @@ def _apply_note(
     event: int,
     pitch: int,
     velocity: int,
-    elapsed_s: float,
-    open_notes: dict[int, tuple[float, int]],
-    notes: list[MidiNote],
+    tick: int,
+    open_notes: dict[int, tuple[int, int]],
+    notes: list[TickNote],
 ) -> None:
     note_off = event == 0x80 or velocity == 0
-    if note_off:
-        started = open_notes.pop(pitch, None)
-        if started is None:
-            return
-        start_s, start_velocity = started
-        notes.append(MidiNote(start_s, max(elapsed_s, start_s), pitch, start_velocity))
+    if not note_off:
+        open_notes[pitch] = (tick, velocity)
         return
-    open_notes[pitch] = (elapsed_s, velocity)
+    started = open_notes.pop(pitch, None)
+    if started is None:
+        return
+    start_tick, start_velocity = started
+    notes.append(TickNote(start_tick, max(tick, start_tick), pitch, start_velocity))
 
 
-def _read_meta(track: bytes, cursor: int, tempo_us: int) -> tuple[int, int]:
+def _read_meta(track: bytes, cursor: int) -> tuple[int, int | None]:
+    """Skip one meta event. Returns the tempo in microseconds when it is a set-tempo."""
     meta_type = track[cursor]
     cursor += 1
     length, cursor = _read_varlen(track, cursor)
     payload = track[cursor : cursor + length]
     cursor += length
-    if meta_type == 0x51 and len(payload) == 3:
-        tempo_us = (payload[0] << 16) | (payload[1] << 8) | payload[2]
-    return cursor, tempo_us
+    if meta_type != 0x51 or len(payload) != 3:
+        return cursor, None
+    return cursor, (payload[0] << 16) | (payload[1] << 8) | payload[2]
+
+
+def _first(item: tuple[int, int]) -> int:
+    return item[0]
 
 
 def _read_varlen(data: bytes, cursor: int) -> tuple[int, int]:
