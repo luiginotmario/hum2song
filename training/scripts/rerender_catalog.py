@@ -73,7 +73,7 @@ def _durations(root: Path, jobs: list[tuple[str, str, str]]) -> dict[str, float]
 
 def _back_up(root: Path, groups: list[str], backup: Path) -> None:
     """Move catalog folders (same disk, instant) and copy both manifests."""
-    backup.mkdir(parents=True, exist_ok=False)
+    (backup / "catalog").mkdir(parents=True, exist_ok=False)
     for group in groups:
         shutil.move(str(root / "catalog" / group), str(backup / "catalog" / group))
     for name in ("pairs_real.jsonl", "songs.jsonl"):
