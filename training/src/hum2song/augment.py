@@ -5,6 +5,7 @@ keeps the pitch. Both run through one resample plus one phase-vocoder pass.
 Codec round-trip runs only when ffmpeg exists.
 """
 
+import os
 import shutil
 import subprocess
 import tempfile
@@ -24,6 +25,13 @@ PV_WINDOW_GAIN = float(np.sum(PV_WINDOW**2) / PV_HOP)
 PV_BIN_ADVANCE = 2.0 * np.pi * PV_HOP * np.arange(PV_FFT // 2 + 1) / PV_FFT
 UNIT_TOLERANCE = 1.0e-3
 FFMPEG_THREADS = "1"
+# Distro ffmpeg links OpenBLAS and libgomp, which start one spinning thread per core
+# at launch. Without these limits each call burned about 1.7 CPU-seconds, not 0.1.
+SINGLE_THREAD_ENV = {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+}
 
 
 def augment_wave(
@@ -97,6 +105,11 @@ def ffmpeg_command(ffmpeg: str, source: Path, dest: Path, *codec_args: str) -> l
         *codec_args,
         str(dest),
     ]
+
+
+def ffmpeg_env() -> dict[str, str]:
+    """The current environment with OpenMP and BLAS thread pools capped at one thread."""
+    return {**os.environ, **SINGLE_THREAD_ENV}
 
 
 def draw_semitones(rng: np.random.Generator, config) -> float:
@@ -217,7 +230,7 @@ def _codec(samples: np.ndarray, sample_rate: int) -> np.ndarray:
 
 def _run(command: list[str]) -> bool:
     try:
-        result = subprocess.run(command, check=False, capture_output=True)
+        result = subprocess.run(command, check=False, capture_output=True, env=ffmpeg_env())
     except OSError:
         return False
     return result.returncode == 0

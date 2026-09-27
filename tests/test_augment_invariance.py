@@ -8,6 +8,7 @@ from hum2song.augment import (
     draw_semitones,
     draw_stretch,
     ffmpeg_command,
+    ffmpeg_env,
     phase_vocoder_stretch,
     transpose_and_stretch,
 )
@@ -63,3 +64,10 @@ def test_ffmpeg_runs_single_threaded() -> None:
     command = ffmpeg_command("ffmpeg", Path("in.wav"), Path("out.opus"), "-c:a", "libopus")
     assert command.count("-threads") == 2
     assert command[command.index("-threads") + 1] == "1"
+
+
+def test_ffmpeg_env_caps_openmp_and_blas_threads() -> None:
+    env = ffmpeg_env()
+    assert env["OMP_NUM_THREADS"] == "1"
+    assert env["OPENBLAS_NUM_THREADS"] == "1"
+    assert "PATH" in env
