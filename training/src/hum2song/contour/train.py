@@ -56,6 +56,15 @@ def build_model(config: ContourConfig) -> ContourEncoder:
     )
 
 
+def load_checkpoint(path: Path, device: torch.device) -> tuple[ContourEncoder, ContourConfig, int]:
+    """Model in eval mode on `device`, its config, and the step it was saved at."""
+    payload = torch.load(path, map_location="cpu", weights_only=False)
+    config = ContourConfig(**payload["config"])
+    model = build_model(config)
+    model.load_state_dict(payload["model"])
+    return model.to(device).eval(), config, int(payload["step"])
+
+
 def augment_spec(config: ContourConfig) -> ContourAugment:
     return ContourAugment(
         stretch_min=config.stretch_min,

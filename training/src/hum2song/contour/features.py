@@ -46,10 +46,14 @@ def salience_to_f0(salience: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     return f0.astype(np.float32), salience.max(axis=1).astype(np.float32)
 
 
-def rmvpe_contour(track: np.ndarray) -> np.ndarray:
-    """(2, frames) RMVPE F0 and confidence at 10 ms -> cleaned contour at FRAME_S."""
+def rmvpe_contour(track: np.ndarray, f0_max_hz: float = F0_MAX_HZ) -> np.ndarray:
+    """(2, frames) F0 and confidence at 10 ms -> cleaned contour at FRAME_S.
+
+    Also takes spectral-peak whistle tracks (whistle.py), whose confidence is 0 or 1 and
+    whose F0 can exceed 2 kHz, so the upper limit is a parameter.
+    """
     f0, confidence = track[0].astype(np.float64), track[1].astype(np.float64)
-    voiced = (confidence >= CONFIDENCE_THRESHOLD) & (f0 > F0_MIN_HZ) & (f0 < F0_MAX_HZ)
+    voiced = (confidence >= CONFIDENCE_THRESHOLD) & (f0 > F0_MIN_HZ) & (f0 < f0_max_hz)
     semitones = np.where(voiced, hz_to_semitones(f0), np.nan)
     return clean_contour(decimate(semitones, DECIMATE))
 

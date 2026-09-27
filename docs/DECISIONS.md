@@ -324,3 +324,57 @@ Synthetic pairs gave no clear gain (+0.007 on `start10` top-10, −0.002 on `any
 - A harder validation set exists. Then select checkpoints and tune on it, never on MIR-QBSH.
 - Queries are no longer clean monophonic hums (noisy phones, whistles, real songs as references). Then test MERT fusion, spectral-peak F0 for whistles (D-007), and a vocal-melody extractor on the reference side.
 - The official MIREX distractor list turns up. Then rerun `eval_contour.py` with it.
+
+---
+
+## D-013 · Whistle queries: spectral-peak F0 into the contour encoder, measured on MLEnd without melody references
+**Date:** 2026-09-27
+
+**Context.** D-011 and D-012 list whistles as untested. D-007 found that RMVPE loses whistles, because they sit above its range (about 2 kHz and up), and that a spectral peak with a tonal-ratio gate tracks them. Whistles sit about +36 semitones above hums, and the encoder's median subtraction should absorb that offset. We needed whistle queries with something to match against:
+- **MLEnd Hums and Whistles:** 8 songs, 4,804 hums and 1,797 whistles from about 200 people, but no reference melodies or song audio.
+- **MTG-QBH:** 118 sung and hummed queries only. The song audio is not distributed.
+- **CHAD:** hums only. Its originals are YouTube IDs.
+- **MIR-QBSH and HumTrans:** hums and singing only.
+We found no public whistle set with matching references.
+
+**Options.**
+- **Queries against MIDI we transcribe ourselves.** We would write the 8 MLEnd melodies by hand. That is subjective, and we might fit the transcription to the data.
+- **Query-by-example on MLEnd.** Each song's reference is built from other people's clips. The query's own performer is always left out.
+- **Synthesized whistles from HumTrans MIDI.** These test the F0 tracker, not real whistling.
+
+**Decision.**
+- **Protocol: query-by-example on MLEnd** (`contour/example_eval.py`, `scripts/eval_mlend.py`). It is an honest test built only from existing material, and it is labelled as a closed 8-way test, not QbH against melodies. Chance top-1 is 0.125.
+- **Song scores.** A song's score is cosine to the mean embedding of its reference clips (`centroid`, primary) or the best single clip (`max`). We report both. No thresholds or settings were tuned on MLEnd. The model is the D-012 headline encoder (`last.pt`, 3 seeds), unchanged.
+- **Whistle F0 trackers** (`contour/trackers.py`, `contour/whistle.py`, `extract_f0.py --method`):
+  - `peak`: D-007's spectral peak, 200 to 6000 Hz, 6 dB tonal gate, 32 kHz.
+  - `rmvpe_half`: RMVPE on audio played at half speed with F0 doubled, D-007's "RMVPE-fix".
+  - `rmvpe`: plain RMVPE, shown for contrast.
+  - Contours get the same cleanup as hums. `rmvpe_contour` now takes the upper F0 limit as a parameter.
+
+**Results.** MLEnd, all clips, mean of seeds 0 to 2 (sd ≤ 0.015). JSON files are `docs/paper/results/contour/mlend_whistle_hum_s*.json`.
+
+| Query → references (centroid) | top-1 | top-3 | MRR |
+|---|---|---|---|
+| hum (RMVPE) → others' hums | 0.873 | 0.955 | 0.918 |
+| hum → others' whistles (peak) | 0.858 | 0.948 | 0.909 |
+| **whistle (peak) → others' hums** | **0.625** | **0.805** | **0.740** |
+| whistle (peak) → others' whistles | 0.652 | 0.826 | 0.761 |
+| whistle (RMVPE-half) → others' hums | 0.570 | 0.765 | 0.699 |
+| whistle (plain RMVPE) → others' hums | 0.156 | 0.424 | 0.372 |
+
+With `max` song scores the numbers are within 0.03 of these (e.g. hum → hums 0.895, whistle (peak) → hums 0.642).
+
+Diagnostics:
+- **Short voiced tracks.** Clips with under 1 s voiced: 2 hums, 33 whistles (peak), 94 (RMVPE-half), 425 (plain RMVPE).
+- **Pitch offset.** Median whistle pitch is 88.9 vs 54.9 for hums, +34 semitones, close to D-007's +36. Median subtraction removes it.
+- **Compressed range.** The 5 to 95 % pitch range of a whistle is 6.5 semitones against 9.7 for a hum of the same songs. People whistle a compressed or octave-folded version of the tune. The encoder was trained on hums and has never seen that.
+
+**Trade-off / what we gave up.**
+- **Not QbH against melodies.** References are other people's performances, and the task is 8-way. The numbers compare query types with each other. They are not comparable to MIR-QBSH top-10.
+- **Whistles are much weaker than hums.** Top-1 drops by 0.25 (0.873 → 0.625) on the same songs, same people and same model. Spectral peak beats RMVPE-half by 0.055 and plain RMVPE by 0.47, which confirms D-007. Part of the gap is the tracker, part is how people whistle (compressed range, more dropouts).
+- **No whistle training data.** The encoder has never seen a whistle contour. Training on whistles (e.g. MLEnd with a people-disjoint split) would help, but it would use up the only whistle test set.
+
+**Revisit when.**
+- A whistle set with melody references appears, or CHAD-style originals become usable. Then rerun as real QbH.
+- We add whistle-like augmentation (interval compression, octave folding, higher dropout) to training. Measure it on MLEnd without changing this protocol.
+- We need whistle training data. Then split MLEnd by performer first and keep a fixed test half.

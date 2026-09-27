@@ -8,9 +8,8 @@ from pathlib import Path
 
 import torch
 
-from hum2song.contour.config import ContourConfig
 from hum2song.contour.evaluate import distractor_contours, evaluate, mir_sets
-from hum2song.contour.train import build_model, load_contours, select, validation_sets
+from hum2song.contour.train import load_checkpoint, load_contours, select, validation_sets
 from hum2song.logutil import configure_logging
 from hum2song.manifest import read_pairs
 
@@ -23,14 +22,6 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--distractors", type=Path, default=None, help="Folder of distractor MIDIs")
     parser.add_argument("--distractor-count", type=int, default=2000)
     return parser.parse_args(argv)
-
-
-def load_checkpoint(path: Path, device: torch.device):
-    payload = torch.load(path, map_location="cpu", weights_only=False)
-    config = ContourConfig(**payload["config"])
-    model = build_model(config)
-    model.load_state_dict(payload["model"])
-    return model.to(device).eval(), config, int(payload["step"])
 
 
 def main(argv: list[str] | None = None) -> None:
