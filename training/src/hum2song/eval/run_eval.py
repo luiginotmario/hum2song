@@ -8,6 +8,7 @@ import numpy as np
 import torch
 
 from hum2song.audio import fit_length, load_audio
+from hum2song.augment import transpose_and_stretch
 from hum2song.config import EvalConfig
 from hum2song.eval.metrics import (
     CHAD_TOP10,
@@ -25,6 +26,14 @@ from hum2song.logutil import get_logger
 from hum2song.manifest import QTYPES, PairRecord, read_jsonl, read_pairs
 
 LOGGER = get_logger(__name__)
+EXCLUDED_DISTRACTOR_SOURCES = frozenset({"humtrans"})
+TARGETS_ONLY_NOTE = (
+    "targets_only ranks each query against the set's own reference songs and nothing else "
+    "(48 songs for MIR-QBSH). It is always reported, and it is the headline number when no "
+    "distractors are available. HumTrans renders are never used as distractors: they are "
+    "the training distribution, share its synthesis, and are locked to HumTrans hums. "
+    "Each reference is one clip, its first crop_seconds; songs are not chunked in this eval."
+)
 
 
 def evaluate_pairs(model: torch.nn.Module, pairs: list[PairRecord], config: EvalConfig) -> dict:
@@ -61,7 +70,7 @@ def _evaluate_group(
     if not pairs or not ref_paths:
         reason = _skip_reason(set_name) if not ref_paths else "no test queries"
         LOGGER.warning(reason)
-        return _report_body(
+        body = _report_body(
             set_name,
             retrieval_scores([]),
             _empty_per_qtype(),
@@ -71,17 +80,19 @@ def _evaluate_group(
             skipped=True,
             skip_reason=reason,
         )
+        return {**body, **_targets_only_block(retrieval_scores([]), distractor_count)}
     query_paths = [pair.query_path for pair in pairs]
     query_ids = [pair.song_id for pair in pairs]
     query_types = [pair.qtype for pair in pairs]
     query_emb = _embed_paths(model, query_paths, config, device)
     ref_emb = _embed_paths(model, ref_paths, config, device)
     ranks = ranks_for_queries(query_emb, query_ids, ref_emb, ref_ids)
+    target_ranks = _targets_only_ranks(query_emb, query_ids, ref_emb, ref_ids, targets)
     per_qtype = {
         qtype: retrieval_scores(grouped).as_dict()
         for qtype, grouped in _ranks_by_qtype(ranks, query_types).items()
     }
-    return _report_body(
+    body = _report_body(
         set_name,
         retrieval_scores(ranks),
         per_qtype,
@@ -91,6 +102,29 @@ def _evaluate_group(
         skipped=False,
         skip_reason=None,
     )
+    return {**body, **_targets_only_block(retrieval_scores(target_ranks), distractor_count)}
+
+
+def _targets_only_ranks(
+    query_emb: np.ndarray,
+    query_ids: list[str],
+    ref_emb: np.ndarray,
+    ref_ids: list[str],
+    targets: set[str],
+) -> list[int]:
+    keep = [index for index, song_id in enumerate(ref_ids) if song_id in targets]
+    return ranks_for_queries(query_emb, query_ids, ref_emb[keep], [ref_ids[i] for i in keep])
+
+
+def _targets_only_block(scores: RetrievalScores, distractor_count: int) -> dict:
+    """The no-distractor line, and which line is the headline number."""
+    headline = "metrics" if distractor_count > 0 else "targets_only"
+    LOGGER.info("targets-only %s (headline: %s)", scores.as_dict(), headline)
+    return {
+        "targets_only": scores.as_dict(),
+        "headline": headline,
+        "targets_only_note": TARGETS_ONLY_NOTE,
+    }
 
 
 def _report_body(
@@ -162,20 +196,41 @@ def _embed_paths(model, paths: list[str], config: EvalConfig, device: torch.devi
 
 
 def _load_waves(paths: list[str], config: EvalConfig) -> list[torch.Tensor]:
-    target = max(int(round(config.crop_seconds * config.sample_rate)), 1)
-    root = str(config.resolved_data_root())
-    jobs = [(path, root, config.sample_rate, target) for path in paths]
-    workers = config.resolved_num_workers()
+    return load_fitted_waves(
+        paths,
+        config.resolved_data_root(),
+        config.sample_rate,
+        config.crop_seconds,
+        config.resolved_num_workers(),
+    )
+
+
+def load_fitted_waves(
+    paths: list[str],
+    data_root: Path,
+    sample_rate: int,
+    crop_seconds: float,
+    workers: int,
+    semitones: float = 0.0,
+) -> list[torch.Tensor]:
+    """Load clips as fixed-length eval crops (from the start, looped when short).
+
+    `semitones` transposes each clip first, for key-robustness checks.
+    """
+    target = max(int(round(crop_seconds * sample_rate)), 1)
+    jobs = [(path, str(data_root), sample_rate, target, semitones) for path in paths]
     if workers <= 1 or len(jobs) <= 1:
         return [_load_fitted_wave(job) for job in jobs]
     with ThreadPoolExecutor(max_workers=workers) as pool:
         return list(pool.map(_load_fitted_wave, jobs))
 
 
-def _load_fitted_wave(job: tuple[str, str, int, int]) -> torch.Tensor:
-    path, root, sample_rate, target = job
+def _load_fitted_wave(job: tuple[str, str, int, int, float]) -> torch.Tensor:
+    path, root, sample_rate, target, semitones = job
     rng = np.random.default_rng(0)
     audio = load_audio(Path(root) / path, sample_rate, trim=True)
+    if semitones:
+        audio = transpose_and_stretch(audio, semitones, 1.0)
     return torch.from_numpy(fit_length(audio, target, rng, random_start=False))
 
 
@@ -214,11 +269,16 @@ def _distractors(config: EvalConfig, target_ids: set[str]) -> list[tuple[str, st
     for row in read_jsonl(songs_path):
         song_id = row.get("song_id")
         audio_path = row.get("audio_path")
-        if not song_id or not audio_path or song_id in target_ids:
+        if not song_id or not audio_path or song_id in target_ids or _excluded_source(row):
             continue
         extras.append((str(song_id), str(audio_path)))
     extras = sorted(extras)
     return extras[: config.distractors]
+
+
+def _excluded_source(row: dict) -> bool:
+    source = row.get("source") or str(row.get("song_id", "")).split(":", 1)[0]
+    return source in EXCLUDED_DISTRACTOR_SOURCES
 
 
 def _select_pairs(pairs: list[PairRecord], set_names: list[str]) -> list[PairRecord]:

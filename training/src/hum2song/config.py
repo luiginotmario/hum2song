@@ -24,6 +24,8 @@ class TrainConfig:
     query_min_seconds: float = 3.0
     query_max_seconds: float = 12.0
     song_jitter_s: float = 1.0
+    song_offset_max_s: float = 0.0
+    cross_take_prob: float = 0.0
     batch_size: int = 32
     grad_accum_steps: int = 1
     steps: int = 20000
@@ -58,6 +60,9 @@ class TrainConfig:
     aug_rir: bool = True
     aug_codec: bool = False
     pitch_semitones: float = 4.0
+    pitch_prob: float = 0.5
+    time_prob: float = 0.5
+    octave_jump_prob: float = 0.0
     time_stretch_min: float = 0.8
     time_stretch_max: float = 1.25
     snr_min_db: float = 3.0
@@ -65,7 +70,21 @@ class TrainConfig:
     gain_db: float = 6.0
     limit: int | None = None
     resume: str | None = None
+    init_weights: str | None = None
+    val_every: int = 0
+    val_batch_size: int = 64
+    val_shift_semitones: float = 7.0
     dry_run: bool = False
+
+    @property
+    def aug_pitch_prob(self) -> float:
+        """Chance that the query is transposed. Zero when aug_pitch is off."""
+        return self.pitch_prob if self.aug_pitch else 0.0
+
+    @property
+    def aug_time_prob(self) -> float:
+        """Chance that the query is time-stretched. Zero when aug_time is off."""
+        return self.time_prob if self.aug_time else 0.0
 
     def resolved_manifest(self) -> Path:
         """pairs_real.jsonl under the data root when manifest is omitted."""

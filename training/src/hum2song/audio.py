@@ -56,17 +56,20 @@ def trim_silence(
     if len(samples) == 0:
         return samples.astype(np.float32, copy=False)
     frame = max(int(sample_rate * frame_ms / 1000.0), 1)
-    frame_count = int(np.ceil(len(samples) / frame))
-    keep = np.zeros(frame_count, dtype=bool)
-    for index in range(frame_count):
-        start = index * frame
-        chunk = samples[start : start + frame]
-        keep[index] = float(np.max(np.abs(chunk))) >= threshold
+    keep = _frame_peaks(samples, frame) >= threshold
     if not bool(np.any(keep)):
         return samples.astype(np.float32, copy=False)
     first = int(np.argmax(keep))
     last = int(len(keep) - 1 - np.argmax(keep[::-1]))
     return samples[first * frame : min((last + 1) * frame, len(samples))].astype(np.float32)
+
+
+def _frame_peaks(samples: np.ndarray, frame: int) -> np.ndarray:
+    """Peak absolute value of each frame. The last frame is zero-padded."""
+    frame_count = int(np.ceil(len(samples) / frame))
+    padded = np.zeros(frame_count * frame, dtype=np.float32)
+    padded[: len(samples)] = np.abs(samples)
+    return padded.reshape(frame_count, frame).max(axis=1)
 
 
 def to_mono(samples: np.ndarray) -> np.ndarray:

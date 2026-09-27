@@ -2,6 +2,7 @@
 
 import math
 import subprocess
+import time
 from collections.abc import Iterator
 from contextlib import nullcontext
 from dataclasses import asdict
@@ -11,7 +12,8 @@ import torch
 from torch.utils.data import DataLoader
 
 from hum2song.config import TrainConfig, dump_config
-from hum2song.data.dataset import PairDataset, collate_pairs
+from hum2song.data.dataset import PairDataset, collate_pairs, worker_init
+from hum2song.eval.validation import Validator
 from hum2song.logutil import get_logger
 from hum2song.losses import (
     batch_ece,
@@ -47,6 +49,8 @@ def run_training(config: TrainConfig, model: torch.nn.Module, tracker=None) -> P
         _param_groups(model, config),
         weight_decay=config.weight_decay,
     )
+    if config.init_weights:
+        _load_weights(Path(config.init_weights), model)
     start = 0
     if config.resume:
         start = _load_resume(Path(config.resume), model, optimizer)
@@ -64,8 +68,14 @@ def run_training(config: TrainConfig, model: torch.nn.Module, tracker=None) -> P
     manifest_sha = file_sha256(manifest) if manifest.exists() else ""
     active = tracker or NullTracker()
     batches = _cycle(loader)
+    validator = _make_validator(config)
+    autocast = _autocast_factory(device, use_amp, amp_dtype)
     current_top: int | None = None
+    clock = _StepClock(start)
     for step in range(start, end):
+        if _should_validate(step, start, end, config):
+            active.log(validator.run(model, device, autocast), step)
+            clock.restart(step)
         n_top = _trainable_top(step, config)
         if n_top != current_top:
             model.set_trainable_top(n_top)
@@ -85,6 +95,7 @@ def run_training(config: TrainConfig, model: torch.nn.Module, tracker=None) -> P
         completed = step + 1
         averaged = _average(metric_rows)
         if completed % config.log_every == 0 or completed == end:
+            averaged["steps_per_sec"] = clock.rate(completed)
             LOGGER.info("step %s %s", completed, _format_metrics(averaged))
             active.log(averaged, completed)
         if completed % config.save_every == 0 or completed == end:
@@ -98,8 +109,45 @@ def run_training(config: TrainConfig, model: torch.nn.Module, tracker=None) -> P
                 manifest_sha,
                 n_top,
             )
+    if _should_validate(end, start, end, config):
+        active.log(validator.run(model, device, autocast), end)
     active.finish()
     return ckpt_dir / "last.pt"
+
+
+class _StepClock:
+    """Optimizer steps per second since the previous log line."""
+
+    def __init__(self, step: int) -> None:
+        self.restart(step)
+
+    def restart(self, step: int) -> None:
+        """Start timing from `step`, e.g. after a validation pass."""
+        self.step = step
+        self.time = time.perf_counter()
+
+    def rate(self, step: int) -> float:
+        now = time.perf_counter()
+        elapsed = max(now - self.time, 1.0e-9)
+        value = (step - self.step) / elapsed
+        self.step = step
+        self.time = now
+        return value
+
+
+def _make_validator(config: TrainConfig) -> Validator | None:
+    if config.val_every <= 0:
+        return None
+    records = read_pairs(config.resolved_manifest())
+    workers = config.resolved_num_workers()
+    return Validator(records, config.resolved_data_root(), config, workers)
+
+
+def _should_validate(step: int, start: int, end: int, config: TrainConfig) -> bool:
+    """Before the first step of a run, every val_every steps, and after the last step."""
+    if config.val_every <= 0 or config.dry_run:
+        return False
+    return step in (start, end) or step % config.val_every == 0
 
 
 def _make_loader(dataset, config: TrainConfig, device: torch.device) -> DataLoader:
@@ -114,6 +162,7 @@ def _make_loader(dataset, config: TrainConfig, device: torch.device) -> DataLoad
     }
     if workers > 0:
         kwargs["persistent_workers"] = True
+        kwargs["worker_init_fn"] = worker_init
     LOGGER.info(
         "data loader workers %s pin_memory %s persistent_workers %s",
         workers,
@@ -264,6 +313,13 @@ def _amp_settings(device: torch.device, precision: str) -> tuple[bool, torch.dty
     return True, torch.bfloat16
 
 
+def _autocast_factory(device: torch.device, use_amp: bool, amp_dtype):
+    def factory():
+        return _autocast(device, use_amp, amp_dtype)
+
+    return factory
+
+
 def _autocast(device: torch.device, use_amp: bool, amp_dtype):
     if not use_amp or amp_dtype is None:
         return nullcontext()
@@ -311,6 +367,13 @@ def _torch_save(path: Path, payload: dict) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     torch.save(payload, temporary)
     temporary.replace(path)
+
+
+def _load_weights(path: Path, model) -> None:
+    """Start from a checkpoint's model weights only: fresh optimizer, step 0, new schedule."""
+    payload = torch.load(path, map_location="cpu", weights_only=False)
+    model.load_state_dict(payload["model"])
+    LOGGER.info("initialized weights from %s (trained %s steps)", path, payload.get("step"))
 
 
 def _load_resume(path: Path, model, optimizer) -> int:

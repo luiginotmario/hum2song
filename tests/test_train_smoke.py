@@ -6,7 +6,7 @@ import pytest
 import torch
 
 from hum2song.config import TrainConfig
-from hum2song.manifest import PairRecord, write_pairs
+from hum2song.manifest import PairRecord, read_pairs, write_pairs
 from hum2song.model import RetrievalModel, TinyEncoder
 from hum2song.train_loop import run_training
 from tests.support import write_tone
@@ -88,6 +88,65 @@ def test_training_loop_learns_a_step_and_resumes(tmp_path: Path) -> None:
     payload = torch.load(resumed, map_location="cpu", weights_only=False)
     assert payload["step"] == 2
     assert torch.isfinite(torch.tensor(payload["step"]))
+
+
+def test_init_weights_restarts_at_step_zero(tmp_path: Path) -> None:
+    manifest = _manifest(tmp_path)
+    first = _model()
+    last = run_training(_config(tmp_path, manifest, steps=1), first)
+    config = _config(tmp_path, manifest, steps=1)
+    config.init_weights = str(last)
+    config.ckpt_dir = str(tmp_path / "ckpt2")
+    second = _model()
+    before = {key: value.clone() for key, value in first.state_dict().items()}
+    finished = run_training(config, second)
+    payload = torch.load(finished, map_location="cpu", weights_only=False)
+    assert payload["step"] == 1
+    moved = [key for key, value in payload["model"].items() if not torch.equal(value, before[key])]
+    assert moved
+
+
+def _add_val_rows(root: Path, manifest: Path) -> None:
+    records = read_pairs(manifest)
+    for index, song in enumerate(("gamma", "delta")):
+        write_tone(root / f"queries/{song}.wav", 500.0 + index * 90)
+        write_tone(root / f"catalog/{song}.wav", 500.0 + index * 90)
+        records.append(
+            PairRecord(
+                pair_id=f"fake:val{index}",
+                query_path=f"queries/{song}.wav",
+                qtype="hum",
+                qsource="real",
+                song_id=f"fake:{song}",
+                song_start_s=0.0,
+                song_dur_s=0.3,
+                split="val",
+                group="humtrans",
+                song_path=f"catalog/{song}.wav",
+                title=song,
+            )
+        )
+    write_pairs(manifest, records)
+
+
+def test_validation_runs_during_training(tmp_path: Path) -> None:
+    manifest = _manifest(tmp_path)
+    _add_val_rows(tmp_path, manifest)
+    config = _config(tmp_path, manifest, steps=2)
+    config.val_every = 1
+    logged: list[tuple[int, dict]] = []
+
+    class _Recorder:
+        def log(self, metrics: dict, step: int) -> None:
+            logged.append((step, metrics))
+
+        def finish(self) -> None:
+            return
+
+    run_training(config, _model(), _Recorder())
+    val_steps = [step for step, metrics in logged if any(k.startswith("val/") for k in metrics)]
+    assert val_steps == [0, 1, 2]
+    assert all("steps_per_sec" in m for _s, m in logged if "loss" in m)
 
 
 def test_stage_b_is_rejected(tmp_path: Path) -> None:

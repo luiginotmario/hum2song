@@ -1,0 +1,71 @@
+# Stage A2: continue Stage A with key and tempo invariance (docs/DECISIONS.md D-010).
+# Start from Stage A weights only (fresh optimizer, step 0):
+#   python training/scripts/train.py --config configs/train_stage_a2.yaml \
+#     --init-weights $H2S_DATA/ckpt/stage_a/last.pt
+# Checkpoints go to $H2S_DATA/ckpt/stage_a2/.
+stage: A
+encoder: mert
+mert_name: m-a-p/MERT-v1-95M
+sample_rate: 24000
+crop_seconds: 10.0
+query_min_seconds: 3.0
+query_max_seconds: 12.0
+song_jitter_s: 1.0
+# The reference crop starts up to this many seconds after the aligned start.
+song_offset_max_s: 2.0
+# Chance that the positive is another singer's or take's reference for the same
+# HumTrans segment (same melody and timing, often a whole octave away).
+cross_take_prob: 0.5
+batch_size: 32
+grad_accum_steps: 1
+# 8000 steps, validated every 1000: see D-010 for the plan.
+steps: 8000
+warmup_steps: 300
+lr_head: 0.001
+lr_backbone: 0.00001
+weight_decay: 0.01
+grad_clip: 1.0
+precision: bf16
+# Stage A already trained the top 6 layers, so they train from step 0.
+freeze_steps: 0
+unfreeze_top_layers: 6
+temperature_init: 0.07
+qtype_loss_weight: 0.1
+conf_loss_weight: 0.0
+conf_gamma: 2.0
+proj_dim: 256
+proj_hidden: 512
+seed: 1
+num_workers: null
+log_every: 20
+save_every: 500
+val_every: 1000
+val_batch_size: 64
+val_shift_semitones: 7.0
+manifest: null
+data_root: null
+ckpt_dir: null
+run_name: stage_a2
+augment: true
+aug_pitch: true
+aug_time: true
+aug_noise: true
+aug_gain: true
+aug_eq: true
+aug_rir: true
+aug_codec: true
+# Query transposition: uniform in +-12 semitones, or exactly +-1 octave 25% of the time.
+pitch_semitones: 12.0
+pitch_prob: 0.8
+octave_jump_prob: 0.25
+# Phase-vocoder time-stretch, pitch unchanged. Duration factor, log-uniform.
+time_prob: 0.5
+time_stretch_min: 0.7
+time_stretch_max: 1.4
+snr_min_db: 3.0
+snr_max_db: 30.0
+gain_db: 6.0
+limit: null
+resume: null
+init_weights: null
+dry_run: false

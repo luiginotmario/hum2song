@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+from dataclasses import asdict
 from pathlib import Path
 
 from hum2song.build_model import build_model
@@ -17,7 +18,7 @@ def main(argv: list[str] | None = None) -> None:
     args = _parse_args(sys.argv[1:] if argv is None else argv)
     config = load_train_config(args.config, _overrides(args))
     model = build_model(config)
-    tracker = build_tracker(config.run_name, {"stage": config.stage, "encoder": config.encoder})
+    tracker = build_tracker(config.run_name, asdict(config))
     run_training(config, model, tracker)
 
 
@@ -26,6 +27,11 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--stage", default=None, choices=["A", "B", "C"])
     parser.add_argument("--init", default=None, help="Checkpoint to resume from")
+    parser.add_argument(
+        "--init-weights",
+        default=None,
+        help="Checkpoint whose model weights start a new run (fresh optimizer, step 0)",
+    )
     parser.add_argument("--bs", type=int, default=None)
     parser.add_argument("--steps", type=int, default=None)
     parser.add_argument("--lr-head", type=float, default=None)
@@ -41,6 +47,7 @@ def _overrides(args: argparse.Namespace) -> dict:
     return {
         "stage": args.stage,
         "resume": args.init,
+        "init_weights": args.init_weights,
         "batch_size": args.bs,
         "steps": args.steps,
         "lr_head": args.lr_head,
