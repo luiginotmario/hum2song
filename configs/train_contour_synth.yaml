@@ -1,7 +1,7 @@
-# Key-invariant pitch-contour encoder (docs/DECISIONS.md D-011).
+# Contour encoder plus MIDI-only synthetic pairs from Essen folk songs (docs/DECISIONS.md D-012).
 #   python training/scripts/train_contour.py --config configs/train_contour.yaml
 # Needs RMVPE tracks from training/scripts/extract_f0.py (plain, and --shift 7 for HumTrans val/test).
-run_name: contour
+run_name: contour_synth
 steps: 6000
 batch_size: 256
 lr: 0.0003
@@ -37,7 +37,8 @@ ref_start_jitter_s: 1.0
 ref_extra_min_s: -1.0
 ref_extra_max_s: 3.0
 shift_semitones: 7.0
-# No MIDI-only synthetic pairs in the base config (see train_contour_synth.yaml).
-synthetic_midi_dirs: ""
+# Synthetic pairs (data.SyntheticPairDataset): Essen melodies converted by essen_to_midi.py.
+# The 2,000 files eval_contour.py uses as distractors are always left out of training.
+synthetic_midi_dirs: raw/essen_midi/deutschl,raw/essen_midi/china
 holdout_midi_dir: raw/essen_midi/deutschl
 holdout_count: 2000

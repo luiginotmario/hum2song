@@ -119,12 +119,20 @@ def mir_sets(
     ]
 
 
-def distractor_contours(midi_dir: Path, count: int) -> dict[str, np.ndarray]:
-    """`count` MIDIs spread evenly over the sorted files of midi_dir, keyed distractor:<stem>."""
+def distractor_paths(midi_dir: Path, count: int) -> list[Path]:
+    """`count` MIDIs spread evenly over the sorted files of midi_dir (all when fewer)."""
     paths = sorted(midi_dir.rglob("*.mid"))
-    if count < len(paths):
-        paths = [paths[int(i)] for i in np.linspace(0, len(paths) - 1, count).round()]
-    return {f"distractor:{p.stem}": midi_contour(parse_midi(p.read_bytes())) for p in paths}
+    if count >= len(paths):
+        return paths
+    return [paths[int(i)] for i in np.linspace(0, len(paths) - 1, count).round()]
+
+
+def distractor_contours(midi_dir: Path, count: int) -> dict[str, np.ndarray]:
+    """Contours of distractor_paths(), keyed distractor:<stem>."""
+    return {
+        f"distractor:{path.stem}": midi_contour(parse_midi(path.read_bytes()))
+        for path in distractor_paths(midi_dir, count)
+    }
 
 
 def whole_reference(contour: np.ndarray) -> list[np.ndarray]:

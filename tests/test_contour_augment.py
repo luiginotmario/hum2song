@@ -3,6 +3,7 @@ import numpy as np
 from hum2song.contour.augment import (
     ContourAugment,
     augment_contour,
+    humanize,
     scale_intervals,
     time_warp,
     voicing_gaps,
@@ -41,3 +42,10 @@ def test_augment_is_deterministic_per_seed():
     second = augment_contour(melody(), np.random.default_rng(3), spec, FRAME_S)
     assert np.array_equal(first, second, equal_nan=True)
     assert first.dtype == np.float32
+
+
+def test_humanize_keeps_gaps_and_stays_near_the_notes():
+    contour = melody()
+    human = humanize(contour, np.random.default_rng(1), FRAME_S)
+    assert np.array_equal(np.isnan(human), np.isnan(contour))
+    assert np.nanmax(np.abs(human - contour)) < 2.0

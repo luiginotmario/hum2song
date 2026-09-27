@@ -7,6 +7,7 @@ window is then augmented (tempo, intervals, drift, gaps). Key needs no augmentat
 because features are median-normalized.
 """
 
+import multiprocessing
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -14,7 +15,7 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from hum2song.contour.augment import ContourAugment, augment_contour
+from hum2song.contour.augment import ContourAugment, augment_contour, humanize
 from hum2song.contour.features import (
     FRAME_S,
     contour_features,
@@ -104,6 +105,54 @@ def stretch_nearest(contour: np.ndarray, factor: float) -> np.ndarray:
     return contour[source]
 
 
+def voiced_start(contour: np.ndarray, length: int, rng: np.random.Generator) -> int:
+    """A start whose window is at least MIN_VOICED_FRACTION voiced, if one is found."""
+    last = max(len(contour) - length, 0)
+    start = int(rng.integers(0, last + 1))
+    for _attempt in range(WINDOW_TRIES):
+        if voiced_fraction(contour[start : start + length]) >= MIN_VOICED_FRACTION:
+            return start
+        start = int(rng.integers(0, last + 1))
+    return start
+
+
+def crop_pair(
+    query: np.ndarray, reference: np.ndarray, rng: np.random.Generator, spec: PairWindows
+) -> tuple[np.ndarray, np.ndarray]:
+    """Query window with enough voicing, and the reference window around the same time."""
+    length = seconds_to_frames(rng.uniform(spec.query_min_s, spec.query_max_s))
+    start = voiced_start(query, length, rng)
+    query_crop = query[start : start + length]
+    jitter = rng.uniform(-spec.ref_start_jitter_s, spec.ref_start_jitter_s)
+    ref_start = int(np.clip(start + int(round(jitter / FRAME_S)), 0, max(len(reference) - 1, 0)))
+    extra = int(round(rng.uniform(spec.ref_extra_min_s, spec.ref_extra_max_s) / FRAME_S))
+    ref_length = max(len(query_crop) + extra, seconds_to_frames(1.0))
+    ref_crop = stretch_nearest(
+        reference[ref_start : ref_start + ref_length],
+        float(rng.uniform(spec.ref_stretch_min, spec.ref_stretch_max)),
+    )
+    return trim_unvoiced(query_crop), trim_unvoiced(ref_crop)
+
+
+class EpochCounter:
+    """Epoch number in shared memory, so persistent dataloader workers see each new epoch."""
+
+    def __init__(self) -> None:
+        self._value = multiprocessing.Value("i", 0)
+
+    def get(self) -> int:
+        return int(self._value.value)
+
+    def set(self, epoch: int) -> None:
+        self._value.value = int(epoch)
+
+
+def set_epoch(dataset: Dataset, epoch: int) -> None:
+    """Reseed crops for one dataset or every part of a ConcatDataset."""
+    for part in getattr(dataset, "datasets", [dataset]):
+        part.epoch.set(epoch)
+
+
 class ContourPairDataset(Dataset):
     """Training pairs of (augmented hum window, loosely aligned MIDI window)."""
 
@@ -122,16 +171,16 @@ class ContourPairDataset(Dataset):
         self.augment = augment
         self.windows = windows
         self.seed = seed
-        self.epoch = 0
+        self.epoch = EpochCounter()
 
     def __len__(self) -> int:
         return len(self.records)
 
     def __getitem__(self, index: int) -> dict:
-        rng = np.random.default_rng([self.seed, self.epoch, index])
+        rng = np.random.default_rng([self.seed, self.epoch.get(), index])
         record = self.records[index]
-        query, reference = self.crop_pair(
-            self.queries[record.query_path], self.references[record.song_path], rng
+        query, reference = crop_pair(
+            self.queries[record.query_path], self.references[record.song_path], rng, self.windows
         )
         query = augment_contour(query, rng, self.augment, FRAME_S)
         return {
@@ -140,33 +189,37 @@ class ContourPairDataset(Dataset):
             "song_id": record.song_id,
         }
 
-    def crop_pair(
-        self, query: np.ndarray, reference: np.ndarray, rng: np.random.Generator
-    ) -> tuple[np.ndarray, np.ndarray]:
-        """Hum window with enough voicing, and the MIDI window around the same time."""
-        spec = self.windows
-        length = seconds_to_frames(rng.uniform(spec.query_min_s, spec.query_max_s))
-        start = self.voiced_start(query, length, rng)
-        query_crop = query[start : start + length]
-        jitter = rng.uniform(-spec.ref_start_jitter_s, spec.ref_start_jitter_s)
-        ref_start = start + int(round(jitter / FRAME_S))
-        ref_length = len(query_crop) + int(
-            round(rng.uniform(spec.ref_extra_min_s, spec.ref_extra_max_s) / FRAME_S)
-        )
-        ref_start = int(np.clip(ref_start, 0, max(len(reference) - 1, 0)))
-        ref_crop = reference[ref_start : ref_start + max(ref_length, seconds_to_frames(1.0))]
-        ref_crop = stretch_nearest(
-            ref_crop, float(rng.uniform(spec.ref_stretch_min, spec.ref_stretch_max))
-        )
-        return trim_unvoiced(query_crop), trim_unvoiced(ref_crop)
 
-    @staticmethod
-    def voiced_start(contour: np.ndarray, length: int, rng: np.random.Generator) -> int:
-        """A start whose window is at least MIN_VOICED_FRACTION voiced, if one is found."""
-        last = max(len(contour) - length, 0)
-        start = int(rng.integers(0, last + 1))
-        for _attempt in range(WINDOW_TRIES):
-            if voiced_fraction(contour[start : start + length]) >= MIN_VOICED_FRACTION:
-                return start
-            start = int(rng.integers(0, last + 1))
-        return start
+class SyntheticPairDataset(Dataset):
+    """Pairs made from melody MIDI alone: the query is the same window, humanized and augmented.
+
+    Adds melodies HumTrans lacks (e.g. Essen folk songs not used as distractors).
+    """
+
+    def __init__(
+        self,
+        melodies: dict[str, np.ndarray],
+        augment: ContourAugment,
+        windows: PairWindows,
+        seed: int,
+    ) -> None:
+        self.ids = sorted(melodies)
+        self.melodies = melodies
+        self.augment = augment
+        self.windows = windows
+        self.seed = seed
+        self.epoch = EpochCounter()
+
+    def __len__(self) -> int:
+        return len(self.ids)
+
+    def __getitem__(self, index: int) -> dict:
+        rng = np.random.default_rng([self.seed, self.epoch.get(), index, 1])
+        melody = self.melodies[self.ids[index]]
+        query, reference = crop_pair(melody, melody, rng, self.windows)
+        query = augment_contour(humanize(query, rng, FRAME_S), rng, self.augment, FRAME_S)
+        return {
+            "query": features_tensor(query),
+            "song": features_tensor(reference),
+            "song_id": self.ids[index],
+        }

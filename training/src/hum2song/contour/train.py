@@ -11,23 +11,34 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
 from hum2song.contour.augment import ContourAugment
 from hum2song.contour.config import ContourConfig
 from hum2song.contour.data import (
     ContourPairDataset,
     PairWindows,
+    SyntheticPairDataset,
     collate_pairs,
     load_query_contours,
     load_reference_contours,
     midi_index,
+    set_epoch,
 )
-from hum2song.contour.evaluate import ContourSet, build_set, evaluate, mir_sets, whole_reference
+from hum2song.contour.evaluate import (
+    ContourSet,
+    build_set,
+    distractor_paths,
+    evaluate,
+    mir_sets,
+    whole_reference,
+)
+from hum2song.contour.features import midi_contour
 from hum2song.contour.model import ContourEncoder
 from hum2song.logutil import get_logger
 from hum2song.losses import info_nce_symmetric
 from hum2song.manifest import PairRecord, read_pairs
+from hum2song.midi_render import parse_midi
 from hum2song.seed import seed_everything
 
 LOGGER = get_logger(__name__)
@@ -80,6 +91,37 @@ def load_contours(root: Path, records: list[PairRecord], shift: float) -> dict:
     return {"queries": queries, "shifted": shifted, "references": references}
 
 
+def synthetic_melodies(root: Path, config: ContourConfig) -> dict[str, np.ndarray]:
+    """Melody MIDIs for synthetic pairs, minus the held-out distractor selection."""
+    held_out = set(distractor_paths(root / config.holdout_midi_dir, config.holdout_count))
+    melodies: dict[str, np.ndarray] = {}
+    for folder in [name.strip() for name in config.synthetic_midi_dirs.split(",") if name.strip()]:
+        for path in sorted((root / folder).rglob("*.mid")):
+            if path not in held_out:
+                melodies[f"synthetic:{path.stem}"] = midi_contour(parse_midi(path.read_bytes()))
+    return melodies
+
+
+def training_dataset(root: Path, records, contours: dict, config: ContourConfig) -> Dataset:
+    """HumTrans hum pairs, plus MIDI-only synthetic pairs when synthetic_midi_dirs is set."""
+    humtrans = ContourPairDataset(
+        select(records, "humtrans", "train"),
+        contours["queries"],
+        contours["references"],
+        augment_spec(config),
+        window_spec(config),
+        config.seed,
+    )
+    melodies = synthetic_melodies(root, config)
+    LOGGER.info("training pairs: %s HumTrans, %s synthetic", len(humtrans), len(melodies))
+    if not melodies:
+        return humtrans
+    synthetic = SyntheticPairDataset(
+        melodies, augment_spec(config), window_spec(config), config.seed
+    )
+    return ConcatDataset([humtrans, synthetic])
+
+
 def select(records: list[PairRecord], group: str, split: str) -> list[PairRecord]:
     return [r for r in records if r.group == group and r.split == split and r.song_path]
 
@@ -129,11 +171,11 @@ def save_checkpoint(path: Path, model, config: ContourConfig, step: int, metrics
     torch.save(payload, path)
 
 
-def batches(loader: DataLoader, dataset: ContourPairDataset):
+def batches(loader: DataLoader, dataset: Dataset):
     """Endless stream of batches; each pass over the data reseeds the crops."""
     epoch = 0
     while True:
-        dataset.epoch = epoch
+        set_epoch(dataset, epoch)
         yield from loader
         epoch += 1
 
@@ -157,15 +199,7 @@ def run_training(config: ContourConfig, tracker) -> dict:
     root = config.resolved_data_root()
     records = read_pairs(root / "pairs_real.jsonl")
     contours = load_contours(root, records, config.shift_semitones)
-    dataset = ContourPairDataset(
-        select(records, "humtrans", "train"),
-        contours["queries"],
-        contours["references"],
-        augment_spec(config),
-        window_spec(config),
-        config.seed,
-    )
-    LOGGER.info("training pairs: %s", len(dataset))
+    dataset = training_dataset(root, records, contours, config)
     sets = validation_sets(records, contours, config)
     loader = DataLoader(
         dataset,

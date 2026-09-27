@@ -11,6 +11,7 @@ import numpy as np
 
 WARP_KNOTS = 4
 DRIFT_KNOTS = 3
+VIBRATO_HZ = (4.5, 6.5)
 
 
 @dataclass(frozen=True)
@@ -40,6 +41,34 @@ def augment_contour(
     return voicing_gaps(folded, rng, spec.dropout_prob, spec.dropout_max_s, frame_s).astype(
         np.float32
     )
+
+
+def humanize(
+    contour: np.ndarray,
+    rng: np.random.Generator,
+    frame_s: float,
+    vibrato_semitones: float = 0.3,
+    glide_s: float = 0.08,
+) -> np.ndarray:
+    """Make a step-wise MIDI contour hum-like: glides between notes, then vibrato."""
+    width = max(int(round(rng.uniform(0.0, glide_s) / frame_s)), 1)
+    smoothed = smooth_voiced(contour, width)
+    rate = rng.uniform(*VIBRATO_HZ)
+    phase = rng.uniform(0.0, 2.0 * np.pi)
+    depth = rng.uniform(0.0, vibrato_semitones)
+    time = np.arange(len(contour)) * frame_s
+    return (smoothed + depth * np.sin(2.0 * np.pi * rate * time + phase)).astype(np.float32)
+
+
+def smooth_voiced(contour: np.ndarray, width: int) -> np.ndarray:
+    """Moving average of `width` frames over voiced frames; unvoiced frames stay NaN."""
+    if width <= 1:
+        return contour.copy()
+    voiced = ~np.isnan(contour)
+    kernel = np.ones(width)
+    total = np.convolve(np.where(voiced, contour, 0.0), kernel, mode="same")
+    count = np.convolve(voiced.astype(float), kernel, mode="same")
+    return np.where(voiced, total / np.maximum(count, 1.0), np.nan)
 
 
 def draw_stretch(rng: np.random.Generator, spec: ContourAugment) -> float:

@@ -1,8 +1,16 @@
 import numpy as np
 import torch
+from torch.utils.data import DataLoader
 
 from hum2song.contour.augment import ContourAugment
-from hum2song.contour.data import ContourPairDataset, PairWindows, collate_pairs, seconds_to_frames
+from hum2song.contour.data import (
+    ContourPairDataset,
+    PairWindows,
+    SyntheticPairDataset,
+    collate_pairs,
+    seconds_to_frames,
+    set_epoch,
+)
 from hum2song.contour.evaluate import (
     build_set,
     distractor_contours,
@@ -80,3 +88,24 @@ def test_distractors_join_the_reference_side(tmp_path):
     assert sets[0].name == "mir48+2_start10"
     assert sets[0].ref_ids.count("distractor:a") == 1
     assert len(set(sets[0].ref_ids)) == 6
+
+
+def test_new_epoch_reaches_persistent_workers():
+    queries, refs = contours()
+    records = [record(i, f"song{i}") for i in range(4)]
+    dataset = ContourPairDataset(records, queries, refs, ContourAugment(), PairWindows(), seed=0)
+    loader = DataLoader(
+        dataset, batch_size=4, num_workers=1, persistent_workers=True, collate_fn=collate_pairs
+    )
+    first = next(iter(loader))["query"]
+    set_epoch(dataset, 1)
+    second = next(iter(loader))["query"]
+    assert first.shape != second.shape or not torch.equal(first, second)
+
+
+def test_synthetic_pairs_use_the_melody_id():
+    _queries, refs = contours()
+    dataset = SyntheticPairDataset(refs, ContourAugment(), PairWindows(), seed=0)
+    item = dataset[0]
+    assert item["song_id"] == "s0.wav"
+    assert item["query"].shape[1] == 2 and item["song"].shape[0] > 0
