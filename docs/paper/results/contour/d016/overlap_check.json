@@ -1,0 +1,15 @@
+{
+  "note": "make_mlend_song_holdout.py --ckpt ckpt/contour_v2_s0/last.pt; share = fraction of an MLEnd song's hums (all people) whose nearest HumTrans reference belongs to the listed HumTrans song. Exclusion threshold 0.25, applied to held-out songs only.",
+  "songs": ["mlend:Hakuna", "mlend:Potter"],
+  "exclude": [],
+  "shares": {
+    "mlend:Frozen": {"humtrans_song": "humtrans:0276", "share": 0.2594},
+    "mlend:Hakuna": {"humtrans_song": "humtrans:0410", "share": 0.1398},
+    "mlend:Mamma": {"humtrans_song": "humtrans:0326", "share": 0.1003},
+    "mlend:Panther": {"humtrans_song": "humtrans:0201", "share": 0.1183},
+    "mlend:Potter": {"humtrans_song": "humtrans:0214", "share": 0.1038},
+    "mlend:Rain": {"humtrans_song": "humtrans:0431", "share": 0.1445},
+    "mlend:Showman": {"humtrans_song": "humtrans:0258", "share": 0.2653},
+    "mlend:StarWars": {"humtrans_song": "humtrans:0440", "share": 0.0810}
+  }
+}

@@ -26,6 +26,16 @@ class ExampleSet:
     people: list[str]
 
 
+def query_subset(query: ExampleSet, keep: list[bool]) -> ExampleSet:
+    """Only the queries where `keep` is true (references are passed separately)."""
+    index = [i for i, flag in enumerate(keep) if flag]
+    return ExampleSet(
+        embeddings=query.embeddings[index],
+        songs=[query.songs[i] for i in index],
+        people=[query.people[i] for i in index],
+    )
+
+
 def song_scores(query: ExampleSet, refs: ExampleSet, mode: str) -> tuple[np.ndarray, list[str]]:
     """(queries, songs) scores with every query's own performer removed from the references."""
     songs = sorted(set(refs.songs))

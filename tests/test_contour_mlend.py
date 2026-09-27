@@ -109,3 +109,24 @@ def test_parse_sets_reads_yaml_values():
         "whistle_aug_prob": 0.3,
         "mlend_pairs": False,
     }
+
+
+def test_heldout_songs_are_fixed_by_seed():
+    from hum2song.contour.mlend import SONG_MANIFEST, choose_heldout_songs, read_song_holdout
+
+    songs = [f"mlend:{name}" for name in ("A", "B", "C", "D", "E", "F", "G", "H")]
+    first = choose_heldout_songs(songs * 3)
+    assert first == choose_heldout_songs(list(reversed(songs))) and len(first) == 2
+    manifest = read_song_holdout(SONG_MANIFEST)
+    assert len(manifest["songs"]) == 2 and "humtrans_exclude" in manifest
+
+
+def test_without_songs_and_query_subset():
+    from hum2song.contour.example_eval import ExampleSet, query_subset
+    from hum2song.contour.mlend import without_songs
+
+    clips = [MLEndClip("1", "S1", "a", "hum"), MLEndClip("2", "S2", "a", "hum")]
+    assert [c.path for c in without_songs(clips, {"S1"})] == ["2"]
+    query = ExampleSet(np.eye(2, dtype=np.float32), ["S1", "S2"], ["a", "b"])
+    kept = query_subset(query, [False, True])
+    assert kept.songs == ["S2"] and kept.embeddings.shape == (1, 2)

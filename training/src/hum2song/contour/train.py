@@ -37,7 +37,7 @@ from hum2song.contour.evaluate import (
     whole_reference,
 )
 from hum2song.contour.features import midi_contour
-from hum2song.contour.mlend import MLEndValidation, training_pairs
+from hum2song.contour.mlend import MLEndValidation, read_song_holdout, training_pairs
 from hum2song.contour.model import ContourEncoder
 from hum2song.logutil import get_logger
 from hum2song.losses import info_nce_symmetric
@@ -130,11 +130,21 @@ def synthetic_melodies(root: Path, config: ContourConfig) -> dict[str, np.ndarra
     return melodies
 
 
+def song_holdout(config: ContourConfig) -> dict:
+    """Held-out MLEnd songs and HumTrans exclusions (D-016); empty when switched off."""
+    if not config.song_holdout:
+        return {"songs": [], "humtrans_exclude": []}
+    return read_song_holdout()
+
+
 def training_dataset(root: Path, records, contours: dict, config: ContourConfig) -> Dataset:
     """HumTrans hum pairs, plus MIDI-only synthetic pairs and MLEnd whistle pairs if enabled."""
+    holdout = song_holdout(config)
+    excluded = set(holdout["humtrans_exclude"])
+    humtrans = [r for r in select(records, "humtrans", "train") if r.song_id not in excluded]
     parts: list[Dataset] = [
         ContourPairDataset(
-            select(records, "humtrans", "train"),
+            humtrans,
             contours["queries"],
             contours["references"],
             augment_spec(config),
@@ -149,7 +159,15 @@ def training_dataset(root: Path, records, contours: dict, config: ContourConfig)
             SyntheticPairDataset(melodies, augment_spec(config), window_spec(config), config.seed)
         )
     if config.mlend_pairs:
-        parts.append(training_pairs(root, augment_spec(config), config.seed, config.mlend_repeat))
+        parts.append(
+            training_pairs(
+                root,
+                augment_spec(config),
+                config.seed,
+                config.mlend_repeat,
+                set(holdout["songs"]),
+            )
+        )
     LOGGER.info("training pairs: %s", [f"{type(p).__name__}={len(p)}" for p in parts])
     return parts[0] if len(parts) == 1 else ConcatDataset(parts)
 
@@ -253,7 +271,8 @@ def run_training(config: ContourConfig, tracker) -> dict:
     contours = load_contours(root, records, config.shift_semitones)
     dataset = training_dataset(root, records, contours, config)
     sets = validation_sets(records, contours, config)
-    mlend = MLEndValidation(root, "val") if config.mlend_val else None
+    held_out = set(song_holdout(config)["songs"])
+    mlend = MLEndValidation(root, "val", exclude_songs=held_out) if config.mlend_val else None
     loader = DataLoader(
         dataset,
         batch_size=config.batch_size,

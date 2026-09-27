@@ -4,6 +4,9 @@ MLEnd (8 songs, about 200 people) has no melody references, so it is used query-
 (D-013). D-015 adds whistle training, which needs people who are never evaluated on: the
 performers are split once into train / val / test with a fixed seed, and the assignment is
 saved in training/splits/mlend_performers.json. Code reads that file and never re-draws it.
+D-016 also holds out 2 of the 8 songs (training/splits/mlend_heldout_songs.json, drawn
+with a fixed seed): with song_holdout on, their clips leave whistle-pair training and
+MLEnd validation, and any HumTrans songs listed there leave HumTrans training.
 """
 
 import csv
@@ -26,6 +29,9 @@ ATTRIBUTES = "raw/mlend_hums_whistles/MLEndHWD_audio_attributes_benchmark.csv"
 SPLIT_MANIFEST = Path(__file__).resolve().parents[3] / "splits" / "mlend_performers.json"
 SPLIT_SEED = 20260927
 SPLIT_FRACTIONS = (("train", 0.6), ("val", 0.2), ("test", 0.2))
+SONG_MANIFEST = SPLIT_MANIFEST.with_name("mlend_heldout_songs.json")
+SONG_SEED = 20260928
+HELDOUT_SONG_COUNT = 2
 TRACKERS = {"hum": "rmvpe", "whistle": "peak"}
 F0_LIMITS = {"rmvpe": F0_MAX_HZ, "peak": WHISTLE_F0_MAX_HZ, "rmvpe_half": WHISTLE_F0_MAX_HZ}
 QUERY_FRACTION = (0.6, 1.0)
@@ -98,6 +104,27 @@ def read_split(path: Path = SPLIT_MANIFEST) -> dict[str, str]:
     return json.loads(path.read_text(encoding="utf-8"))["performers"]
 
 
+def choose_heldout_songs(songs: list[str], seed: int = SONG_SEED) -> list[str]:
+    """HELDOUT_SONG_COUNT songs drawn from the sorted unique ids with `seed`."""
+    unique = sorted(set(songs))
+    picked = np.random.default_rng(seed).choice(len(unique), HELDOUT_SONG_COUNT, replace=False)
+    return sorted(unique[int(index)] for index in picked)
+
+
+def write_song_holdout(path: Path, songs: list[str], humtrans_exclude: list[str]) -> None:
+    payload = {"seed": SONG_SEED, "songs": songs, "humtrans_exclude": sorted(humtrans_exclude)}
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def read_song_holdout(path: Path = SONG_MANIFEST) -> dict:
+    """{"songs": held-out MLEnd song ids, "humtrans_exclude": HumTrans song ids to drop}."""
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def without_songs(clips: list[MLEndClip], songs: set[str]) -> list[MLEndClip]:
+    return [c for c in clips if c.song not in songs]
+
+
 def clips_in(
     clips: list[MLEndClip], split: dict[str, str], name: str, qtype: str
 ) -> list[MLEndClip]:
@@ -123,8 +150,14 @@ def example_set(model, clips: list[MLEndClip], contours: dict, device) -> Exampl
 class MLEndValidation:
     """Whistle -> hum and hum -> hum top-1 (centroid) among one split's performers."""
 
-    def __init__(self, root: Path, split_name: str, split: dict[str, str] | None = None) -> None:
-        clips = mlend_clips(root)
+    def __init__(
+        self,
+        root: Path,
+        split_name: str,
+        split: dict[str, str] | None = None,
+        exclude_songs: set[str] = frozenset(),
+    ) -> None:
+        clips = without_songs(mlend_clips(root), exclude_songs)
         split = split if split is not None else read_split()
         self.name = split_name
         self.hums = clips_in(clips, split, split_name, "hum")
@@ -205,9 +238,15 @@ class MLEndPairDataset(Dataset):
         }
 
 
-def training_pairs(root: Path, augment: ContourAugment, seed: int, repeat: int) -> MLEndPairDataset:
+def training_pairs(
+    root: Path,
+    augment: ContourAugment,
+    seed: int,
+    repeat: int,
+    exclude_songs: set[str] = frozenset(),
+) -> MLEndPairDataset:
     """Train-split whistles (spectral-peak F0, D-007) paired with train-split hums."""
-    clips = mlend_clips(root)
+    clips = without_songs(mlend_clips(root), exclude_songs)
     split = read_split()
     whistles = clips_in(clips, split, "train", "whistle")
     hums = clips_in(clips, split, "train", "hum")
