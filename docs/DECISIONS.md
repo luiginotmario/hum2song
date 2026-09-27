@@ -232,3 +232,51 @@ HumTrans structure matters for the fix. All 1,000 segments (song × segment id) 
 - MIR 48-target top-10 stays well below the pitch baseline (0.981). Then consider adding a pitch-contour branch, or training on contours.
 - The loader is still the bottleneck. Then precompute stretched and transposed variants, or move augmentation to the GPU.
 
+---
+
+## D-011 · Key-invariant pitch-contour encoder replaces MERT for melody matching
+**Date:** 2026-09-27
+
+**Context.** Stage A2 (D-010, W&B run `5rst2r1c`) plateaued. Against the 48 MIR-QBSH targets it reached top-10 0.583 at best (step 5000), HumTrans val top-1 0.936, and 0.822 with queries shifted +7 semitones. A pitch-only baseline with no learning, using hand-labelled pitch, removing the key and trying 13 tempo scales, got top-1 0.888 / top-10 0.981 on the same songs. The melody is in the input, but MERT fine-tuned on about 1,000 HumTrans melodies does not pick it out, and key augmentation of the audio does not make it key-invariant.
+
+Recent query-by-humming work points the same way. CHAD (Amatov et al., ISMIR 2023) trained the same metric-learning model on CREPE F0 and on CQT: F0 got top-10 0.921 on MIR-QBSH with about 2,600 MIDI distractors, and CQT got 0.840. Jeong's melody-embedding QbH (SK Telecom, `jdasam/qbh_project`) encodes a (pitch, voicing) contour, not audio. Hum to Search (Google, 2020) and ByteHum (ICASSP 2024) learn from spectrograms, but with far more paired data than our 13,000 HumTrans hums. A 2026 Conformer QbH model ("Improved Query by Humming Using Conformer-based Network with Harmonic-Aware Mechanism") uses convolution plus self-attention over the melody. None of these pass audio through a general music foundation model.
+
+**Options.**
+- **More MERT training or augmentation.** Stage A2's curve was flat from step 3,000 to 8,000, so more of the same looked unlikely to close a 0.40 top-10 gap.
+- **Late fusion of MERT with a DTW pitch matcher.** Uses what exists, but DTW scoring costs O(songs × tempo scales) per query, and it does not scale to a real catalogue.
+- **Learned contour encoder, alone or fused with MERT.** RMVPE F0 → semitones → minus the crop's median voiced pitch, plus a voicing flag, at 20 ms frames. A small conv + transformer turns that into one 256-d vector, trained with the same symmetric InfoNCE and learned temperature. Key invariance is exact by construction, not learned. Retrieval stays one dot product per reference window.
+
+**Decision.** Build the contour encoder (`training/src/hum2song/contour/`) and test it alone first. Fusion with MERT waits until the contour branch is shown to need help.
+- **Queries.** RMVPE (D-001) on the untrimmed query audio (`training/scripts/extract_f0.py`, cached in `$H2S_DATA/f0/`). Voiced where confidence ≥ 0.3. Voiced runs under 60 ms dropped, octave jumps folded, 3-frame median. On MIR-QBSH the queries go through RMVPE, not the hand-labelled `.pv` files.
+- **References.** Rendered straight from the melody MIDI (highest note per frame, rests unvoiced). The references are MIDI today, so this is exact. Real song audio would need a vocal-melody extractor on the reference side.
+- **Model.** Conv front end (the second conv halves the frame rate, padded frames masked), 6-layer pre-norm transformer, d = 256, 4 heads, masked attention pool, MLP to 256-d, L2 norm. About 5.2 M parameters, one tower for both sides.
+- **Training.** HumTrans train only (13,080 hums). MIR-QBSH stays fully held out (D-005). Each pair is a random 3–12 s hum window and the MIDI window at the same time, with ±1 s start jitter, −1 to +3 s of extra length and a 0.8–1.25× stretch. Hum-side augmentation: 0.6–1.7× duration, ±20% local tempo warp, ±15% interval scaling, ±0.7 semitone slow drift, 0.15 semitone jitter, voicing gaps, and occasional one-octave tracker errors. Batch 256, AdamW lr 3e-4, wd 0.05, 300 warmup steps, cosine decay, bf16.
+- **Checkpoint selection.** On HumTrans val shifted +7 top-1, never on MIR-QBSH.
+- **MIR-QBSH reference protocols** (48 targets, no distractors, all 4,431 queries):
+  - `start10`: the first 10 s from the first note. The same crop Stage A2's eval uses.
+  - `start_multi`: the first 6/8/10/12/15 s, best window. This is a tempo search on the reference side, like the baseline's 13 scales. It relies on MIR-QBSH queries starting at the song start.
+  - `anywhere`: 6/10/14 s windows every 1 s over the whole song. This makes no start assumption.
+
+**Feasibility (3,000 steps, W&B `lugkvys8`, about 14 min of training plus 15 min of F0 extraction on the A100).** Selected checkpoint (step 1,500, chosen on HumTrans val):
+
+| | MIR-48 top-1 | MIR-48 top-10 | HumTrans val top-1 | HumTrans val +7 top-1 |
+|---|---|---|---|---|
+| Stage A2 best step (MIR-selected, so best case) | – | 0.583 | 0.936 | 0.822 |
+| Pitch baseline, hand-labelled `.pv` (13 scales, from song start) | 0.888 | 0.981 | – | – |
+| Pitch baseline, RMVPE queries (same method) | 0.903 | 0.986 | – | – |
+| Contour encoder, `start10` | 0.882 | 0.984 | 0.991 | 0.990 |
+| Contour encoder, `start_multi` | 0.945 | 0.991 | | |
+| Contour encoder, `anywhere` | 0.863 | 0.982 | | |
+
+The best MIR value over all validation steps was `start_multi` top-1 0.951 / top-10 0.991. It is a best case because it was picked by looking at MIR. Under the same reference protocol (song start, tempo search), the encoder beats the RMVPE pitch baseline at top-1 (0.945 vs 0.903) and top-10 (0.991 vs 0.986). With a single 10 s window, as Stage A2 used, top-10 goes from 0.583 to 0.984. HumTrans no longer depends on key: shifted and unshifted scores match.
+
+**Trade-off / what we gave up.**
+- **Timbre and lyrics.** The encoder sees only the F0 track, so it cannot use lyrics, timbre or accompaniment. It depends on RMVPE: noisy rooms, heavy reverb or breathy humming that RMVPE cannot track give it nothing. Whistles need the spectral-peak F0 (D-007), which is not wired in yet. MLEnd whistles have no references to test against.
+- **Symbolic references.** References come from MIDI, not audio. Against real recordings, reference contours would come from a vocal-melody extractor with its own errors, and these numbers would drop.
+- **Still no CHAD comparison.** Numbers are against the 48 targets only. `start_multi` also leans on MIR-QBSH's start-of-song queries. `anywhere` is the protocol to watch for real use.
+- **Two towers of code.** The MERT pipeline stays for fusion and for the paper's ablation, so there are two training entry points.
+
+**Revisit when.**
+- We have ≥ 2,000 distractor melodies (e.g. the MIREX ~2,600 Essen/MIDI set). Then report the CHAD-comparable number.
+- Queries come from noisy or real-world audio, or references from real songs. Then test fusion with MERT embeddings, and a melody extractor on the reference side.
+- Whistle queries matter. Then feed the spectral-peak F0 (D-007) through the same encoder.

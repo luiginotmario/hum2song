@@ -1,0 +1,39 @@
+# Key-invariant pitch-contour encoder (docs/DECISIONS.md D-011).
+#   python training/scripts/train_contour.py --config configs/train_contour.yaml
+# Needs RMVPE tracks from training/scripts/extract_f0.py (plain, and --shift 7 for HumTrans val/test).
+run_name: contour
+steps: 6000
+batch_size: 256
+lr: 0.0003
+weight_decay: 0.05
+warmup_steps: 300
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 500
+# Checkpoint selection never looks at MIR-QBSH (D-005).
+select_metric: val/humtrans_val_shift+7_top1
+# Query augmentation (augment.py): duration factor, local tempo warp, interval scaling,
+# slow pitch drift, frame jitter, voicing gaps, short octave errors.
+stretch_min: 0.6
+stretch_max: 1.7
+warp_depth: 0.2
+interval_scale: 0.15
+drift_semitones: 0.7
+jitter_semitones: 0.15
+dropout_prob: 0.5
+octave_error_prob: 0.1
+# Pair windows (data.py), seconds.
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0

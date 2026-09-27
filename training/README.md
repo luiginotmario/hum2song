@@ -86,6 +86,20 @@ After changing `midi_render.py`, re-render the MIDI references (the old folders 
 python training/scripts/rerender_catalog.py --data-root "$H2S_DATA" --groups humtrans,mirqbsh
 ```
 
+Key-invariant contour encoder (D-011). First extract RMVPE F0 for every query clip (about 15 min on an A100), including HumTrans val/test transposed +7 semitones for the key-robustness check. The RMVPE weights default to `$H2S_DATA/fig_contours/rmvpe.pt`.
+
+```bash
+python training/scripts/extract_f0.py --groups mirqbsh,humtrans
+python training/scripts/extract_f0.py --groups humtrans --splits val,test --shift 7
+```
+
+Then train (about 30 min for 6,000 steps) and evaluate a checkpoint on HumTrans test. Checkpoints go to `$H2S_DATA/ckpt/<run_name>/`; `best.pt` is selected on HumTrans val shifted +7, never on MIR-QBSH.
+
+```bash
+python training/scripts/train_contour.py --config configs/train_contour.yaml
+python training/scripts/eval_contour.py --ckpt "$H2S_DATA/ckpt/contour/best.pt" --split test
+```
+
 Eval on MIR-QBSH. The JSON report includes top-1, top-10, and MRR next to the CHAD top-10 of **0.921**, plus a `targets_only` line (the 48 MIR-QBSH songs, no distractors). HumTrans songs are never used as distractors, so until other song audio exists `targets_only` is the headline number (`headline` field) and the result is not comparable to CHAD.
 
 ```bash
