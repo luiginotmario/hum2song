@@ -455,3 +455,79 @@ GPU cost on the A100 for MIR-1K's 133 minutes of audio, clip by clip: htdemucs 3
 - CHAD originals are allowed (they need YouTube downloads and the user's approval). Then measure real hums against audio references end to end.
 - A dedicated extractor with usable weights appears (the joint network or SpectMamba). Then add it as one more method in `melody.py`.
 - We train on audio-derived references, e.g. MIR-1K annotation vs extracted contour pairs, to close the gap. Keep ADC2004 and MIREX05 out of training.
+
+---
+
+## D-015 · Whistle training: MLEnd train-performer whistle pairs plus whistle-like hum augmentation
+**Date:** 2026-09-27
+
+**Context.** In D-013, whistles scored 0.25 top-1 below hums on MLEnd (0.625 vs 0.873), with a model that had never seen a whistle. D-013 found two reasons:
+- **Compressed range.** Whistles span about 6.5 semitones where hums of the same songs span 9.7.
+- **More dropouts.** Whistles lose more frames to the tonal gate.
+
+The only whistle data is MLEnd: 8 songs, 226 performers. Training on it without burning the test set needs a performer split.
+
+**Options.**
+- **Fine-tune or retrain.** Fine-tune the D-012 model, or retrain from scratch with the new data.
+- **What whistle data to use:**
+  - whistle-like augmentation of HumTrans hums only (no MLEnd in training);
+  - MLEnd whistle pairs only;
+  - both.
+- **Checkpoint choice:** HumTrans val alone (saturated, D-012), or a mean that includes MLEnd val people.
+
+**Decision.**
+- **Fixed performer split** (`contour/mlend.py`, `scripts/make_mlend_split.py`, committed as `training/splits/mlend_performers.json` in `83a9ec9` before any training). Seed 20260927, 60/20/20 over sorted performer ids. The script refuses to overwrite the manifest.
+
+  | Split | People | Hums | Whistles |
+  |---|---|---|---|
+  | train | 136 | 2,812 | 1,148 |
+  | val | 45 | 1,020 | 310 |
+  | test | 45 | 972 | 339 |
+
+  Only 26 of the 45 test people whistled.
+- **Retrain from scratch** with `configs/train_contour_whistle.yaml`: the D-012 headline config plus:
+  - **MLEnd pairs.** A train-split whistle (spectral-peak F0, D-007), cropped to 60 to 100 % and given the usual augmentation, is paired with a whole hum of the same song by another train-split person. Each whistle appears twice per epoch, 2,296 of 15,376 pairs. The loss masks same-song clips instead of using them as negatives.
+  - **Whistle-like augmentation** (`augment.WhistleAugment`). With probability 0.3, a HumTrans hum query's intervals are scaled by 0.55 to 0.85 and it gets extra gaps up to 0.6 s. These values were set before any MLEnd result.
+  - **Checkpoint choice.** The mean top-1 of HumTrans val (+7 st), MLEnd val-people whistles → hums and MLEnd val-people hums → hums. MIR-QBSH and MLEnd test people are never used. `select_metric` now takes a comma list.
+- **Eval.** `eval_mlend.py --split test` runs the D-013 protocol (centroid, the query's performer excluded) with queries and references restricted to the 45 test people. MIR-QBSH and HumTrans use `eval_contour.py` as in D-012.
+- **W&B runs:** 3 seeds `llj5eq5r`, `2obdri9m`, `wf9o1t5d`; ablations (seed 0) augmentation-only `y49hl1f0` and pairs-only `jhmg6sx4`. Two first attempts run in parallel (`4fnvy3wp`, `fpdvbu1t`) ran out of GPU memory and have no results. One run takes about 35 GB.
+
+**Results.** Top-1, mean ± sd over 3 seeds. The whistle model is the val-selected checkpoint (steps 4,000 / 6,000 / 6,000). `last.pt` is within 0.005 everywhere. Files: `docs/paper/results/contour/d015/` (`summary.json`, `summarize.py`, per-run JSON).
+
+MLEnd, test people only (8-way, chance 0.125):
+
+| Query → references (centroid) | Old model (D-012) | **Whistle model** | Aug only (s0) | Pairs only (s0) |
+|---|---|---|---|---|
+| hum → hums | 0.859±0.007 | **0.939±0.003** | 0.856 | 0.943 |
+| **whistle (peak) → hums** | 0.540±0.010 | **0.740±0.006** | 0.566 | 0.729 |
+| whistle (peak) → whistles | 0.559±0.003 | **0.739±0.005** | 0.611 | 0.735 |
+| hum → whistles | 0.829±0.010 | **0.940±0.003** | 0.829 | 0.943 |
+| whistle (RMVPE-half) → hums | 0.511±0.011 | **0.742±0.010** | 0.549 | 0.717 |
+
+Regression check on data with no whistles (top-1 / top-10):
+
+| | Old model (D-012) | Whistle model | Aug only (s0) | Pairs only (s0) |
+|---|---|---|---|---|
+| MIR-48 `anywhere` | 0.959 / 0.993 | 0.954 / 0.994 | 0.959 / 0.994 | 0.961 / 0.993 |
+| +2000 `start_multi` | 0.922 / 0.974 | 0.908±0.007 / 0.969±0.001 | 0.934 / 0.975 | 0.922 / 0.975 |
+| **+2000 `anywhere`** | **0.866±0.007 / 0.958±0.002** | **0.842±0.011 / 0.949±0.004** | 0.879 / 0.959 | 0.863 / 0.959 |
+| HumTrans test top-1 (+7 st) | 0.996 (0.993) | 0.992 (0.988±0.005) | 0.995 (0.993) | 0.995 (0.992) |
+
+Selection scores on val people (whistle / hum top-1): full model 0.913 / 0.959, 0.906 / 0.961, 0.910 / 0.966; pairs-only 0.923 / 0.963; augmentation-only 0.803 / 0.889.
+
+**Takeaways.**
+- **Whistles on the test people: 0.540 → 0.740 top-1** (+0.20, all 3 seeds). The gap to hums on the same people narrows from 0.32 to 0.20. RMVPE-half whistles now match spectral-peak ones (0.742).
+- **MLEnd hums also improve** (0.859 → 0.939). The model now sees MLEnd recording conditions and these 8 songs.
+- **The pairs carry the gain.** Pairs-only reaches 0.729 whistle top-1 on one seed. Augmentation-only adds just +0.026 whistle top-1: squeezed hums alone do not teach the model what whistles look like.
+- **MIR-QBSH regresses slightly with the full config.** With 2,000 distractors, `anywhere` drops 0.024 top-1 (0.866 → 0.842) and 0.009 top-10 (0.958 → 0.949). `start_multi` drops 0.014 / 0.005. HumTrans test drops about 0.004. The single-seed ablations show no regression for either part alone (pairs-only 0.863 / 0.959, augmentation-only 0.879 / 0.959). So the cost may come from combining the two, or from seed noise. One seed cannot tell.
+
+**Trade-off / what we gave up.**
+- **Test people are new, the songs are not.** All 8 songs appear in training through train-split people, so the MLEnd test gain is partly song familiarity, not only whistle robustness. Whistles on songs never seen in training remain untested. That needs a leave-songs-out split, e.g. train pairs on 6 songs and test whistles of test people on the other 2.
+- **A small cost on hums without whistles.** For MIR-QBSH-style use the D-012 model is still slightly better (+2000 `anywhere` top-1 0.866 vs 0.842). We keep both checkpoints and report both.
+- **Val and test people differ a lot.** Whistle top-1 is about 0.91 on val people and 0.74 on test people for the same models. With 26 whistling test people, performer variance is large. Selection only chose between steps (4,000 vs 6,000), and `last.pt` gives the same numbers, so this gap is not selection bias.
+- **Ablations are single-seed.**
+
+**Revisit when.**
+- **Pairs-only confirmation.** Run two more seeds of pairs-only. If val confirms it is at least as good as the full config (it is ahead on val on seed 0: 0.960 vs 0.955 mean selection score), switch to it. That choice uses val only; its MIR-QBSH numbers stay a check, not the reason.
+- **Leave-songs-out.** Run the leave-songs-out whistle test before claiming whistle QbH on unseen songs.
+- **More whistle data.** A whistle set with more songs or melody references appears. Then train on it and use MLEnd test people only for evaluation.

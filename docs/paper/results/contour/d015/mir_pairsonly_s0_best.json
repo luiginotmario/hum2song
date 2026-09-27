@@ -1,0 +1,33 @@
+{
+  "ckpt": "/lambda/nfs/hum2song-data/ckpt/contour_whistle_pairsonly_s0/best.pt",
+  "distractor_count": 2000,
+  "distractors": "/lambda/nfs/hum2song-data/raw/essen_midi/deutschl",
+  "metrics": {
+    "val/humtrans_test_mrr": 0.9965322930212396,
+    "val/humtrans_test_shift+7_mrr": 0.9950925753916652,
+    "val/humtrans_test_shift+7_top1": 0.9921976592977894,
+    "val/humtrans_test_shift+7_top10": 1.0,
+    "val/humtrans_test_top1": 0.9947984395318595,
+    "val/humtrans_test_top10": 1.0,
+    "val/mir48+2000_anywhere_mrr": 0.8979198714147146,
+    "val/mir48+2000_anywhere_top1": 0.8630106070864365,
+    "val/mir48+2000_anywhere_top10": 0.9589257503949447,
+    "val/mir48+2000_start10_mrr": 0.8981364577289724,
+    "val/mir48+2000_start10_top1": 0.8596253667343715,
+    "val/mir48+2000_start10_top10": 0.9602798465357707,
+    "val/mir48+2000_start_multi_mrr": 0.9420996287895074,
+    "val/mir48+2000_start_multi_top1": 0.9219137892123674,
+    "val/mir48+2000_start_multi_top10": 0.9747235387045814,
+    "val/mir48_anywhere_mrr": 0.9733625635264311,
+    "val/mir48_anywhere_top1": 0.9614082599864591,
+    "val/mir48_anywhere_top10": 0.992552471225457,
+    "val/mir48_start10_mrr": 0.9789071693325581,
+    "val/mir48_start10_top1": 0.9697585195215527,
+    "val/mir48_start10_top10": 0.9923267885353193,
+    "val/mir48_start_multi_mrr": 0.9838987208612473,
+    "val/mir48_start_multi_top1": 0.9774317309862334,
+    "val/mir48_start_multi_top10": 0.9943579327465584
+  },
+  "split": "test",
+  "step": 6000
+}

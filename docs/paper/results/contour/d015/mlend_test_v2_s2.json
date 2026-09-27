@@ -1,0 +1,109 @@
+{
+  "ckpt": "/lambda/nfs/hum2song-data/ckpt/contour_v2_s2/last.pt",
+  "counts": {
+    "hum": {
+      "clips": 972,
+      "performers": 45,
+      "under_1s_voiced": 2
+    },
+    "whistle_peak": {
+      "clips": 339,
+      "performers": 26,
+      "under_1s_voiced": 2
+    },
+    "whistle_rmvpe": {
+      "clips": 339,
+      "performers": 26,
+      "under_1s_voiced": 88
+    },
+    "whistle_rmvpe_half": {
+      "clips": 339,
+      "performers": 26,
+      "under_1s_voiced": 22
+    }
+  },
+  "results": {
+    "hum->hum/centroid": {
+      "mrr": 0.9072334901038608,
+      "top1": 0.8539094650205762,
+      "top3": 0.9506172839506173
+    },
+    "hum->hum/max": {
+      "mrr": 0.9090681951793063,
+      "top1": 0.8611111111111112,
+      "top3": 0.9454732510288066
+    },
+    "hum->whistle_peak/centroid": {
+      "mrr": 0.8875612384871648,
+      "top1": 0.8240740740740741,
+      "top3": 0.9382716049382716
+    },
+    "hum->whistle_peak/max": {
+      "mrr": 0.8751494219086816,
+      "top1": 0.8106995884773662,
+      "top3": 0.918724279835391
+    },
+    "whistle_peak->hum/centroid": {
+      "mrr": 0.6766961651917404,
+      "top1": 0.5398230088495575,
+      "top3": 0.7522123893805309
+    },
+    "whistle_peak->hum/max": {
+      "mrr": 0.6764959966287398,
+      "top1": 0.5398230088495575,
+      "top3": 0.7669616519174042
+    },
+    "whistle_peak->whistle_peak/centroid": {
+      "mrr": 0.6884674813878351,
+      "top1": 0.5575221238938053,
+      "top3": 0.7374631268436578
+    },
+    "whistle_peak->whistle_peak/max": {
+      "mrr": 0.6613253265908132,
+      "top1": 0.5309734513274337,
+      "top3": 0.7109144542772862
+    },
+    "whistle_rmvpe->hum/centroid": {
+      "mrr": 0.3703750526759375,
+      "top1": 0.16224188790560473,
+      "top3": 0.4277286135693215
+    },
+    "whistle_rmvpe->hum/max": {
+      "mrr": 0.3852753195673551,
+      "top1": 0.16224188790560473,
+      "top3": 0.46017699115044247
+    },
+    "whistle_rmvpe->whistle_peak/centroid": {
+      "mrr": 0.3509235847731424,
+      "top1": 0.12979351032448377,
+      "top3": 0.3952802359882006
+    },
+    "whistle_rmvpe->whistle_peak/max": {
+      "mrr": 0.3499613709790702,
+      "top1": 0.13569321533923304,
+      "top3": 0.3746312684365782
+    },
+    "whistle_rmvpe_half->hum/centroid": {
+      "mrr": 0.6486198904340497,
+      "top1": 0.49852507374631266,
+      "top3": 0.7315634218289085
+    },
+    "whistle_rmvpe_half->hum/max": {
+      "mrr": 0.6560963618485741,
+      "top1": 0.5132743362831859,
+      "top3": 0.7227138643067846
+    },
+    "whistle_rmvpe_half->whistle_peak/centroid": {
+      "mrr": 0.6706630144683238,
+      "top1": 0.5339233038348082,
+      "top3": 0.7197640117994101
+    },
+    "whistle_rmvpe_half->whistle_peak/max": {
+      "mrr": 0.656229807557241,
+      "top1": 0.5309734513274337,
+      "top3": 0.6843657817109144
+    }
+  },
+  "split": "test",
+  "step": 6000
+}
