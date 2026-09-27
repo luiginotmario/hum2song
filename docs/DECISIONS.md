@@ -190,3 +190,45 @@ Measured result: 0 unaligned pairs in every run (contour figure: 5,586 pairs; do
 - Any run reports `n_unaligned > 0`.
 - Queries are partial or much shorter than the reference (e.g. real user hums against full songs); then test subsequence DTW with the same slope limit.
 - The retrieval model replaces DTW scoring in the paper's main results, leaving this only for the figure.
+
+---
+
+## D-010 · Fix the MIDI tempo map; train key- and tempo-invariant from the Stage A weights
+**Date:** 2026-09-27
+
+**Context.** A diagnosis of the Stage A checkpoint (`ckpt/stage_a/last.pt`, 20,000 steps) found three problems. Artifacts: `/lambda/nfs/hum2song-data/diag/` (`mir_experiments.json`, `humtrans_robustness.json`, the pitch-baseline and reference-inspection logs).
+- **Weak MIR-QBSH retrieval.** Against the 48 MIR-QBSH targets only (no distractors), Stage A scored top-10 0.371. Chance is 0.208, and base MERT scored about 0.30. A pitch-only melody baseline on the same queries got top-1 0.888 and top-10 0.981. So the melody information is there, and the model is not using it.
+- **The model learned "same pitch at the same time", not relative melody.** HumTrans hums were recorded in sync with their label MIDI, so every hum/reference pair shares key and timing. On the HumTrans test set, top-1 is 0.770 unshifted, 0.246 with the query shifted +7 semitones, and 0.229 an octave down. A 0.8× tempo change drops it to 0.492. Real users hum in any key and at any speed.
+- **Renderer bug.** `midi_render.py` reset tempo to 120 bpm at the start of every track. Type-1 MIDI files keep their tempo in track 0 and notes in track 1, so their notes were timed at 120 bpm whatever the real tempo was. 17 of 48 MIR-QBSH songs and about 66% of HumTrans references were rendered at the wrong speed. Re-rendering at the right tempo alone raised MIR-QBSH top-10 from 0.37 to 0.48 with the same Stage A weights.
+- **Eval reporting.** The MIR-QBSH eval used HumTrans renders as distractors. Those are the training distribution and share its synthesis. The docs also said references are scored by their best chunk. In fact eval embeds one clip per reference: its first 10 s.
+
+HumTrans structure matters for the fix. All 1,000 segments (song × segment id) have 6–20 takes by different singers. In 79 segments every take's MIDI is byte-identical. In the other 921 the MIDIs have the same intervals and timing (duration ratio 0.995–1.004, 5th–95th percentile) but sit at different octaves per singer (−36 to +12 semitones against the first take).
+
+**Options.**
+- **Fix the tempo only, keep training as is.** Cheapest, and worth +0.11 top-10 on its own, but the model stays locked to absolute pitch and timing.
+- **Retrain from base MERT with invariance augmentations.** Clean, but throws away 20,000 steps that did learn hum-vs-render features.
+- **Continue from the Stage A weights with invariance augmentations** (weights only, fresh optimizer, short warmup).
+- **Train on pitch contours instead of audio** (like the pitch baseline). Strong on MIR-QBSH, but it gives up the audio model's robustness to sung lyrics and noise, and it is a different project.
+
+**Decision.** Continue from Stage A (run `stage_a2`, `configs/train_stage_a2.yaml`, checkpoints in `ckpt/stage_a2/`), after fixing the data.
+1. **Tempo map.** `parse_midi` gathers tempo events from all tracks into one tempo map, then converts note ticks to seconds (`TempoMap`). No new dependency. It matches `pretty_midi` note times on all 48 MIR-QBSH MIDIs to within 1e-14 s. `training/scripts/rerender_catalog.py` moves the old `catalog/humtrans` and `catalog/mirqbsh` folders and both manifests to `backup/pre_tempo_fix_<timestamp>/`, renders again, and rewrites `song_dur_s` / `duration_s`.
+2. **Query augmentation** (`augment.py`). Pitch and tempo are now independent. Transposition: 80% of queries, uniform in ±12 semitones, of which 25% are exactly ±1 octave. Time-stretch: 50% of queries, log-uniform 0.7–1.4× duration, pitch unchanged. Both run as one linear resample plus one numpy phase-vocoder pass (1024-point FFT, hop 256). Before this change, "pitch" and "time" were both resampling, so each changed the other.
+3. **Pair construction** (`dataset.py`). The reference crop starts 0–2 s after the aligned start, on top of the ±1 s jitter, so hum and reference crops are offset. With probability 0.5 the positive is another singer's or take's reference for the same HumTrans segment. For the 921 octave-varied segments that is an octave-shifted positive with the same timing. For the 79 identical segments it changes nothing.
+4. **Loader cost.** Data loading was the bottleneck. The query is cut to the longest window a crop can need (12 s / 0.7) before augmenting. `trim_silence` is vectorized. ffmpeg runs with `-threads 1`. Each dataloader worker uses one torch thread.
+5. **Eval.** Every result has a `targets_only` line: the set's own references and nothing else (48 songs for MIR-QBSH). HumTrans songs are never distractors. No other song audio exists yet, so `targets_only` is the headline MIR-QBSH number (`headline` field). It is not comparable to CHAD's 0.921, which uses about 2,600 MIDI distractors. The docs now say eval embeds one clip per reference.
+6. **Validation during training.** At step 0 and every 1,000 steps, the loop logs to W&B: MIR-QBSH top-1/top-10/MRR against the 48 targets only (all ~4,400 queries), HumTrans val, and HumTrans val with queries shifted +7 semitones (`val/humtrans_val_shift+7_*`), which tracks key robustness directly.
+7. **Schedule.** 8,000 steps, batch 32, same InfoNCE with learned temperature, top 6 MERT layers trainable from step 0 (Stage A already unfroze them), layerdrop 0, 300 warmup steps, then cosine decay, same learning rates as Stage A. With validation every 1,000 steps that gives 9 points on the curve. Stage A's loss was still falling at 20,000 steps, but this run starts from trained features and only has to learn the invariances. If MIR 48-target top-10 is still rising at 8,000, the next run extends. If it peaks early, we keep the best `step_*.pt`, not `last.pt`.
+
+**Trade-off / what we gave up.**
+- **Peak HumTrans accuracy.** Unshifted HumTrans val top-1 will probably drop. That shortcut (absolute pitch and timing) was real signal on HumTrans but useless on real queries.
+- **A clean ablation.** Tempo fix, augmentations, offsets, and cross-take positives change together, and the run starts from weights trained on wrongly timed references. We cannot say which change helped how much without extra runs. For the tempo fix alone we have the diagnosis number (0.37 → 0.48 top-10, same weights).
+- **Augmentation fidelity.** The phase vocoder smears transients and sounds phasey at large factors: transposing up an octave plus a 1.4× stretch is a 2.8× vocoder stretch. Linear-interpolation resampling aliases slightly when shifting up. We chose speed over quality because the loader is the bottleneck.
+- **A comparable headline number.** Without distractors, MIR-QBSH `targets_only` is a 48-way closed set and cannot be read next to CHAD.
+- **Cross-take coverage.** Other takes only add octave variation. Key variation within an octave comes only from synthetic transposition.
+
+**Revisit when.**
+- We have non-HumTrans song audio (FMA / MTG-Jamendo or MIDI renders from another corpus) for at least 2,000 distractors. Then report the CHAD-comparable number next to `targets_only`.
+- `val/humtrans_val_shift+7_top1` stays far below unshifted val top-1 after 8,000 steps. Then raise the transposition probability, or add hum-vs-hum positives across takes.
+- MIR 48-target top-10 stays well below the pitch baseline (0.981). Then consider adding a pitch-contour branch, or training on contours.
+- The loader is still the bottleneck. Then precompute stretched and transposed variants, or move augmentation to the GPU.
+

@@ -215,7 +215,7 @@ Rules:
 | `DEBUG`, `KEEP_QUERY_AUDIO`, `MAX_UPLOAD_S=20`, `SEARCH_K=300`, `MAX_TURNS=2` | server | |
 
 ## 10. Evaluation
-- Per eval set **and per qtype (hum / whistle / sing)**: Top-1, Top-3, Top-10, MRR; song-level grouping by best chunk, the same as production.
+- Per eval set **and per qtype (hum / whistle / sing)**: Top-1, Top-3, Top-10, MRR. Production will group chunks by song (best chunk); the current eval does not chunk: each reference is one clip, its first 10 s, and a song with several reference clips scores its best clip. Every set also reports a `targets_only` line (its own references, no distractors). HumTrans renders are never distractors (D-010).
 - Decision layer: show-precision, answer rate, follow-up rate, retry rate, success within ≤2 turns, ECE; plus p50/p95 latency.
 - Baselines to report next to ours: CHAD Top-10 on MIR-QBSH (MIDI refs 0.921; Jang Real 0.868; MTG-QBH 0.883) and ACRCloud MIREX 0.990 (numbers from arXiv:2312.01092). Numbers are only comparable when the protocol matches.
 - `eval/report.py` emits `paper/tables/*.tex` + `runs/<name>/report.json`.
