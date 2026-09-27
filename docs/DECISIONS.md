@@ -378,3 +378,80 @@ Diagnostics:
 - A whistle set with melody references appears, or CHAD-style originals become usable. Then rerun as real QbH.
 - We add whistle-like augmentation (interval compression, octave folding, higher dropout) to training. Measure it on MLEnd without changing this protocol.
 - We need whistle training data. Then split MLEnd by performer first and keep a fixed test half.
+
+---
+
+## D-014 · References from recorded songs: htdemucs vocals → RMVPE, measured against annotated melody
+**Date:** 2026-09-27
+
+**Context.** Every result so far uses MIDI references. A real catalogue has recordings, so the reference contour has to come from a melody extractor, and D-011 and D-012 expected accuracy to drop. We needed songs with both audio and ground-truth melody.
+- **MIR-1K:** 1,000 karaoke clips from 110 songs, with vocals and accompaniment on separate channels and manual vocal pitch every 20 ms. mirlab.org did not respond, so we used a public mirror, `AnhP/Mir-1k-use-DJCM-training` on the Hugging Face Hub (download only).
+- **ADC2004 and MIREX05** (LabROSA): 20 and 13 excerpts, not used to train any model here.
+- **Not available:** MedleyDB needs an access request. HumTrans and MIR-QBSH have no song audio, and CHAD's originals are YouTube links.
+
+Recent melody-extraction work reports OA 91.6 / 92.5 / 78.9 on ADC2004 / MIREX05 / MedleyDB (joint network, Jing et al., Interspeech 2025), next to SpectMamba, MTANet, TONet and FTANet. We found none with maintained public PyTorch weights we could run as-is. RMVPE is itself a vocal-pitch extractor built for polyphonic music.
+
+**Options** (all in `contour/melody.py`):
+- `rmvpe_mix`: RMVPE on the mixture.
+- `rmvpe_vocals`: htdemucs vocal stem → RMVPE.
+- `fcpe_vocals`: htdemucs vocals → FCPE (torchfcpe).
+- `crepe_vocals`: htdemucs vocals → CREPE full (torchcrepe).
+- `melodia_mix`: Melodia (essentia), the classic dedicated melody extractor.
+
+Every method uses its library defaults and our existing RMVPE voicing threshold (0.3). Nothing was tuned on these sets.
+
+**Decision.** For vocal songs, reference contours come from **htdemucs vocals → RMVPE** (`extract_song_melody.py`). RMVPE on the mixture is the fallback: it is 10× cheaper and better when the melody is instrumental.
+
+The retrieval test (`contour/song_eval.py`, `eval_song_melody.py`) runs on MIR-1K. It ranks against all 1,000 clips and reports two targets:
+- **`clip`:** the exact clip.
+- **`song`:** any clip of the same song counts. This is the QbH question, because clips of one song repeat melodies.
+
+Queries are cropped to 50 to 80 % of the voiced span, with a fixed seed. There are two query types:
+- **Sung:** RMVPE on the isolated singing channel, transposed by 2 to 5 semitones and stretched 0.85 to 1.15×. It is the same performance as the reference, so the absolute level is optimistic.
+- **Synthetic:** the annotation, humanized and augmented like training queries. It never touches the audio.
+
+The model is the D-012 encoder (`last.pt`, 3 seeds), unchanged.
+
+**Results.**
+
+Frame accuracy (mir_eval, clip mean; unvoiced frames carry a pitch guess where the tracker gives one). Values are OA / RPA / VFA.
+
+| Method | MIR-1K (1,000) | ADC2004 vocal (12) | ADC2004 all (20) | MIREX05 all (13) |
+|---|---|---|---|---|
+| clean vocal channel → RMVPE (ceiling) | 0.959 / 0.975 / 0.071 | | | |
+| **htdemucs → RMVPE** | **0.927 / 0.953 / 0.108** | **0.924 / 0.944 / 0.086** | 0.632 / 0.662 / 0.052 | 0.756 / 0.669 / 0.066 |
+| RMVPE on mixture | 0.904 / 0.945 / 0.108 | 0.847 / 0.904 / 0.238 | **0.706 / 0.825** / 0.159 | **0.777 / 0.779** / 0.123 |
+| htdemucs → FCPE | 0.849 / 0.944 / 0.399 | 0.879 / 0.940 / 0.433 | 0.585 / 0.570 / 0.260 | 0.716 / 0.647 / 0.192 |
+| htdemucs → CREPE | 0.819 / 0.944 / 0.458 | 0.853 / 0.934 / 0.502 | 0.703 / 0.802 / 0.383 | 0.677 / 0.727 / 0.363 |
+| Melodia on mixture | 0.721 / 0.727 / 0.275 | 0.743 / 0.724 / 0.135 | 0.694 / 0.672 / 0.131 | 0.701 / 0.705 / 0.283 |
+
+Retrieval on MIR-1K, `song` target, mean of 3 seeds (sd ≤ 0.02). Values are top-1 / top-10. `clip` numbers are in `docs/paper/results/contour/song_melody.json`.
+
+| References | Sung queries | Drop vs annotation (top-10) | Synthetic queries | Drop vs annotation (top-10) |
+|---|---|---|---|---|
+| annotation (MIDI-like) | 0.673 / 0.924 | | 0.617 / 0.892 | |
+| clean vocal channel → RMVPE | 0.678 / 0.929 | +0.005 | 0.575 / 0.871 | −0.021 |
+| **htdemucs → RMVPE** | **0.626 / 0.891** | **−0.033** | **0.539 / 0.832** | **−0.060** |
+| RMVPE on mixture | 0.584 / 0.878 | −0.046 | 0.514 / 0.820 | −0.072 |
+| htdemucs → FCPE | 0.536 / 0.837 | −0.087 | 0.444 / 0.776 | −0.116 |
+| htdemucs → CREPE | 0.453 / 0.777 | −0.147 | 0.374 / 0.723 | −0.169 |
+| Melodia on mixture | 0.317 / 0.644 | −0.280 | 0.290 / 0.598 | −0.294 |
+
+On the same queries and model, audio references cost about 0.03 to 0.06 top-10 and 0.05 to 0.08 top-1 against annotated melody when the extractor is htdemucs → RMVPE. Plain RMVPE on the mixture costs about 0.01 more.
+
+Absolute levels are low because MIR-1K clips are 4 to 13 s, so queries are 2 to 10 s, ranked against 1,000 clips. They are not comparable to MIR-QBSH.
+
+GPU cost on the A100 for MIR-1K's 133 minutes of audio, clip by clip: htdemucs 359 s (about 22× real time), RMVPE 32 s, CREPE 230 s, FCPE 5 s.
+
+**Trade-off / what we gave up.**
+- **Separation helps only when a voice carries the melody.** On ADC2004 and MIREX05 with instrumental melodies (jazz sax, MIDI), vocals → RMVPE loses to RMVPE on the mixture (OA 0.632 vs 0.706 on all of ADC2004). A catalogue with instrumentals needs a per-song choice. One candidate rule: use the vocal stem when it has enough energy and voiced frames, otherwise the mixture. It is not implemented yet.
+- **Possible MIR-1K contamination.** RMVPE's authors trained on MIR-1K splits, and the RVC weights we use may include it, so RMVPE's MIR-1K numbers are likely optimistic. ADC2004 vocal (OA 0.924, close to the joint network's published 91.6 on its ADC2004 protocol) and MIREX05 are uncontaminated checks with the same ordering among RMVPE variants for vocal material. The published figure is not measured under our exact protocol.
+- **Voicing not tuned for other trackers.** CREPE and FCPE get library-default voicing on separated vocals, which still hold accompaniment bleed, and their false alarms are high (VFA 0.40 to 0.50). Tuning would narrow the gap but needs a validation split we do not have.
+- **Sung queries share the reference performance.** That flatters the absolute level. The synthetic queries do not, and they give the same ordering.
+- **htdemucs is the costly step.** For a large catalogue it is about 20× real time per clip without batching.
+
+**Revisit when.**
+- A catalogue with real recordings is built. Then add the vocal-or-mixture rule and batch htdemucs.
+- CHAD originals are allowed (they need YouTube downloads and the user's approval). Then measure real hums against audio references end to end.
+- A dedicated extractor with usable weights appears (the joint network or SpectMamba). Then add it as one more method in `melody.py`.
+- We train on audio-derived references, e.g. MIR-1K annotation vs extracted contour pairs, to close the gap. Keep ADC2004 and MIREX05 out of training.

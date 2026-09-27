@@ -1,0 +1,6 @@
+# Optional: song-melody extraction and its eval (docs/DECISIONS.md D-014).
+demucs>=4.0
+mir_eval>=0.7
+torchcrepe>=0.0.22
+torchfcpe>=0.0.4
+essentia>=2.1b6.dev1110
