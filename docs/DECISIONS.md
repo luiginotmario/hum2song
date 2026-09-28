@@ -626,3 +626,49 @@ Pairs-only vs combined (3 seeds each):
 **Revisit when.**
 - Whistle data covering many songs (tens to hundreds) exists, ideally with melody references. Then retrain with whistle pairs and evaluate on held-out songs from the start.
 - A whistle-specific approach that does not memorize melodies is tried, e.g. MIDI-only synthetic whistles across the Essen corpus. Evaluate it with this unseen-song protocol.
+
+## D-017 · First paper song library: FMA full, vocal stem → RMVPE, 10 s chunks in pgvector, minimal search API
+**Date:** 2026-09-28
+
+**Context.** Phase 2 needs a song library that the D-012 contour model can search from real audio, under D-009 (open-licence audio only, no YouTube). The first build has to finish in one night on the single A100, stay reproducible, and give an end-to-end search: query audio in, top-k songs out.
+
+**Options.**
+- **Audio source:** `fma_large` (30 s clips) vs `fma_full` (full-length tracks, 943.6 GB zip).
+- **Download:** the whole archive vs ranged HTTP reads of selected zip members.
+- **Melody:** RMVPE on the mix vs htdemucs vocals → RMVPE (D-014).
+- **Chunking:** whole-song embeddings vs fixed windows.
+- **Store:** numpy/FAISS files vs Postgres with pgvector.
+
+**Decision.**
+- **Source: `fma_full`.** Hums can target any part of a song, not a 30 s excerpt. The zip supports HTTP ranges, so `remotezip` (`catalog/fma.py`, `scripts/fetch_fma.py`) reads only the chosen members: 3,000 tracks in about 5 minutes with 24 threads, with no full download.
+- **Selection (fixed before indexing):** seed 20260928 draws 3,000 tracks from vocal-leaning top genres (Rock, Pop, Folk, Hip-Hop, International, Country, Soul-RnB, Blues) lasting 60–420 s. Result: Rock 1729, Hip-Hop 438, Folk 347, Pop 262, International 147, Country 28, Soul-RnB 26, Blues 23. Rows keep title, artist, genre and licence (`library/fma_full_3k/songs.jsonl`).
+- **Melody: htdemucs vocals → RMVPE, as in D-014.** Two engineering changes that do not change the method:
+  - ffmpeg decodes each mp3 straight to 44.1 kHz mono, so htdemucs gets the full band and a few mp3s libsndfile cannot read still decode. The stem goes to 16 kHz through torchaudio's anti-aliased resampler.
+  - The htdemucs segments of a song run in batches of 16 (`separate_vocals_batched`). It uses the same segment length, 25% overlap and triangular weights as demucs `apply_model`. On two songs its max relative difference from `apply_model` is ≤ 2e-3 and RMVPE voicing agrees on 100% of frames. It is about 3× faster.
+  - RMVPE tracks are cached as `.npy` (`library/fma_full_3k/tracks/`), so re-chunking or a new checkpoint does not repeat separation.
+- **Chunks: 10 s windows with a 5 s hop** on the 20 ms contour grid. A window is kept only if at least 25% of its frames are voiced; instrumental stretches have an empty vocal stem and nothing to match. Songs with no voiced window stay in `songs` with `chunk_count = 0`, so reruns skip them, but they are not searchable.
+- **Embeddings: D-012 `contour_v2_s0/last.pt`** (the default model, D-016), 256-d, L2-normalized.
+- **Store: Postgres 16 + pgvector** (`sql/001_library.sql`). Table `songs` holds metadata, source tier, licence, `model_ver` and `chunk_count`. Table `chunks` holds `song_id`, `start_s`, the voiced fraction and `vector(256)`, with an HNSW cosine index. **Song score = its best chunk's cosine similarity** among the 400 nearest chunks (`ef_search` 400).
+- **API** (`hum2song.server.api`, FastAPI):
+  - `POST /search` takes an audio file (≤ 10 MB) and returns the top-k songs with score and best chunk start. It uses the same query path as every contour eval: RMVPE → cleaned contour → D-012 encoder.
+  - Queries with under 1 s of voiced audio return no results.
+  - `GET /health` reports counts and the model.
+- **Sanity probe** (`scripts/probe_library.py`). For songs chosen with a fixed seed, it renders a hum from each song's own extracted melody: humanized and augmented as in `song_eval`, with a random, mostly voiced 8–12 s crop, as a harmonic tone plus noise. The hum then goes through the full audio search path. It is a proxy, not a person humming, and it tests the pipeline and the chunking, not real-hum accuracy.
+
+**Results (interim, while the build runs).**
+- The build ran 3 processes sharing the GPU at about 0.6 songs/s.
+- 325 songs indexed (310 searchable, 7,723 chunks). The rendered-hum probe, 200 queries (`docs/paper/results/library/probe_interim.json`): **top-1 0.705, top-5 0.815, top-10 0.87, MRR 0.763.**
+- One real hum: MLEnd `0002.wav` (a test-split person humming *Harry Potter*, which is not in FMA) returns FMA songs at cosine 0.46–0.54. That only shows the real-hum path runs end to end; the correct song is not in the library.
+- A first try that cropped 50–80% of the whole voiced span (queries capped at 20 s, against 10 s chunks) gave top-1 0.36 on 95 songs. The drop comes from the query/chunk length mismatch.
+
+**Trade-off / what we gave up.**
+- **Genre skew:** 58% Rock, as FMA is. It fits a paper subset but not a general catalog.
+- **Vocal melody only.** Instrumental hooks (riffs, synth leads) are invisible, because chunks come from the vocal stem.
+- **One chunk length.** 10 s chunks suit 8–12 s hums. Longer queries straddle chunks and score lower.
+- **No real hums of indexed songs yet**, so there is no real-hum accuracy number for this library.
+
+**Revisit when.**
+- Real hums of FMA songs are recorded (the benchmark plan in D-009). Measure real-hum top-k on this library then.
+- Queries longer than 12 s become common. Then add 20 s chunks or aggregate several query windows.
+- The library grows past about 100k chunks. Then retune HNSW `m`, `ef_construction` and `ef_search` against exact search.
+- The contour model changes. Then re-embed from the cached tracks; `model_ver` marks which rows to redo.
