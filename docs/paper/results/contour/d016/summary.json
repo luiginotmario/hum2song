@@ -1,0 +1,73 @@
+{
+  "unseen_songs_test_people": {
+    "old (D-012, no MLEnd)": {
+      "heldout:whistle->hums": "0.630\u00b10.010",
+      "heldout:hum->hums": "0.859\u00b10.008",
+      "heldout:whistle->whistles": "0.581\u00b10.014",
+      "seen:whistle->hums": "0.507\u00b10.010",
+      "seen:hum->hums": "0.859\u00b10.011",
+      "seen:whistle->whistles": "0.552\u00b10.002"
+    },
+    "whistle, all 8 songs (D-015)": {
+      "heldout:whistle->hums": "0.722\u00b10.018",
+      "heldout:hum->hums": "0.929\u00b10.007",
+      "heldout:whistle->whistles": "0.715\u00b10.019",
+      "seen:whistle->hums": "0.747\u00b10.003",
+      "seen:hum->hums": "0.942\u00b10.005",
+      "seen:whistle->whistles": "0.748\u00b10.009"
+    },
+    "whistle, 2 songs held out": {
+      "heldout:whistle->hums": "0.456\u00b10.045",
+      "heldout:hum->hums": "0.781\u00b10.014",
+      "heldout:whistle->whistles": "0.548\u00b10.023",
+      "seen:whistle->hums": "0.754\u00b10.015",
+      "seen:hum->hums": "0.950\u00b10.002",
+      "seen:whistle->whistles": "0.739\u00b10.020"
+    }
+  },
+  "pairs_only_vs_combined": {
+    "combined (D-015)": {
+      "mir48+2000_anywhere_top1": "0.842\u00b10.011",
+      "mir48+2000_anywhere_top10": "0.949\u00b10.004",
+      "mir48+2000_start_multi_top10": "0.969\u00b10.001",
+      "humtrans_test_top1": "0.992\u00b10.002",
+      "humtrans_test_shift+7_top1": "0.988\u00b10.005",
+      "mlend_test:whistle->hums": "0.740\u00b10.006",
+      "mlend_test:hum->hums": "0.939\u00b10.003",
+      "mlend_test:whistle->whistles": "0.739\u00b10.005",
+      "val/select": "0.955\u00b10.001",
+      "val/mlend_val_whistle_top1": "0.910\u00b10.003",
+      "val/mlend_val_hum_top1": "0.962\u00b10.003",
+      "selected_steps": [
+        4000,
+        6000,
+        6000
+      ]
+    },
+    "pairs only": {
+      "mir48+2000_anywhere_top1": "0.836\u00b10.027",
+      "mir48+2000_anywhere_top10": "0.952\u00b10.007",
+      "mir48+2000_start_multi_top10": "0.971\u00b10.004",
+      "humtrans_test_top1": "0.992\u00b10.003",
+      "humtrans_test_shift+7_top1": "0.989\u00b10.004",
+      "mlend_test:whistle->hums": "0.730\u00b10.016",
+      "mlend_test:hum->hums": "0.942\u00b10.006",
+      "mlend_test:whistle->whistles": "0.738\u00b10.015",
+      "val/select": "0.958\u00b10.002",
+      "val/mlend_val_whistle_top1": "0.923\u00b10.000",
+      "val/mlend_val_hum_top1": "0.958\u00b10.005",
+      "selected_steps": [
+        6000,
+        2500,
+        5000
+      ]
+    },
+    "old (D-012)": {
+      "mir48+2000_anywhere_top1": "0.866\u00b10.007",
+      "mir48+2000_anywhere_top10": "0.958\u00b10.002",
+      "mir48+2000_start_multi_top10": "0.974\u00b10.002",
+      "humtrans_test_top1": "0.996\u00b10.001",
+      "humtrans_test_shift+7_top1": "0.993\u00b10.001"
+    }
+  }
+}

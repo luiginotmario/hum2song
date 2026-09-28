@@ -531,3 +531,55 @@ Selection scores on val people (whistle / hum top-1): full model 0.913 / 0.959, 
 - **Pairs-only confirmation.** Run two more seeds of pairs-only. If val confirms it is at least as good as the full config (it is ahead on val on seed 0: 0.960 vs 0.955 mean selection score), switch to it. That choice uses val only; its MIR-QBSH numbers stay a check, not the reason.
 - **Leave-songs-out.** Run the leave-songs-out whistle test before claiming whistle QbH on unseen songs.
 - **More whistle data.** A whistle set with more songs or melody references appears. Then train on it and use MLEnd test people only for evaluation.
+
+---
+
+## D-016 · Whistle training does not transfer to unseen songs; keep D-012 as the default model
+**Date:** 2026-09-27
+
+**Context.** D-015 raised whistle top-1 on MLEnd test people from 0.540 to 0.740. However, all 8 songs were in training through train-split people, so the gain could be song familiarity rather than whistle robustness. D-015 also left open whether pairs-only should replace the combined config, and it showed a small MIR-QBSH dip against D-012.
+
+**Options.**
+- Adopt D-015 (combined) as the default model.
+- Adopt pairs-only as the default model.
+- Keep D-012 as the default model.
+
+**Decision.**
+- **Unseen-song test** (`make_mlend_song_holdout.py`, `training/splits/mlend_heldout_songs.json`, commit `7241f20`, fixed before training). Seed 20260928 held out **Hakuna** and **Potter**.
+  - **Training.** `song_holdout=true` removes them from whistle-pair training (1,714 pairs left of 2,296) and from the MLEnd val score used for checkpoint selection.
+  - **HumTrans overlap.** HumTrans has no titles, so overlap was checked by melody. MLEnd hums were matched to their nearest HumTrans segment with the D-012 model. The largest share for any one HumTrans song was 0.14 (Hakuna) and 0.10 (Potter), under the 0.25 threshold, so no HumTrans song was excluded (`d016/overlap_check.json`). Two training songs, Frozen (0.26) and Showman (0.27), are just over the threshold; this does not affect the test.
+  - **Runs.** The combined D-015 config, 3 seeds: W&B `awvchwtn`, `69hkhs0u`, `6mbr6c2b`.
+  - **Evaluation.** `eval_mlend.py --split test --song-holdout`. Held-out-song queries from test people are still ranked against all 8 songs.
+- **Pairs-only seeds 1 and 2** (`na6niugm`, `9w366cik`). With D-015's seed 0 this gives 3 seeds. The config was compared on val only.
+- **Outcome.** **D-012 stays the default model for search and the app.** D-015 and pairs-only are not adopted. Whistle robustness needs whistle data that covers many songs.
+
+**Results.** Top-1, mean ± sd over 3 seeds, test people, val-selected checkpoints. Files: `docs/paper/results/contour/d016/` (`summary.json`, `summarize.py`, per-run JSON).
+
+Held-out songs (Hakuna, Potter) vs seen songs:
+
+| Model | Unseen: whistle → hums | Unseen: hum → hums | Unseen: whistle → whistles | Seen: whistle → hums | Seen: hum → hums |
+|---|---|---|---|---|---|
+| D-012 (no MLEnd in training) | **0.630±0.010** | **0.859±0.008** | **0.581±0.014** | 0.507±0.010 | 0.859±0.011 |
+| D-015, trained on all 8 songs (these songs seen) | 0.722±0.018 | 0.929±0.007 | 0.715±0.019 | 0.747±0.003 | 0.942±0.005 |
+| **Whistle training, 2 songs held out** | **0.456±0.045** | **0.781±0.014** | 0.548±0.023 | 0.754±0.015 | 0.950±0.002 |
+
+Pairs-only vs combined (3 seeds each):
+
+| | +2000 `anywhere` top-1 / top-10 | +2000 `start_multi` top-10 | HumTrans test top-1 (+7 st) | MLEnd test whistle → hums | Val selection score |
+|---|---|---|---|---|---|
+| D-012 | **0.866±0.007 / 0.958±0.002** | **0.974** | **0.996 (0.993)** | 0.540 | – |
+| Combined (D-015) | 0.842±0.011 / 0.949±0.004 | 0.969 | 0.992 (0.988) | 0.740±0.006 | 0.955±0.001 |
+| Pairs only | 0.836±0.027 / 0.952±0.007 | 0.971 | 0.992 (0.989) | 0.730±0.016 | 0.958±0.002 |
+
+**Takeaways.**
+- **The D-015 whistle gain is mostly song familiarity.** Once the test songs are left out of whistle training, whistle → hums on those songs drops to 0.456±0.045. That is below D-012 (0.630), which never saw MLEnd. Hum → hums on those songs also drops (0.781 vs 0.859). On the songs it did see, the same model scores 0.754 and 0.950. Training on MLEnd's 8 songs teaches those melodies, not whistling in general, and it slightly hurts new songs.
+- **Pairs-only and combined are equivalent.** Val is 0.958 vs 0.955, MLEnd test whistles 0.730 vs 0.740, and MIR +2000 `anywhere` top-1 0.836 vs 0.842, all within seed spread. Neither removes the MIR dip against D-012 (0.866).
+
+**Trade-off / what we gave up.**
+- **Whistles stay weak.** D-012 gets about 0.54 to 0.63 whistle top-1 on MLEnd test people in this 8-way setting, well below hums (0.86). That is the honest number for a new song.
+- **The evidence is narrow.** Only 2 held-out songs and 3 seeds (sd 0.045 on the key number). Another pair of songs could give a different size of drop. Its direction, below D-012, held on all 3 seeds.
+- **Code kept, config off.** The whistle-training code (`mlend.py`, `WhistleAugment`, `train_contour_whistle.yaml`) stays. The default checkpoints are D-012's `contour_v2_s*/last.pt`.
+
+**Revisit when.**
+- Whistle data covering many songs (tens to hundreds) exists, ideally with melody references. Then retrain with whistle pairs and evaluate on held-out songs from the start.
+- A whistle-specific approach that does not memorize melodies is tried, e.g. MIDI-only synthetic whistles across the Essen corpus. Evaluate it with this unseen-song protocol.
