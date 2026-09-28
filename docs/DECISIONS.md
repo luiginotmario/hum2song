@@ -655,10 +655,11 @@ Pairs-only vs combined (3 seeds each):
   - `GET /health` reports counts and the model.
 - **Sanity probe** (`scripts/probe_library.py`). For songs chosen with a fixed seed, it renders a hum from each song's own extracted melody: humanized and augmented as in `song_eval`, with a random, mostly voiced 8–12 s crop, as a harmonic tone plus noise. The hum then goes through the full audio search path. It is a proxy, not a person humming, and it tests the pipeline and the chunking, not real-hum accuracy.
 
-**Results (interim, while the build runs).**
-- The build ran 3 processes sharing the GPU at about 0.6 songs/s.
-- 325 songs indexed (310 searchable, 7,723 chunks). The rendered-hum probe, 200 queries (`docs/paper/results/library/probe_interim.json`): **top-1 0.705, top-5 0.815, top-10 0.87, MRR 0.763.**
-- One real hum: MLEnd `0002.wav` (a test-split person humming *Harry Potter*, which is not in FMA) returns FMA songs at cosine 0.46–0.54. That only shows the real-hum path runs end to end; the correct song is not in the library.
+**Results.** Files: `docs/paper/results/library/` (`probe_full.json` is final, `probe_interim.json` is from 325 songs).
+- **Build:** all 3,000 tracks indexed; no decode failures. **2,783 are searchable (70,844 chunks)**; 217 (7.2%) have no voiced 10 s window. It took 80 minutes (02:30–03:51 UTC) with 3 processes sharing the GPU, about 0.6 songs/s. Phase 2 GPU time through the probe was about 1.75 h.
+- **Rendered-hum probe on the full library, 500 queries** (`probe_full.json`): **top-1 0.582, top-5 0.716, top-10 0.764, MRR 0.643.**
+- **Interim on 325 songs (310 searchable), 200 queries:** top-1 0.705, top-5 0.815, top-10 0.87, MRR 0.763. Going from 310 to 2,783 songs costs 0.12 top-1, so distractor count matters a lot for this proxy.
+- One real hum: MLEnd `0002.wav` (a test-split person humming *Harry Potter*, which is not in FMA) returns FMA songs at cosine 0.46–0.54 on 325 songs (0.54–0.58 on the full library). That only shows the real-hum path runs end to end; the correct song is not in the library.
 - A first try that cropped 50–80% of the whole voiced span (queries capped at 20 s, against 10 s chunks) gave top-1 0.36 on 95 songs. The drop comes from the query/chunk length mismatch.
 
 **Trade-off / what we gave up.**

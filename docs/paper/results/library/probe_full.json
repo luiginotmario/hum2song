@@ -1,0 +1,2593 @@
+{
+ "library": {
+  "songs": 3000,
+  "searchable": 2783,
+  "chunks": 70844
+ },
+ "rendered": {
+  "top1": 0.582,
+  "top5": 0.716,
+  "top10": 0.764,
+  "mrr": 0.6428294123875371,
+  "queries": 500
+ },
+ "audio": {
+  "/lambda/nfs/hum2song-data/raw/mlend_view/MLEndHWD_audiofiles/0002.wav": {
+   "voiced_s": 12.88,
+   "results": [
+    {
+     "song_id": "fma:017727",
+     "title": "Vivre Et Penser Comme Des Porcs",
+     "artist": "Myra Lee",
+     "score": 0.5802,
+     "best_start_s": 145.0
+    },
+    {
+     "song_id": "fma:060607",
+     "title": "Necromancy of the heart",
+     "artist": "Yerri",
+     "score": 0.5393,
+     "best_start_s": 15.0
+    },
+    {
+     "song_id": "fma:003937",
+     "title": "The Man Downstairs",
+     "artist": "Mink Lungs",
+     "score": 0.5356,
+     "best_start_s": 90.0
+    },
+    {
+     "song_id": "fma:050449",
+     "title": "Interview",
+     "artist": "Milk Music",
+     "score": 0.5304,
+     "best_start_s": 130.0
+    },
+    {
+     "song_id": "fma:052973",
+     "title": "Let Love Linger",
+     "artist": "June & Jean Millington",
+     "score": 0.53,
+     "best_start_s": 160.0
+    },
+    {
+     "song_id": "fma:064274",
+     "title": "Nina Donde Estas",
+     "artist": "Los Vigilantes",
+     "score": 0.5218,
+     "best_start_s": 65.0
+    },
+    {
+     "song_id": "fma:127054",
+     "title": "Saw Mill",
+     "artist": "Cletus Got Shot",
+     "score": 0.5199,
+     "best_start_s": 125.0
+    },
+    {
+     "song_id": "fma:109507",
+     "title": "Better To Be Lucky",
+     "artist": "The Electric Mess",
+     "score": 0.5156,
+     "best_start_s": 155.0
+    },
+    {
+     "song_id": "fma:026546",
+     "title": "Can't Stop These Tears",
+     "artist": "The Black Hollies",
+     "score": 0.5125,
+     "best_start_s": 55.0
+    },
+    {
+     "song_id": "fma:062527",
+     "title": "Clear Vision feat. Soulmack",
+     "artist": "Tommy Tornado",
+     "score": 0.5112,
+     "best_start_s": 185.0
+    }
+   ]
+  }
+ },
+ "probes": [
+  {
+   "song_id": "fma:000171",
+   "voiced_s": 6.46,
+   "rank": 33
+  },
+  {
+   "song_id": "fma:000178",
+   "voiced_s": 8.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000351",
+   "voiced_s": 5.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000359",
+   "voiced_s": 5.16,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000507",
+   "voiced_s": 6.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000511",
+   "voiced_s": 7.74,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:000675",
+   "voiced_s": 6.44,
+   "rank": 30
+  },
+  {
+   "song_id": "fma:000768",
+   "voiced_s": 4.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000807",
+   "voiced_s": 7.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000862",
+   "voiced_s": 3.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001117",
+   "voiced_s": 8.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001119",
+   "voiced_s": 8.98,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:001149",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001286",
+   "voiced_s": 11.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001366",
+   "voiced_s": 2.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001413",
+   "voiced_s": 4.66,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001421",
+   "voiced_s": 7.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001521",
+   "voiced_s": 0.18,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001543",
+   "voiced_s": 7.26,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:001609",
+   "voiced_s": 4.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001665",
+   "voiced_s": 6.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001693",
+   "voiced_s": 7.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001698",
+   "voiced_s": 4.64,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001890",
+   "voiced_s": 1.1,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001896",
+   "voiced_s": 4.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003271",
+   "voiced_s": 5.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003353",
+   "voiced_s": 8.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003408",
+   "voiced_s": 5.96,
+   "rank": null
+  },
+  {
+   "song_id": "fma:003551",
+   "voiced_s": 7.7,
+   "rank": 26
+  },
+  {
+   "song_id": "fma:003616",
+   "voiced_s": 7.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003658",
+   "voiced_s": 6.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003721",
+   "voiced_s": 7.2,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:003766",
+   "voiced_s": 6.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003819",
+   "voiced_s": 6.8,
+   "rank": 50
+  },
+  {
+   "song_id": "fma:003973",
+   "voiced_s": 2.72,
+   "rank": 16
+  },
+  {
+   "song_id": "fma:004334",
+   "voiced_s": 5.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:004346",
+   "voiced_s": 6.44,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:004421",
+   "voiced_s": 6.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:004446",
+   "voiced_s": 8.08,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:004500",
+   "voiced_s": 9.0,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:004508",
+   "voiced_s": 7.8,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:004603",
+   "voiced_s": 5.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:004748",
+   "voiced_s": 8.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:005050",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:005409",
+   "voiced_s": 10.0,
+   "rank": 15
+  },
+  {
+   "song_id": "fma:005567",
+   "voiced_s": 6.7,
+   "rank": 23
+  },
+  {
+   "song_id": "fma:006440",
+   "voiced_s": 8.52,
+   "rank": null
+  },
+  {
+   "song_id": "fma:006602",
+   "voiced_s": 6.74,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:007710",
+   "voiced_s": 9.18,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:009201",
+   "voiced_s": 8.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009535",
+   "voiced_s": 7.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009733",
+   "voiced_s": 6.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009737",
+   "voiced_s": 6.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009793",
+   "voiced_s": 6.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009987",
+   "voiced_s": 6.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009996",
+   "voiced_s": 6.38,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:010155",
+   "voiced_s": 1.22,
+   "rank": null
+  },
+  {
+   "song_id": "fma:010439",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:010726",
+   "voiced_s": 2.02,
+   "rank": null
+  },
+  {
+   "song_id": "fma:010808",
+   "voiced_s": 3.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:010833",
+   "voiced_s": 1.98,
+   "rank": null
+  },
+  {
+   "song_id": "fma:010936",
+   "voiced_s": 6.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011198",
+   "voiced_s": 6.44,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011283",
+   "voiced_s": 6.78,
+   "rank": null
+  },
+  {
+   "song_id": "fma:011822",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011834",
+   "voiced_s": 6.16,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011899",
+   "voiced_s": 7.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012067",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012146",
+   "voiced_s": 9.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012264",
+   "voiced_s": 7.46,
+   "rank": 50
+  },
+  {
+   "song_id": "fma:012408",
+   "voiced_s": 5.56,
+   "rank": null
+  },
+  {
+   "song_id": "fma:012412",
+   "voiced_s": 6.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012630",
+   "voiced_s": 7.72,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:012690",
+   "voiced_s": 6.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012793",
+   "voiced_s": 7.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012819",
+   "voiced_s": 6.56,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:012821",
+   "voiced_s": 7.82,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:013731",
+   "voiced_s": 7.48,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:013780",
+   "voiced_s": 7.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:013880",
+   "voiced_s": 5.38,
+   "rank": null
+  },
+  {
+   "song_id": "fma:014101",
+   "voiced_s": 5.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:014369",
+   "voiced_s": 6.1,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:014716",
+   "voiced_s": 6.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:014756",
+   "voiced_s": 8.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:014942",
+   "voiced_s": 6.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:015124",
+   "voiced_s": 5.76,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:015229",
+   "voiced_s": 7.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:015280",
+   "voiced_s": 7.74,
+   "rank": 19
+  },
+  {
+   "song_id": "fma:016310",
+   "voiced_s": 5.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:016760",
+   "voiced_s": 6.68,
+   "rank": null
+  },
+  {
+   "song_id": "fma:017592",
+   "voiced_s": 7.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:017602",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:017610",
+   "voiced_s": 8.54,
+   "rank": null
+  },
+  {
+   "song_id": "fma:017895",
+   "voiced_s": 4.84,
+   "rank": null
+  },
+  {
+   "song_id": "fma:017915",
+   "voiced_s": 9.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:018097",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:018202",
+   "voiced_s": 10.14,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:018214",
+   "voiced_s": 7.02,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:019125",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:019186",
+   "voiced_s": 7.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:019509",
+   "voiced_s": 8.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:019735",
+   "voiced_s": 2.1,
+   "rank": null
+  },
+  {
+   "song_id": "fma:019794",
+   "voiced_s": 1.56,
+   "rank": 26
+  },
+  {
+   "song_id": "fma:020012",
+   "voiced_s": 9.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:020266",
+   "voiced_s": 7.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:020343",
+   "voiced_s": 6.76,
+   "rank": null
+  },
+  {
+   "song_id": "fma:020508",
+   "voiced_s": 5.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:020961",
+   "voiced_s": 7.9,
+   "rank": null
+  },
+  {
+   "song_id": "fma:021567",
+   "voiced_s": 7.32,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:021588",
+   "voiced_s": 6.76,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:021657",
+   "voiced_s": 8.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:021677",
+   "voiced_s": 8.94,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:021743",
+   "voiced_s": 5.78,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:022078",
+   "voiced_s": 2.24,
+   "rank": 17
+  },
+  {
+   "song_id": "fma:023339",
+   "voiced_s": 7.86,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:024367",
+   "voiced_s": 7.02,
+   "rank": null
+  },
+  {
+   "song_id": "fma:025665",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:026012",
+   "voiced_s": 7.52,
+   "rank": null
+  },
+  {
+   "song_id": "fma:026298",
+   "voiced_s": 6.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:026486",
+   "voiced_s": 8.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:027305",
+   "voiced_s": 8.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:027612",
+   "voiced_s": 6.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:028441",
+   "voiced_s": 7.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:029267",
+   "voiced_s": 6.34,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:029277",
+   "voiced_s": 6.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:029290",
+   "voiced_s": 1.48,
+   "rank": null
+  },
+  {
+   "song_id": "fma:029417",
+   "voiced_s": 5.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:030040",
+   "voiced_s": 6.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:030045",
+   "voiced_s": 8.5,
+   "rank": 9
+  },
+  {
+   "song_id": "fma:030060",
+   "voiced_s": 7.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:030161",
+   "voiced_s": 3.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:031618",
+   "voiced_s": 7.42,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:031765",
+   "voiced_s": 6.82,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:031843",
+   "voiced_s": 5.8,
+   "rank": null
+  },
+  {
+   "song_id": "fma:032689",
+   "voiced_s": 2.42,
+   "rank": null
+  },
+  {
+   "song_id": "fma:032767",
+   "voiced_s": 5.64,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:032768",
+   "voiced_s": 2.9,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:033336",
+   "voiced_s": 10.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:033537",
+   "voiced_s": 8.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:033994",
+   "voiced_s": 6.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034085",
+   "voiced_s": 6.52,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:034146",
+   "voiced_s": 4.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034214",
+   "voiced_s": 7.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034377",
+   "voiced_s": 8.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034407",
+   "voiced_s": 8.36,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:034476",
+   "voiced_s": 10.74,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:034851",
+   "voiced_s": 8.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034984",
+   "voiced_s": 8.4,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:035187",
+   "voiced_s": 6.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:035551",
+   "voiced_s": 5.12,
+   "rank": null
+  },
+  {
+   "song_id": "fma:036219",
+   "voiced_s": 7.68,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:036490",
+   "voiced_s": 6.96,
+   "rank": 29
+  },
+  {
+   "song_id": "fma:036643",
+   "voiced_s": 5.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:036695",
+   "voiced_s": 8.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:038317",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:038552",
+   "voiced_s": 0.98,
+   "rank": null
+  },
+  {
+   "song_id": "fma:039438",
+   "voiced_s": 3.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:042400",
+   "voiced_s": 6.88,
+   "rank": null
+  },
+  {
+   "song_id": "fma:042456",
+   "voiced_s": 9.24,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:042530",
+   "voiced_s": 6.44,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:042936",
+   "voiced_s": 6.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:042942",
+   "voiced_s": 5.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043028",
+   "voiced_s": 10.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043458",
+   "voiced_s": 4.8,
+   "rank": null
+  },
+  {
+   "song_id": "fma:043638",
+   "voiced_s": 6.4,
+   "rank": 13
+  },
+  {
+   "song_id": "fma:043796",
+   "voiced_s": 4.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043811",
+   "voiced_s": 6.5,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:043894",
+   "voiced_s": 5.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043911",
+   "voiced_s": 6.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043912",
+   "voiced_s": 5.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043917",
+   "voiced_s": 9.58,
+   "rank": null
+  },
+  {
+   "song_id": "fma:044233",
+   "voiced_s": 8.02,
+   "rank": 19
+  },
+  {
+   "song_id": "fma:044278",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:045055",
+   "voiced_s": 7.46,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:045056",
+   "voiced_s": 5.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:045127",
+   "voiced_s": 8.18,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:045374",
+   "voiced_s": 7.62,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:045463",
+   "voiced_s": 6.18,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:046195",
+   "voiced_s": 8.6,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:046203",
+   "voiced_s": 4.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:046475",
+   "voiced_s": 7.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:047106",
+   "voiced_s": 9.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:047474",
+   "voiced_s": 7.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:047600",
+   "voiced_s": 5.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:048227",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:048444",
+   "voiced_s": 9.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:048810",
+   "voiced_s": 5.58,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:048981",
+   "voiced_s": 9.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:049105",
+   "voiced_s": 7.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:050297",
+   "voiced_s": 6.3,
+   "rank": 26
+  },
+  {
+   "song_id": "fma:050305",
+   "voiced_s": 6.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:052355",
+   "voiced_s": 7.18,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:052360",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:052379",
+   "voiced_s": 7.48,
+   "rank": 21
+  },
+  {
+   "song_id": "fma:052957",
+   "voiced_s": 8.5,
+   "rank": null
+  },
+  {
+   "song_id": "fma:053736",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:054006",
+   "voiced_s": 7.32,
+   "rank": 20
+  },
+  {
+   "song_id": "fma:054041",
+   "voiced_s": 5.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:054470",
+   "voiced_s": 3.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:055116",
+   "voiced_s": 8.14,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:055290",
+   "voiced_s": 5.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:055436",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:056125",
+   "voiced_s": 6.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:056657",
+   "voiced_s": 4.6,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:056658",
+   "voiced_s": 6.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:056692",
+   "voiced_s": 9.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:057496",
+   "voiced_s": 6.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:057663",
+   "voiced_s": 6.44,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:058394",
+   "voiced_s": 6.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:058397",
+   "voiced_s": 7.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:058398",
+   "voiced_s": 9.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:059373",
+   "voiced_s": 6.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:059666",
+   "voiced_s": 7.62,
+   "rank": 26
+  },
+  {
+   "song_id": "fma:059905",
+   "voiced_s": 6.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:059975",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:060474",
+   "voiced_s": 6.06,
+   "rank": null
+  },
+  {
+   "song_id": "fma:060607",
+   "voiced_s": 5.94,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:060893",
+   "voiced_s": 5.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:061124",
+   "voiced_s": 1.56,
+   "rank": null
+  },
+  {
+   "song_id": "fma:061484",
+   "voiced_s": 6.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:061590",
+   "voiced_s": 5.96,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:061742",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:061890",
+   "voiced_s": 8.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:062575",
+   "voiced_s": 8.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:062658",
+   "voiced_s": 6.36,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:062869",
+   "voiced_s": 9.12,
+   "rank": 27
+  },
+  {
+   "song_id": "fma:062965",
+   "voiced_s": 1.64,
+   "rank": null
+  },
+  {
+   "song_id": "fma:062986",
+   "voiced_s": 8.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:063011",
+   "voiced_s": 5.56,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:063097",
+   "voiced_s": 9.6,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:063101",
+   "voiced_s": 6.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:063394",
+   "voiced_s": 5.14,
+   "rank": 9
+  },
+  {
+   "song_id": "fma:063789",
+   "voiced_s": 5.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064222",
+   "voiced_s": 5.2,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:064257",
+   "voiced_s": 5.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064261",
+   "voiced_s": 6.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064263",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064644",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:065254",
+   "voiced_s": 5.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:065628",
+   "voiced_s": 8.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:065688",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:065695",
+   "voiced_s": 7.98,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:065883",
+   "voiced_s": 7.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:066403",
+   "voiced_s": 7.62,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:066444",
+   "voiced_s": 6.02,
+   "rank": 14
+  },
+  {
+   "song_id": "fma:066713",
+   "voiced_s": 8.3,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:067241",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:067249",
+   "voiced_s": 3.44,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:067267",
+   "voiced_s": 6.74,
+   "rank": null
+  },
+  {
+   "song_id": "fma:069561",
+   "voiced_s": 6.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069930",
+   "voiced_s": 5.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069933",
+   "voiced_s": 6.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069935",
+   "voiced_s": 7.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069938",
+   "voiced_s": 7.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:070392",
+   "voiced_s": 9.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:070406",
+   "voiced_s": 8.56,
+   "rank": null
+  },
+  {
+   "song_id": "fma:070820",
+   "voiced_s": 10.68,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:070874",
+   "voiced_s": 6.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:070882",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:071086",
+   "voiced_s": 7.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:071303",
+   "voiced_s": 7.5,
+   "rank": null
+  },
+  {
+   "song_id": "fma:071609",
+   "voiced_s": 6.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:071625",
+   "voiced_s": 8.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072050",
+   "voiced_s": 5.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072064",
+   "voiced_s": 9.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072234",
+   "voiced_s": 5.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072622",
+   "voiced_s": 6.42,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:073178",
+   "voiced_s": 5.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:073183",
+   "voiced_s": 2.52,
+   "rank": null
+  },
+  {
+   "song_id": "fma:073483",
+   "voiced_s": 9.2,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:073767",
+   "voiced_s": 7.34,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:074524",
+   "voiced_s": 6.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:074944",
+   "voiced_s": 5.08,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:075082",
+   "voiced_s": 5.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:075090",
+   "voiced_s": 7.12,
+   "rank": 46
+  },
+  {
+   "song_id": "fma:075413",
+   "voiced_s": 6.12,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:075583",
+   "voiced_s": 7.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:075686",
+   "voiced_s": 6.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:075925",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:076130",
+   "voiced_s": 7.92,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:076207",
+   "voiced_s": 5.5,
+   "rank": null
+  },
+  {
+   "song_id": "fma:076350",
+   "voiced_s": 5.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:077382",
+   "voiced_s": 6.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:077779",
+   "voiced_s": 7.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:078839",
+   "voiced_s": 8.48,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:078843",
+   "voiced_s": 7.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:079371",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:080033",
+   "voiced_s": 6.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:080783",
+   "voiced_s": 8.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:081081",
+   "voiced_s": 8.76,
+   "rank": 23
+  },
+  {
+   "song_id": "fma:081155",
+   "voiced_s": 5.72,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:082468",
+   "voiced_s": 7.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:082696",
+   "voiced_s": 8.1,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:082723",
+   "voiced_s": 10.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:082901",
+   "voiced_s": 8.94,
+   "rank": 12
+  },
+  {
+   "song_id": "fma:083552",
+   "voiced_s": 9.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:084285",
+   "voiced_s": 6.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:084787",
+   "voiced_s": 4.78,
+   "rank": 19
+  },
+  {
+   "song_id": "fma:084797",
+   "voiced_s": 10.02,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:085428",
+   "voiced_s": 8.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:085535",
+   "voiced_s": 0.42,
+   "rank": null
+  },
+  {
+   "song_id": "fma:085709",
+   "voiced_s": 5.64,
+   "rank": null
+  },
+  {
+   "song_id": "fma:086180",
+   "voiced_s": 6.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:087967",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:088848",
+   "voiced_s": 9.68,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:088856",
+   "voiced_s": 9.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:090119",
+   "voiced_s": 2.08,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090145",
+   "voiced_s": 9.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:090320",
+   "voiced_s": 6.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090588",
+   "voiced_s": 0.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090831",
+   "voiced_s": 6.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090982",
+   "voiced_s": 6.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:091226",
+   "voiced_s": 5.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:091305",
+   "voiced_s": 4.74,
+   "rank": 19
+  },
+  {
+   "song_id": "fma:091322",
+   "voiced_s": 7.14,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:091851",
+   "voiced_s": 9.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:091866",
+   "voiced_s": 2.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:091938",
+   "voiced_s": 5.24,
+   "rank": 22
+  },
+  {
+   "song_id": "fma:092496",
+   "voiced_s": 10.1,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:093019",
+   "voiced_s": 9.74,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:093056",
+   "voiced_s": 8.3,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:093425",
+   "voiced_s": 4.82,
+   "rank": 45
+  },
+  {
+   "song_id": "fma:094631",
+   "voiced_s": 6.8,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:094857",
+   "voiced_s": 5.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:095246",
+   "voiced_s": 7.12,
+   "rank": null
+  },
+  {
+   "song_id": "fma:095521",
+   "voiced_s": 10.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:095674",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096660",
+   "voiced_s": 8.28,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:096668",
+   "voiced_s": 7.18,
+   "rank": 35
+  },
+  {
+   "song_id": "fma:096669",
+   "voiced_s": 8.34,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096698",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096752",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096764",
+   "voiced_s": 5.92,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:096945",
+   "voiced_s": 8.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:097585",
+   "voiced_s": 9.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:097896",
+   "voiced_s": 6.58,
+   "rank": null
+  },
+  {
+   "song_id": "fma:097979",
+   "voiced_s": 8.3,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:098314",
+   "voiced_s": 1.98,
+   "rank": null
+  },
+  {
+   "song_id": "fma:098598",
+   "voiced_s": 8.56,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:098663",
+   "voiced_s": 7.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:098797",
+   "voiced_s": 5.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:099373",
+   "voiced_s": 8.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:099431",
+   "voiced_s": 10.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:103540",
+   "voiced_s": 9.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:103796",
+   "voiced_s": 8.96,
+   "rank": 14
+  },
+  {
+   "song_id": "fma:104135",
+   "voiced_s": 4.68,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:104219",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:105943",
+   "voiced_s": 6.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:106445",
+   "voiced_s": 8.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:106452",
+   "voiced_s": 10.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:106695",
+   "voiced_s": 8.44,
+   "rank": null
+  },
+  {
+   "song_id": "fma:107024",
+   "voiced_s": 5.08,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:107202",
+   "voiced_s": 7.6,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:107386",
+   "voiced_s": 7.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:107812",
+   "voiced_s": 10.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:107953",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:108461",
+   "voiced_s": 0.6,
+   "rank": null
+  },
+  {
+   "song_id": "fma:109446",
+   "voiced_s": 6.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:109489",
+   "voiced_s": 7.56,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:110260",
+   "voiced_s": 7.58,
+   "rank": 49
+  },
+  {
+   "song_id": "fma:110545",
+   "voiced_s": 5.68,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:110856",
+   "voiced_s": 11.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:110935",
+   "voiced_s": 6.76,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:111697",
+   "voiced_s": 8.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:112347",
+   "voiced_s": 5.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:112449",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:112453",
+   "voiced_s": 9.72,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:113030",
+   "voiced_s": 8.64,
+   "rank": 15
+  },
+  {
+   "song_id": "fma:113035",
+   "voiced_s": 6.94,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:113277",
+   "voiced_s": 8.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:113312",
+   "voiced_s": 4.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:115949",
+   "voiced_s": 6.46,
+   "rank": null
+  },
+  {
+   "song_id": "fma:116078",
+   "voiced_s": 8.02,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116603",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116606",
+   "voiced_s": 9.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116632",
+   "voiced_s": 2.22,
+   "rank": 16
+  },
+  {
+   "song_id": "fma:116732",
+   "voiced_s": 4.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116903",
+   "voiced_s": 7.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116906",
+   "voiced_s": 10.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:117236",
+   "voiced_s": 7.98,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:117942",
+   "voiced_s": 8.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:118563",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:118637",
+   "voiced_s": 9.62,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:118639",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:119566",
+   "voiced_s": 5.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:120516",
+   "voiced_s": 5.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:120517",
+   "voiced_s": 5.94,
+   "rank": null
+  },
+  {
+   "song_id": "fma:120545",
+   "voiced_s": 5.48,
+   "rank": 22
+  },
+  {
+   "song_id": "fma:121312",
+   "voiced_s": 8.04,
+   "rank": 17
+  },
+  {
+   "song_id": "fma:121322",
+   "voiced_s": 7.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:121737",
+   "voiced_s": 8.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:122120",
+   "voiced_s": 8.28,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:122463",
+   "voiced_s": 5.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:122533",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:122936",
+   "voiced_s": 7.66,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:123102",
+   "voiced_s": 6.32,
+   "rank": null
+  },
+  {
+   "song_id": "fma:123105",
+   "voiced_s": 8.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123278",
+   "voiced_s": 7.26,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123393",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123612",
+   "voiced_s": 9.66,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:123615",
+   "voiced_s": 7.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123632",
+   "voiced_s": 2.84,
+   "rank": 20
+  },
+  {
+   "song_id": "fma:123635",
+   "voiced_s": 10.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123750",
+   "voiced_s": 8.38,
+   "rank": null
+  },
+  {
+   "song_id": "fma:123783",
+   "voiced_s": 6.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123845",
+   "voiced_s": 6.34,
+   "rank": null
+  },
+  {
+   "song_id": "fma:124492",
+   "voiced_s": 9.44,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:124707",
+   "voiced_s": 7.6,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:124721",
+   "voiced_s": 9.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:124728",
+   "voiced_s": 6.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:124997",
+   "voiced_s": 7.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:125194",
+   "voiced_s": 6.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:125654",
+   "voiced_s": 7.24,
+   "rank": 45
+  },
+  {
+   "song_id": "fma:126038",
+   "voiced_s": 6.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126041",
+   "voiced_s": 6.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126043",
+   "voiced_s": 8.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126178",
+   "voiced_s": 8.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126297",
+   "voiced_s": 2.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126461",
+   "voiced_s": 7.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126483",
+   "voiced_s": 5.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126484",
+   "voiced_s": 6.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126527",
+   "voiced_s": 7.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126530",
+   "voiced_s": 5.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126959",
+   "voiced_s": 5.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126977",
+   "voiced_s": 6.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127019",
+   "voiced_s": 5.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127021",
+   "voiced_s": 0.76,
+   "rank": null
+  },
+  {
+   "song_id": "fma:127022",
+   "voiced_s": 0.8,
+   "rank": null
+  },
+  {
+   "song_id": "fma:127052",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127181",
+   "voiced_s": 7.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127198",
+   "voiced_s": 5.98,
+   "rank": 44
+  },
+  {
+   "song_id": "fma:127307",
+   "voiced_s": 6.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127326",
+   "voiced_s": 7.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127335",
+   "voiced_s": 5.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127910",
+   "voiced_s": 5.9,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:127911",
+   "voiced_s": 9.6,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:128475",
+   "voiced_s": 6.6,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:128476",
+   "voiced_s": 7.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:129045",
+   "voiced_s": 8.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:129405",
+   "voiced_s": 6.86,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:129488",
+   "voiced_s": 8.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:130370",
+   "voiced_s": 7.4,
+   "rank": 39
+  },
+  {
+   "song_id": "fma:130398",
+   "voiced_s": 7.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:130415",
+   "voiced_s": 6.72,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:130530",
+   "voiced_s": 6.56,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:130854",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:131172",
+   "voiced_s": 8.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:132170",
+   "voiced_s": 5.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:132799",
+   "voiced_s": 7.2,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:132954",
+   "voiced_s": 5.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:133630",
+   "voiced_s": 6.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:134319",
+   "voiced_s": 7.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:134502",
+   "voiced_s": 6.14,
+   "rank": 23
+  },
+  {
+   "song_id": "fma:134934",
+   "voiced_s": 0.26,
+   "rank": null
+  },
+  {
+   "song_id": "fma:135030",
+   "voiced_s": 6.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:135365",
+   "voiced_s": 5.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:135571",
+   "voiced_s": 6.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:136048",
+   "voiced_s": 6.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:137198",
+   "voiced_s": 5.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:137897",
+   "voiced_s": 6.94,
+   "rank": 24
+  },
+  {
+   "song_id": "fma:137907",
+   "voiced_s": 9.86,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:138017",
+   "voiced_s": 7.3,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:138411",
+   "voiced_s": 5.32,
+   "rank": null
+  },
+  {
+   "song_id": "fma:139122",
+   "voiced_s": 9.04,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:140119",
+   "voiced_s": 9.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:142359",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:142530",
+   "voiced_s": 6.66,
+   "rank": 16
+  },
+  {
+   "song_id": "fma:142574",
+   "voiced_s": 5.96,
+   "rank": null
+  },
+  {
+   "song_id": "fma:142668",
+   "voiced_s": 3.38,
+   "rank": 30
+  },
+  {
+   "song_id": "fma:143978",
+   "voiced_s": 6.76,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:144162",
+   "voiced_s": 8.84,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:144176",
+   "voiced_s": 6.72,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:144214",
+   "voiced_s": 2.6,
+   "rank": null
+  },
+  {
+   "song_id": "fma:144476",
+   "voiced_s": 7.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:145601",
+   "voiced_s": 10.3,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:145718",
+   "voiced_s": 8.32,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:145980",
+   "voiced_s": 9.06,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:146693",
+   "voiced_s": 6.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:147381",
+   "voiced_s": 6.26,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:147952",
+   "voiced_s": 9.18,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:148423",
+   "voiced_s": 7.16,
+   "rank": 31
+  },
+  {
+   "song_id": "fma:148618",
+   "voiced_s": 5.86,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:148625",
+   "voiced_s": 7.7,
+   "rank": null
+  },
+  {
+   "song_id": "fma:148631",
+   "voiced_s": 6.2,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:149133",
+   "voiced_s": 7.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149189",
+   "voiced_s": 7.18,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:149196",
+   "voiced_s": 8.28,
+   "rank": 21
+  },
+  {
+   "song_id": "fma:149214",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149408",
+   "voiced_s": 7.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149523",
+   "voiced_s": 9.4,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:149563",
+   "voiced_s": 7.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149570",
+   "voiced_s": 5.68,
+   "rank": null
+  },
+  {
+   "song_id": "fma:150163",
+   "voiced_s": 6.06,
+   "rank": null
+  },
+  {
+   "song_id": "fma:151775",
+   "voiced_s": 7.14,
+   "rank": 9
+  },
+  {
+   "song_id": "fma:151969",
+   "voiced_s": 5.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:151970",
+   "voiced_s": 4.26,
+   "rank": null
+  },
+  {
+   "song_id": "fma:152104",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:152532",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:153726",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:153913",
+   "voiced_s": 7.36,
+   "rank": 1
+  }
+ ]
+}
