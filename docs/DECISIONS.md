@@ -893,3 +893,80 @@ Training with CHAD real pairs, CHAD **test** songs (2,482 hums, 145 songs, 140 w
 **Trade-off / what we gave up.** A single seed, so small differences cannot be resolved. The hard-negative idea is left untested.
 
 **Revisit when.** E0 shows that embedding error dominates on well-extracted references, or E2 provides thousands of songs of pairs. Then fine-tune on those, with the same stop rule.
+
+## D-022 · E0: where CHAD real-hum queries fail
+**Date:** 2026-09-28
+
+**Context.** D-019 and D-021 left CHAD test top-1 at about 0.30 against full songs. The literature review (`docs/research/lit_review_real_audio.md`, plan E0) asks for an error breakdown before any further experiment: is the loss in the song-side melody extraction, in how queries are chunked and matched, or in the embedding itself?
+
+**Options.**
+- Pick the next experiment by intuition.
+- Measure first, using CHAD's timestamps of the hummed section in each song.
+
+**Decision.** Measure first, with no training. Script `training/scripts/chad_error_breakdown.py`, model D-012 `contour_v2_s0`, CHAD test songs, `charts_fma` pool (5,342 songs). 2,411 of 2,482 queries have a CHAD timestamp and are used. For each query:
+- **Grid rank:** the normal API score (best 10 s library chunk, 5 s hop).
+- **Oracle-window rank:** the target is represented by an embedding of exactly the hummed section (from the timestamp), all other songs unchanged. This measures the cost of chunking.
+- **Pitch agreement:** key-normalised DTW error (semitones) between the hum and the song's vocal-stem melody in that section, plain and octave-folded. Plus the voiced fraction of the reference section, and the same on the unseparated mix track.
+
+**Results.** Files: `docs/paper/results/e0/` (summary plus one line per query).
+- **Overall:** grid 0.312 / 0.483 top-1 / top-10; oracle window 0.353 / 0.513. **Chunking costs about 4 points top-1.**
+- **Decomposition** (share of all queries):
+
+| Outcome | Share |
+|---|---|
+| Correct at top-1 | 31.2% |
+| Missed, reference section < 30% voiced in the vocal stem | 19.4% |
+| Missed, fixed by the oracle window | 4.1% |
+| Missed, pitch error above median (1.36 st) | 25.6% |
+| Missed, pitch error below median (embedding error) | 19.7% |
+
+- **By reference voiced fraction:** < 0.3 (502 queries) top-1 0.068; 0.5–0.7 0.383; > 0.7 0.386 (oracle 0.456).
+  - Of those 502, the mix track is voiced for 249, but only 85 have a mix melody close to the hum. So stem separation drop-outs explain at most about a sixth of this bucket. Most of it is a section with no usable sung melody in the recording (instrumental hooks, timestamp offsets or rap).
+- **By pitch error:** MAE < 1 st top-1 0.469 (oracle 0.606); 2–3 st 0.246; > 3 st 0.236. **After octave folding**, only 159 queries remain above 2 st (was 429). Most large song-side errors are octave errors in the extracted melody, not wrong notes.
+- **By hum length:** 5–8 s 0.215; 8–12 s 0.395; > 12 s 0.232. Long hums lose because a single 10 s chunk cannot hold them.
+
+**Takeaways.**
+- **Song-side extraction is the largest single failure** (about 19% unvoiced references plus a large part of the 26% high-error bucket, mostly octave errors). The embedding alone accounts for about 20%.
+- **Matching is the cheapest lever.** Chunking costs 4 points even with a perfect window, and long hums are penalised. This justifies E1 (multi-window, time-consistent matching) before any retraining.
+- Octave-robust comparison is worth adding to any re-ranking.
+
+**Trade-off / what we gave up.** One model, one split. The "unvoiced reference" bucket mixes several causes that the script cannot separate (instrumental hooks, timestamp errors, rap).
+
+**Revisit when.** A new song-side extractor or a new separation model is available; re-run the same script to see which buckets shrink.
+
+## D-023 · E1: multi-window queries, time-consistent matching and DTW re-ranking (no retraining)
+**Date:** 2026-09-28
+
+**Context.** D-022 showed a 4-point chunking cost and a large penalty on long hums. The review's plan E1: cut the query into short windows, require their matches to be in order in the song, and re-rank the shortlist with key-invariant DTW, all with the existing D-012 model.
+
+**Options.**
+- Retrain with longer inputs.
+- Change only the matching, on the existing embeddings.
+
+**Decision.** Matching only. Script `training/scripts/eval_rerank.py`, helpers in `catalog/matching.py` and `catalog/real_pool.py`. Model D-012 `contour_v2_s0`, D-019 headline pool (full-song targets, chart previews, FMA; about 5,200–5,300 songs per query set).
+- **base:** the API score (best 10 s chunk per song).
+- **seq:** query cut into 5 s windows every 1 s (windows < 25% voiced dropped); each song cut the same way. Score = mean cosine similarity along the best monotone path through song windows, with local tempo 0–2 windows per step.
+- **dtw:** minus the key-normalised, slope-constrained DTW error between the whole query and the song span the path picked.
+- The top 50 songs by base are re-ranked by a per-query z-scored weighted sum. **Weights (grid 0 / 0.5 / 1 / 2) chosen on CHAD val songs only**, then applied unchanged to CHAD test, MTG-QBH and MLEnd. Chosen: base 1, seq 2, dtw 1.
+
+**Results.** File: `docs/paper/results/e1/e1_v2_s0.json`. Top-1 / top-10.
+
+| Query set | base (API) | seq only | base+seq | **base+seq+dtw** |
+|---|---|---|---|---|
+| CHAD val (568, selection) | 0.231 / 0.386 | 0.329 / 0.442 | 0.329 / 0.452 | 0.356 / 0.452 |
+| CHAD test (2,482) | 0.303 / 0.469 | 0.443 / 0.541 | 0.449 / 0.547 | **0.465 / 0.550** |
+| MTG-QBH sung (118) | 0.034 / 0.153 | 0.254 / 0.288 | 0.237 / 0.288 | **0.246 / 0.288** |
+| MLEnd hum (4,804) | 0.030 / 0.078 | 0.124 / 0.138 | 0.116 / 0.137 | **0.119 / 0.137** |
+
+- DTW alone (on the path's span) is weaker than seq but adds about 1.6 points top-1 on CHAD test in the fusion.
+- Top-10 is capped by base's top-50 recall; the re-rank only reorders that shortlist.
+- Compute: about 3 minutes for all four sets on one A100 host (embedding of windows is the main cost).
+
+**Takeaways.**
+- **The largest gain of the project on real audio, with no training.** CHAD test top-1 +16 points (0.303 → 0.465); MTG-QBH ×7 (0.034 → 0.246); MLEnd ×4.
+- It confirms D-022: the model's embeddings were fine far more often than the single-chunk score showed. Order-consistent short windows fix long hums and the chunking cost.
+- The shortlist is now the bottleneck at top-10. A better first stage (window-level ANN search) is the obvious next step.
+
+**Trade-off / what we gave up.** About 5× more embeddings per song (1 s hop windows) and per-query DP and DTW on 50 songs. Fine offline, but the API would need a window index. One model seed only; weights picked on 29 val songs.
+
+**Revisit when.** Moving this into the API (window index in pgvector), or when a new model is trained: re-run with the same weights and the same selection rule.

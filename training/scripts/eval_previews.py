@@ -35,6 +35,13 @@ from hum2song.catalog.real_eval import (
     song_scores,
     target_ranks,
 )
+from hum2song.catalog.real_pool import (
+    PREVIEW_SOURCES,
+    QUERY_CACHE,
+    fma_rows,
+    library_rows,
+    load_tracks,
+)
 from hum2song.catalog.search import QueryEncoder
 from hum2song.catalog.targets import query_sets
 from hum2song.config import DEFAULT_DATA_ROOT
@@ -46,15 +53,12 @@ from hum2song.logutil import configure_logging, get_logger
 LOGGER = get_logger(__name__)
 DEFAULT_CKPT = "ckpt/contour_v2_s0/last.pt"
 DEFAULT_RMVPE = "fig_contours/rmvpe.pt"
-FMA_LIBRARY = "fma_full_3k"
-QUERY_CACHE = "library/query_contours.npz"
 SOURCES = {
     "itunes": ("itunes_preview",),
     "deezer": ("deezer_preview",),
     "both": ("itunes_preview", "deezer_preview"),
     "youtube": ("youtube_full",),
 }
-PREVIEW_SOURCES = ("itunes_preview", "deezer_preview")
 # Which non-target songs each setting adds: (preview chart distractors, full-song
 # YouTube chart distractors, FMA songs).
 SETTING_POOLS = {
@@ -78,41 +82,6 @@ def query_contours(encoder: QueryEncoder, queries: list[dict], cache: Path) -> d
     if missing:
         np.savez(cache, **done)
     return done
-
-
-def library_rows(root: Path, names: list[str]) -> list[dict]:
-    """previews.jsonl rows of each library, tagged with their track file."""
-    rows = []
-    for name in names:
-        tracks = root / "library" / name / "tracks"
-        for row in read_jsonl(root / "library" / name / "previews.jsonl"):
-            rows.append({**row, "_track": str(tracks / f"{row['song_id'].replace(':', '_')}.npz")})
-    return rows
-
-
-def fma_rows(root: Path) -> list[dict]:
-    tracks = root / "library" / FMA_LIBRARY / "tracks"
-    return [
-        {
-            "song_id": s["song_id"],
-            "role": "fma",
-            "target_id": None,
-            "source": "fma_full",
-            "_track": str(tracks / f"{s['song_id'].replace(':', '_')}.npy"),
-        }
-        for s in read_jsonl(root / "library" / FMA_LIBRARY / "songs.jsonl")
-    ]
-
-
-def load_tracks(path: str) -> dict | None:
-    """npz with vocals and mix; FMA .npy caches hold the vocal track only (used for both)."""
-    if not Path(path).exists():
-        return None
-    if path.endswith(".npy"):
-        vocals = np.load(path)
-        return {"vocals": vocals, "mix": vocals}
-    with np.load(path) as tracks:
-        return dict(tracks)
 
 
 def embed_library(rows: list[dict], method: str, model, device) -> tuple:
