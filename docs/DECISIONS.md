@@ -673,3 +673,85 @@ Pairs-only vs combined (3 seeds each):
 - Queries longer than 12 s become common. Then add 20 s chunks or aggregate several query windows.
 - The library grows past about 100k chunks. Then retune HNSW `m`, `ef_construction` and `ef_search` against exact search.
 - The contour model changes. Then re-embed from the cached tracks; `model_ver` marks which rows to redo.
+
+## D-018 · Real hums vs real commercial recordings, using 30 s iTunes and Deezer previews
+**Date:** 2026-09-28
+
+**Context.** Every accuracy number so far pairs hums with MIDI renders, other hums or synthetic hums. D-017's library has no song anyone in a hum dataset hummed. Luigi asked for commercial and popular songs so the pipeline (htdemucs vocals → RMVPE → D-012) can be tested against real recordings. The hum sets with commercial songs are CHAD (290 groups, 5,417 hums, each with its original YouTube video and the hummed interval in it), MTG-QBH (118 sung queries, 81 songs) and MLEnd (8 movie songs, 4,804 hums, 1,797 whistles). **This goes beyond D-009**, which kept Apple and Deezer previews in Tier L until written permission. Luigi directed this experiment for his personal research. It keeps audio only transiently and stores features plus metadata only.
+
+**Options.**
+- **Full tracks from YouTube via yt-dlp.** Luigi allowed this for this project. It was tried and blocked (see Decision).
+- **Official 30 s previews:** the iTunes Search API `previewUrl` and Deezer's public API `preview` field. Both need no login.
+- **Wait for licensed audio** (D-009 Tier L).
+
+**Decision.** Previews, audio kept transiently. Code: `catalog/previews.py`, `catalog/targets.py`, `catalog/real_eval.py`, `scripts/collect_previews.py`, `extract_previews.py` and `eval_previews.py`.
+- **YouTube was not used for audio.** yt-dlp from the Lambda host and from the agent box both returned "Sign in to confirm you're not a bot". Passing a browser session's cookies would work around that check, so it was not done. **No YouTube audio was downloaded.** Only public oEmbed metadata was read: the video titles of the 290 CHAD originals, to learn which song each group is.
+- **Targets.**
+  - MLEnd: the 8 songs named in the dataset brief, e.g. "This Is Me" (Keala Settle) for Showman and "The Imperial March" for StarWars.
+  - MTG-QBH: title from the queries file, artist from the canonical-version collection.
+  - CHAD: artist and title parsed from the YouTube title.
+  - Each target is searched on iTunes and on Deezer. A result must match the title, blended 70/30 with artist overlap, at ≥ 0.8; title-only targets need ≥ 0.9.
+  - Matched: MLEnd 8/8, MTG-QBH 81/81, CHAD 264/290 on either service. 6 CHAD videos had no usable title and 20 had no confident match.
+- **Distractors:** 3,000 unique songs from Deezer's chart playlists, deduplicated by artist, title and ISRC. Any song titled like a target is dropped. Apple RSS charts were fetched too, but the 3,000 cap filled from Deezer first. The pool includes a lo-fi playlist and similar, so it is not all vocal pop.
+- **Transient audio.** Each preview is downloaded to a temporary file, decoded by ffmpeg to 44.1 kHz mono and deleted. Deezer URLs are re-signed just before download, because they expire within minutes. Kept per song:
+  - `vocals`: the htdemucs vocal stem → RMVPE (D-014);
+  - `mix`: RMVPE on the whole mix;
+  - both as `(2, frames)` F0/confidence tracks in `library/previews_v1/tracks/*.npz`, plus metadata.
+  - No preview audio remains on disk. Preview URLs are not stored in the results.
+- **Rate limits and terms relied on.**
+  - iTunes Search: about 20 calls/minute, documented by Apple as approximate; we used 1 call per 3.1 s, and batched `lookup` for chart ids.
+  - Deezer: 50 calls per 5 s; we used 1 per 0.15 s.
+  - Apple's affiliate/preview terms say previews are for promotion and streamed, not downloaded or cached. Deezer's terms bar storing audio.
+  - We downloaded and decoded each preview and kept only derived features. **That is still a download**, so this is a research-use exception that needs checking before any publication, not a clean licence.
+- **Evaluation** (exact cosine search, a song's score is its best chunk as in the API, the D-012 `contour_v2_s0` model):
+  - Queries go through the API path.
+  - Library settings: `targets_only`, `charts` (+ ~2,400 searchable chart previews), `charts_fma` (+ the 2,783 searchable FMA songs).
+  - Target versions: iTunes only, Deezer only, or both.
+  - A query whose song has no usable preview counts as a miss in `all_queries`; `target_present` excludes it.
+  - The headline setting was fixed before running: `vocals_or_mix` (vocal stem, falling back to the mix if it gives no chunk), iTunes versions, `charts_fma`.
+
+**Results.** Files: `docs/paper/results/previews/real_hum_eval.json` (every setting) and `targets.jsonl` (targets and their matches; no audio, no URLs).
+
+Extraction (3,678 previews):
+- **Downloads:** 3,628 decoded. The 50 failures are all distractors: 26 had no preview URL, 22 failed to download or decode, 2 were under 5 s.
+- **Voiced chunks:**
+  - 64% of previews gave a voiced chunk from the vocal stem.
+  - With the mix fallback it is 85%; 548 have none, mostly instrumental chart tracks.
+  - Targets: 663 of the 678 target previews are usable: 635 from the vocal stem, 28 from the mix fallback, and 15 (2%) with nothing.
+  - For MLEnd, the iTunes Imperial March and the Deezer Pink Panther give no chunk at all.
+
+Real hums vs real recordings (top-1 / top-10 over all queries; library size in songs):
+
+| Query set | Targets only | + charts (~2.7k) | + charts + FMA (~5.4k), **headline** | Both previews, + charts + FMA |
+|---|---|---|---|---|
+| CHAD hums (5,417) | 0.148 / 0.261 | 0.097 / 0.165 | **0.062 / 0.112** | 0.091 / 0.161 |
+| MTG-QBH sung (118) | 0.161 / 0.492 | 0.025 / 0.076 | **0.000 / 0.017** | 0.000 / 0.042 |
+| MLEnd hums (4,804) | 0.371 / 0.874 (7-way) | 0.034 / 0.108 | **0.011 / 0.042** | 0.026 / 0.100 |
+| MLEnd whistles (1,797, RMVPE tracker) | 0.135 / 0.875 | 0.001 / 0.001 | 0.000 / 0.001 | 0.001 / 0.002 |
+
+- CHAD queries whose song has a usable iTunes preview (4,158): top-1 0.080, top-10 0.146 at the headline setting.
+- CHAD by where the hummed fragment starts in the original video (headline setting), top-1: 0–30 s 0.045, 30–60 s 0.102, 60–90 s 0.082, 90 s+ 0.064.
+- MLEnd per song, top-1 at the headline setting: Mamma Mia 0.08; all the others ≤ 0.005.
+- Model-based hook-coverage estimate: the share of target songs whose median query similarity beats the 99th percentile of wrong-song similarities. CHAD 14%, MTG-QBH 13%, MLEnd 1 of 7.
+
+**Takeaways.**
+- **The headline number is low.** Real hums find the real recording's 30 s preview at top-10 11% of the time among about 5.4k songs (CHAD), versus 76% for D-017's rendered hums among 2.8k. There is real signal: CHAD targets-only top-1 is 0.15 in a ~250-way set, where chance is 0.004. But it is far from usable.
+- **Preview coverage is a big part of the gap.** Adding the second 30 s preview (Deezer next to iTunes) raises CHAD top-1 from 0.062 to 0.091 (+47%) and MLEnd top-10 from 0.042 to 0.100 with the same distractors. More of each song helps directly. Neither API exposes where the preview starts, so hook coverage could only be estimated from the model, about 13–14% of songs. That estimate mixes coverage with model error.
+- **Extraction is not the bottleneck for vocal songs.** 98% of target previews give usable chunks. Instrumental themes are the exception: Imperial March, Pink Panther and Hedwig's Theme are nearly unmatched. The mix fallback makes more songs searchable, but using the mix for every song is worse (MLEnd `mix`: 0.009 top-10 vs `vocals` 0.042 at `charts_fma`).
+- **The distractors used matter a lot.** MTG-QBH drops from 0.49 top-10 targets-only to 0.017 with charts + FMA, and MLEnd from 0.87 to 0.04. Numbers from small closed sets (like D-016's 8-way MLEnd) do not predict library-scale retrieval.
+- **Whistles fail with RMVPE**, as D-007 predicted. They need the spectral-peak tracker on the query side.
+- **Real hum ↔ real recording is a domain gap D-012 was not trained for.** It trained on MIDI-rendered and synthetic contours. D-017's rendered-hum probe (0.58 top-1) overstates real performance by an order of magnitude.
+
+**Trade-off / what we gave up.**
+- **Terms:** previews were downloaded transiently against Apple's "streamed only" and Deezer's no-storage wording. This conflicts with D-009, at Luigi's direction. Only features and metadata remain. **These results should not be published before the terms are checked, or permission obtained, and the paper must disclose the source.**
+- **Only 30 s per song, at an unknown offset.** Hooks outside the preview are unreachable, and coverage cannot be measured directly.
+- **Version mismatch:** search sometimes returns a live or remix version (e.g. iTunes "Let It Go (Live)", Deezer "Alejandro (Dave Aude Remix)"). `targets.jsonl` records the match so this can be audited.
+- **CHAD songs are identified from YouTube titles**, so 26 of 290 are missing and some matches may be covers.
+- **The distractor pool is chart-heavy and includes instrumental playlists**; genres are not balanced.
+- **One seed** of the D-012 model (`s0`), with no retraining.
+
+**Revisit when.**
+- Full-length recordings of the target songs are available lawfully (owned audio, licence, permission, or a YouTube route that works without session cookies). Then re-measure with the same queries to separate coverage from model error.
+- A model is trained on real hum ↔ real recording pairs, e.g. CHAD hums with separated vocals, under a song-level split that keeps these test songs out.
+- Query-side changes: the whistle tracker, or multi-window queries.
+- Before any publication, re-check Apple's and Deezer's terms (D-009).

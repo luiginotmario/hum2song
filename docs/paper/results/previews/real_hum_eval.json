@@ -1,0 +1,2254 @@
+{
+ "extraction": {
+  "targets": {
+   "chad": {
+    "targets": 290,
+    "no_title": 6,
+    "itunes_match": 257,
+    "deezer_match": 246,
+    "either_match": 264
+   },
+   "mlend": {
+    "targets": 8,
+    "no_title": 0,
+    "itunes_match": 8,
+    "deezer_match": 8,
+    "either_match": 8
+   },
+   "mtgqbh": {
+    "targets": 81,
+    "no_title": 0,
+    "itunes_match": 80,
+    "deezer_match": 79,
+    "either_match": 81
+   }
+  },
+  "previews": 3678,
+  "download_extract": {
+   "distractor:download_or_decode_failed": 22,
+   "distractor:no_preview_url": 26,
+   "distractor:ok": 2950,
+   "distractor:too_short": 2,
+   "target:ok": 678
+  }
+ },
+ "results": {
+  "chad_hum/vocals/itunes/targets_only": {
+   "library_songs": 242,
+   "queries": 5417,
+   "queries_with_target": 3971,
+   "all_queries": {
+    "top1": 0.1478678235185527,
+    "top5": 0.22281705741185157,
+    "top10": 0.26047627838286874,
+    "mrr": 0.18879227442065455,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.2017124150088139,
+    "top5": 0.3039536640644674,
+    "top10": 0.3553261143288844,
+    "mrr": 0.2575390960807569,
+    "queries": 3971
+   }
+  },
+  "chad_hum/vocals/itunes/charts": {
+   "library_songs": 1914,
+   "queries": 5417,
+   "queries_with_target": 3971,
+   "all_queries": {
+    "top1": 0.09839394498800073,
+    "top5": 0.14583717925050765,
+    "top10": 0.16817426619900314,
+    "mrr": 0.12333601652327854,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.13422311760261899,
+    "top5": 0.19894233190632082,
+    "top10": 0.22941324603374466,
+    "mrr": 0.16824759544361617,
+    "queries": 3971
+   }
+  },
+  "chad_hum/vocals/itunes/charts_fma": {
+   "library_songs": 4697,
+   "queries": 5417,
+   "queries_with_target": 3971,
+   "all_queries": {
+    "top1": 0.061657744138822225,
+    "top5": 0.093409636330072,
+    "top10": 0.11205464279121286,
+    "mrr": 0.07878574222837752,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.08410979602115336,
+    "top5": 0.12742382271468145,
+    "top10": 0.15285822211029967,
+    "mrr": 0.10747478359383554,
+    "queries": 3971
+   }
+  },
+  "chad_hum/vocals/deezer/targets_only": {
+   "library_songs": 232,
+   "queries": 5417,
+   "queries_with_target": 3822,
+   "all_queries": {
+    "top1": 0.1436219309580949,
+    "top5": 0.22706294997230939,
+    "top10": 0.2700756876499908,
+    "mrr": 0.18957117151831274,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.20355834641548928,
+    "top5": 0.3218210361067504,
+    "top10": 0.38278388278388276,
+    "mrr": 0.26868315963231293,
+    "queries": 3822
+   }
+  },
+  "chad_hum/vocals/deezer/charts": {
+   "library_songs": 1904,
+   "queries": 5417,
+   "queries_with_target": 3822,
+   "all_queries": {
+    "top1": 0.08879453572087871,
+    "top5": 0.14232970278752077,
+    "top10": 0.16522060180911943,
+    "mrr": 0.11619594817743648,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.12585034013605442,
+    "top5": 0.20172684458398743,
+    "top10": 0.23417059131344845,
+    "mrr": 0.16468693126038028,
+    "queries": 3822
+   }
+  },
+  "chad_hum/vocals/deezer/charts_fma": {
+   "library_songs": 4687,
+   "queries": 5417,
+   "queries_with_target": 3822,
+   "all_queries": {
+    "top1": 0.050950710725493814,
+    "top5": 0.08417943511168544,
+    "top10": 0.10282444157282629,
+    "mrr": 0.06890713385453943,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.07221350078492936,
+    "top5": 0.11930926216640503,
+    "top10": 0.1457352171637886,
+    "mrr": 0.09766351232078496,
+    "queries": 3822
+   }
+  },
+  "chad_hum/vocals/both/targets_only": {
+   "library_songs": 474,
+   "queries": 5417,
+   "queries_with_target": 4138,
+   "all_queries": {
+    "top1": 0.19069595717186635,
+    "top5": 0.27727524460033226,
+    "top10": 0.3162266937419236,
+    "mrr": 0.23499786427946426,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.24963750604156598,
+    "top5": 0.36297728371193816,
+    "top10": 0.4139681005316578,
+    "mrr": 0.30763253523486167,
+    "queries": 4138
+   }
+  },
+  "chad_hum/vocals/both/charts": {
+   "library_songs": 2146,
+   "queries": 5417,
+   "queries_with_target": 4138,
+   "all_queries": {
+    "top1": 0.13974524644637254,
+    "top5": 0.20675650729185896,
+    "top10": 0.23703156728816688,
+    "mrr": 0.17337871915188793,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.18293861768970518,
+    "top5": 0.2706621556307395,
+    "top10": 0.3102948284195263,
+    "mrr": 0.22696774326867494,
+    "queries": 4138
+   }
+  },
+  "chad_hum/vocals/both/charts_fma": {
+   "library_songs": 4929,
+   "queries": 5417,
+   "queries_with_target": 4138,
+   "all_queries": {
+    "top1": 0.09082517998892375,
+    "top5": 0.13568395791028245,
+    "top10": 0.16134391729739708,
+    "mrr": 0.11477683394923671,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.11889801836636056,
+    "top5": 0.17762203963267278,
+    "top10": 0.2112131464475592,
+    "mrr": 0.15025280558313564,
+    "queries": 4138
+   }
+  },
+  "mtgqbh_sing/vocals/itunes/targets_only": {
+   "library_songs": 74,
+   "queries": 118,
+   "queries_with_target": 111,
+   "all_queries": {
+    "top1": 0.16101694915254236,
+    "top5": 0.3389830508474576,
+    "top10": 0.4915254237288136,
+    "mrr": 0.2559715925478384,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.17117117117117117,
+    "top5": 0.36036036036036034,
+    "top10": 0.5225225225225225,
+    "mrr": 0.27211394523103544,
+    "queries": 111
+   }
+  },
+  "mtgqbh_sing/vocals/itunes/charts": {
+   "library_songs": 1746,
+   "queries": 118,
+   "queries_with_target": 111,
+   "all_queries": {
+    "top1": 0.025423728813559324,
+    "top5": 0.07627118644067797,
+    "top10": 0.0847457627118644,
+    "mrr": 0.05023343569930783,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.02702702702702703,
+    "top5": 0.08108108108108109,
+    "top10": 0.09009009009009009,
+    "mrr": 0.053401310022687595,
+    "queries": 111
+   }
+  },
+  "mtgqbh_sing/vocals/itunes/charts_fma": {
+   "library_songs": 4529,
+   "queries": 118,
+   "queries_with_target": 111,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.01694915254237288,
+    "top10": 0.01694915254237288,
+    "mrr": 0.010035973469240372,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.018018018018018018,
+    "top10": 0.018018018018018018,
+    "mrr": 0.010668872697030304,
+    "queries": 111
+   }
+  },
+  "mtgqbh_sing/vocals/deezer/targets_only": {
+   "library_songs": 74,
+   "queries": 118,
+   "queries_with_target": 111,
+   "all_queries": {
+    "top1": 0.1440677966101695,
+    "top5": 0.3050847457627119,
+    "top10": 0.3983050847457627,
+    "mrr": 0.23108380246173438,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.15315315315315314,
+    "top5": 0.32432432432432434,
+    "top10": 0.42342342342342343,
+    "mrr": 0.2456566548692311,
+    "queries": 111
+   }
+  },
+  "mtgqbh_sing/vocals/deezer/charts": {
+   "library_songs": 1746,
+   "queries": 118,
+   "queries_with_target": 111,
+   "all_queries": {
+    "top1": 0.025423728813559324,
+    "top5": 0.09322033898305085,
+    "top10": 0.1016949152542373,
+    "mrr": 0.05555360819795083,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.02702702702702703,
+    "top5": 0.0990990990990991,
+    "top10": 0.10810810810810811,
+    "mrr": 0.0590569888951189,
+    "queries": 111
+   }
+  },
+  "mtgqbh_sing/vocals/deezer/charts_fma": {
+   "library_songs": 4529,
+   "queries": 118,
+   "queries_with_target": 111,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.03389830508474576,
+    "mrr": 0.013186314511771645,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.02702702702702703,
+    "top10": 0.036036036036036036,
+    "mrr": 0.014017883895396885,
+    "queries": 111
+   }
+  },
+  "mtgqbh_sing/vocals/both/targets_only": {
+   "library_songs": 148,
+   "queries": 118,
+   "queries_with_target": 113,
+   "all_queries": {
+    "top1": 0.211864406779661,
+    "top5": 0.2796610169491525,
+    "top10": 0.423728813559322,
+    "mrr": 0.27714102332256724,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.22123893805309736,
+    "top5": 0.2920353982300885,
+    "top10": 0.4424778761061947,
+    "mrr": 0.28940390046073394,
+    "queries": 113
+   }
+  },
+  "mtgqbh_sing/vocals/both/charts": {
+   "library_songs": 1820,
+   "queries": 118,
+   "queries_with_target": 113,
+   "all_queries": {
+    "top1": 0.0423728813559322,
+    "top5": 0.13559322033898305,
+    "top10": 0.13559322033898305,
+    "mrr": 0.08291420748864982,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.04424778761061947,
+    "top5": 0.1415929203539823,
+    "top10": 0.1415929203539823,
+    "mrr": 0.08658297773151043,
+    "queries": 113
+   }
+  },
+  "mtgqbh_sing/vocals/both/charts_fma": {
+   "library_songs": 4603,
+   "queries": 118,
+   "queries_with_target": 113,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.03389830508474576,
+    "top10": 0.0423728813559322,
+    "mrr": 0.018425268216410672,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.035398230088495575,
+    "top10": 0.04424778761061947,
+    "mrr": 0.01924054557111911,
+    "queries": 113
+   }
+  },
+  "mlend_hum/vocals/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.37052456286427976,
+    "top5": 0.6962947543713572,
+    "top10": 0.8740632805995004,
+    "mrr": 0.5102860711312002,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.4239104548702072,
+    "top5": 0.7966182424386758,
+    "top10": 1.0,
+    "mrr": 0.5838090701867792,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/vocals/itunes/charts": {
+   "library_songs": 1679,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.03413821815154038,
+    "top5": 0.07930890924229808,
+    "top10": 0.1115736885928393,
+    "mrr": 0.06170945111815891,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.039056918313884255,
+    "top5": 0.0907358894974994,
+    "top10": 0.1276494403429388,
+    "mrr": 0.07060066758076577,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/vocals/itunes/charts_fma": {
+   "library_songs": 4462,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.011032472939217318,
+    "top5": 0.030807660283097418,
+    "top10": 0.04204829308909242,
+    "mrr": 0.022889581130279214,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.012622052869730888,
+    "top5": 0.03524648725887116,
+    "top10": 0.048106692069540366,
+    "mrr": 0.026187556025211084,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/vocals/deezer/targets_only": {
+   "library_songs": 6,
+   "queries": 4804,
+   "queries_with_target": 3599,
+   "all_queries": {
+    "top1": 0.32306411323896755,
+    "top5": 0.6883846794338052,
+    "top10": 0.7491673605328892,
+    "mrr": 0.4482688037746322,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.4312308974715199,
+    "top5": 0.918866351764379,
+    "top10": 1.0,
+    "mrr": 0.5983560248217097,
+    "queries": 3599
+   }
+  },
+  "mlend_hum/vocals/deezer/charts": {
+   "library_songs": 1678,
+   "queries": 4804,
+   "queries_with_target": 3599,
+   "all_queries": {
+    "top1": 0.07389675270607826,
+    "top5": 0.15133222314737718,
+    "top10": 0.18609492089925062,
+    "mrr": 0.11207920761849527,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.09863851069741594,
+    "top5": 0.20200055570991943,
+    "top10": 0.24840233398166156,
+    "mrr": 0.1496050328978192,
+    "queries": 3599
+   }
+  },
+  "mlend_hum/vocals/deezer/charts_fma": {
+   "library_songs": 4461,
+   "queries": 4804,
+   "queries_with_target": 3599,
+   "all_queries": {
+    "top1": 0.01894254787676936,
+    "top5": 0.05974188176519567,
+    "top10": 0.08742714404662781,
+    "mrr": 0.04082933660693245,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.025284801333703807,
+    "top5": 0.07974437343706585,
+    "top10": 0.11669908307863296,
+    "mrr": 0.05449962018885899,
+    "queries": 3599
+   }
+  },
+  "mlend_hum/vocals/both/targets_only": {
+   "library_songs": 13,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.3980016652789342,
+    "top5": 0.5936719400499584,
+    "top10": 0.734804329725229,
+    "mrr": 0.4949494718437267,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.45534651107406526,
+    "top5": 0.6792093355560848,
+    "top10": 0.8406763515122648,
+    "mrr": 0.5662627441622441,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/vocals/both/charts": {
+   "library_songs": 1685,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.08388842631140717,
+    "top5": 0.17339716902581181,
+    "top10": 0.2187760199833472,
+    "mrr": 0.1291420831225107,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.09597523219814241,
+    "top5": 0.19838056680161945,
+    "top10": 0.2502976899261729,
+    "mrr": 0.14774912296273907,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/vocals/both/charts_fma": {
+   "library_songs": 4468,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.026019983347210656,
+    "top5": 0.07139883430474604,
+    "top10": 0.10012489592006661,
+    "mrr": 0.05109439269638652,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.02976899261728983,
+    "top5": 0.0816861157418433,
+    "top10": 0.11455108359133127,
+    "mrr": 0.05845617111537053,
+    "queries": 4199
+   }
+  },
+  "mlend_whistle/vocals/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.13466889259877574,
+    "top5": 0.6204785754034502,
+    "top10": 0.8747913188647746,
+    "mrr": 0.3321276201075867,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.15394402035623408,
+    "top5": 0.7092875318066157,
+    "top10": 1.0,
+    "mrr": 0.3796649703138253,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/vocals/itunes/charts": {
+   "library_songs": 1679,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.0005564830272676684,
+    "top10": 0.0011129660545353367,
+    "mrr": 0.0029475171868824754,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006361323155216285,
+    "top5": 0.0006361323155216285,
+    "top10": 0.001272264631043257,
+    "mrr": 0.0033693946468370283,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/vocals/itunes/charts_fma": {
+   "library_songs": 4462,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0005564830272676684,
+    "mrr": 0.000445706166848382,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0006361323155216285,
+    "mrr": 0.0005094999884392763,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/vocals/deezer/targets_only": {
+   "library_songs": 6,
+   "queries": 1797,
+   "queries_with_target": 1338,
+   "all_queries": {
+    "top1": 0.14746800222593212,
+    "top5": 0.6455203116304953,
+    "top10": 0.7445742904841403,
+    "mrr": 0.3205713225746614,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.19805680119581465,
+    "top5": 0.866965620328849,
+    "top10": 1.0,
+    "mrr": 0.43054309915296457,
+    "queries": 1338
+   }
+  },
+  "mlend_whistle/vocals/deezer/charts": {
+   "library_songs": 1678,
+   "queries": 1797,
+   "queries_with_target": 1338,
+   "all_queries": {
+    "top1": 0.001669449081803005,
+    "top5": 0.00333889816360601,
+    "top10": 0.004451864218141347,
+    "mrr": 0.005725046725817892,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.002242152466367713,
+    "top5": 0.004484304932735426,
+    "top10": 0.005979073243647235,
+    "mrr": 0.007689020154181431,
+    "queries": 1338
+   }
+  },
+  "mlend_whistle/vocals/deezer/charts_fma": {
+   "library_songs": 4461,
+   "queries": 1797,
+   "queries_with_target": 1338,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.0013744685656674545,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0007473841554559044,
+    "top5": 0.002242152466367713,
+    "top10": 0.002242152466367713,
+    "mrr": 0.0018459790825892492,
+    "queries": 1338
+   }
+  },
+  "mlend_whistle/vocals/both/targets_only": {
+   "library_songs": 13,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.14301613800779076,
+    "top5": 0.46800222593210905,
+    "top10": 0.7334446299387869,
+    "mrr": 0.299873074121822,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.16348600508905853,
+    "top5": 0.5349872773536896,
+    "top10": 0.8384223918575063,
+    "mrr": 0.3427938385476553,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/vocals/both/charts": {
+   "library_songs": 1685,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.00333889816360601,
+    "top10": 0.005008347245409015,
+    "mrr": 0.006977615057407645,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.002544529262086514,
+    "top5": 0.003816793893129771,
+    "top10": 0.0057251908396946565,
+    "mrr": 0.00797631950264729,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/vocals/both/charts_fma": {
+   "library_songs": 4468,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.001536165475544334,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006361323155216285,
+    "top5": 0.0019083969465648854,
+    "top10": 0.002544529262086514,
+    "mrr": 0.0017560364882653738,
+    "queries": 1572
+   }
+  },
+  "chad_hum/mix/itunes/targets_only": {
+   "library_songs": 246,
+   "queries": 5417,
+   "queries_with_target": 4051,
+   "all_queries": {
+    "top1": 0.13531474986154698,
+    "top5": 0.20657190326749122,
+    "top10": 0.24293889606793428,
+    "mrr": 0.17694247214789285,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.1809429770427055,
+    "top5": 0.27622809182917796,
+    "top10": 0.3248580597383362,
+    "mrr": 0.2366075960565627,
+    "queries": 4051
+   }
+  },
+  "chad_hum/mix/itunes/charts": {
+   "library_songs": 2614,
+   "queries": 5417,
+   "queries_with_target": 4051,
+   "all_queries": {
+    "top1": 0.08528705925789182,
+    "top5": 0.1319918774229278,
+    "top10": 0.1556211925419974,
+    "mrr": 0.1093767743864889,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.11404591458899037,
+    "top5": 0.17649962972105654,
+    "top10": 0.20809676623056036,
+    "mrr": 0.14625869830945704,
+    "queries": 4051
+   }
+  },
+  "chad_hum/mix/itunes/charts_fma": {
+   "library_songs": 5397,
+   "queries": 5417,
+   "queries_with_target": 4051,
+   "all_queries": {
+    "top1": 0.050766106701126086,
+    "top5": 0.07882591840502123,
+    "top10": 0.09414805242754291,
+    "mrr": 0.06640635750117511,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.06788447296963712,
+    "top5": 0.10540607257467292,
+    "top10": 0.1258948407800543,
+    "mrr": 0.08879862714980638,
+    "queries": 4051
+   }
+  },
+  "chad_hum/mix/deezer/targets_only": {
+   "library_songs": 243,
+   "queries": 5417,
+   "queries_with_target": 4082,
+   "all_queries": {
+    "top1": 0.11906959571718663,
+    "top5": 0.19438803765922097,
+    "top10": 0.23850839948310873,
+    "mrr": 0.16242439617601462,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.1580107790298873,
+    "top5": 0.25796178343949044,
+    "top10": 0.3165115139637433,
+    "mrr": 0.21554457473921387,
+    "queries": 4082
+   }
+  },
+  "chad_hum/mix/deezer/charts": {
+   "library_songs": 2611,
+   "queries": 5417,
+   "queries_with_target": 4082,
+   "all_queries": {
+    "top1": 0.06941111316226693,
+    "top5": 0.11187003876684512,
+    "top10": 0.1366069780321211,
+    "mrr": 0.09317754286027764,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.09211170994610485,
+    "top5": 0.14845663890249877,
+    "top10": 0.18128368446839785,
+    "mrr": 0.1236508450941019,
+    "queries": 4082
+   }
+  },
+  "chad_hum/mix/deezer/charts_fma": {
+   "library_songs": 5394,
+   "queries": 5417,
+   "queries_with_target": 4082,
+   "all_queries": {
+    "top1": 0.0348901606055012,
+    "top5": 0.0633191803581318,
+    "top10": 0.07790289828318257,
+    "mrr": 0.04987772981377405,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.04630083292503675,
+    "top5": 0.08402743753062224,
+    "top10": 0.10338069573738363,
+    "mrr": 0.06619002018648065,
+    "queries": 4082
+   }
+  },
+  "chad_hum/mix/both/targets_only": {
+   "library_songs": 489,
+   "queries": 5417,
+   "queries_with_target": 4360,
+   "all_queries": {
+    "top1": 0.15875946095624885,
+    "top5": 0.24220047997046334,
+    "top10": 0.28484400959940925,
+    "mrr": 0.20328650398471,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.19724770642201836,
+    "top5": 0.30091743119266057,
+    "top10": 0.35389908256880737,
+    "mrr": 0.25256949359751696,
+    "queries": 4360
+   }
+  },
+  "chad_hum/mix/both/charts": {
+   "library_songs": 2857,
+   "queries": 5417,
+   "queries_with_target": 4360,
+   "all_queries": {
+    "top1": 0.1129776629130515,
+    "top5": 0.169651098393945,
+    "top10": 0.2010337825364593,
+    "mrr": 0.14361471429464945,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.14036697247706423,
+    "top5": 0.21077981651376146,
+    "top10": 0.24977064220183487,
+    "mrr": 0.1784314007647055,
+    "queries": 4360
+   }
+  },
+  "chad_hum/mix/both/charts_fma": {
+   "library_songs": 5640,
+   "queries": 5417,
+   "queries_with_target": 4360,
+   "all_queries": {
+    "top1": 0.06701126084548643,
+    "top5": 0.10651652206018092,
+    "top10": 0.12793058888683773,
+    "mrr": 0.08820046810996571,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.08325688073394495,
+    "top5": 0.1323394495412844,
+    "top10": 0.15894495412844037,
+    "mrr": 0.10958301278708352,
+    "queries": 4360
+   }
+  },
+  "mtgqbh_sing/mix/itunes/targets_only": {
+   "library_songs": 79,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.211864406779661,
+    "top5": 0.3728813559322034,
+    "top10": 0.4491525423728814,
+    "mrr": 0.2928970502058349,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.21551724137931033,
+    "top5": 0.3793103448275862,
+    "top10": 0.45689655172413796,
+    "mrr": 0.2979469993473149,
+    "queries": 116
+   }
+  },
+  "mtgqbh_sing/mix/itunes/charts": {
+   "library_songs": 2447,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.05084745762711865,
+    "top5": 0.0847457627118644,
+    "top10": 0.09322033898305085,
+    "mrr": 0.07275538435624959,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.05172413793103448,
+    "top5": 0.08620689655172414,
+    "top10": 0.09482758620689655,
+    "mrr": 0.07400978753480561,
+    "queries": 116
+   }
+  },
+  "mtgqbh_sing/mix/itunes/charts_fma": {
+   "library_songs": 5230,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.00847457627118644,
+    "top5": 0.03389830508474576,
+    "top10": 0.05084745762711865,
+    "mrr": 0.021321855002239216,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.008620689655172414,
+    "top5": 0.034482758620689655,
+    "top10": 0.05172413793103448,
+    "mrr": 0.021689473191932998,
+    "queries": 116
+   }
+  },
+  "mtgqbh_sing/mix/deezer/targets_only": {
+   "library_songs": 76,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.15254237288135594,
+    "top5": 0.2796610169491525,
+    "top10": 0.4152542372881356,
+    "mrr": 0.2301146732534242,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.16363636363636364,
+    "top5": 0.3,
+    "top10": 0.44545454545454544,
+    "mrr": 0.24685028585367322,
+    "queries": 110
+   }
+  },
+  "mtgqbh_sing/mix/deezer/charts": {
+   "library_songs": 2444,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.01694915254237288,
+    "top5": 0.05084745762711865,
+    "top10": 0.09322033898305085,
+    "mrr": 0.0371189168238951,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.01818181818181818,
+    "top5": 0.05454545454545454,
+    "top10": 0.1,
+    "mrr": 0.03981847441108746,
+    "queries": 110
+   }
+  },
+  "mtgqbh_sing/mix/deezer/charts_fma": {
+   "library_songs": 5227,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.00847457627118644,
+    "top10": 0.025423728813559324,
+    "mrr": 0.009150042484510226,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.00909090909090909,
+    "top10": 0.02727272727272727,
+    "mrr": 0.009815500119747337,
+    "queries": 110
+   }
+  },
+  "mtgqbh_sing/mix/both/targets_only": {
+   "library_songs": 155,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.2033898305084746,
+    "top5": 0.3474576271186441,
+    "top10": 0.4406779661016949,
+    "mrr": 0.2830947066668082,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.2033898305084746,
+    "top5": 0.3474576271186441,
+    "top10": 0.4406779661016949,
+    "mrr": 0.2830947066668082,
+    "queries": 118
+   }
+  },
+  "mtgqbh_sing/mix/both/charts": {
+   "library_songs": 2523,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.059322033898305086,
+    "top5": 0.1016949152542373,
+    "top10": 0.13559322033898305,
+    "mrr": 0.09019957726054904,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.059322033898305086,
+    "top5": 0.1016949152542373,
+    "top10": 0.13559322033898305,
+    "mrr": 0.09019957726054904,
+    "queries": 118
+   }
+  },
+  "mtgqbh_sing/mix/both/charts_fma": {
+   "library_songs": 5306,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.00847457627118644,
+    "top5": 0.0423728813559322,
+    "top10": 0.06779661016949153,
+    "mrr": 0.027732586051685583,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.00847457627118644,
+    "top5": 0.0423728813559322,
+    "top10": 0.06779661016949153,
+    "mrr": 0.027732586051685583,
+    "queries": 118
+   }
+  },
+  "mlend_hum/mix/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.2766444629475437,
+    "top5": 0.6378018318068276,
+    "top10": 0.8740632805995004,
+    "mrr": 0.4225709726021966,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.3165039295070255,
+    "top5": 0.7296975470350083,
+    "top10": 1.0,
+    "mrr": 0.4834558114743873,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/mix/itunes/charts": {
+   "library_songs": 2375,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.008742714404662781,
+    "top5": 0.028726061615320566,
+    "top10": 0.04184013322231474,
+    "mrr": 0.02120944013527637,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.010002381519409383,
+    "top5": 0.032864967849487975,
+    "top10": 0.04786854012860205,
+    "mrr": 0.024265337082607214,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/mix/itunes/charts_fma": {
+   "library_songs": 5158,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.0012489592006661116,
+    "top5": 0.005828476269775187,
+    "top10": 0.008534554537885096,
+    "mrr": 0.004999131630993288,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.0014289116456299119,
+    "top5": 0.006668254346272922,
+    "top10": 0.009764229578471064,
+    "mrr": 0.005719416136054242,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/mix/deezer/targets_only": {
+   "library_songs": 7,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.31432139883430477,
+    "top5": 0.5992922564529559,
+    "top10": 0.8751040799333888,
+    "mrr": 0.45022005471630777,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.3591817316841104,
+    "top5": 0.6848239771646052,
+    "top10": 1.0,
+    "mrr": 0.5144760092428979,
+    "queries": 4204
+   }
+  },
+  "mlend_hum/mix/deezer/charts": {
+   "library_songs": 2375,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.04683597002497918,
+    "top5": 0.10699417152373022,
+    "top10": 0.1442547876769359,
+    "mrr": 0.07959862499644044,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.05352045670789724,
+    "top5": 0.12226450999048526,
+    "top10": 0.1648430066603235,
+    "mrr": 0.0909590376981208,
+    "queries": 4204
+   }
+  },
+  "mlend_hum/mix/deezer/charts_fma": {
+   "library_songs": 5158,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.009575353871773521,
+    "top5": 0.03164029975020816,
+    "top10": 0.052872606161532054,
+    "mrr": 0.02360749299379093,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.010941960038058992,
+    "top5": 0.03615604186489058,
+    "top10": 0.060418648905804,
+    "mrr": 0.026976783145140733,
+    "queries": 4204
+   }
+  },
+  "mlend_hum/mix/both/targets_only": {
+   "library_songs": 14,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.3786427976686095,
+    "top5": 0.5341382181515404,
+    "top10": 0.7148209825145712,
+    "mrr": 0.47903495858845574,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.3786427976686095,
+    "top5": 0.5341382181515404,
+    "top10": 0.7148209825145712,
+    "mrr": 0.47903495858845574,
+    "queries": 4804
+   }
+  },
+  "mlend_hum/mix/both/charts": {
+   "library_songs": 2382,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.05141548709408826,
+    "top5": 0.12406328059950042,
+    "top10": 0.16756869275603664,
+    "mrr": 0.09057116827857102,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.05141548709408826,
+    "top5": 0.12406328059950042,
+    "top10": 0.16756869275603664,
+    "mrr": 0.09057116827857102,
+    "queries": 4804
+   }
+  },
+  "mlend_hum/mix/both/charts_fma": {
+   "library_songs": 5165,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.010199833472106578,
+    "top5": 0.034970857618651124,
+    "top10": 0.05807660283097419,
+    "mrr": 0.026419785877619645,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.010199833472106578,
+    "top5": 0.034970857618651124,
+    "top10": 0.05807660283097419,
+    "mrr": 0.026419785877619645,
+    "queries": 4804
+   }
+  },
+  "mlend_whistle/mix/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.1563717306622148,
+    "top5": 0.6355036171396773,
+    "top10": 0.8747913188647746,
+    "mrr": 0.34751835069030396,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.1787531806615776,
+    "top5": 0.7264631043256997,
+    "top10": 1.0,
+    "mrr": 0.39725857264025205,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/mix/itunes/charts": {
+   "library_songs": 2375,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.0005564830272676684,
+    "top10": 0.0011129660545353367,
+    "mrr": 0.0022879508877971973,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.0006361323155216285,
+    "top10": 0.001272264631043257,
+    "mrr": 0.0026154247744093915,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/mix/itunes/charts_fma": {
+   "library_songs": 5158,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0,
+    "mrr": 0.0004600423357838411,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0,
+    "mrr": 0.0005258880899513756,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/mix/deezer/targets_only": {
+   "library_songs": 7,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.13466889259877574,
+    "top5": 0.6204785754034502,
+    "top10": 0.8697829716193656,
+    "mrr": 0.3253809258817606,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.1548304542546385,
+    "top5": 0.7133717210492643,
+    "top10": 1.0,
+    "mrr": 0.374094385034884,
+    "queries": 1563
+   }
+  },
+  "mlend_whistle/mix/deezer/charts": {
+   "library_songs": 2375,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.0038953811908736783,
+    "top10": 0.005008347245409015,
+    "mrr": 0.004618192165715689,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0025591810620601407,
+    "top5": 0.004478566858605247,
+    "top10": 0.005758157389635317,
+    "mrr": 0.005309591376705753,
+    "queries": 1563
+   }
+  },
+  "mlend_whistle/mix/deezer/charts_fma": {
+   "library_songs": 5158,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.0011129660545353367,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.0017364543620050554,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0012795905310300703,
+    "top5": 0.0019193857965451055,
+    "top10": 0.0019193857965451055,
+    "mrr": 0.0019964225774299965,
+    "queries": 1563
+   }
+  },
+  "mlend_whistle/mix/both/targets_only": {
+   "library_songs": 14,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.14635503617139678,
+    "top5": 0.4796883695047301,
+    "top10": 0.7957707289927657,
+    "mrr": 0.31840325166702466,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.14635503617139678,
+    "top5": 0.4796883695047301,
+    "top10": 0.7957707289927657,
+    "mrr": 0.31840325166702466,
+    "queries": 1797
+   }
+  },
+  "mlend_whistle/mix/both/charts": {
+   "library_songs": 2382,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.0038953811908736783,
+    "top10": 0.005008347245409015,
+    "mrr": 0.005691618590190962,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.0038953811908736783,
+    "top10": 0.005008347245409015,
+    "mrr": 0.005691618590190962,
+    "queries": 1797
+   }
+  },
+  "mlend_whistle/mix/both/charts_fma": {
+   "library_songs": 5165,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0011129660545353367,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.0019291158264840844,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0011129660545353367,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.0019291158264840844,
+    "queries": 1797
+   }
+  },
+  "chad_hum/vocals_or_mix/itunes/targets_only": {
+   "library_songs": 249,
+   "queries": 5417,
+   "queries_with_target": 4158,
+   "all_queries": {
+    "top1": 0.14805242754292045,
+    "top5": 0.22263245338748386,
+    "top10": 0.2612146944803397,
+    "mrr": 0.18912712221697384,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.19288119288119288,
+    "top5": 0.29004329004329005,
+    "top10": 0.3403078403078403,
+    "mrr": 0.2463928862552542,
+    "queries": 4158
+   }
+  },
+  "chad_hum/vocals_or_mix/itunes/charts": {
+   "library_songs": 2666,
+   "queries": 5417,
+   "queries_with_target": 4158,
+   "all_queries": {
+    "top1": 0.09728632084179435,
+    "top5": 0.14343732693372716,
+    "top10": 0.1650359977847517,
+    "mrr": 0.12128488943635697,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.12674362674362674,
+    "top5": 0.18686868686868688,
+    "top10": 0.215007215007215,
+    "mrr": 0.15800871719017454,
+    "queries": 4158
+   }
+  },
+  "chad_hum/vocals_or_mix/itunes/charts_fma": {
+   "library_songs": 5449,
+   "queries": 5417,
+   "queries_with_target": 4158,
+   "all_queries": {
+    "top1": 0.061657744138822225,
+    "top5": 0.09322503230570427,
+    "top10": 0.11205464279121286,
+    "mrr": 0.07870008074441931,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.08032708032708033,
+    "top5": 0.12145262145262145,
+    "top10": 0.145983645983646,
+    "mrr": 0.1025296626725636,
+    "queries": 4158
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.556997207403183,
+    "targets": 249,
+    "covered_fraction": 0.14457831325301204
+   },
+   "per_target_top1": null,
+   "by_fragment_start": {
+    "0-30s": {
+     "top1": 0.04526534859521332,
+     "top5": 0.07023933402705515,
+     "top10": 0.09157127991675339,
+     "mrr": 0.059083110659695535,
+     "queries": 1922
+    },
+    "30-60s": {
+     "top1": 0.1022944550669216,
+     "top5": 0.1586998087954111,
+     "top10": 0.18546845124282982,
+     "mrr": 0.1314172590026776,
+     "queries": 1046
+    },
+    "60-90s": {
+     "top1": 0.08163265306122448,
+     "top5": 0.1251700680272109,
+     "top10": 0.1469387755102041,
+     "mrr": 0.10470254007957293,
+     "queries": 735
+    },
+    "90-10000s": {
+     "top1": 0.06374501992031872,
+     "top5": 0.08924302788844622,
+     "top10": 0.10278884462151394,
+     "mrr": 0.07835998313091454,
+     "queries": 1255
+    }
+   }
+  },
+  "chad_hum/vocals_or_mix/deezer/targets_only": {
+   "library_songs": 244,
+   "queries": 5417,
+   "queries_with_target": 4104,
+   "all_queries": {
+    "top1": 0.14269891083625624,
+    "top5": 0.2276167620454126,
+    "top10": 0.27284474801550673,
+    "mrr": 0.19004174657157458,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.18835282651072124,
+    "top5": 0.30043859649122806,
+    "top10": 0.3601364522417154,
+    "mrr": 0.2508421396633088,
+    "queries": 4104
+   }
+  },
+  "chad_hum/vocals_or_mix/deezer/charts": {
+   "library_songs": 2661,
+   "queries": 5417,
+   "queries_with_target": 4104,
+   "all_queries": {
+    "top1": 0.0869484954772014,
+    "top5": 0.13679158205648884,
+    "top10": 0.16171312534613255,
+    "mrr": 0.11330524995561116,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.11476608187134503,
+    "top5": 0.18055555555555555,
+    "top10": 0.2134502923976608,
+    "mrr": 0.14955519956372942,
+    "queries": 4104
+   }
+  },
+  "chad_hum/vocals_or_mix/deezer/charts_fma": {
+   "library_songs": 5444,
+   "queries": 5417,
+   "queries_with_target": 4104,
+   "all_queries": {
+    "top1": 0.050766106701126086,
+    "top5": 0.0839948310873177,
+    "top10": 0.10245523352409082,
+    "mrr": 0.06871489830633996,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.06700779727095517,
+    "top5": 0.11086744639376218,
+    "top10": 0.13523391812865498,
+    "mrr": 0.09069897761341217,
+    "queries": 4104
+   }
+  },
+  "chad_hum/vocals_or_mix/both/targets_only": {
+   "library_songs": 493,
+   "queries": 5417,
+   "queries_with_target": 4360,
+   "all_queries": {
+    "top1": 0.19014214509876315,
+    "top5": 0.27690603655159685,
+    "top10": 0.3180727339856009,
+    "mrr": 0.23516259669019704,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.23623853211009174,
+    "top5": 0.3440366972477064,
+    "top10": 0.3951834862385321,
+    "mrr": 0.2921733454749535,
+    "queries": 4360
+   }
+  },
+  "chad_hum/vocals_or_mix/both/charts": {
+   "library_songs": 2910,
+   "queries": 5417,
+   "queries_with_target": 4360,
+   "all_queries": {
+    "top1": 0.13752999815395975,
+    "top5": 0.2015875946095625,
+    "top10": 0.23278567472770906,
+    "mrr": 0.17023117896050446,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.17087155963302753,
+    "top5": 0.25045871559633026,
+    "top10": 0.2892201834862385,
+    "mrr": 0.21150052670391115,
+    "queries": 4360
+   }
+  },
+  "chad_hum/vocals_or_mix/both/charts_fma": {
+   "library_songs": 5693,
+   "queries": 5417,
+   "queries_with_target": 4360,
+   "all_queries": {
+    "top1": 0.09082517998892375,
+    "top5": 0.13549935388591472,
+    "top10": 0.1609747092486616,
+    "mrr": 0.11461825799108344,
+    "queries": 5417
+   },
+   "target_present": {
+    "top1": 0.11284403669724771,
+    "top5": 0.168348623853211,
+    "top10": 0.2,
+    "mrr": 0.14240529897653648,
+    "queries": 4360
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/itunes/targets_only": {
+   "library_songs": 79,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.16101694915254236,
+    "top5": 0.3389830508474576,
+    "top10": 0.4915254237288136,
+    "mrr": 0.25481432809236537,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.16379310344827586,
+    "top5": 0.3448275862068966,
+    "top10": 0.5,
+    "mrr": 0.2592076785767165,
+    "queries": 116
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/itunes/charts": {
+   "library_songs": 2496,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.025423728813559324,
+    "top5": 0.06779661016949153,
+    "top10": 0.07627118644067797,
+    "mrr": 0.04916788013395771,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.02586206896551724,
+    "top5": 0.06896551724137931,
+    "top10": 0.07758620689655173,
+    "mrr": 0.050015602205232844,
+    "queries": 116
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/itunes/charts_fma": {
+   "library_songs": 5279,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.01694915254237288,
+    "top10": 0.01694915254237288,
+    "mrr": 0.010026006300483826,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.017241379310344827,
+    "top10": 0.017241379310344827,
+    "mrr": 0.010198868478078375,
+    "queries": 116
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.49915387332439426,
+    "targets": 79,
+    "covered_fraction": 0.12658227848101267
+   },
+   "per_target_top1": {
+    "mtgqbh:2gardeni": 0.0,
+    "mtgqbh:across": 0.0,
+    "mtgqbh:aguabeber": 0.0,
+    "mtgqbh:allmyloving": 0.0,
+    "mtgqbh:america": 0.0,
+    "mtgqbh:angelesll": 0.0,
+    "mtgqbh:angie": 0.0,
+    "mtgqbh:atrain": 0.0,
+    "mtgqbh:bohemianr": 0.0,
+    "mtgqbh:bort2bwi": 0.0,
+    "mtgqbh:cantbuy": 0.0,
+    "mtgqbh:cecilia": 0.0,
+    "mtgqbh:chegadesau": 0.0,
+    "mtgqbh:chicaayer": 0.0,
+    "mtgqbh:cocaine": 0.0,
+    "mtgqbh:desafinado": 0.0,
+    "mtgqbh:enjoysilen": 0.0,
+    "mtgqbh:fridayim": 0.0,
+    "mtgqbh:girl": 0.0,
+    "mtgqbh:givepeace": 0.0,
+    "mtgqbh:happiness": 0.0,
+    "mtgqbh:harddays": 0.0,
+    "mtgqbh:hellogoodb": 0.0,
+    "mtgqbh:help": 0.0,
+    "mtgqbh:heyjude": 0.0,
+    "mtgqbh:imagine": 0.0,
+    "mtgqbh:imemine": 0.0,
+    "mtgqbh:inmylife": 0.0,
+    "mtgqbh:inomissath": 0.0,
+    "mtgqbh:inomondays": 0.0,
+    "mtgqbh:inthemood": 0.0,
+    "mtgqbh:ladymarm": 0.0,
+    "mtgqbh:lestaca": 0.0,
+    "mtgqbh:letitbe": 0.0,
+    "mtgqbh:littlehelp": 0.0,
+    "mtgqbh:lovemetend": 0.0,
+    "mtgqbh:mediterran": 0.0,
+    "mtgqbh:morethwor": 0.0,
+    "mtgqbh:mothernat": 0.0,
+    "mtgqbh:mysharona": 0.0,
+    "mtgqbh:myway": 0.0,
+    "mtgqbh:naturalwom": 0.0,
+    "mtgqbh:newyork": 0.0,
+    "mtgqbh:nightday": 0.0,
+    "mtgqbh:nomeimpor": 0.0,
+    "mtgqbh:nothing": 0.0,
+    "mtgqbh:nowomanno": 0.0,
+    "mtgqbh:obladi": 0.0,
+    "mtgqbh:octopusga": 0.0,
+    "mtgqbh:one": 0.0,
+    "mtgqbh:onlyyou": 0.0,
+    "mtgqbh:overrainbow": 0.0,
+    "mtgqbh:proudmary": 0.0,
+    "mtgqbh:reallygotme": 0.0,
+    "mtgqbh:roxanne": 0.0,
+    "mtgqbh:scarborou": 0.0,
+    "mtgqbh:seekdestr": 0.0,
+    "mtgqbh:shesaidshe": 0.0,
+    "mtgqbh:smokewtr": 0.0,
+    "mtgqbh:stairway2h": 0.0,
+    "mtgqbh:standbyme": 0.0,
+    "mtgqbh:stormywea": 0.0,
+    "mtgqbh:strangers": 0.0,
+    "mtgqbh:strawberry": 0.0,
+    "mtgqbh:submarine": 0.0,
+    "mtgqbh:sweethome": 0.0,
+    "mtgqbh:teenspirit": 0.0,
+    "mtgqbh:thatllbetd": 0.0,
+    "mtgqbh:theboxer": 0.0,
+    "mtgqbh:ugotafrie": 0.0,
+    "mtgqbh:vivirasies": 0.0,
+    "mtgqbh:wave": 0.0,
+    "mtgqbh:wecanwork": 0.0,
+    "mtgqbh:wewillrock": 0.0,
+    "mtgqbh:whatthewo": 0.0,
+    "mtgqbh:whenim64": 0.0,
+    "mtgqbh:wishyouw": 0.0,
+    "mtgqbh:wonderfulwo": 0.0,
+    "mtgqbh:yesterday": 0.0
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/deezer/targets_only": {
+   "library_songs": 77,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.1440677966101695,
+    "top5": 0.3050847457627119,
+    "top10": 0.3983050847457627,
+    "mrr": 0.23108157320471284,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.14912280701754385,
+    "top5": 0.3157894736842105,
+    "top10": 0.41228070175438597,
+    "mrr": 0.23918969858031683,
+    "queries": 114
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/deezer/charts": {
+   "library_songs": 2494,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.025423728813559324,
+    "top5": 0.09322033898305085,
+    "top10": 0.1016949152542373,
+    "mrr": 0.05507326309206818,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.02631578947368421,
+    "top5": 0.09649122807017543,
+    "top10": 0.10526315789473684,
+    "mrr": 0.05700565828828111,
+    "queries": 114
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/deezer/charts_fma": {
+   "library_songs": 5277,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.03389830508474576,
+    "mrr": 0.013179268131235324,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.02631578947368421,
+    "top10": 0.03508771929824561,
+    "mrr": 0.013641698591980424,
+    "queries": 114
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/both/targets_only": {
+   "library_songs": 156,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.211864406779661,
+    "top5": 0.2796610169491525,
+    "top10": 0.423728813559322,
+    "mrr": 0.2766150716082497,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.211864406779661,
+    "top5": 0.2796610169491525,
+    "top10": 0.423728813559322,
+    "mrr": 0.2766150716082497,
+    "queries": 118
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/both/charts": {
+   "library_songs": 2573,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.0423728813559322,
+    "top5": 0.1271186440677966,
+    "top10": 0.13559322033898305,
+    "mrr": 0.08210735423939747,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0423728813559322,
+    "top5": 0.1271186440677966,
+    "top10": 0.13559322033898305,
+    "mrr": 0.08210735423939747,
+    "queries": 118
+   }
+  },
+  "mtgqbh_sing/vocals_or_mix/both/charts_fma": {
+   "library_songs": 5356,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.03389830508474576,
+    "top10": 0.0423728813559322,
+    "mrr": 0.018419144468156637,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.03389830508474576,
+    "top10": 0.0423728813559322,
+    "mrr": 0.018419144468156637,
+    "queries": 118
+   }
+  },
+  "mlend_hum/vocals_or_mix/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.37052456286427976,
+    "top5": 0.6962947543713572,
+    "top10": 0.8740632805995004,
+    "mrr": 0.5102860711312002,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.4239104548702072,
+    "top5": 0.7966182424386758,
+    "top10": 1.0,
+    "mrr": 0.5838090701867792,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/vocals_or_mix/itunes/charts": {
+   "library_songs": 2424,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.03413821815154038,
+    "top5": 0.0776436303080766,
+    "top10": 0.10845129059117402,
+    "mrr": 0.06051063519833262,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.039056918313884255,
+    "top5": 0.08883067396999285,
+    "top10": 0.12407716122886402,
+    "mrr": 0.06922912395636815,
+    "queries": 4199
+   }
+  },
+  "mlend_hum/vocals_or_mix/itunes/charts_fma": {
+   "library_songs": 5207,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.011032472939217318,
+    "top5": 0.030807660283097418,
+    "top10": 0.04204829308909242,
+    "mrr": 0.02286005653294298,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.012622052869730888,
+    "top5": 0.03524648725887116,
+    "top10": 0.048106692069540366,
+    "mrr": 0.026153777467077425,
+    "queries": 4199
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5060820436477662,
+    "targets": 7,
+    "covered_fraction": 0.14285714285714285
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0017064846416382253,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.0805921052631579,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0049261083743842365,
+    "mlend:Showman": 0.0
+   }
+  },
+  "mlend_hum/vocals_or_mix/deezer/targets_only": {
+   "library_songs": 7,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.32035803497085763,
+    "top5": 0.6675686927560366,
+    "top10": 0.8751040799333888,
+    "mrr": 0.4615518813687006,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.3660799238820171,
+    "top5": 0.7628449096098954,
+    "top10": 1.0,
+    "mrr": 0.5274251279960128,
+    "queries": 4204
+   }
+  },
+  "mlend_hum/vocals_or_mix/deezer/charts": {
+   "library_songs": 2424,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.07306411323896753,
+    "top5": 0.1484179850124896,
+    "top10": 0.18484596169858453,
+    "mrr": 0.11088890815610056,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.0834919124643197,
+    "top5": 0.16960038058991436,
+    "top10": 0.21122740247383445,
+    "mrr": 0.12671510817837942,
+    "queries": 4204
+   }
+  },
+  "mlend_hum/vocals_or_mix/deezer/charts_fma": {
+   "library_songs": 5207,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.01894254787676936,
+    "top5": 0.05974188176519567,
+    "top10": 0.08721898417985012,
+    "mrr": 0.04083477317979424,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.021646051379638438,
+    "top5": 0.06826831588962892,
+    "top10": 0.09966698382492864,
+    "mrr": 0.046662761740183516,
+    "queries": 4204
+   }
+  },
+  "mlend_hum/vocals_or_mix/both/targets_only": {
+   "library_songs": 14,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.39654454621149043,
+    "top5": 0.5926311407160699,
+    "top10": 0.7379267277268943,
+    "mrr": 0.5029761691033547,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.39654454621149043,
+    "top5": 0.5926311407160699,
+    "top10": 0.7379267277268943,
+    "mrr": 0.5029761691033547,
+    "queries": 4804
+   }
+  },
+  "mlend_hum/vocals_or_mix/both/charts": {
+   "library_songs": 2431,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.08305578684429642,
+    "top5": 0.1696502914238135,
+    "top10": 0.2158617818484596,
+    "mrr": 0.12730299205586912,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.08305578684429642,
+    "top5": 0.1696502914238135,
+    "top10": 0.2158617818484596,
+    "mrr": 0.12730299205586912,
+    "queries": 4804
+   }
+  },
+  "mlend_hum/vocals_or_mix/both/charts_fma": {
+   "library_songs": 5214,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.026019983347210656,
+    "top5": 0.07139883430474604,
+    "top10": 0.09991673605328892,
+    "mrr": 0.051083974486332104,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.026019983347210656,
+    "top5": 0.07139883430474604,
+    "top10": 0.09991673605328892,
+    "mrr": 0.051083974486332104,
+    "queries": 4804
+   }
+  },
+  "mlend_whistle/vocals_or_mix/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.13466889259877574,
+    "top5": 0.6204785754034502,
+    "top10": 0.8747913188647746,
+    "mrr": 0.3321276201075867,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.15394402035623408,
+    "top5": 0.7092875318066157,
+    "top10": 1.0,
+    "mrr": 0.3796649703138253,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/vocals_or_mix/itunes/charts": {
+   "library_songs": 2424,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.0005564830272676684,
+    "top10": 0.0011129660545353367,
+    "mrr": 0.002307899291993469,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006361323155216285,
+    "top5": 0.0006361323155216285,
+    "top10": 0.001272264631043257,
+    "mrr": 0.0026382283891299386,
+    "queries": 1572
+   }
+  },
+  "mlend_whistle/vocals_or_mix/itunes/charts_fma": {
+   "library_songs": 5207,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0005564830272676684,
+    "mrr": 0.0004166874302533681,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0006361323155216285,
+    "mrr": 0.0004763278067209304,
+    "queries": 1572
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5058383584022523,
+    "targets": 7,
+    "covered_fraction": 0.0
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.0,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0,
+    "mlend:Showman": 0.0
+   }
+  },
+  "mlend_whistle/vocals_or_mix/deezer/targets_only": {
+   "library_songs": 7,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.14301613800779076,
+    "top5": 0.6438508625486923,
+    "top10": 0.8697829716193656,
+    "mrr": 0.33679942761745774,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.16442738323736406,
+    "top5": 0.7402431222008957,
+    "top10": 1.0,
+    "mrr": 0.3872223745544284,
+    "queries": 1563
+   }
+  },
+  "mlend_whistle/vocals_or_mix/deezer/charts": {
+   "library_songs": 2424,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.001669449081803005,
+    "top5": 0.0027824151363383415,
+    "top10": 0.0038953811908736783,
+    "mrr": 0.00461170581460036,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0019193857965451055,
+    "top5": 0.003198976327575176,
+    "top10": 0.004478566858605247,
+    "mrr": 0.005302133940394657,
+    "queries": 1563
+   }
+  },
+  "mlend_whistle/vocals_or_mix/deezer/charts_fma": {
+   "library_songs": 5207,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.0013932781764882363,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006397952655150352,
+    "top5": 0.0019193857965451055,
+    "top10": 0.0019193857965451055,
+    "mrr": 0.001601868767210084,
+    "queries": 1563
+   }
+  },
+  "mlend_whistle/vocals_or_mix/both/targets_only": {
+   "library_songs": 14,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.13967723984418476,
+    "top5": 0.4952698942682248,
+    "top10": 0.7813021702838063,
+    "mrr": 0.31583351879679095,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.13967723984418476,
+    "top5": 0.4952698942682248,
+    "top10": 0.7813021702838063,
+    "mrr": 0.31583351879679095,
+    "queries": 1797
+   }
+  },
+  "mlend_whistle/vocals_or_mix/both/charts": {
+   "library_songs": 2431,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.0027824151363383415,
+    "top10": 0.004451864218141347,
+    "mrr": 0.0056286756426019435,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.0027824151363383415,
+    "top10": 0.004451864218141347,
+    "mrr": 0.0056286756426019435,
+    "queries": 1797
+   }
+  },
+  "mlend_whistle/vocals_or_mix/both/charts_fma": {
+   "library_songs": 5214,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.0015491479020238721,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.0015491479020238721,
+    "queries": 1797
+   }
+  }
+ },
+ "track_use": {
+  "vocals": {
+   "vocals": 2307,
+   "no_chunk": 1321
+  },
+  "mix": {
+   "mix": 3026,
+   "no_chunk": 602
+  },
+  "vocals_or_mix": {
+   "vocals": 2307,
+   "no_chunk": 548,
+   "mix": 773
+  }
+ }
+}
