@@ -1,10 +1,11 @@
-"""Previews -> cached melody tracks; the audio is deleted as soon as it is decoded (D-018).
+"""Previews or local files -> cached melody tracks; audio is deleted once decoded (D-018, D-019).
 
     python scripts/extract_previews.py --name previews_v1
 
 For each row of library/<name>/previews.jsonl: download the 30 s preview to a temporary
 file (Deezer URLs are re-signed first), decode it with ffmpeg to 44.1 kHz mono, delete the
-file, then cache two RMVPE tracks in tracks/<song_id>.npz: `vocals` (htdemucs vocal stem,
+file, then cache two RMVPE tracks (rows with `audio_path` decode that local file instead
+and delete it) in tracks/<song_id>.npz: `vocals` (htdemucs vocal stem,
 D-014) and `mix` (RMVPE on the whole mix, for instrumentals). status.jsonl records every
 outcome, so failures are counted rather than silently dropped.
 """
@@ -47,8 +48,24 @@ def fresh_url(client: PreviewClient, row: dict) -> str | None:
     return track["preview_url"] if track else None
 
 
+def local_audio(row: dict) -> dict:
+    """Decode a copied local file (full-length YouTube audio, D-019), then delete it."""
+    path = Path(row["audio_path"])
+    try:
+        audio = decode_audio(path, SEPARATOR_RATE)
+    except Exception as error:  # noqa: BLE001 - count every failure, keep going
+        return {"row": row, "status": "decode_failed", "error": repr(error)[:200]}
+    finally:
+        path.unlink(missing_ok=True)
+    if len(audio) < MIN_AUDIO_S * SEPARATOR_RATE:
+        return {"row": row, "status": "too_short", "duration_s": len(audio) / SEPARATOR_RATE}
+    return {"row": row, "status": "ok", "audio": audio}
+
+
 def fetch_audio(client: PreviewClient, row: dict, scratch: Path) -> dict:
-    """Download, decode and delete one preview; returns audio or the failure reason."""
+    """Download, decode and delete one preview (or decode a local file); audio or failure."""
+    if row.get("audio_path"):
+        return local_audio(row)
     url = fresh_url(client, row)
     if not url:
         return {"row": row, "status": "no_preview_url"}

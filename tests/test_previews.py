@@ -147,3 +147,31 @@ def test_pick_track_falls_back_to_mix():
     assert kind == "mix" and len(chunks) > 0
     assert pick_track({"vocals": sung, "mix": silent}, "vocals_or_mix")[0] == "vocals"
     assert pick_track({"vocals": silent, "mix": sung}, "vocals")[1] == []
+
+
+def test_eval_keep_song_and_select():
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[1] / "training" / "scripts" / "eval_previews.py"
+    spec = importlib.util.spec_from_file_location("eval_previews", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    target = {"role": "target", "source": "youtube_full", "target_id": "chad:x"}
+    chart = {"role": "distractor", "source": "deezer_preview", "target_id": None}
+    fma = {"role": "fma", "source": "fma_full", "target_id": None}
+    assert module.keep_song(target, ("youtube_full",), "targets_only", "chad")
+    assert not module.keep_song(target, ("itunes_preview",), "charts", "chad")
+    assert not module.keep_song(target, ("youtube_full",), "charts", "mlend")
+    assert not module.keep_song(chart, ("youtube_full",), "targets_only", "chad")
+    assert module.keep_song(fma, ("youtube_full",), "charts_fma", "chad")
+    assert not module.keep_song(fma, ("youtube_full",), "charts", "chad")
+    songs = ["a", "b", "c"]
+    owners = np.array([0, 0, 1, 2, 2])
+    embeddings = np.arange(5, dtype=np.float32)[:, None]
+    kept, new_owners, kept_emb = module.select(
+        (songs, owners, embeddings), np.array([True, False, True])
+    )
+    assert kept == ["a", "c"]
+    assert new_owners.tolist() == [0, 0, 1, 1]
+    assert kept_emb[:, 0].tolist() == [0.0, 1.0, 3.0, 4.0]

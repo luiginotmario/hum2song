@@ -60,6 +60,9 @@ class ContourConfig:
     mlend_repeat: int = 2
     mlend_val: bool = False
     song_holdout: bool = False
+    chad_pairs: bool = False
+    chad_repeat: int = 1
+    chad_val: bool = False
 
     def resolved_data_root(self) -> Path:
         return Path(self.data_root or os.environ.get("H2S_DATA", DEFAULT_DATA_ROOT))

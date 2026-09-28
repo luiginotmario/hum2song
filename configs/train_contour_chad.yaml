@@ -1,0 +1,48 @@
+# Contour encoder with real hum <-> real recording pairs (docs/DECISIONS.md D-019):
+# the headline config (D-012, train_contour.yaml) plus CHAD pairs from train-split songs.
+#   python training/scripts/train_contour.py --config configs/train_contour_chad.yaml
+# Needs library/youtube_v1/tracks (full recordings, features only), library/query_contours.npz
+# and the fixed song split training/splits/chad_songs.json.
+run_name: contour_chad
+steps: 6000
+batch_size: 256
+lr: 0.0003
+weight_decay: 0.05
+warmup_steps: 300
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 500
+# Reported checkpoint: last.pt, as for D-012 (fixed before any result). CHAD val songs are
+# logged and averaged into val/select; CHAD test songs are never seen in training.
+select_metric: val/humtrans_val_shift+7_top1,val/chad_val_top1
+stretch_min: 0.6
+stretch_max: 1.7
+warp_depth: 0.2
+interval_scale: 0.15
+drift_semitones: 0.7
+jitter_semitones: 0.15
+dropout_prob: 0.5
+octave_error_prob: 0.1
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0
+synthetic_midi_dirs: ""
+holdout_midi_dir: raw/essen_midi/deutschl
+holdout_count: 2000
+synthetic_exclude: ""
+# CHAD pairs: every train-split hum 3 times per epoch (about 2,200 hums x 3 next to
+# HumTrans's ~10k train pairs). Value fixed before training.
+chad_pairs: true
+chad_repeat: 3
+chad_val: true
