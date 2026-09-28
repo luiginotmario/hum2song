@@ -267,6 +267,23 @@ def run_validation(model, sets, device, step: int, tracker, best: dict, config, 
     return metrics
 
 
+def load_initial_weights(model, config: ContourConfig, device) -> None:
+    """Fine-tuning: copy the weights of `init_ckpt` into the freshly built model."""
+    if not config.init_ckpt:
+        return
+    path = config.resolved_data_root() / config.init_ckpt
+    state = torch.load(path, map_location=device, weights_only=False)["model"]
+    model.load_state_dict(state)
+    LOGGER.info("initialised from %s", path)
+
+
+def should_stop(best: dict, step: int, config: ContourConfig) -> bool:
+    """Early stopping: no better val/select for `early_stop_patience` validations."""
+    if config.early_stop_patience <= 0:
+        return False
+    return step - best.get("step", 0) >= config.early_stop_patience * config.val_every
+
+
 def run_training(config: ContourConfig, tracker) -> dict:
     """Train, validate every val_every steps, and return the final and selected metrics."""
     seed_everything(config.seed)
@@ -290,6 +307,7 @@ def run_training(config: ContourConfig, tracker) -> dict:
         persistent_workers=config.num_workers > 0,
     )
     model = build_model(config).to(device)
+    load_initial_weights(model, config, device)
     optimizer = torch.optim.AdamW(
         model.parameters(), lr=config.lr, weight_decay=config.weight_decay
     )
@@ -297,6 +315,7 @@ def run_training(config: ContourConfig, tracker) -> dict:
     last_metrics = run_validation(model, sets, device, 0, tracker, best, config, validators)
     started = time.time()
     stream = batches(loader, dataset)
+    step = 0
     for step in range(1, config.steps + 1):
         for group in optimizer.param_groups:
             group["lr"] = config.lr * lr_multiplier(step, config.warmup_steps, config.steps)
@@ -322,11 +341,13 @@ def run_training(config: ContourConfig, tracker) -> dict:
             last_metrics = run_validation(
                 model, sets, device, step, tracker, best, config, validators
             )
-    save_checkpoint(
-        config.resolved_ckpt_dir() / "last.pt", model, config, config.steps, last_metrics
-    )
+            if should_stop(best, step, config):
+                LOGGER.info("early stop at step %s (best step %s)", step, best.get("step"))
+                break
+    save_checkpoint(config.resolved_ckpt_dir() / "last.pt", model, config, step, last_metrics)
     return {
         "last": last_metrics,
+        "last_step": step,
         "selected_step": best.get("step"),
         "selected": best.get("metrics"),
     }

@@ -1,0 +1,48 @@
+# Fine-tune the D-012 model on CHAD real pairs mixed with HumTrans (docs/DECISIONS.md D-021).
+# D-019 trained from scratch with CHAD pairs and lost to D-012; this starts from D-012
+# (contour_v2_s0/last.pt), uses a 10x lower LR, short training, stronger query augmentation
+# and early stopping on CHAD val songs. All values fixed before training.
+#   python training/scripts/train_contour.py --config configs/train_contour_chad_ft.yaml
+# Reported checkpoint: best.pt = best val/chad_val_top1 (val songs only; test songs unseen).
+run_name: contour_chad_ft
+steps: 2000
+batch_size: 256
+lr: 0.00003
+weight_decay: 0.05
+warmup_steps: 100
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 100
+select_metric: val/chad_val_top1
+stretch_min: 0.5
+stretch_max: 1.9
+warp_depth: 0.3
+interval_scale: 0.25
+drift_semitones: 1.0
+jitter_semitones: 0.25
+dropout_prob: 0.6
+octave_error_prob: 0.15
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0
+synthetic_midi_dirs: ""
+holdout_midi_dir: raw/essen_midi/deutschl
+holdout_count: 2000
+synthetic_exclude: ""
+# CHAD pairs: every train-split hum once per epoch, next to HumTrans's ~13k train pairs.
+chad_pairs: true
+chad_repeat: 1
+chad_val: true
+init_ckpt: ckpt/contour_v2_s0/last.pt
+early_stop_patience: 5

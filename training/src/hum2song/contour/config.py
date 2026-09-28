@@ -63,6 +63,10 @@ class ContourConfig:
     chad_pairs: bool = False
     chad_repeat: int = 1
     chad_val: bool = False
+    # Fine-tuning (D-021): start from this checkpoint (relative to the data root) and stop
+    # after `early_stop_patience` validations without a better val/select (0 = never).
+    init_ckpt: str = ""
+    early_stop_patience: int = 0
 
     def resolved_data_root(self) -> Path:
         return Path(self.data_root or os.environ.get("H2S_DATA", DEFAULT_DATA_ROOT))
