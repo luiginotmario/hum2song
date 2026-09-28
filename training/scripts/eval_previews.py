@@ -8,6 +8,8 @@ path (RMVPE -> cleaned contour -> contour encoder). Library settings:
   targets_only   the query set's target recordings only
   charts         + chart distractor previews (D-018)
   charts_fma     + the searchable FMA songs (D-017), re-embedded from cached vocal tracks
+  full_fma       full-length YouTube chart songs (D-020) + FMA, instead of chart previews
+  all_fma        every distractor: chart previews, full-length chart songs and FMA
 Target versions: iTunes preview, Deezer preview, both previews, or the full YouTube song.
 --chad-split test keeps only CHAD test-split songs (D-019) as queries and targets, so a
 model trained on CHAD train songs is compared on the same footing.
@@ -52,7 +54,17 @@ SOURCES = {
     "both": ("itunes_preview", "deezer_preview"),
     "youtube": ("youtube_full",),
 }
-SETTINGS = ("targets_only", "charts", "charts_fma")
+PREVIEW_SOURCES = ("itunes_preview", "deezer_preview")
+# Which non-target songs each setting adds: (preview chart distractors, full-song
+# YouTube chart distractors, FMA songs).
+SETTING_POOLS = {
+    "targets_only": (False, False, False),
+    "charts": (True, False, False),
+    "charts_fma": (True, False, True),
+    "full_fma": (False, True, True),
+    "all_fma": (True, True, True),
+}
+SETTINGS = tuple(SETTING_POOLS)
 DETAIL_SETTING = "charts_fma"
 FRAGMENT_BINS = ((0, 30), (30, 60), (60, 90), (90, 10_000))
 
@@ -118,11 +130,12 @@ def embed_library(rows: list[dict], method: str, model, device) -> tuple:
 
 
 def keep_song(song: dict, sources: tuple, setting: str, dataset: str) -> bool:
+    previews, full, fma = SETTING_POOLS[setting]
     if song["role"] == "target":
         return song["source"] in sources and song["target_id"].startswith(dataset + ":")
     if song["role"] == "distractor":
-        return setting != "targets_only"
-    return setting == "charts_fma"
+        return previews if song["source"] in PREVIEW_SOURCES else full
+    return fma
 
 
 def select(library: tuple, keep: np.ndarray) -> tuple:
