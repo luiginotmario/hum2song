@@ -755,3 +755,93 @@ Real hums vs real recordings (top-1 / top-10 over all queries; library size in s
 - A model is trained on real hum ↔ real recording pairs, e.g. CHAD hums with separated vocals, under a song-level split that keeps these test songs out.
 - Query-side changes: the whistle tracker, or multi-window queries.
 - Before any publication, re-check Apple's and Deezer's terms (D-009).
+
+## D-019 · Full-length YouTube recordings: real hums vs full songs, and training on CHAD real pairs
+**Date:** 2026-09-28
+
+**Context.** D-018 found that real hums rarely find a song's 30 s preview (CHAD top-1 0.062 among about 5.4k songs). It could not tell how much of that was preview coverage and how much was model error. D-018 also proposed training on real hum ↔ real recording pairs. Both need the full recordings. **This departs from D-009**, which removed yt-dlp from the pipeline. Luigi approved it for this personal research project under strict rules:
+- downloads run only on Luigi's Mac, in one folder (`~/hum2song_yt/`), with the standalone yt-dlp binary;
+- no installs, no shell config changes, no cookies, no browser session;
+- stop if the bot check appears;
+- audio is copied off, decoded once and deleted. Only melody features and metadata are kept.
+
+**Options.**
+- **Keep previews only** (D-018). No coverage answer, and no training pairs.
+- **Licensed full tracks** (D-009 Tier L). No permission yet.
+- **Full recordings from YouTube, transient audio, features only.** Chosen, at Luigi's direction.
+
+**Decision.** Full recordings from YouTube, stored as **Tier Y**: features only, never published or redistributed.
+- **Download.** yt-dlp 2026.08.19 (`yt-dlp_macos`) with `--no-config --no-cache-dir`, best audio stream only.
+  - CHAD and MLEnd use their original video ids; MTG-QBH uses the first search result (`ytsearch1`, artist + title).
+  - No bot check appeared. Without a JS runtime (deno), yt-dlp warns, and about 3% of downloads returned HTTP 403; these were skipped, not worked around.
+- **Transfer and deletion.** On the Mac: tar, split into < 95 MB parts, copied to the agent box and checked by sha256, then deleted on the Mac. Then uploaded to Lambda local disk.
+- **Extraction.** `extract_previews.py` (rows with `audio_path`) decodes each file once, **deletes it**, and caches `vocals` (htdemucs → RMVPE) and `mix` (RMVPE) tracks in `library/youtube_v1/tracks/youtube_<video id>.npz`.
+  - RMVPE now runs in ≤ 540 s segments. cuDNN's GRU rejected a > 10 min upload; audio up to 540 s is tracked exactly as before. A model failure is recorded per song instead of stopping the run.
+- **Operational incident, disclosed.** The first extraction crashed on that long upload. The ops script then deleted 107 audio files that had not yet been extracted, and a restart lost 7 more. The 130 songs were downloaded again the same way, and the 7 were queued again; they are not in these results.
+- **Coverage.**
+  - CHAD: 283 of 290 groups (10 videos unavailable on YouTube; 7 lost in the incident, queued again).
+  - MTG-QBH: 75 of 81 (6 searches failed).
+  - MLEnd: 4 of 8. Hedwig's Theme, Pink Panther, Singin' in the Rain and Let It Go were unavailable by id and are queued as searches.
+  - One MTG-QBH hit (`yesterday`) is the same video as a CHAD original; it is kept twice under separate song ids.
+- **Fixed CHAD song split** (`training/splits/chad_songs.json`, seed 20260928): 116 train / 29 val / 145 test groups. Test songs are never trained on and never used to pick a checkpoint.
+- **Training** (`configs/train_contour_chad.yaml`): the D-012 recipe plus CHAD pairs (`chad_repeat: 3`, fixed before training). A pair is an augmented real hum with the matching window of the full recording's vocal melody at CHAD's hummed interval. CHAD val songs are logged, and the reported checkpoint is **`last.pt`, fixed in advance**. Trained from scratch, 6,000 steps, 3 seeds.
+- **Evaluation** (`eval_previews.py`): the same queries, API query path, chunking and scoring as D-018.
+  - Target version: iTunes preview or the full YouTube recording.
+  - New settings: `full_fma` (full-length chart songs from D-020 + FMA instead of chart previews) and `all_fma` (every distractor).
+  - `--chad-split test` keeps CHAD test songs only.
+  - The headline setting stays `vocals_or_mix` at `charts_fma`, so D-018 is directly comparable.
+- **Library.** Full songs are indexed into pgvector (`index_tracks.py`, `source_tier` Y, `coverage` full): the vocal track, or the mix when the vocals give no chunk.
+
+**Results.** Files are in `docs/paper/results/youtube/`: `full_vs_preview_all.json`, `full_vs_preview_chadtest_v2_s0.json`, `final/*.json` (every model on CHAD test songs, with MIR-QBSH and HumTrans regressions) and `library_manifest.jsonl` (ids and titles; no audio, no URLs).
+
+Full recording vs 30 s preview, D-012 model (`contour_v2_s0`), `charts_fma` (about 5.4k songs). Top-1 / top-10 over all queries:
+
+| Query set | Full song | iTunes preview | Both previews (D-018) |
+|---|---|---|---|
+| CHAD hums (5,417) | **0.255 / 0.399** | 0.062 / 0.112 | 0.091 / 0.161 |
+| CHAD, target present only | 0.290 / 0.453 (4,772 queries) | 0.080 / 0.146 (4,158) | |
+| MTG-QBH sung (118) | 0.034 / 0.153 | 0.000 / 0.017 | 0.000 / 0.042 |
+| MLEnd hums (4,804; 4 of 8 songs available) | 0.030 / 0.078 | 0.011 / 0.042 | 0.026 / 0.100 |
+
+- Full recordings, targets only (277 songs): CHAD 0.360 / 0.542, against 0.148 / 0.261 for the iTunes preview.
+- CHAD by where the hummed fragment starts (full song, test songs): top-1 is 0.25 at 0–30 s, 0.40 at 30–60 s, 0.29 at 60–90 s and 0.29 after 90 s. The later sections that a preview misses are now found about as often as the opening.
+
+Training with CHAD real pairs, CHAD **test** songs (2,482 hums, 145 songs, 140 with a usable recording). Mean of 3 seeds each, `last.pt`, top-1 / top-10:
+
+| Setting | Old model (D-012 v2, s0–s2) | New model (CHAD pairs, s0–s2) |
+|---|---|---|
+| Full songs, targets only (140) | 0.468 / 0.667 | 0.394 / 0.612 |
+| Full songs, `charts_fma` (~5.3k) | **0.303 / 0.470** | **0.239 / 0.402** |
+| Full songs, `full_fma` (~3.2k: 283 full-length chart songs + FMA) | 0.302 / 0.466 | 0.236 / 0.399 |
+| iTunes previews, `charts_fma` | 0.066 / 0.112 | 0.043 / 0.085 |
+| MTG-QBH, full songs, `charts_fma` | 0.040 / 0.136 | 0.040 / 0.090 |
+| MLEnd, full songs, `charts_fma` | 0.040 / 0.100 | 0.028 / 0.087 |
+
+- Per seed, new model, `charts_fma` top-1: 0.236, 0.244, 0.236. Old model: 0.300, 0.297, 0.314.
+- The val-selected `best.pt` gives the same numbers within 0.004.
+- Regressions:
+  - MIR-QBSH (+2,000 distractors) top-1: 0.872 old (s0) vs 0.824 / 0.818 / 0.826 new.
+  - HumTrans test top-1 (+7 shift): 0.995 old vs 0.991 to 0.995 new.
+- CHAD val top-1 during training rose from 0.01 to about 0.32. That is in a 145-song train+val pool, where the old model scores higher on comparable test pools.
+- GPU time: about 3.4 h (extraction about 0.6 h, 3 trainings about 1.9 h, evaluations about 0.9 h).
+
+**Takeaways.**
+- **Preview coverage was the main gap in D-018.** The same model and queries with the full recording raise CHAD top-1 about 4× (0.062 → 0.255) and top-10 3.6× (0.112 → 0.399) among about 5.4k songs. Hums of later sections, which a 30 s preview rarely contains, are found as often as the opening. Full-song indexing is needed for real use.
+- **Model error is still most of what remains.** Even with the right recording and only ~140–280 candidates, top-1 is 0.36–0.47. Real hum ↔ real vocal melody is a harder match than D-012's MIDI and synthetic training pairs.
+- **Naively adding CHAD pairs made things worse**, on every seed and every setting: −6 points top-1 on CHAD test songs, and −5 on MIR-QBSH. This is a negative result, and it is reported as run, with `last.pt` fixed in advance. Likely causes, not yet tested:
+  - only 116 training songs, each repeated 3× per epoch, so the model can memorise song identity rather than learn the hum ↔ melody mapping;
+  - label noise: CHAD intervals refer to the original video, and vocal-stem melody includes backing vocals and ad-libs;
+  - training from scratch, instead of fine-tuning the D-012 model with a low learning rate.
+- **The distractor source barely matters at this scale.** Swapping ~2.4k chart previews for 283 full-length chart songs + FMA gives almost the same CHAD numbers. A bigger full-song library is being built (D-020).
+
+**Trade-off / what we gave up.**
+- **Terms.** YouTube's terms forbid downloading. This is a documented research-use exception to D-009 at Luigi's direction: audio was transient, and only features and metadata remain. **Results must not be published before the terms are reviewed, and any paper must disclose the YouTube source.** Tier Y songs stay out of any public index.
+- **Coverage gaps:** 7 CHAD, 6 MTG-QBH and 4 MLEnd songs are missing. The MLEnd row is therefore weak.
+- **Version noise:** MTG-QBH recordings come from the first search result and may be remasters or live versions. The manifest records each video title.
+- **One training recipe**, with repeat 3 and training from scratch. No hyperparameters were tuned against test songs.
+
+**Revisit when.**
+- A fine-tuning variant (start from D-012, low LR, lower CHAD weight) is ready. It must use the same split and the same fixed-in-advance checkpoint rule.
+- The re-queued CHAD and MLEnd songs are extracted. Then re-run the full-vs-preview table.
+- D-020's larger full-song library is ready. Then re-measure `full_fma`.
+- Before any publication, review YouTube's terms and D-009.

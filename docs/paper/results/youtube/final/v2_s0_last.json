@@ -1,0 +1,2815 @@
+{
+ "ckpt": "/lambda/nfs/hum2song-data/ckpt/contour_v2_s0/last.pt",
+ "chad_split": "test",
+ "libraries": [
+  "previews_v1",
+  "youtube_v1",
+  "youtube_charts_v1"
+ ],
+ "track_use": {
+  "vocals_or_mix": {
+   "target:vocals": 608,
+   "target:no_chunk": 16,
+   "target:mix": 25,
+   "distractor:mix": 745,
+   "distractor:no_chunk": 583,
+   "distractor:vocals": 1955,
+   "fma:vocals": 2783,
+   "fma:no_chunk": 217
+  }
+ },
+ "results": {
+  "vocals_or_mix/chad_hum/itunes/targets_only": {
+   "library_songs": 122,
+   "queries": 2482,
+   "queries_with_target": 2055,
+   "all_queries": {
+    "top1": 0.17203867848509266,
+    "top5": 0.2558420628525383,
+    "top10": 0.31023368251410155,
+    "mrr": 0.22247822217251992,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.2077858880778589,
+    "top5": 0.30900243309002434,
+    "top10": 0.3746958637469586,
+    "mrr": 0.26870605714462015,
+    "queries": 2055
+   }
+  },
+  "vocals_or_mix/chad_hum/itunes/charts": {
+   "library_songs": 2539,
+   "queries": 2482,
+   "queries_with_target": 2055,
+   "all_queries": {
+    "top1": 0.10394842868654311,
+    "top5": 0.14383561643835616,
+    "top10": 0.1651893634165995,
+    "mrr": 0.12571753454454926,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.12554744525547445,
+    "top5": 0.17372262773722627,
+    "top10": 0.19951338199513383,
+    "mrr": 0.15183986410684733,
+    "queries": 2055
+   }
+  },
+  "vocals_or_mix/chad_hum/itunes/charts_fma": {
+   "library_songs": 5322,
+   "queries": 2482,
+   "queries_with_target": 2055,
+   "all_queries": {
+    "top1": 0.0692989524576954,
+    "top5": 0.0991136180499597,
+    "top10": 0.11442385173247381,
+    "mrr": 0.0850592369405161,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.08369829683698297,
+    "top5": 0.11970802919708029,
+    "top10": 0.13819951338199513,
+    "mrr": 0.10273334602742624,
+    "queries": 2055
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5619989085197451,
+    "targets": 122,
+    "covered_fraction": 0.10655737704918032
+   },
+   "per_target_top1": {
+    "chad:02064d84d52b1f83": 0.14814814814814814,
+    "chad:04154c76eacfde72": 1.0,
+    "chad:043d6e67bc3d01c8": 0.5,
+    "chad:05315cc83e38919a": 0.0,
+    "chad:07ac578a0df05186": 0.0,
+    "chad:08a58e67791f0d3a": 0.1111111111111111,
+    "chad:0bc7f9ae9b644f29": 0.0,
+    "chad:0bcb7cdc6c1daa1d": 0.0,
+    "chad:0f23eb67d473399b": 0.05,
+    "chad:13a42f31a715d1ae": 0.0,
+    "chad:15c760a6bdb3d6f2": 0.0,
+    "chad:17f376ad3004644b": 0.06666666666666667,
+    "chad:1ab3b4b31b099795": 0.0,
+    "chad:1b1986367ebc1354": 0.0,
+    "chad:1ea56e659bd1ed3c": 0.0,
+    "chad:1ed3c3b78e8b1132": 0.1,
+    "chad:201823d912f1ba75": 0.041666666666666664,
+    "chad:23d895ca7a86c3ba": 0.0,
+    "chad:245a8caff4cde744": 0.0,
+    "chad:2a4f927c59da5553": 0.06666666666666667,
+    "chad:2b960fe77930947c": 0.16666666666666666,
+    "chad:2bb0fef579f3588a": 0.2857142857142857,
+    "chad:2c4d4ad698d4c5de": 0.30434782608695654,
+    "chad:2cdbeabad102dd0a": 0.0,
+    "chad:2cf17d04acacd9df": 0.2857142857142857,
+    "chad:2dba3612488eb3fb": 0.0,
+    "chad:2dc906df88a96a08": 0.26666666666666666,
+    "chad:3087770adce4bc7f": 0.1,
+    "chad:328dda4f0654b8d5": 0.0,
+    "chad:32fc3f70bd60d225": 0.0,
+    "chad:349a7f026589b0e1": 0.0,
+    "chad:3614a9e7fd92da01": 0.0,
+    "chad:37997f3216adf0f6": 0.0,
+    "chad:386d01a6c07ecd75": 0.0,
+    "chad:3ace94d493c2cedd": 0.2777777777777778,
+    "chad:3c39e6fb2005b4af": 0.05555555555555555,
+    "chad:3f70d942b6a7b11b": 0.0,
+    "chad:401b9bcebf13368b": 0.6,
+    "chad:4078a6e157465568": 0.0,
+    "chad:42556a227087d4f6": 0.0,
+    "chad:44d38d21466c7995": 0.0,
+    "chad:45ee58f8ae849a53": 0.2,
+    "chad:460586ec01f5bcc6": 0.15789473684210525,
+    "chad:465d3d3aecafee57": 0.0,
+    "chad:4671ed7fc0e0af29": 0.0,
+    "chad:47604a7222ecd2bf": 0.3,
+    "chad:4909522d8d71e91c": 0.0,
+    "chad:4ac193fef8be589c": 0.3333333333333333,
+    "chad:4c4146836e60a004": 0.0,
+    "chad:4dea0650c9006e12": 0.0,
+    "chad:4e48de1a56e9af64": 0.0,
+    "chad:516f270b0bae7964": 0.0,
+    "chad:57b4063672b0d576": 0.5909090909090909,
+    "chad:58f43f2ef44f4885": 0.0,
+    "chad:5ad9159c3d83b2c6": 0.0,
+    "chad:5cf708b68e8a30e5": 0.0,
+    "chad:5ff3f52c51d16bc2": 0.0,
+    "chad:61a180ac6d5891d0": 0.0,
+    "chad:636ab88c77a9b0a2": 0.0,
+    "chad:63dd1036bfa2bd40": 0.25,
+    "chad:6be8dea479cbf5ca": 0.0,
+    "chad:6c39a324c2b66cc1": 0.0,
+    "chad:6e17166ba3348b34": 0.0,
+    "chad:714352b916c3d0c4": 0.0,
+    "chad:7194897d8e94272f": 0.2,
+    "chad:7209c197c4a4a7d7": 0.0,
+    "chad:77542e08d182cd0c": 0.0,
+    "chad:777e721176e34e09": 0.0,
+    "chad:77cc250bd0dc4c2b": 0.0,
+    "chad:78df443689efe035": 0.019230769230769232,
+    "chad:790cbbf731c8ff67": 0.0,
+    "chad:79ebb41cdb81b350": 0.0,
+    "chad:7aca09a7d0af1a98": 0.0,
+    "chad:7b53db016956f66a": 0.1,
+    "chad:7bdc893e4b33962c": 0.0,
+    "chad:7bf1a849de4fc963": 0.0,
+    "chad:7d8f79ef3f478a5d": 0.0,
+    "chad:7ee465491784aad7": 0.0,
+    "chad:805f72ddf49d6b18": 0.0,
+    "chad:81a90bde4ba56415": 0.0,
+    "chad:849aca4541d0a4cc": 0.0,
+    "chad:856a0c42335336cb": 0.0,
+    "chad:85ba345284db94e4": 0.0,
+    "chad:85d3367e3623f426": 0.0,
+    "chad:8687427897dd7a69": 0.0,
+    "chad:87e764030e38fff6": 0.0,
+    "chad:891211286e4f02f7": 0.0,
+    "chad:89cf9b29900af042": 0.0,
+    "chad:905900891b254491": 0.25,
+    "chad:9208d15658afce44": 0.06666666666666667,
+    "chad:927cb57224703fbe": 0.0,
+    "chad:96561f6abe7a7f6a": 0.0,
+    "chad:9975a38454080e8c": 0.23529411764705882,
+    "chad:a5e8239bbf99a651": 0.0,
+    "chad:a9223c7a03d920b0": 0.0,
+    "chad:a99a50e96d5dfcbd": 1.0,
+    "chad:af196e65df8d7449": 0.0,
+    "chad:af65a7b5dda861ad": 0.0,
+    "chad:b123dd3ac25e8882": 0.2,
+    "chad:b495dce7ff7d8890": 0.2,
+    "chad:b6d779491792be16": 0.0,
+    "chad:b920d60a80cb00f5": 0.0,
+    "chad:bb4220134aad7e07": 0.027777777777777776,
+    "chad:be33452a171fc704": 0.0,
+    "chad:beb25256606cc37e": 0.3333333333333333,
+    "chad:bf157bff8b9cf6c6": 0.0,
+    "chad:c01f9ff1f3b7e705": 0.21739130434782608,
+    "chad:c0c9cc1b6ade4ab0": 0.0,
+    "chad:c58ea7b341aee1b1": 0.26666666666666666,
+    "chad:c65c05499385aaa9": 0.0,
+    "chad:cabd20dd6d22d386": 0.36666666666666664,
+    "chad:cda3fc3183608ae6": 0.0,
+    "chad:ce0e629f24218b45": 0.0,
+    "chad:cf52c767c41e80da": 0.0,
+    "chad:cf612c3fe57e5656": 0.07142857142857142,
+    "chad:cfcaebee5579232c": 0.0,
+    "chad:d3d0477dc779c42e": 0.3,
+    "chad:d72ef45bbe6136dd": 0.18181818181818182,
+    "chad:dadf4fe765ab6c5f": 0.0,
+    "chad:de0bb0138c170245": 0.0,
+    "chad:e0631f10d5d63dce": 0.0,
+    "chad:e13ea8ecb9ad0254": 0.0,
+    "chad:e338e04b67f34b2a": 0.0,
+    "chad:e427891242803ddc": 0.125,
+    "chad:e6502f449abd4b49": 0.0,
+    "chad:e9e021a5ed510051": 0.2,
+    "chad:ea1b0d65148f81f1": 0.0,
+    "chad:ea870e2b360e2512": 0.0,
+    "chad:eddd789e19b6a474": 0.047619047619047616,
+    "chad:eea4fd209b510c08": 0.0,
+    "chad:eef38590f574c4b5": 0.0,
+    "chad:f1608ba400be14a3": 0.0,
+    "chad:f2e980fb45ed0abb": 0.16666666666666666,
+    "chad:f476a9e91ea5d280": 0.3333333333333333,
+    "chad:f482c164208df979": 0.0,
+    "chad:f56170a2936a5c8c": 0.0,
+    "chad:f687cb8efb0138dd": 0.0,
+    "chad:f8706f388a7150c1": 0.0,
+    "chad:f9b4b692b088bce7": 0.0,
+    "chad:fa2e27b839190daa": 0.0,
+    "chad:fc2ad21b105b219e": 0.0,
+    "chad:fced8844096a3270": 0.0,
+    "chad:fd7aa18fdda2bc7a": 0.0,
+    "chad:ff48dd1eefc23d0c": 0.0,
+    "chad:ffad5d0b1291e86b": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": {
+     "top1": 0.058343057176196034,
+     "top5": 0.08051341890315053,
+     "top10": 0.08984830805134189,
+     "mrr": 0.06933554459909043,
+     "queries": 857
+    },
+    "30-60s": {
+     "top1": 0.09003831417624521,
+     "top5": 0.14367816091954022,
+     "top10": 0.18007662835249041,
+     "mrr": 0.1188044537777169,
+     "queries": 522
+    },
+    "60-90s": {
+     "top1": 0.0921409214092141,
+     "top5": 0.14092140921409213,
+     "top10": 0.14905149051490515,
+     "mrr": 0.11508939343747739,
+     "queries": 369
+    },
+    "90-10000s": {
+     "top1": 0.055858310626702996,
+     "top5": 0.0681198910081744,
+     "top10": 0.07901907356948229,
+     "mrr": 0.0643222797200859,
+     "queries": 734
+    }
+   }
+  },
+  "vocals_or_mix/chad_hum/itunes/full_fma": {
+   "library_songs": 3188,
+   "queries": 2482,
+   "queries_with_target": 2055,
+   "all_queries": {
+    "top1": 0.07010475423045931,
+    "top5": 0.09830781627719581,
+    "top10": 0.11079774375503626,
+    "mrr": 0.08468301090364166,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.08467153284671533,
+    "top5": 0.11873479318734793,
+    "top10": 0.13381995133819952,
+    "mrr": 0.10227894552936187,
+    "queries": 2055
+   }
+  },
+  "vocals_or_mix/chad_hum/itunes/all_fma": {
+   "library_songs": 5605,
+   "queries": 2482,
+   "queries_with_target": 2055,
+   "all_queries": {
+    "top1": 0.06809024979854955,
+    "top5": 0.09669621273166801,
+    "top10": 0.1095890410958904,
+    "mrr": 0.08270878356270157,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.08223844282238443,
+    "top5": 0.11678832116788321,
+    "top10": 0.13236009732360096,
+    "mrr": 0.09989450160711692,
+    "queries": 2055
+   }
+  },
+  "vocals_or_mix/chad_hum/deezer/targets_only": {
+   "library_songs": 122,
+   "queries": 2482,
+   "queries_with_target": 2060,
+   "all_queries": {
+    "top1": 0.17123287671232876,
+    "top5": 0.28646253021756646,
+    "top10": 0.35495568090249796,
+    "mrr": 0.23567957785340513,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.20631067961165048,
+    "top5": 0.34514563106796114,
+    "top10": 0.42766990291262136,
+    "mrr": 0.2839595690447337,
+    "queries": 2060
+   }
+  },
+  "vocals_or_mix/chad_hum/deezer/charts": {
+   "library_songs": 2539,
+   "queries": 2482,
+   "queries_with_target": 2060,
+   "all_queries": {
+    "top1": 0.09347300564061241,
+    "top5": 0.14141821112006447,
+    "top10": 0.17203867848509266,
+    "mrr": 0.12137218140864948,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.11262135922330097,
+    "top5": 0.1703883495145631,
+    "top10": 0.20728155339805826,
+    "mrr": 0.1462358030370233,
+    "queries": 2060
+   }
+  },
+  "vocals_or_mix/chad_hum/deezer/charts_fma": {
+   "library_songs": 5322,
+   "queries": 2482,
+   "queries_with_target": 2060,
+   "all_queries": {
+    "top1": 0.05439161966156326,
+    "top5": 0.08501208702659147,
+    "top10": 0.10717163577759871,
+    "mrr": 0.07275575413352367,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.06553398058252427,
+    "top5": 0.10242718446601942,
+    "top10": 0.129126213592233,
+    "mrr": 0.08766008823272126,
+    "queries": 2060
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5585952532291417,
+    "targets": 122,
+    "covered_fraction": 0.11475409836065574
+   },
+   "per_target_top1": {
+    "chad:02064d84d52b1f83": 0.0,
+    "chad:04154c76eacfde72": 0.0,
+    "chad:043d6e67bc3d01c8": 0.3,
+    "chad:05315cc83e38919a": 0.0,
+    "chad:07ac578a0df05186": 0.0,
+    "chad:08a58e67791f0d3a": 0.1111111111111111,
+    "chad:0bc7f9ae9b644f29": 0.0,
+    "chad:0bcb7cdc6c1daa1d": 0.0,
+    "chad:0f23eb67d473399b": 0.0,
+    "chad:13a42f31a715d1ae": 0.0,
+    "chad:15c760a6bdb3d6f2": 0.0,
+    "chad:17f376ad3004644b": 0.13333333333333333,
+    "chad:1ab3b4b31b099795": 0.0,
+    "chad:1b1986367ebc1354": 0.10526315789473684,
+    "chad:1ea56e659bd1ed3c": 0.0,
+    "chad:1ed3c3b78e8b1132": 0.0,
+    "chad:201823d912f1ba75": 0.0,
+    "chad:23d895ca7a86c3ba": 0.0,
+    "chad:245a8caff4cde744": 0.0,
+    "chad:2a4f927c59da5553": 0.0,
+    "chad:2b960fe77930947c": 0.041666666666666664,
+    "chad:2bb0fef579f3588a": 0.35714285714285715,
+    "chad:2c4d4ad698d4c5de": 0.0,
+    "chad:2cdbeabad102dd0a": 0.0,
+    "chad:2cf17d04acacd9df": 0.0,
+    "chad:2dba3612488eb3fb": 0.0,
+    "chad:2dc906df88a96a08": 0.26666666666666666,
+    "chad:3087770adce4bc7f": 0.1,
+    "chad:328dda4f0654b8d5": 0.13333333333333333,
+    "chad:32fc3f70bd60d225": 0.0,
+    "chad:349a7f026589b0e1": 0.0,
+    "chad:3614a9e7fd92da01": 0.0,
+    "chad:37997f3216adf0f6": 0.26666666666666666,
+    "chad:386d01a6c07ecd75": 0.5454545454545454,
+    "chad:3ace94d493c2cedd": 0.2222222222222222,
+    "chad:3c39e6fb2005b4af": 0.0,
+    "chad:3f70d942b6a7b11b": 0.0,
+    "chad:401b9bcebf13368b": 0.6,
+    "chad:4078a6e157465568": 0.14285714285714285,
+    "chad:42556a227087d4f6": 0.0,
+    "chad:44d38d21466c7995": 0.07142857142857142,
+    "chad:45ee58f8ae849a53": 0.0,
+    "chad:460586ec01f5bcc6": 0.0,
+    "chad:465d3d3aecafee57": 0.0,
+    "chad:4671ed7fc0e0af29": 0.0,
+    "chad:47604a7222ecd2bf": 0.0,
+    "chad:4909522d8d71e91c": 0.0,
+    "chad:4ac193fef8be589c": 0.3333333333333333,
+    "chad:4c4146836e60a004": 0.0,
+    "chad:4dea0650c9006e12": 0.0,
+    "chad:4e48de1a56e9af64": 0.0,
+    "chad:516f270b0bae7964": 0.0,
+    "chad:57b4063672b0d576": 0.5909090909090909,
+    "chad:58f43f2ef44f4885": 0.0,
+    "chad:5ad9159c3d83b2c6": 0.2,
+    "chad:5cf708b68e8a30e5": 0.0,
+    "chad:5ff3f52c51d16bc2": 0.0,
+    "chad:61a180ac6d5891d0": 0.0,
+    "chad:636ab88c77a9b0a2": 0.0,
+    "chad:63dd1036bfa2bd40": 0.1875,
+    "chad:6be8dea479cbf5ca": 0.0,
+    "chad:6c39a324c2b66cc1": 0.0,
+    "chad:6e17166ba3348b34": 0.0,
+    "chad:714352b916c3d0c4": 0.0,
+    "chad:7194897d8e94272f": 0.0,
+    "chad:7209c197c4a4a7d7": 0.0,
+    "chad:77542e08d182cd0c": 0.0,
+    "chad:777e721176e34e09": 0.013513513513513514,
+    "chad:77cc250bd0dc4c2b": 0.0,
+    "chad:78df443689efe035": 0.0,
+    "chad:790cbbf731c8ff67": 0.0,
+    "chad:79ebb41cdb81b350": 0.0,
+    "chad:7aca09a7d0af1a98": 0.0,
+    "chad:7b53db016956f66a": 0.1,
+    "chad:7bdc893e4b33962c": 0.0,
+    "chad:7bf1a849de4fc963": 0.0,
+    "chad:7d8f79ef3f478a5d": 0.0,
+    "chad:7ee465491784aad7": 0.0,
+    "chad:805f72ddf49d6b18": 0.03225806451612903,
+    "chad:81a90bde4ba56415": 0.0,
+    "chad:849aca4541d0a4cc": 0.0,
+    "chad:856a0c42335336cb": 0.045454545454545456,
+    "chad:85ba345284db94e4": 0.0,
+    "chad:85d3367e3623f426": 0.0,
+    "chad:8687427897dd7a69": 0.0,
+    "chad:87e764030e38fff6": 0.0,
+    "chad:891211286e4f02f7": 0.0,
+    "chad:89cf9b29900af042": 0.0,
+    "chad:905900891b254491": 0.0,
+    "chad:9208d15658afce44": 0.0,
+    "chad:927cb57224703fbe": 0.0,
+    "chad:96561f6abe7a7f6a": 0.0,
+    "chad:9975a38454080e8c": 0.058823529411764705,
+    "chad:a5e8239bbf99a651": 0.1,
+    "chad:a9223c7a03d920b0": 0.3333333333333333,
+    "chad:a99a50e96d5dfcbd": 1.0,
+    "chad:af196e65df8d7449": 0.0,
+    "chad:af65a7b5dda861ad": 0.0,
+    "chad:b123dd3ac25e8882": 0.2,
+    "chad:b495dce7ff7d8890": 0.06666666666666667,
+    "chad:b6d779491792be16": 0.0,
+    "chad:b920d60a80cb00f5": 0.0,
+    "chad:bb4220134aad7e07": 0.027777777777777776,
+    "chad:be33452a171fc704": 0.0,
+    "chad:beb25256606cc37e": 0.0,
+    "chad:bf157bff8b9cf6c6": 0.0,
+    "chad:c01f9ff1f3b7e705": 0.391304347826087,
+    "chad:c0c9cc1b6ade4ab0": 0.0,
+    "chad:c58ea7b341aee1b1": 0.06666666666666667,
+    "chad:c65c05499385aaa9": 0.0,
+    "chad:cabd20dd6d22d386": 0.0,
+    "chad:cda3fc3183608ae6": 0.0,
+    "chad:ce0e629f24218b45": 0.0,
+    "chad:cf52c767c41e80da": 0.0,
+    "chad:cf612c3fe57e5656": 0.0,
+    "chad:cfcaebee5579232c": 0.0,
+    "chad:d3d0477dc779c42e": 0.0,
+    "chad:d72ef45bbe6136dd": 0.45454545454545453,
+    "chad:dadf4fe765ab6c5f": 0.0,
+    "chad:de0bb0138c170245": 0.0,
+    "chad:e0631f10d5d63dce": 0.0,
+    "chad:e13ea8ecb9ad0254": 0.0,
+    "chad:e338e04b67f34b2a": 0.0,
+    "chad:e427891242803ddc": 0.0,
+    "chad:e6502f449abd4b49": 0.0,
+    "chad:e9e021a5ed510051": 0.0,
+    "chad:ea1b0d65148f81f1": 0.0,
+    "chad:ea870e2b360e2512": 0.2,
+    "chad:eddd789e19b6a474": 0.3333333333333333,
+    "chad:eea4fd209b510c08": 0.0,
+    "chad:eef38590f574c4b5": 0.0,
+    "chad:f1608ba400be14a3": 0.0625,
+    "chad:f2e980fb45ed0abb": 0.125,
+    "chad:f476a9e91ea5d280": 0.0,
+    "chad:f482c164208df979": 0.0,
+    "chad:f56170a2936a5c8c": 0.0,
+    "chad:f687cb8efb0138dd": 0.0,
+    "chad:f8706f388a7150c1": 0.0,
+    "chad:f9b4b692b088bce7": 0.03333333333333333,
+    "chad:fa2e27b839190daa": 0.0,
+    "chad:fc2ad21b105b219e": 0.0,
+    "chad:fced8844096a3270": 0.0,
+    "chad:fd7aa18fdda2bc7a": 0.0,
+    "chad:ff48dd1eefc23d0c": 0.0,
+    "chad:ffad5d0b1291e86b": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": {
+     "top1": 0.03267211201866978,
+     "top5": 0.050175029171528586,
+     "top10": 0.06417736289381563,
+     "mrr": 0.04378526634714986,
+     "queries": 857
+    },
+    "30-60s": {
+     "top1": 0.09003831417624521,
+     "top5": 0.15517241379310345,
+     "top10": 0.18199233716475097,
+     "mrr": 0.12391744343442762,
+     "queries": 522
+    },
+    "60-90s": {
+     "top1": 0.051490514905149054,
+     "top5": 0.08401084010840108,
+     "top10": 0.11924119241192412,
+     "mrr": 0.07358049822507398,
+     "queries": 369
+    },
+    "90-10000s": {
+     "top1": 0.055858310626702996,
+     "top5": 0.07629427792915532,
+     "top10": 0.09809264305177112,
+     "mrr": 0.06978160651508832,
+     "queries": 734
+    }
+   }
+  },
+  "vocals_or_mix/chad_hum/deezer/full_fma": {
+   "library_songs": 3188,
+   "queries": 2482,
+   "queries_with_target": 2060,
+   "all_queries": {
+    "top1": 0.055197421434327154,
+    "top5": 0.0854149879129734,
+    "top10": 0.10515713134568896,
+    "mrr": 0.07277312610722508,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.06650485436893204,
+    "top5": 0.1029126213592233,
+    "top10": 0.12669902912621359,
+    "mrr": 0.08768101893113235,
+    "queries": 2060
+   }
+  },
+  "vocals_or_mix/chad_hum/deezer/all_fma": {
+   "library_songs": 5605,
+   "queries": 2482,
+   "queries_with_target": 2060,
+   "all_queries": {
+    "top1": 0.0531829170024174,
+    "top5": 0.08340048348106366,
+    "top10": 0.10273972602739725,
+    "mrr": 0.07059992982782468,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.06407766990291262,
+    "top5": 0.10048543689320388,
+    "top10": 0.12378640776699029,
+    "mrr": 0.08506263389934993,
+    "queries": 2060
+   }
+  },
+  "vocals_or_mix/chad_hum/both/targets_only": {
+   "library_songs": 244,
+   "queries": 2482,
+   "queries_with_target": 2183,
+   "all_queries": {
+    "top1": 0.22401289282836423,
+    "top5": 0.33440773569701854,
+    "top10": 0.38759065269943593,
+    "mrr": 0.2822023618823772,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.25469537333944114,
+    "top5": 0.38021071919377003,
+    "top10": 0.4406779661016949,
+    "mrr": 0.32085490709668346,
+    "queries": 2183
+   }
+  },
+  "vocals_or_mix/chad_hum/both/charts": {
+   "library_songs": 2661,
+   "queries": 2482,
+   "queries_with_target": 2183,
+   "all_queries": {
+    "top1": 0.15189363416599516,
+    "top5": 0.21232876712328766,
+    "top10": 0.24697824335213536,
+    "mrr": 0.18474836595558228,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.17269812185066422,
+    "top5": 0.24141090242785157,
+    "top10": 0.28080622995877236,
+    "mrr": 0.2100528833265026,
+    "queries": 2183
+   }
+  },
+  "vocals_or_mix/chad_hum/both/charts_fma": {
+   "library_songs": 5444,
+   "queries": 2482,
+   "queries_with_target": 2183,
+   "all_queries": {
+    "top1": 0.10072522159548751,
+    "top5": 0.1434327155519742,
+    "top10": 0.17002417405318293,
+    "mrr": 0.12447678924050454,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.11452130096197893,
+    "top5": 0.163078332569858,
+    "top10": 0.19331195602382042,
+    "mrr": 0.14152606087720213,
+    "queries": 2183
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5603802609443657,
+    "targets": 129,
+    "covered_fraction": 0.20930232558139536
+   },
+   "per_target_top1": {
+    "chad:02064d84d52b1f83": 0.14814814814814814,
+    "chad:04154c76eacfde72": 1.0,
+    "chad:043d6e67bc3d01c8": 0.5,
+    "chad:05315cc83e38919a": 0.0,
+    "chad:07ac578a0df05186": 0.0,
+    "chad:08a58e67791f0d3a": 0.1111111111111111,
+    "chad:0bc7f9ae9b644f29": 0.0,
+    "chad:0bcb7cdc6c1daa1d": 0.0,
+    "chad:0f23eb67d473399b": 0.05,
+    "chad:13a42f31a715d1ae": 0.0,
+    "chad:15c760a6bdb3d6f2": 0.0,
+    "chad:17f376ad3004644b": 0.13333333333333333,
+    "chad:1ab3b4b31b099795": 0.0,
+    "chad:1b1986367ebc1354": 0.10526315789473684,
+    "chad:1ea56e659bd1ed3c": 0.0,
+    "chad:1ed3c3b78e8b1132": 0.1,
+    "chad:201823d912f1ba75": 0.041666666666666664,
+    "chad:23d895ca7a86c3ba": 0.0,
+    "chad:245a8caff4cde744": 0.0,
+    "chad:2a4f927c59da5553": 0.06666666666666667,
+    "chad:2b960fe77930947c": 0.20833333333333334,
+    "chad:2bb0fef579f3588a": 0.5714285714285714,
+    "chad:2c4d4ad698d4c5de": 0.30434782608695654,
+    "chad:2cdbeabad102dd0a": 0.0,
+    "chad:2cf17d04acacd9df": 0.2857142857142857,
+    "chad:2dba3612488eb3fb": 0.0,
+    "chad:2dc906df88a96a08": 0.5333333333333333,
+    "chad:3087770adce4bc7f": 0.1,
+    "chad:328dda4f0654b8d5": 0.13333333333333333,
+    "chad:32fc3f70bd60d225": 0.0,
+    "chad:349a7f026589b0e1": 0.0,
+    "chad:3614a9e7fd92da01": 0.0,
+    "chad:37997f3216adf0f6": 0.26666666666666666,
+    "chad:386d01a6c07ecd75": 0.5454545454545454,
+    "chad:3ace94d493c2cedd": 0.2777777777777778,
+    "chad:3c39e6fb2005b4af": 0.05555555555555555,
+    "chad:3f70d942b6a7b11b": 0.0,
+    "chad:401b9bcebf13368b": 0.6,
+    "chad:4078a6e157465568": 0.14285714285714285,
+    "chad:42556a227087d4f6": 0.0,
+    "chad:44d38d21466c7995": 0.07142857142857142,
+    "chad:45ee58f8ae849a53": 0.2,
+    "chad:460586ec01f5bcc6": 0.15789473684210525,
+    "chad:465d3d3aecafee57": 0.0,
+    "chad:4671ed7fc0e0af29": 0.0,
+    "chad:47604a7222ecd2bf": 0.3,
+    "chad:4909522d8d71e91c": 0.0,
+    "chad:4ac193fef8be589c": 0.3333333333333333,
+    "chad:4c4146836e60a004": 0.0,
+    "chad:4dea0650c9006e12": 0.0,
+    "chad:4e48de1a56e9af64": 0.0,
+    "chad:516f270b0bae7964": 0.0,
+    "chad:57b4063672b0d576": 0.5909090909090909,
+    "chad:58f43f2ef44f4885": 0.0,
+    "chad:5ad9159c3d83b2c6": 0.2,
+    "chad:5cf708b68e8a30e5": 0.0,
+    "chad:5ff3f52c51d16bc2": 0.0,
+    "chad:61a180ac6d5891d0": 0.0,
+    "chad:636ab88c77a9b0a2": 0.0,
+    "chad:63dd1036bfa2bd40": 0.25,
+    "chad:6be8dea479cbf5ca": 0.0,
+    "chad:6c39a324c2b66cc1": 0.0,
+    "chad:6e17166ba3348b34": 0.0,
+    "chad:714352b916c3d0c4": 0.0,
+    "chad:7194897d8e94272f": 0.2,
+    "chad:7209c197c4a4a7d7": 0.0,
+    "chad:77542e08d182cd0c": 0.0,
+    "chad:777e721176e34e09": 0.013513513513513514,
+    "chad:77cc250bd0dc4c2b": 0.0,
+    "chad:78df443689efe035": 0.019230769230769232,
+    "chad:790cbbf731c8ff67": 0.0,
+    "chad:79ebb41cdb81b350": 0.0,
+    "chad:7aca09a7d0af1a98": 0.0,
+    "chad:7b53db016956f66a": 0.1,
+    "chad:7bdc893e4b33962c": 0.0,
+    "chad:7bf1a849de4fc963": 0.0,
+    "chad:7d8f79ef3f478a5d": 0.0,
+    "chad:7ee465491784aad7": 0.0,
+    "chad:805f72ddf49d6b18": 0.03225806451612903,
+    "chad:81a90bde4ba56415": 0.0,
+    "chad:849aca4541d0a4cc": 0.0,
+    "chad:856a0c42335336cb": 0.045454545454545456,
+    "chad:85ba345284db94e4": 0.0,
+    "chad:85d3367e3623f426": 0.0,
+    "chad:8687427897dd7a69": 0.0,
+    "chad:87e764030e38fff6": 0.0,
+    "chad:891211286e4f02f7": 0.0,
+    "chad:89cf9b29900af042": 0.0,
+    "chad:905900891b254491": 0.25,
+    "chad:9208d15658afce44": 0.06666666666666667,
+    "chad:927cb57224703fbe": 0.0,
+    "chad:96561f6abe7a7f6a": 0.0,
+    "chad:9975a38454080e8c": 0.29411764705882354,
+    "chad:a5e8239bbf99a651": 0.1,
+    "chad:a9223c7a03d920b0": 0.3333333333333333,
+    "chad:a99a50e96d5dfcbd": 1.0,
+    "chad:af196e65df8d7449": 0.0,
+    "chad:af65a7b5dda861ad": 0.0,
+    "chad:b123dd3ac25e8882": 0.2,
+    "chad:b495dce7ff7d8890": 0.2,
+    "chad:b6d779491792be16": 0.0,
+    "chad:b920d60a80cb00f5": 0.0,
+    "chad:bb4220134aad7e07": 0.027777777777777776,
+    "chad:be33452a171fc704": 0.0,
+    "chad:beb25256606cc37e": 0.3333333333333333,
+    "chad:bf157bff8b9cf6c6": 0.0,
+    "chad:c01f9ff1f3b7e705": 0.5652173913043478,
+    "chad:c0c9cc1b6ade4ab0": 0.0,
+    "chad:c58ea7b341aee1b1": 0.3333333333333333,
+    "chad:c65c05499385aaa9": 0.0,
+    "chad:cabd20dd6d22d386": 0.3333333333333333,
+    "chad:cda3fc3183608ae6": 0.0,
+    "chad:ce0e629f24218b45": 0.0,
+    "chad:cf52c767c41e80da": 0.0,
+    "chad:cf612c3fe57e5656": 0.07142857142857142,
+    "chad:cfcaebee5579232c": 0.0,
+    "chad:d3d0477dc779c42e": 0.3,
+    "chad:d72ef45bbe6136dd": 0.5454545454545454,
+    "chad:dadf4fe765ab6c5f": 0.0,
+    "chad:de0bb0138c170245": 0.0,
+    "chad:e0631f10d5d63dce": 0.0,
+    "chad:e13ea8ecb9ad0254": 0.0,
+    "chad:e338e04b67f34b2a": 0.0,
+    "chad:e427891242803ddc": 0.125,
+    "chad:e6502f449abd4b49": 0.0,
+    "chad:e9e021a5ed510051": 0.2,
+    "chad:ea1b0d65148f81f1": 0.0,
+    "chad:ea870e2b360e2512": 0.2,
+    "chad:eddd789e19b6a474": 0.3333333333333333,
+    "chad:eea4fd209b510c08": 0.0,
+    "chad:eef38590f574c4b5": 0.0,
+    "chad:f1608ba400be14a3": 0.0625,
+    "chad:f2e980fb45ed0abb": 0.2916666666666667,
+    "chad:f476a9e91ea5d280": 0.3333333333333333,
+    "chad:f482c164208df979": 0.0,
+    "chad:f56170a2936a5c8c": 0.0,
+    "chad:f687cb8efb0138dd": 0.0,
+    "chad:f8706f388a7150c1": 0.0,
+    "chad:f9b4b692b088bce7": 0.03333333333333333,
+    "chad:fa2e27b839190daa": 0.0,
+    "chad:fc2ad21b105b219e": 0.0,
+    "chad:fced8844096a3270": 0.0,
+    "chad:fd7aa18fdda2bc7a": 0.0,
+    "chad:ff48dd1eefc23d0c": 0.0,
+    "chad:ffad5d0b1291e86b": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": {
+     "top1": 0.07117852975495916,
+     "top5": 0.09568261376896149,
+     "top10": 0.10851808634772463,
+     "mrr": 0.0848737661746778,
+     "queries": 857
+    },
+    "30-60s": {
+     "top1": 0.15708812260536398,
+     "top5": 0.24904214559386972,
+     "top10": 0.2950191570881226,
+     "mrr": 0.2039651837242781,
+     "queries": 522
+    },
+    "60-90s": {
+     "top1": 0.12466124661246612,
+     "top5": 0.18157181571815717,
+     "top10": 0.21138211382113822,
+     "mrr": 0.1534604486127382,
+     "queries": 369
+    },
+    "90-10000s": {
+     "top1": 0.08310626702997276,
+     "top5": 0.10490463215258855,
+     "top10": 0.13215258855585832,
+     "mrr": 0.09961558833931852,
+     "queries": 734
+    }
+   }
+  },
+  "vocals_or_mix/chad_hum/both/full_fma": {
+   "library_songs": 3310,
+   "queries": 2482,
+   "queries_with_target": 2183,
+   "all_queries": {
+    "top1": 0.10153102336825141,
+    "top5": 0.1434327155519742,
+    "top10": 0.16680096696212732,
+    "mrr": 0.1238560837753235,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.11543747136967476,
+    "top5": 0.163078332569858,
+    "top10": 0.1896472743930371,
+    "mrr": 0.14082033895114657,
+    "queries": 2183
+   }
+  },
+  "vocals_or_mix/chad_hum/both/all_fma": {
+   "library_songs": 5727,
+   "queries": 2482,
+   "queries_with_target": 2183,
+   "all_queries": {
+    "top1": 0.09830781627719581,
+    "top5": 0.14020950846091862,
+    "top10": 0.1643835616438356,
+    "mrr": 0.12078109694703498,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.11177278973889143,
+    "top5": 0.15941365093907467,
+    "top10": 0.1868987631699496,
+    "mrr": 0.13732417893840623,
+    "queries": 2183
+   }
+  },
+  "vocals_or_mix/chad_hum/youtube/targets_only": {
+   "library_songs": 140,
+   "queries": 2482,
+   "queries_with_target": 2391,
+   "all_queries": {
+    "top1": 0.4605157131345689,
+    "top5": 0.6103948428686543,
+    "top10": 0.6623690572119258,
+    "mrr": 0.5318985908929048,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.4780426599749059,
+    "top5": 0.6336260978670013,
+    "top10": 0.6875784190715182,
+    "mrr": 0.5521423264726851,
+    "queries": 2391
+   }
+  },
+  "vocals_or_mix/chad_hum/youtube/charts": {
+   "library_songs": 2557,
+   "queries": 2482,
+   "queries_with_target": 2391,
+   "all_queries": {
+    "top1": 0.3936341659951652,
+    "top5": 0.5269943593875906,
+    "top10": 0.5777598710717163,
+    "mrr": 0.4589276670512459,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.4086156419907988,
+    "top5": 0.5470514429109159,
+    "top10": 0.5997490589711418,
+    "mrr": 0.47639417382734933,
+    "queries": 2391
+   }
+  },
+  "vocals_or_mix/chad_hum/youtube/charts_fma": {
+   "library_songs": 5340,
+   "queries": 2482,
+   "queries_with_target": 2391,
+   "all_queries": {
+    "top1": 0.2997582594681708,
+    "top5": 0.41418211120064463,
+    "top10": 0.46253021756647866,
+    "mrr": 0.3556562301804443,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.3111668757841907,
+    "top5": 0.42994562944374737,
+    "top10": 0.48013383521539105,
+    "mrr": 0.3691922891291772,
+    "queries": 2391
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.6539001989364623,
+    "targets": 140,
+    "covered_fraction": 0.4857142857142857
+   },
+   "per_target_top1": {
+    "chad:02064d84d52b1f83": 0.14814814814814814,
+    "chad:04154c76eacfde72": 0.6,
+    "chad:043d6e67bc3d01c8": 0.6,
+    "chad:05315cc83e38919a": 0.2,
+    "chad:07ac578a0df05186": 0.42105263157894735,
+    "chad:08a58e67791f0d3a": 0.3333333333333333,
+    "chad:0bc7f9ae9b644f29": 0.037037037037037035,
+    "chad:0bcb7cdc6c1daa1d": 0.0,
+    "chad:0f23eb67d473399b": 0.05,
+    "chad:13a42f31a715d1ae": 0.3333333333333333,
+    "chad:15c760a6bdb3d6f2": 0.0,
+    "chad:17f376ad3004644b": 0.26666666666666666,
+    "chad:1ab3b4b31b099795": 0.0,
+    "chad:1b1986367ebc1354": 0.0,
+    "chad:1ea56e659bd1ed3c": 0.4,
+    "chad:1ed3c3b78e8b1132": 0.3,
+    "chad:201823d912f1ba75": 0.3333333333333333,
+    "chad:23d895ca7a86c3ba": 0.9473684210526315,
+    "chad:245a8caff4cde744": 0.13333333333333333,
+    "chad:2a4f927c59da5553": 0.6666666666666666,
+    "chad:2b960fe77930947c": 0.5,
+    "chad:2bb0fef579f3588a": 0.8571428571428571,
+    "chad:2c4d4ad698d4c5de": 0.13043478260869565,
+    "chad:2cdbeabad102dd0a": 0.0,
+    "chad:2cf17d04acacd9df": 1.0,
+    "chad:2dba3612488eb3fb": 0.2,
+    "chad:2dc906df88a96a08": 0.7333333333333333,
+    "chad:3087770adce4bc7f": 0.4,
+    "chad:328dda4f0654b8d5": 0.13333333333333333,
+    "chad:32fc3f70bd60d225": 0.5,
+    "chad:349a7f026589b0e1": 0.26666666666666666,
+    "chad:3614a9e7fd92da01": 0.1,
+    "chad:37997f3216adf0f6": 0.6666666666666666,
+    "chad:386d01a6c07ecd75": 0.7272727272727273,
+    "chad:3ace94d493c2cedd": 0.3333333333333333,
+    "chad:3c39e6fb2005b4af": 0.16666666666666666,
+    "chad:3f70d942b6a7b11b": 0.4,
+    "chad:401b9bcebf13368b": 0.4,
+    "chad:4078a6e157465568": 0.09523809523809523,
+    "chad:42556a227087d4f6": 0.0,
+    "chad:44d38d21466c7995": 0.35714285714285715,
+    "chad:45ee58f8ae849a53": 0.4,
+    "chad:460586ec01f5bcc6": 0.3684210526315789,
+    "chad:465d3d3aecafee57": 0.25,
+    "chad:4671ed7fc0e0af29": 0.5,
+    "chad:47604a7222ecd2bf": 0.4,
+    "chad:4909522d8d71e91c": 0.5172413793103449,
+    "chad:4ac193fef8be589c": 0.5833333333333334,
+    "chad:4c4146836e60a004": 0.1,
+    "chad:4dea0650c9006e12": 0.2,
+    "chad:4e48de1a56e9af64": 0.8809523809523809,
+    "chad:516f270b0bae7964": 0.1,
+    "chad:57b4063672b0d576": 0.8181818181818182,
+    "chad:58f43f2ef44f4885": 0.25,
+    "chad:5ad9159c3d83b2c6": 0.2,
+    "chad:5cf708b68e8a30e5": 0.0,
+    "chad:5ff3f52c51d16bc2": 0.5333333333333333,
+    "chad:61a180ac6d5891d0": 0.6666666666666666,
+    "chad:636ab88c77a9b0a2": 0.0,
+    "chad:63dd1036bfa2bd40": 0.6875,
+    "chad:6be8dea479cbf5ca": 0.6923076923076923,
+    "chad:6c39a324c2b66cc1": 0.0,
+    "chad:6e17166ba3348b34": 0.0,
+    "chad:714352b916c3d0c4": 0.35714285714285715,
+    "chad:7194897d8e94272f": 0.4666666666666667,
+    "chad:7209c197c4a4a7d7": 0.375,
+    "chad:77542e08d182cd0c": 0.3170731707317073,
+    "chad:777e721176e34e09": 0.16216216216216217,
+    "chad:77cc250bd0dc4c2b": 0.0,
+    "chad:78df443689efe035": 0.1346153846153846,
+    "chad:790cbbf731c8ff67": 0.15,
+    "chad:79ebb41cdb81b350": 0.0,
+    "chad:7aca09a7d0af1a98": 0.3333333333333333,
+    "chad:7b53db016956f66a": 0.4,
+    "chad:7bdc893e4b33962c": 0.35294117647058826,
+    "chad:7bf1a849de4fc963": 0.0,
+    "chad:7d8f79ef3f478a5d": 0.4666666666666667,
+    "chad:7ee465491784aad7": 0.0,
+    "chad:805f72ddf49d6b18": 0.0,
+    "chad:81a90bde4ba56415": 0.1111111111111111,
+    "chad:849aca4541d0a4cc": 0.5,
+    "chad:856a0c42335336cb": 0.4090909090909091,
+    "chad:85ba345284db94e4": 0.1,
+    "chad:85d3367e3623f426": 0.3,
+    "chad:8687427897dd7a69": 0.2,
+    "chad:87e764030e38fff6": 0.26666666666666666,
+    "chad:891211286e4f02f7": 0.0,
+    "chad:89cf9b29900af042": 0.3,
+    "chad:905900891b254491": 0.7,
+    "chad:9208d15658afce44": 0.5333333333333333,
+    "chad:927cb57224703fbe": 0.26666666666666666,
+    "chad:96561f6abe7a7f6a": 0.0,
+    "chad:9975a38454080e8c": 0.47058823529411764,
+    "chad:a5e8239bbf99a651": 0.8,
+    "chad:a9223c7a03d920b0": 0.2222222222222222,
+    "chad:a99a50e96d5dfcbd": 1.0,
+    "chad:af196e65df8d7449": 0.1,
+    "chad:af65a7b5dda861ad": 0.3,
+    "chad:b123dd3ac25e8882": 0.2,
+    "chad:b495dce7ff7d8890": 0.3333333333333333,
+    "chad:b6d779491792be16": 0.08333333333333333,
+    "chad:b920d60a80cb00f5": 0.0,
+    "chad:bb4220134aad7e07": 0.0,
+    "chad:be33452a171fc704": 0.4642857142857143,
+    "chad:beb25256606cc37e": 0.16666666666666666,
+    "chad:bf157bff8b9cf6c6": 0.09090909090909091,
+    "chad:c01f9ff1f3b7e705": 0.8260869565217391,
+    "chad:c0c9cc1b6ade4ab0": 0.0,
+    "chad:c58ea7b341aee1b1": 0.3333333333333333,
+    "chad:c65c05499385aaa9": 0.5,
+    "chad:cabd20dd6d22d386": 0.7666666666666667,
+    "chad:cda3fc3183608ae6": 0.2,
+    "chad:ce0e629f24218b45": 0.0,
+    "chad:cf52c767c41e80da": 0.2,
+    "chad:cf612c3fe57e5656": 0.9285714285714286,
+    "chad:cfcaebee5579232c": 0.8125,
+    "chad:d3d0477dc779c42e": 0.3,
+    "chad:d72ef45bbe6136dd": 0.8181818181818182,
+    "chad:dadf4fe765ab6c5f": 0.375,
+    "chad:de0bb0138c170245": 0.0,
+    "chad:e0631f10d5d63dce": 0.0,
+    "chad:e13ea8ecb9ad0254": 0.0,
+    "chad:e338e04b67f34b2a": 0.0,
+    "chad:e427891242803ddc": 0.0,
+    "chad:e6502f449abd4b49": 0.9090909090909091,
+    "chad:e9e021a5ed510051": 0.6666666666666666,
+    "chad:ea1b0d65148f81f1": 0.0,
+    "chad:ea870e2b360e2512": 0.6,
+    "chad:eddd789e19b6a474": 0.42857142857142855,
+    "chad:eea4fd209b510c08": 0.0,
+    "chad:eef38590f574c4b5": 0.0,
+    "chad:f1608ba400be14a3": 0.4375,
+    "chad:f2e980fb45ed0abb": 0.375,
+    "chad:f476a9e91ea5d280": 0.06060606060606061,
+    "chad:f482c164208df979": 0.7878787878787878,
+    "chad:f56170a2936a5c8c": 0.08823529411764706,
+    "chad:f687cb8efb0138dd": 0.0,
+    "chad:f8706f388a7150c1": 0.0,
+    "chad:f9b4b692b088bce7": 0.0,
+    "chad:fa2e27b839190daa": 0.0,
+    "chad:fc2ad21b105b219e": 0.2,
+    "chad:fced8844096a3270": 0.26666666666666666,
+    "chad:fd7aa18fdda2bc7a": 0.4444444444444444,
+    "chad:ff48dd1eefc23d0c": 0.1,
+    "chad:ffad5d0b1291e86b": 0.2
+   },
+   "by_fragment_start": {
+    "0-30s": {
+     "top1": 0.25204200700116686,
+     "top5": 0.3442240373395566,
+     "top10": 0.38273045507584597,
+     "mrr": 0.2981152223456639,
+     "queries": 857
+    },
+    "30-60s": {
+     "top1": 0.40229885057471265,
+     "top5": 0.5268199233716475,
+     "top10": 0.5804597701149425,
+     "mrr": 0.46028574255073956,
+     "queries": 522
+    },
+    "60-90s": {
+     "top1": 0.2872628726287263,
+     "top5": 0.4254742547425474,
+     "top10": 0.47696476964769646,
+     "mrr": 0.3576048023869677,
+     "queries": 369
+    },
+    "90-10000s": {
+     "top1": 0.2888283378746594,
+     "top5": 0.4100817438692098,
+     "top10": 0.4645776566757493,
+     "mrr": 0.34745052869938897,
+     "queries": 734
+    }
+   }
+  },
+  "vocals_or_mix/chad_hum/youtube/full_fma": {
+   "library_songs": 3206,
+   "queries": 2482,
+   "queries_with_target": 2391,
+   "all_queries": {
+    "top1": 0.29653505237711525,
+    "top5": 0.41337630942788073,
+    "top10": 0.4589041095890411,
+    "mrr": 0.35244218772856944,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.3078209953994145,
+    "top5": 0.42910915934755334,
+    "top10": 0.4763697197825178,
+    "mrr": 0.36585592218415286,
+    "queries": 2391
+   }
+  },
+  "vocals_or_mix/chad_hum/youtube/all_fma": {
+   "library_songs": 5623,
+   "queries": 2482,
+   "queries_with_target": 2391,
+   "all_queries": {
+    "top1": 0.2912973408541499,
+    "top5": 0.40370668815471394,
+    "top10": 0.4520547945205479,
+    "mrr": 0.34662457243228484,
+    "queries": 2482
+   },
+   "target_present": {
+    "top1": 0.30238393977415307,
+    "top5": 0.4190715181932246,
+    "top10": 0.46925972396486826,
+    "mrr": 0.35981689200206235,
+    "queries": 2391
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/itunes/targets_only": {
+   "library_songs": 79,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.16101694915254236,
+    "top5": 0.3389830508474576,
+    "top10": 0.4915254237288136,
+    "mrr": 0.25481432809236537,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.16379310344827586,
+    "top5": 0.3448275862068966,
+    "top10": 0.5,
+    "mrr": 0.2592076785767165,
+    "queries": 116
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/itunes/charts": {
+   "library_songs": 2496,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.025423728813559324,
+    "top5": 0.06779661016949153,
+    "top10": 0.07627118644067797,
+    "mrr": 0.04916788013395771,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.02586206896551724,
+    "top5": 0.06896551724137931,
+    "top10": 0.07758620689655173,
+    "mrr": 0.050015602205232844,
+    "queries": 116
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/itunes/charts_fma": {
+   "library_songs": 5279,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.01694915254237288,
+    "top10": 0.01694915254237288,
+    "mrr": 0.010029691846755501,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.017241379310344827,
+    "top10": 0.017241379310344827,
+    "mrr": 0.010202617568251287,
+    "queries": 116
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.49915387332439426,
+    "targets": 79,
+    "covered_fraction": 0.12658227848101267
+   },
+   "per_target_top1": {
+    "mtgqbh:2gardeni": 0.0,
+    "mtgqbh:across": 0.0,
+    "mtgqbh:aguabeber": 0.0,
+    "mtgqbh:allmyloving": 0.0,
+    "mtgqbh:america": 0.0,
+    "mtgqbh:angelesll": 0.0,
+    "mtgqbh:angie": 0.0,
+    "mtgqbh:atrain": 0.0,
+    "mtgqbh:bohemianr": 0.0,
+    "mtgqbh:bort2bwi": 0.0,
+    "mtgqbh:cantbuy": 0.0,
+    "mtgqbh:cecilia": 0.0,
+    "mtgqbh:chegadesau": 0.0,
+    "mtgqbh:chicaayer": 0.0,
+    "mtgqbh:cocaine": 0.0,
+    "mtgqbh:desafinado": 0.0,
+    "mtgqbh:enjoysilen": 0.0,
+    "mtgqbh:fridayim": 0.0,
+    "mtgqbh:girl": 0.0,
+    "mtgqbh:givepeace": 0.0,
+    "mtgqbh:happiness": 0.0,
+    "mtgqbh:harddays": 0.0,
+    "mtgqbh:hellogoodb": 0.0,
+    "mtgqbh:help": 0.0,
+    "mtgqbh:heyjude": 0.0,
+    "mtgqbh:imagine": 0.0,
+    "mtgqbh:imemine": 0.0,
+    "mtgqbh:inmylife": 0.0,
+    "mtgqbh:inomissath": 0.0,
+    "mtgqbh:inomondays": 0.0,
+    "mtgqbh:inthemood": 0.0,
+    "mtgqbh:ladymarm": 0.0,
+    "mtgqbh:lestaca": 0.0,
+    "mtgqbh:letitbe": 0.0,
+    "mtgqbh:littlehelp": 0.0,
+    "mtgqbh:lovemetend": 0.0,
+    "mtgqbh:mediterran": 0.0,
+    "mtgqbh:morethwor": 0.0,
+    "mtgqbh:mothernat": 0.0,
+    "mtgqbh:mysharona": 0.0,
+    "mtgqbh:myway": 0.0,
+    "mtgqbh:naturalwom": 0.0,
+    "mtgqbh:newyork": 0.0,
+    "mtgqbh:nightday": 0.0,
+    "mtgqbh:nomeimpor": 0.0,
+    "mtgqbh:nothing": 0.0,
+    "mtgqbh:nowomanno": 0.0,
+    "mtgqbh:obladi": 0.0,
+    "mtgqbh:octopusga": 0.0,
+    "mtgqbh:one": 0.0,
+    "mtgqbh:onlyyou": 0.0,
+    "mtgqbh:overrainbow": 0.0,
+    "mtgqbh:proudmary": 0.0,
+    "mtgqbh:reallygotme": 0.0,
+    "mtgqbh:roxanne": 0.0,
+    "mtgqbh:samba1nota": 0.0,
+    "mtgqbh:scarborou": 0.0,
+    "mtgqbh:seekdestr": 0.0,
+    "mtgqbh:shesaidshe": 0.0,
+    "mtgqbh:smokewtr": 0.0,
+    "mtgqbh:stairway2h": 0.0,
+    "mtgqbh:standbyme": 0.0,
+    "mtgqbh:stormywea": 0.0,
+    "mtgqbh:strangers": 0.0,
+    "mtgqbh:strawberry": 0.0,
+    "mtgqbh:submarine": 0.0,
+    "mtgqbh:sweethome": 0.0,
+    "mtgqbh:teenspirit": 0.0,
+    "mtgqbh:thatllbetd": 0.0,
+    "mtgqbh:theboxer": 0.0,
+    "mtgqbh:ugotafrie": 0.0,
+    "mtgqbh:vivirasies": 0.0,
+    "mtgqbh:wave": 0.0,
+    "mtgqbh:wecanwork": 0.0,
+    "mtgqbh:wewillrock": 0.0,
+    "mtgqbh:whatthewo": 0.0,
+    "mtgqbh:whenim64": 0.0,
+    "mtgqbh:whitechri": 0.0,
+    "mtgqbh:wishyouw": 0.0,
+    "mtgqbh:wonderfulwo": 0.0,
+    "mtgqbh:yesterday": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/itunes/full_fma": {
+   "library_songs": 3145,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.00847457627118644,
+    "top10": 0.01694915254237288,
+    "mrr": 0.009630759302344534,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.008620689655172414,
+    "top10": 0.017241379310344827,
+    "mrr": 0.009796806876522887,
+    "queries": 116
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/itunes/all_fma": {
+   "library_songs": 5562,
+   "queries": 118,
+   "queries_with_target": 116,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.00847457627118644,
+    "top10": 0.01694915254237288,
+    "mrr": 0.009250018787162998,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.008620689655172414,
+    "top10": 0.017241379310344827,
+    "mrr": 0.009409501869700288,
+    "queries": 116
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/deezer/targets_only": {
+   "library_songs": 77,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.1440677966101695,
+    "top5": 0.3050847457627119,
+    "top10": 0.3983050847457627,
+    "mrr": 0.23108157320471284,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.14912280701754385,
+    "top5": 0.3157894736842105,
+    "top10": 0.41228070175438597,
+    "mrr": 0.23918969858031683,
+    "queries": 114
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/deezer/charts": {
+   "library_songs": 2494,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.025423728813559324,
+    "top5": 0.09322033898305085,
+    "top10": 0.1016949152542373,
+    "mrr": 0.05507326309206818,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.02631578947368421,
+    "top5": 0.09649122807017543,
+    "top10": 0.10526315789473684,
+    "mrr": 0.05700565828828111,
+    "queries": 114
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/deezer/charts_fma": {
+   "library_songs": 5277,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.03389830508474576,
+    "mrr": 0.013178705016156296,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.02631578947368421,
+    "top10": 0.03508771929824561,
+    "mrr": 0.01364111571847757,
+    "queries": 114
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.49689302593469614,
+    "targets": 77,
+    "covered_fraction": 0.11688311688311688
+   },
+   "per_target_top1": {
+    "mtgqbh:2gardeni": 0.0,
+    "mtgqbh:across": 0.0,
+    "mtgqbh:aguabeber": 0.0,
+    "mtgqbh:allmyloving": 0.0,
+    "mtgqbh:america": 0.0,
+    "mtgqbh:angelesll": 0.0,
+    "mtgqbh:angie": 0.0,
+    "mtgqbh:atrain": 0.0,
+    "mtgqbh:bohemianr": 0.0,
+    "mtgqbh:bort2bwi": 0.0,
+    "mtgqbh:cantbuy": 0.0,
+    "mtgqbh:cecilia": 0.0,
+    "mtgqbh:chegadesau": 0.0,
+    "mtgqbh:chicaayer": 0.0,
+    "mtgqbh:cocaine": 0.0,
+    "mtgqbh:desafinado": 0.0,
+    "mtgqbh:enjoysilen": 0.0,
+    "mtgqbh:fridayim": 0.0,
+    "mtgqbh:girl": 0.0,
+    "mtgqbh:givepeace": 0.0,
+    "mtgqbh:happiness": 0.0,
+    "mtgqbh:harddays": 0.0,
+    "mtgqbh:hellogoodb": 0.0,
+    "mtgqbh:help": 0.0,
+    "mtgqbh:heyjude": 0.0,
+    "mtgqbh:imagine": 0.0,
+    "mtgqbh:imemine": 0.0,
+    "mtgqbh:inmylife": 0.0,
+    "mtgqbh:inomissath": 0.0,
+    "mtgqbh:inomondays": 0.0,
+    "mtgqbh:inthemood": 0.0,
+    "mtgqbh:ladymarm": 0.0,
+    "mtgqbh:lestaca": 0.0,
+    "mtgqbh:letitbe": 0.0,
+    "mtgqbh:littlehelp": 0.0,
+    "mtgqbh:lovemetend": 0.0,
+    "mtgqbh:mediterran": 0.0,
+    "mtgqbh:morethwor": 0.0,
+    "mtgqbh:mothernat": 0.0,
+    "mtgqbh:mysharona": 0.0,
+    "mtgqbh:myway": 0.0,
+    "mtgqbh:naturalwom": 0.0,
+    "mtgqbh:newyork": 0.0,
+    "mtgqbh:nightday": 0.0,
+    "mtgqbh:nomeimpor": 0.0,
+    "mtgqbh:nothing": 0.0,
+    "mtgqbh:nowomanno": 0.0,
+    "mtgqbh:obladi": 0.0,
+    "mtgqbh:octopusga": 0.0,
+    "mtgqbh:one": 0.0,
+    "mtgqbh:onlyyou": 0.0,
+    "mtgqbh:overrainbow": 0.0,
+    "mtgqbh:proudmary": 0.0,
+    "mtgqbh:reallygotme": 0.0,
+    "mtgqbh:roxanne": 0.0,
+    "mtgqbh:samba1nota": 0.0,
+    "mtgqbh:scarborou": 0.0,
+    "mtgqbh:seekdestr": 0.0,
+    "mtgqbh:shesaidshe": 0.0,
+    "mtgqbh:smokewtr": 0.0,
+    "mtgqbh:stairway2h": 0.0,
+    "mtgqbh:standbyme": 0.0,
+    "mtgqbh:stormywea": 0.0,
+    "mtgqbh:strangers": 0.0,
+    "mtgqbh:strawberry": 0.0,
+    "mtgqbh:submarine": 0.0,
+    "mtgqbh:sweethome": 0.0,
+    "mtgqbh:teenspirit": 0.0,
+    "mtgqbh:thatllbetd": 0.0,
+    "mtgqbh:theboxer": 0.0,
+    "mtgqbh:ugotafrie": 0.0,
+    "mtgqbh:vivirasies": 0.0,
+    "mtgqbh:wave": 0.0,
+    "mtgqbh:wecanwork": 0.0,
+    "mtgqbh:wewillrock": 0.0,
+    "mtgqbh:whatthewo": 0.0,
+    "mtgqbh:whenim64": 0.0,
+    "mtgqbh:whitechri": 0.0,
+    "mtgqbh:wishyouw": 0.0,
+    "mtgqbh:wonderfulwo": 0.0,
+    "mtgqbh:yesterday": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/deezer/full_fma": {
+   "library_songs": 3143,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.03389830508474576,
+    "mrr": 0.014489838148338164,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.02631578947368421,
+    "top10": 0.03508771929824561,
+    "mrr": 0.014998253521964065,
+    "queries": 114
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/deezer/all_fma": {
+   "library_songs": 5560,
+   "queries": 118,
+   "queries_with_target": 114,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.03389830508474576,
+    "mrr": 0.011634614270547098,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.02631578947368421,
+    "top10": 0.03508771929824561,
+    "mrr": 0.012042846350215419,
+    "queries": 114
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/both/targets_only": {
+   "library_songs": 156,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.211864406779661,
+    "top5": 0.2796610169491525,
+    "top10": 0.423728813559322,
+    "mrr": 0.2766150716082497,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.211864406779661,
+    "top5": 0.2796610169491525,
+    "top10": 0.423728813559322,
+    "mrr": 0.2766150716082497,
+    "queries": 118
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/both/charts": {
+   "library_songs": 2573,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.0423728813559322,
+    "top5": 0.1271186440677966,
+    "top10": 0.13559322033898305,
+    "mrr": 0.08210735423939747,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0423728813559322,
+    "top5": 0.1271186440677966,
+    "top10": 0.13559322033898305,
+    "mrr": 0.08210735423939747,
+    "queries": 118
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/both/charts_fma": {
+   "library_songs": 5356,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.03389830508474576,
+    "top10": 0.0423728813559322,
+    "mrr": 0.018423027043271555,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.03389830508474576,
+    "top10": 0.0423728813559322,
+    "mrr": 0.018423027043271555,
+    "queries": 118
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.49848045825958237,
+    "targets": 81,
+    "covered_fraction": 0.16049382716049382
+   },
+   "per_target_top1": {
+    "mtgqbh:2gardeni": 0.0,
+    "mtgqbh:across": 0.0,
+    "mtgqbh:aguabeber": 0.0,
+    "mtgqbh:allmyloving": 0.0,
+    "mtgqbh:america": 0.0,
+    "mtgqbh:angelesll": 0.0,
+    "mtgqbh:angie": 0.0,
+    "mtgqbh:atrain": 0.0,
+    "mtgqbh:bohemianr": 0.0,
+    "mtgqbh:bort2bwi": 0.0,
+    "mtgqbh:cantbuy": 0.0,
+    "mtgqbh:cecilia": 0.0,
+    "mtgqbh:chegadesau": 0.0,
+    "mtgqbh:chicaayer": 0.0,
+    "mtgqbh:cocaine": 0.0,
+    "mtgqbh:desafinado": 0.0,
+    "mtgqbh:enjoysilen": 0.0,
+    "mtgqbh:fridayim": 0.0,
+    "mtgqbh:girl": 0.0,
+    "mtgqbh:givepeace": 0.0,
+    "mtgqbh:happiness": 0.0,
+    "mtgqbh:harddays": 0.0,
+    "mtgqbh:hellogoodb": 0.0,
+    "mtgqbh:help": 0.0,
+    "mtgqbh:heyjude": 0.0,
+    "mtgqbh:imagine": 0.0,
+    "mtgqbh:imemine": 0.0,
+    "mtgqbh:inmylife": 0.0,
+    "mtgqbh:inomissath": 0.0,
+    "mtgqbh:inomondays": 0.0,
+    "mtgqbh:inthemood": 0.0,
+    "mtgqbh:ladymarm": 0.0,
+    "mtgqbh:lestaca": 0.0,
+    "mtgqbh:letitbe": 0.0,
+    "mtgqbh:littlehelp": 0.0,
+    "mtgqbh:lovemetend": 0.0,
+    "mtgqbh:mediterran": 0.0,
+    "mtgqbh:morethwor": 0.0,
+    "mtgqbh:mothernat": 0.0,
+    "mtgqbh:mysharona": 0.0,
+    "mtgqbh:myway": 0.0,
+    "mtgqbh:naturalwom": 0.0,
+    "mtgqbh:newyork": 0.0,
+    "mtgqbh:nightday": 0.0,
+    "mtgqbh:nomeimpor": 0.0,
+    "mtgqbh:nothing": 0.0,
+    "mtgqbh:nowomanno": 0.0,
+    "mtgqbh:obladi": 0.0,
+    "mtgqbh:octopusga": 0.0,
+    "mtgqbh:one": 0.0,
+    "mtgqbh:onlyyou": 0.0,
+    "mtgqbh:overrainbow": 0.0,
+    "mtgqbh:proudmary": 0.0,
+    "mtgqbh:reallygotme": 0.0,
+    "mtgqbh:roxanne": 0.0,
+    "mtgqbh:samba1nota": 0.0,
+    "mtgqbh:scarborou": 0.0,
+    "mtgqbh:seekdestr": 0.0,
+    "mtgqbh:shesaidshe": 0.0,
+    "mtgqbh:smokewtr": 0.0,
+    "mtgqbh:stairway2h": 0.0,
+    "mtgqbh:standbyme": 0.0,
+    "mtgqbh:stormywea": 0.0,
+    "mtgqbh:strangers": 0.0,
+    "mtgqbh:strawberry": 0.0,
+    "mtgqbh:submarine": 0.0,
+    "mtgqbh:sweethome": 0.0,
+    "mtgqbh:teenspirit": 0.0,
+    "mtgqbh:thatllbetd": 0.0,
+    "mtgqbh:theboxer": 0.0,
+    "mtgqbh:ugotafrie": 0.0,
+    "mtgqbh:vivirasies": 0.0,
+    "mtgqbh:wave": 0.0,
+    "mtgqbh:wecanwork": 0.0,
+    "mtgqbh:wewillrock": 0.0,
+    "mtgqbh:whatthewo": 0.0,
+    "mtgqbh:whenim64": 0.0,
+    "mtgqbh:whitechri": 0.0,
+    "mtgqbh:wishyouw": 0.0,
+    "mtgqbh:wonderfulwo": 0.0,
+    "mtgqbh:yesterday": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/both/full_fma": {
+   "library_songs": 3222,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.0423728813559322,
+    "mrr": 0.01928426677571308,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.0423728813559322,
+    "mrr": 0.01928426677571308,
+    "queries": 118
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/both/all_fma": {
+   "library_songs": 5639,
+   "queries": 118,
+   "queries_with_target": 118,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.0423728813559322,
+    "mrr": 0.016311910493011037,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.025423728813559324,
+    "top10": 0.0423728813559322,
+    "mrr": 0.016311910493011037,
+    "queries": 118
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/youtube/targets_only": {
+   "library_songs": 75,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.22033898305084745,
+    "top5": 0.4322033898305085,
+    "top10": 0.5169491525423728,
+    "mrr": 0.3249753481031857,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.23636363636363636,
+    "top5": 0.4636363636363636,
+    "top10": 0.5545454545454546,
+    "mrr": 0.3486099188743264,
+    "queries": 110
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/youtube/charts": {
+   "library_songs": 2492,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.1016949152542373,
+    "top5": 0.2288135593220339,
+    "top10": 0.3220338983050847,
+    "mrr": 0.17334860637287913,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.10909090909090909,
+    "top5": 0.24545454545454545,
+    "top10": 0.34545454545454546,
+    "mrr": 0.18595577774545213,
+    "queries": 110
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/youtube/charts_fma": {
+   "library_songs": 5275,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.03389830508474576,
+    "top5": 0.11016949152542373,
+    "top10": 0.15254237288135594,
+    "mrr": 0.07334188510313477,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.03636363636363636,
+    "top5": 0.11818181818181818,
+    "top10": 0.16363636363636364,
+    "mrr": 0.07867584038336277,
+    "queries": 110
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.6115269851684574,
+    "targets": 75,
+    "covered_fraction": 0.18666666666666668
+   },
+   "per_target_top1": {
+    "mtgqbh:2gardeni": 0.0,
+    "mtgqbh:across": 0.0,
+    "mtgqbh:aguabeber": 0.0,
+    "mtgqbh:allmyloving": 0.0,
+    "mtgqbh:america": 0.0,
+    "mtgqbh:angelesll": 0.0,
+    "mtgqbh:angie": 0.0,
+    "mtgqbh:atrain": 0.0,
+    "mtgqbh:bohemianr": 0.0,
+    "mtgqbh:bort2bwi": 0.0,
+    "mtgqbh:cantbuy": 0.0,
+    "mtgqbh:cecilia": 0.0,
+    "mtgqbh:chegadesau": 0.0,
+    "mtgqbh:chicaayer": 0.0,
+    "mtgqbh:cocaine": 0.0,
+    "mtgqbh:desafinado": 0.0,
+    "mtgqbh:enjoysilen": 0.0,
+    "mtgqbh:fridayim": 0.0,
+    "mtgqbh:girl": 0.0,
+    "mtgqbh:givepeace": 0.0,
+    "mtgqbh:happiness": 0.0,
+    "mtgqbh:harddays": 0.0,
+    "mtgqbh:hellogoodb": 1.0,
+    "mtgqbh:help": 0.0,
+    "mtgqbh:heyjude": 0.0,
+    "mtgqbh:imagine": 0.0,
+    "mtgqbh:imemine": 1.0,
+    "mtgqbh:inmylife": 0.0,
+    "mtgqbh:inomissath": 0.0,
+    "mtgqbh:inomondays": 0.0,
+    "mtgqbh:inthemood": 0.0,
+    "mtgqbh:ladymarm": 0.0,
+    "mtgqbh:lestaca": 0.0,
+    "mtgqbh:letitbe": 0.0,
+    "mtgqbh:littlehelp": 0.0,
+    "mtgqbh:lovemetend": 0.0,
+    "mtgqbh:mediterran": 0.0,
+    "mtgqbh:morethwor": 0.0,
+    "mtgqbh:mothernat": 0.0,
+    "mtgqbh:mysharona": 0.0,
+    "mtgqbh:myway": 0.0,
+    "mtgqbh:naturalwom": 0.0,
+    "mtgqbh:newyork": 0.0,
+    "mtgqbh:nightday": 0.0,
+    "mtgqbh:nomeimpor": 0.0,
+    "mtgqbh:nothing": 0.0,
+    "mtgqbh:nowomanno": 0.0,
+    "mtgqbh:obladi": 0.25,
+    "mtgqbh:octopusga": 0.0,
+    "mtgqbh:one": 0.0,
+    "mtgqbh:onlyyou": 0.0,
+    "mtgqbh:overrainbow": 0.0,
+    "mtgqbh:proudmary": 0.0,
+    "mtgqbh:reallygotme": 0.0,
+    "mtgqbh:roxanne": 0.0,
+    "mtgqbh:samba1nota": 0.0,
+    "mtgqbh:scarborou": 0.0,
+    "mtgqbh:seekdestr": 0.0,
+    "mtgqbh:shesaidshe": 0.0,
+    "mtgqbh:smokewtr": 0.0,
+    "mtgqbh:stairway2h": 0.0,
+    "mtgqbh:standbyme": 0.0,
+    "mtgqbh:stormywea": 0.0,
+    "mtgqbh:strangers": 0.0,
+    "mtgqbh:strawberry": 0.0,
+    "mtgqbh:submarine": 0.0,
+    "mtgqbh:sweethome": 0.0,
+    "mtgqbh:teenspirit": 0.0,
+    "mtgqbh:thatllbetd": 0.0,
+    "mtgqbh:theboxer": 0.0,
+    "mtgqbh:ugotafrie": 0.0,
+    "mtgqbh:vivirasies": 0.0,
+    "mtgqbh:wave": 0.0,
+    "mtgqbh:wecanwork": 0.0,
+    "mtgqbh:wewillrock": 0.0,
+    "mtgqbh:whatthewo": 0.0,
+    "mtgqbh:whenim64": 0.0,
+    "mtgqbh:whitechri": 0.0,
+    "mtgqbh:wishyouw": 0.0,
+    "mtgqbh:wonderfulwo": 0.0,
+    "mtgqbh:yesterday": 1.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/youtube/full_fma": {
+   "library_songs": 3141,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.03389830508474576,
+    "top5": 0.1016949152542373,
+    "top10": 0.1440677966101695,
+    "mrr": 0.072155280361557,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.03636363636363636,
+    "top5": 0.10909090909090909,
+    "top10": 0.15454545454545454,
+    "mrr": 0.07740293711512479,
+    "queries": 110
+   }
+  },
+  "vocals_or_mix/mtgqbh_sing/youtube/all_fma": {
+   "library_songs": 5558,
+   "queries": 118,
+   "queries_with_target": 110,
+   "all_queries": {
+    "top1": 0.03389830508474576,
+    "top5": 0.1016949152542373,
+    "top10": 0.1440677966101695,
+    "mrr": 0.06911177149826256,
+    "queries": 118
+   },
+   "target_present": {
+    "top1": 0.03636363636363636,
+    "top5": 0.10909090909090909,
+    "top10": 0.15454545454545454,
+    "mrr": 0.07413808215268165,
+    "queries": 110
+   }
+  },
+  "vocals_or_mix/mlend_hum/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.37052456286427976,
+    "top5": 0.6962947543713572,
+    "top10": 0.8740632805995004,
+    "mrr": 0.5102860711312002,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.4239104548702072,
+    "top5": 0.7966182424386758,
+    "top10": 1.0,
+    "mrr": 0.5838090701867792,
+    "queries": 4199
+   }
+  },
+  "vocals_or_mix/mlend_hum/itunes/charts": {
+   "library_songs": 2424,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.03413821815154038,
+    "top5": 0.0776436303080766,
+    "top10": 0.10845129059117402,
+    "mrr": 0.06051063509179237,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.039056918313884255,
+    "top5": 0.08883067396999285,
+    "top10": 0.12407716122886402,
+    "mrr": 0.06922912383447741,
+    "queries": 4199
+   }
+  },
+  "vocals_or_mix/mlend_hum/itunes/charts_fma": {
+   "library_songs": 5207,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.011032472939217318,
+    "top5": 0.030807660283097418,
+    "top10": 0.04204829308909242,
+    "mrr": 0.022860310365023218,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.012622052869730888,
+    "top5": 0.03524648725887116,
+    "top10": 0.048106692069540366,
+    "mrr": 0.026154067871772213,
+    "queries": 4199
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5060820436477662,
+    "targets": 7,
+    "covered_fraction": 0.14285714285714285
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0017064846416382253,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.0805921052631579,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0049261083743842365,
+    "mlend:Showman": 0.0,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_hum/itunes/full_fma": {
+   "library_songs": 3073,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.01144879267277269,
+    "top5": 0.029558701082431308,
+    "top10": 0.041007493755203996,
+    "mrr": 0.022675571465655173,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.013098356751607526,
+    "top5": 0.033817575613241245,
+    "top10": 0.04691593236484878,
+    "mrr": 0.025942711436296135,
+    "queries": 4199
+   }
+  },
+  "vocals_or_mix/mlend_hum/itunes/all_fma": {
+   "library_songs": 5490,
+   "queries": 4804,
+   "queries_with_target": 4199,
+   "all_queries": {
+    "top1": 0.010824313072439634,
+    "top5": 0.02893422148209825,
+    "top10": 0.03934221482098251,
+    "mrr": 0.021436703145877846,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.01238390092879257,
+    "top5": 0.033103119790426294,
+    "top10": 0.04501071683734222,
+    "mrr": 0.02452534458509101,
+    "queries": 4199
+   }
+  },
+  "vocals_or_mix/mlend_hum/deezer/targets_only": {
+   "library_songs": 7,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.32035803497085763,
+    "top5": 0.6675686927560366,
+    "top10": 0.8751040799333888,
+    "mrr": 0.4615518813687006,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.3660799238820171,
+    "top5": 0.7628449096098954,
+    "top10": 1.0,
+    "mrr": 0.5274251279960128,
+    "queries": 4204
+   }
+  },
+  "vocals_or_mix/mlend_hum/deezer/charts": {
+   "library_songs": 2424,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.07306411323896753,
+    "top5": 0.1484179850124896,
+    "top10": 0.18484596169858453,
+    "mrr": 0.11088890836582056,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.0834919124643197,
+    "top5": 0.16960038058991436,
+    "top10": 0.21122740247383445,
+    "mrr": 0.12671510841803094,
+    "queries": 4204
+   }
+  },
+  "vocals_or_mix/mlend_hum/deezer/charts_fma": {
+   "library_songs": 5207,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.01894254787676936,
+    "top5": 0.05974188176519567,
+    "top10": 0.08721898417985012,
+    "mrr": 0.04081758452572791,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.021646051379638438,
+    "top5": 0.06826831588962892,
+    "top10": 0.09966698382492864,
+    "mrr": 0.046643119900475,
+    "queries": 4204
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5284917807579042,
+    "targets": 7,
+    "covered_fraction": 0.42857142857142855
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.10238907849829351,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.03453947368421053,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0,
+    "mlend:Showman": 0.017006802721088437,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_hum/deezer/full_fma": {
+   "library_songs": 3073,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.01935886761032473,
+    "top5": 0.057660283097418816,
+    "top10": 0.0847210657785179,
+    "mrr": 0.040716678252071106,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.022121788772597527,
+    "top5": 0.0658896289248335,
+    "top10": 0.09681255946717413,
+    "mrr": 0.046527812160549374,
+    "queries": 4204
+   }
+  },
+  "vocals_or_mix/mlend_hum/deezer/all_fma": {
+   "library_songs": 5490,
+   "queries": 4804,
+   "queries_with_target": 4204,
+   "all_queries": {
+    "top1": 0.017693588676103246,
+    "top5": 0.055578684429641964,
+    "top10": 0.08076602830974189,
+    "mrr": 0.038564819543769134,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.02021883920076118,
+    "top5": 0.06351094196003806,
+    "top10": 0.0922930542340628,
+    "mrr": 0.04406883755667623,
+    "queries": 4204
+   }
+  },
+  "vocals_or_mix/mlend_hum/both/targets_only": {
+   "library_songs": 14,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.39654454621149043,
+    "top5": 0.5926311407160699,
+    "top10": 0.7379267277268943,
+    "mrr": 0.5029761691033547,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.39654454621149043,
+    "top5": 0.5926311407160699,
+    "top10": 0.7379267277268943,
+    "mrr": 0.5029761691033547,
+    "queries": 4804
+   }
+  },
+  "vocals_or_mix/mlend_hum/both/charts": {
+   "library_songs": 2431,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.08305578684429642,
+    "top5": 0.1696502914238135,
+    "top10": 0.2158617818484596,
+    "mrr": 0.1273029920987183,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.08305578684429642,
+    "top5": 0.1696502914238135,
+    "top10": 0.2158617818484596,
+    "mrr": 0.1273029920987183,
+    "queries": 4804
+   }
+  },
+  "vocals_or_mix/mlend_hum/both/charts_fma": {
+   "library_songs": 5214,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.026019983347210656,
+    "top5": 0.07139883430474604,
+    "top10": 0.09991673605328892,
+    "mrr": 0.05108411246642148,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.026019983347210656,
+    "top5": 0.07139883430474604,
+    "top10": 0.09991673605328892,
+    "mrr": 0.05108411246642148,
+    "queries": 4804
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.517264869213104,
+    "targets": 8,
+    "covered_fraction": 0.375
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.10409556313993173,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.08388157894736842,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0049261083743842365,
+    "mlend:Showman": 0.017006802721088437,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_hum/both/full_fma": {
+   "library_songs": 3080,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.026852622814321398,
+    "top5": 0.07056619483763531,
+    "top10": 0.09825145711906745,
+    "mrr": 0.05124118708773048,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.026852622814321398,
+    "top5": 0.07056619483763531,
+    "top10": 0.09825145711906745,
+    "mrr": 0.05124118708773048,
+    "queries": 4804
+   }
+  },
+  "vocals_or_mix/mlend_hum/both/all_fma": {
+   "library_songs": 5497,
+   "queries": 4804,
+   "queries_with_target": 4804,
+   "all_queries": {
+    "top1": 0.02497918401332223,
+    "top5": 0.06827643630308076,
+    "top10": 0.09408825978351373,
+    "mrr": 0.048602297109411066,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.02497918401332223,
+    "top5": 0.06827643630308076,
+    "top10": 0.09408825978351373,
+    "mrr": 0.048602297109411066,
+    "queries": 4804
+   }
+  },
+  "vocals_or_mix/mlend_hum/youtube/targets_only": {
+   "library_songs": 4,
+   "queries": 4804,
+   "queries_with_target": 2402,
+   "all_queries": {
+    "top1": 0.231473771856786,
+    "top5": 0.5,
+    "top10": 0.5,
+    "mrr": 0.32634263114071604,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.462947543713572,
+    "top5": 1.0,
+    "top10": 1.0,
+    "mrr": 0.6526852622814321,
+    "queries": 2402
+   }
+  },
+  "vocals_or_mix/mlend_hum/youtube/charts": {
+   "library_songs": 2421,
+   "queries": 4804,
+   "queries_with_target": 2402,
+   "all_queries": {
+    "top1": 0.07306411323896753,
+    "top5": 0.13759367194004996,
+    "top10": 0.16631973355537052,
+    "mrr": 0.1050877192550907,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.14612822647793505,
+    "top5": 0.2751873438800999,
+    "top10": 0.33263946711074105,
+    "mrr": 0.21017543851018133,
+    "queries": 2402
+   }
+  },
+  "vocals_or_mix/mlend_hum/youtube/charts_fma": {
+   "library_songs": 5204,
+   "queries": 4804,
+   "queries_with_target": 2402,
+   "all_queries": {
+    "top1": 0.030391340549542047,
+    "top5": 0.06078268109908409,
+    "top10": 0.07785179017485429,
+    "mrr": 0.0479671282602277,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.06078268109908409,
+    "top5": 0.12156536219816819,
+    "top10": 0.15570358034970858,
+    "mrr": 0.09593425652045538,
+    "queries": 2402
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.6228392267227171,
+    "targets": 4,
+    "covered_fraction": 0.25
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0,
+    "mlend:Hakuna": 0.0066555740432612314,
+    "mlend:Mamma": 0.20230263157894737,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0,
+    "mlend:Showman": 0.03231292517006803,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_hum/youtube/full_fma": {
+   "library_songs": 3070,
+   "queries": 4804,
+   "queries_with_target": 2402,
+   "all_queries": {
+    "top1": 0.031015820149875105,
+    "top5": 0.059533721898417984,
+    "top10": 0.07743547044129892,
+    "mrr": 0.047692254329258964,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.06203164029975021,
+    "top5": 0.11906744379683597,
+    "top10": 0.15487094088259784,
+    "mrr": 0.09538450865851796,
+    "queries": 2402
+   }
+  },
+  "vocals_or_mix/mlend_hum/youtube/all_fma": {
+   "library_songs": 5487,
+   "queries": 4804,
+   "queries_with_target": 2402,
+   "all_queries": {
+    "top1": 0.02893422148209825,
+    "top5": 0.05849292256452956,
+    "top10": 0.07431307243963364,
+    "mrr": 0.045442796254180844,
+    "queries": 4804
+   },
+   "target_present": {
+    "top1": 0.0578684429641965,
+    "top5": 0.11698584512905912,
+    "top10": 0.14862614487926729,
+    "mrr": 0.09088559250836169,
+    "queries": 2402
+   }
+  },
+  "vocals_or_mix/mlend_whistle/itunes/targets_only": {
+   "library_songs": 7,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.13466889259877574,
+    "top5": 0.6204785754034502,
+    "top10": 0.8747913188647746,
+    "mrr": 0.3321276201075867,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.15394402035623408,
+    "top5": 0.7092875318066157,
+    "top10": 1.0,
+    "mrr": 0.3796649703138253,
+    "queries": 1572
+   }
+  },
+  "vocals_or_mix/mlend_whistle/itunes/charts": {
+   "library_songs": 2424,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.0005564830272676684,
+    "top10": 0.0011129660545353367,
+    "mrr": 0.0023079002912105005,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006361323155216285,
+    "top5": 0.0006361323155216285,
+    "top10": 0.001272264631043257,
+    "mrr": 0.0026382295313646747,
+    "queries": 1572
+   }
+  },
+  "vocals_or_mix/mlend_whistle/itunes/charts_fma": {
+   "library_songs": 5207,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0005564830272676684,
+    "mrr": 0.00041667382009623777,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0006361323155216285,
+    "mrr": 0.00047631224854512676,
+    "queries": 1572
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5058383584022523,
+    "targets": 7,
+    "covered_fraction": 0.0
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.0,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0,
+    "mlend:Showman": 0.0,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_whistle/itunes/full_fma": {
+   "library_songs": 3073,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0005564830272676684,
+    "mrr": 0.0004953757060719864,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0006361323155216285,
+    "mrr": 0.0005662787174372516,
+    "queries": 1572
+   }
+  },
+  "vocals_or_mix/mlend_whistle/itunes/all_fma": {
+   "library_songs": 5490,
+   "queries": 1797,
+   "queries_with_target": 1572,
+   "all_queries": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0005564830272676684,
+    "mrr": 0.00038857175026110974,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0006361323155216285,
+    "mrr": 0.00044418793589008545,
+    "queries": 1572
+   }
+  },
+  "vocals_or_mix/mlend_whistle/deezer/targets_only": {
+   "library_songs": 7,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.14301613800779076,
+    "top5": 0.6438508625486923,
+    "top10": 0.8697829716193656,
+    "mrr": 0.33679942761745774,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.16442738323736406,
+    "top5": 0.7402431222008957,
+    "top10": 1.0,
+    "mrr": 0.3872223745544284,
+    "queries": 1563
+   }
+  },
+  "vocals_or_mix/mlend_whistle/deezer/charts": {
+   "library_songs": 2424,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.001669449081803005,
+    "top5": 0.0027824151363383415,
+    "top10": 0.0038953811908736783,
+    "mrr": 0.004611705490575795,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0019193857965451055,
+    "top5": 0.003198976327575176,
+    "top10": 0.004478566858605247,
+    "mrr": 0.005302133567859696,
+    "queries": 1563
+   }
+  },
+  "vocals_or_mix/mlend_whistle/deezer/charts_fma": {
+   "library_songs": 5207,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.0013932381789823057,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006397952655150352,
+    "top5": 0.0019193857965451055,
+    "top10": 0.0019193857965451055,
+    "mrr": 0.0016018227815938605,
+    "queries": 1563
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.5935262084007263,
+    "targets": 7,
+    "covered_fraction": 0.0
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0044444444444444444,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.0,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0,
+    "mlend:Showman": 0.0,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_whistle/deezer/full_fma": {
+   "library_songs": 3073,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.0014623594782876466,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006397952655150352,
+    "top5": 0.0019193857965451055,
+    "top10": 0.0019193857965451055,
+    "mrr": 0.0016812923752289835,
+    "queries": 1563
+   }
+  },
+  "vocals_or_mix/mlend_whistle/deezer/all_fma": {
+   "library_songs": 5490,
+   "queries": 1797,
+   "queries_with_target": 1563,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.001669449081803005,
+    "mrr": 0.001355969744643445,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0006397952655150352,
+    "top5": 0.0019193857965451055,
+    "top10": 0.0019193857965451055,
+    "mrr": 0.0015589748119797,
+    "queries": 1563
+   }
+  },
+  "vocals_or_mix/mlend_whistle/both/targets_only": {
+   "library_songs": 14,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.13967723984418476,
+    "top5": 0.4952698942682248,
+    "top10": 0.7813021702838063,
+    "mrr": 0.31583351879679095,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.13967723984418476,
+    "top5": 0.4952698942682248,
+    "top10": 0.7813021702838063,
+    "mrr": 0.31583351879679095,
+    "queries": 1797
+   }
+  },
+  "vocals_or_mix/mlend_whistle/both/charts": {
+   "library_songs": 2431,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.0027824151363383415,
+    "top10": 0.004451864218141347,
+    "mrr": 0.005628675637402002,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0022259321090706734,
+    "top5": 0.0027824151363383415,
+    "top10": 0.004451864218141347,
+    "mrr": 0.005628675637402002,
+    "queries": 1797
+   }
+  },
+  "vocals_or_mix/mlend_whistle/both/charts_fma": {
+   "library_songs": 5214,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.0015491073665637382,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.0015491073665637382,
+    "queries": 1797
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.570820425748825,
+    "targets": 8,
+    "covered_fraction": 0.0
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0044444444444444444,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.0,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0,
+    "mlend:Showman": 0.0,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_whistle/both/full_fma": {
+   "library_songs": 3080,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.001629114500363781,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.001629114500363781,
+    "queries": 1797
+   }
+  },
+  "vocals_or_mix/mlend_whistle/both/all_fma": {
+   "library_songs": 5497,
+   "queries": 1797,
+   "queries_with_target": 1797,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.0015054639215295507,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.001669449081803005,
+    "top10": 0.0022259321090706734,
+    "mrr": 0.0015054639215295507,
+    "queries": 1797
+   }
+  },
+  "vocals_or_mix/mlend_whistle/youtube/targets_only": {
+   "library_songs": 4,
+   "queries": 1797,
+   "queries_with_target": 892,
+   "all_queries": {
+    "top1": 0.13745130773511408,
+    "top5": 0.49638286032276013,
+    "top10": 0.49638286032276013,
+    "mrr": 0.2686885549990725,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.2769058295964126,
+    "top5": 1.0,
+    "top10": 1.0,
+    "mrr": 0.5412929745889387,
+    "queries": 892
+   }
+  },
+  "vocals_or_mix/mlend_whistle/youtube/charts": {
+   "library_songs": 2421,
+   "queries": 1797,
+   "queries_with_target": 892,
+   "all_queries": {
+    "top1": 0.010573177518085699,
+    "top5": 0.032276015581524764,
+    "top10": 0.054535336672231496,
+    "mrr": 0.02765073130558224,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.021300448430493273,
+    "top5": 0.06502242152466367,
+    "top10": 0.10986547085201794,
+    "mrr": 0.05570444412122342,
+    "queries": 892
+   }
+  },
+  "vocals_or_mix/mlend_whistle/youtube/charts_fma": {
+   "library_songs": 5204,
+   "queries": 1797,
+   "queries_with_target": 892,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.0022259321090706734,
+    "top10": 0.0038953811908736783,
+    "mrr": 0.0031508345645196514,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0011210762331838565,
+    "top5": 0.004484304932735426,
+    "top10": 0.007847533632286996,
+    "mrr": 0.0063475893637240065,
+    "queries": 892
+   },
+   "hook_coverage_estimate": {
+    "threshold": 0.8223056226968766,
+    "targets": 4,
+    "covered_fraction": 0.0
+   },
+   "per_target_top1": {
+    "mlend:Frozen": 0.0,
+    "mlend:Hakuna": 0.0,
+    "mlend:Mamma": 0.0,
+    "mlend:Panther": 0.0,
+    "mlend:Potter": 0.0,
+    "mlend:Rain": 0.0,
+    "mlend:Showman": 0.004672897196261682,
+    "mlend:StarWars": 0.0
+   },
+   "by_fragment_start": {
+    "0-30s": null,
+    "30-60s": null,
+    "60-90s": null,
+    "90-10000s": null
+   }
+  },
+  "vocals_or_mix/mlend_whistle/youtube/full_fma": {
+   "library_songs": 3070,
+   "queries": 1797,
+   "queries_with_target": 892,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.0022259321090706734,
+    "top10": 0.0038953811908736783,
+    "mrr": 0.003118748134027508,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0011210762331838565,
+    "top5": 0.004484304932735426,
+    "top10": 0.007847533632286996,
+    "mrr": 0.006282948875389498,
+    "queries": 892
+   }
+  },
+  "vocals_or_mix/mlend_whistle/youtube/all_fma": {
+   "library_songs": 5487,
+   "queries": 1797,
+   "queries_with_target": 892,
+   "all_queries": {
+    "top1": 0.0005564830272676684,
+    "top5": 0.0022259321090706734,
+    "top10": 0.00333889816360601,
+    "mrr": 0.0029538868720633544,
+    "queries": 1797
+   },
+   "target_present": {
+    "top1": 0.0011210762331838565,
+    "top5": 0.004484304932735426,
+    "top10": 0.006726457399103139,
+    "mrr": 0.005950823664907903,
+    "queries": 892
+   }
+  }
+ }
+}
