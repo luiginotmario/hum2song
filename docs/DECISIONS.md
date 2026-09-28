@@ -845,3 +845,51 @@ Training with CHAD real pairs, CHAD **test** songs (2,482 hums, 145 songs, 140 w
 - The re-queued CHAD and MLEnd songs are extracted. Then re-run the full-vs-preview table.
 - D-020's larger full-song library is ready. Then re-measure `full_fma`.
 - Before any publication, review YouTube's terms and D-009.
+
+## D-021 · Fine-tuning D-012 on CHAD real pairs (1 seed): no clear gain
+**Date:** 2026-09-28
+
+**Context.** D-019 trained from scratch with CHAD pairs and lost to D-012 by 6 points top-1, probably by memorising the 116 training songs. Fine-tuning the D-012 model instead is the minimal test of whether real hum pairs help at all (literature review, `docs/research/lit_review_real_audio.md` §9).
+
+**Options.**
+- Drop real pairs entirely.
+- Fine-tune D-012 gently on CHAD pairs.
+- Scale song diversity first (E2).
+
+**Decision.** One gentle fine-tune, 1 seed.
+- **Config:** `configs/train_contour_chad_ft.yaml`, with new `init_ckpt` and `early_stop_patience` options in `train.py`. All values were fixed before training:
+  - start from `contour_v2_s0/last.pt`;
+  - CHAD train pairs once per epoch, mixed with HumTrans's ~13k pairs;
+  - LR 3e-5 (10× lower), warmup 100, at most 2,000 steps;
+  - stronger query augmentation: stretch 0.5–1.9, warp 0.3, interval scale 0.25, drift 1.0 st, jitter 0.25 st, dropout 0.6, octave errors 0.15;
+  - validate every 100 steps and stop after 5 validations without a better CHAD val top-1.
+  - **Reported checkpoint:** `best.pt` (CHAD val only).
+- **Plan change:** the plan was to run 3 seeds if seed 0 beat D-012 on CHAD val. Seed 1 was started and then stopped when Luigi paused model experiments pending the literature review, so **this is a single-seed result**.
+- **Not run:** the hard-negative variant.
+
+**Results.** Files: `docs/paper/results/youtube/d021/`. CHAD test songs, on the same library snapshot as the old model; top-1 / top-10.
+- **CHAD val (29 songs):** D-012 0.394, fine-tuned best 0.408 (step 600; early stop at 1,100).
+- **CHAD test:**
+
+| Setting | D-012 s0 | Fine-tuned s0 |
+|---|---|---|
+| Full songs, targets only (142) | 0.465 / 0.670 | 0.462 / 0.648 |
+| Full songs, `charts_fma` (5,342) | 0.303 / 0.469 | **0.313 / 0.468** |
+| Full songs, `all_fma` (5,835) | 0.290 / 0.452 | 0.301 / 0.454 |
+| iTunes previews, `charts_fma` | 0.069 / 0.114 | 0.070 / 0.117 |
+
+- **Other query sets** (full songs, `charts_fma`):
+  - MTG-QBH: 0.034 / 0.153 → 0.051 / 0.169.
+  - MLEnd: 0.030 / 0.078 → 0.031 / 0.085.
+- **Regression checks:**
+  - MIR-QBSH (+2,000 distractors): 0.872 / 0.961 → 0.856 / 0.954 (−1.6 top-1, −0.7 top-10).
+  - HumTrans test (+7 shift) top-1: 0.995 → 0.996.
+- **GPU time:** about 0.4 h (fine-tune, partial seed 1, evaluations).
+
+**Takeaways.**
+- **Fine-tuning avoids D-019's collapse but gains little.** +1.0 top-1 on CHAD test at `charts_fma`, with top-10 flat. That is inside D-012's own seed spread (0.297–0.314), so it is **not evidence of a gain**. MIR-QBSH loses 1.6 top-1.
+- **Real hum pairs from 116 songs are not the lever.** This matches the review's reading: song diversity (E2) and matching (E1) are the candidates, and E0 should decide between them.
+
+**Trade-off / what we gave up.** A single seed, so small differences cannot be resolved. The hard-negative idea is left untested.
+
+**Revisit when.** E0 shows that embedding error dominates on well-extracted references, or E2 provides thousands of songs of pairs. Then fine-tune on those, with the same stop rule.
