@@ -19,6 +19,10 @@ from hum2song.contour.whistle import spectral_peak_track
 RMVPE_DIR = Path(__file__).resolve().parents[4] / "docs" / "paper" / "scripts"
 RMVPE_SAMPLE_RATE = 16000
 SAMPLE_RATES = {"rmvpe": 16000, "rmvpe_half": 32000, "peak": 32000}
+RMVPE_HOP = 160
+# cuDNN's GRU rejects very long sequences (a >10 min YouTube upload crashed D-019's
+# extraction); longer audio is tracked in segments. Every earlier track was shorter.
+MAX_SEGMENT_S = 540
 
 
 def load_rmvpe(weights: Path, device: torch.device):
@@ -33,11 +37,29 @@ def load_rmvpe(weights: Path, device: torch.device):
     return model
 
 
-def rmvpe_track(model, audio: np.ndarray) -> np.ndarray:
-    """16 kHz audio -> (2, frames): F0 in Hz and RMVPE peak salience."""
+def rmvpe_salience(model, audio: np.ndarray) -> np.ndarray:
+    """16 kHz audio -> (frames, bins) RMVPE salience, frames = len // hop + 1."""
     with torch.no_grad():
         mel = model.extract_mel(torch.from_numpy(audio.astype(np.float32)), center=True)
-        salience = model.mel2hidden(mel).squeeze(0).float().cpu().numpy()
+        return model.mel2hidden(mel).squeeze(0).float().cpu().numpy()
+
+
+def segment_bounds(samples: int, segment: int) -> list[tuple[int, int]]:
+    """Hop-aligned [start, end) sample ranges covering `samples`."""
+    return [(start, min(start + segment, samples)) for start in range(0, samples, segment)]
+
+
+def segmented_salience(model, audio: np.ndarray, max_s: float = MAX_SEGMENT_S) -> np.ndarray:
+    """Salience in segments of at most max_s, frames matching one pass over the audio."""
+    segment = int(max_s * RMVPE_SAMPLE_RATE) // RMVPE_HOP * RMVPE_HOP
+    parts = [rmvpe_salience(model, audio[a:b]) for a, b in segment_bounds(len(audio), segment)]
+    trimmed = [part[: segment // RMVPE_HOP] for part in parts[:-1]] + parts[-1:]
+    return np.concatenate(trimmed)[: len(audio) // RMVPE_HOP + 1]
+
+
+def rmvpe_track(model, audio: np.ndarray, max_s: float = MAX_SEGMENT_S) -> np.ndarray:
+    """16 kHz audio -> (2, frames): F0 in Hz and RMVPE peak salience."""
+    salience = segmented_salience(model, audio, max_s)
     f0, confidence = salience_to_f0(salience)
     return np.stack([f0, confidence])
 

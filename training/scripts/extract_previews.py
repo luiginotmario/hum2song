@@ -90,6 +90,18 @@ def extract(item: dict, models: dict, device) -> dict:
     }
 
 
+def save_tracks(item: dict, models: dict, device, track_dir: Path) -> dict:
+    """Extract and cache one decoded song; a model failure is recorded, not raised."""
+    item["duration_s"] = round(len(item["audio"]) / SEPARATOR_RATE, 2)
+    try:
+        tracks = extract(item, models, device)
+    except Exception as error:  # noqa: BLE001 - one bad song must not stop the run
+        torch.cuda.empty_cache()
+        return {**item, "status": "extract_failed", "error": repr(error)[:200]}
+    np.savez(track_file(track_dir, item["row"]["song_id"]), **tracks)
+    return item
+
+
 def status_line(item: dict) -> dict:
     row = item["row"]
     fields = {k: item[k] for k in ("status", "error", "duration_s") if k in item}
@@ -99,10 +111,8 @@ def status_line(item: dict) -> dict:
 def process_block(pool, client, rows, scratch, models, device, track_dir) -> list[dict]:
     lines = []
     for item in pool.map(lambda row: fetch_audio(client, row, scratch), rows):
-        if item["status"] == "ok":
-            item["duration_s"] = round(len(item["audio"]) / SEPARATOR_RATE, 2)
-            np.savez(track_file(track_dir, item["row"]["song_id"]), **extract(item, models, device))
-        lines.append(status_line(item))
+        saved = save_tracks(item, models, device, track_dir) if item["status"] == "ok" else item
+        lines.append(status_line(saved))
     return lines
 
 
