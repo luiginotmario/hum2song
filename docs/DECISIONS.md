@@ -193,6 +193,49 @@ Measured result: 0 unaligned pairs in every run (contour figure: 5,586 pairs; do
 
 ---
 
+## D-009 · Song library sourcing: open full-track audio for the paper, no yt-dlp
+**Date:** 2026-09-26 (drafted), 2026-09-27 (adopted)
+
+**Context.** hum2song has two jobs. It should retrieve the commercial songs people get stuck on (TikTok and pop, house and club, SoundCloud remixes). It must also produce reproducible numbers for the paper. SPEC §1 listed "yt-dlp personal downloads + FMA + MTG-Jamendo". The research note `research/song_library_sources.md` (not in this repo) found:
+- YouTube's terms and API policies forbid downloading or storing audio.
+- Spotify (Developer Policy III.13–14) and SoundCloud (API terms: no AI, no fingerprints) explicitly forbid this use.
+- Apple iTunes previews are promotional only: "streamed only, and not downloaded, saved, cached".
+- Deezer allows private or family use only and bans storing audio. New app registration is closed, but there is an approval route (§IX).
+- Open full-track datasets are freely usable for research: FMA (106,574 tracks), MTG-Jamendo (55,701), JamendoMaxCaps (362k, instrumental) and IAMD (>34k h).
+- Previews cover about 30 s of a roughly 3.5 min track (5 of about 41 chunks), usually from fixed default start points. Earworm studies find the chorus is the stuck part only about 33 to 39 % of the time.
+
+**Options.**
+- **A.** Scrape previews and embed them. Cheap, but it breaches the terms and covers only the preview.
+- **B.** Keep yt-dlp full downloads. It breaches the terms, risks anti-circumvention claims, and cannot be published.
+- **C.** Open data only. Clean and reproducible, but it has no commercial hits.
+- **D.** Tiered. Open data for the paper, lawfully owned full tracks for the demo, and previews or licensed audio only with permission.
+- **E.** A licensed catalogue (7digital, Songtradr). Clean and full-track, but it costs money and needs contracts.
+
+**Decision: D.**
+- **Paper results use Tier P:** FMA and MTG-Jamendo as targets, JamendoMaxCaps and IAMD as distractors.
+- **The demo index adds Tier O:** audio Luigi owns lawfully.
+- **Tier L waits for written permission:** Deezer or Apple previews, Beatport, label or DJ permissions.
+- **Song lists** come from Apple RSS, Deezer charts (metadata storage is allowed), Last.fm, ListenBrainz/MusicBrainz and curated seeds.
+- **yt-dlp is removed** from the pipeline and the SPEC.
+- **Every song is tagged** with `coverage` (full or preview) and `source_tier`. Only code, the open-data index and aggregate metrics are published.
+
+**Trade-off / what we gave up.**
+- **No commercial breadth at first.** The demo starts with owned and open songs, without the breadth of TikTok, club and SoundCloud songs.
+- **No commercial-scale claim** in the paper.
+- **SoundCloud-only content** is out unless the uploader gives permission.
+- **Time** spent waiting on permission replies.
+- **Preview gaps.** Where previews are later allowed, sections outside the preview (bridges, later drops) will be missed for those songs.
+
+**Revisit when.**
+- Deezer, Apple or Beatport answers a permission request.
+- Measured preview-only recall is known.
+- A university affiliation makes EU DSM Art. 3 available.
+- A licence budget appears.
+- Platform terms change.
+- Before camera-ready, when all terms are re-checked.
+
+---
+
 ## D-010 · Fix the MIDI tempo map; train key- and tempo-invariant from the Stage A weights
 **Date:** 2026-09-27
 

@@ -9,7 +9,7 @@ Scope: user hums / whistles / sings (lyrics OK) into phone or web → server ret
 | Area | Decision |
 |---|---|
 | Encoder | `m-a-p/MERT-v1-95M` + pooling + 256-d projection head (fine-tuned). Ablation: OMAR-RQ `mtg-upf/omar-rq-multifeature-25hz-fsq` |
-| Catalog | yt-dlp personal downloads + FMA + MTG-Jamendo; 10 s chunks, 5 s hop; pgvector |
+| Catalog | FMA + MTG-Jamendo (paper), lawfully owned files (demo), permission-gated previews only (D-009); 10 s chunks, 5 s hop; pgvector |
 | Retrieval | kNN over chunks → group by song, score = best chunk → top-10 songs |
 | UI | song title + artist first; player underneath starting at the matched chunk's `start_s` |
 | Training | supervised contrastive (InfoNCE, same-song masking), AdamW; stage A real hums → stage B + synthetic → stage C + Google ideas (multi-singer alignment pairs, batch confidence loss) |
@@ -131,7 +131,7 @@ Re-rank hook: if `metadata_filter` is present (from a follow-up answer), apply i
 | Script | Responsibility | Key args |
 |---|---|---|
 | `download_datasets.py` | MIR-QBSH, HumTrans, MTG-QBH, MLEnd, CHAD metadata; builds `pairs_real.jsonl` | `--datasets mirqbsh,humtrans,... --out $H2S_DATA` |
-| `download_catalog.py` | yt-dlp from a URL/playlist list; FMA/MTG-Jamendo subsets; writes `songs.jsonl` | `--yt-list urls.txt --fma {small,medium} --jamendo-subset --max-songs` |
+| `download_catalog.py` | FMA/MTG-Jamendo subsets and owned local files (D-009); writes `songs.jsonl` | `--fma {small,medium,large,full} --jamendo-subset --local-dir --max-songs` |
 | `separate.py` | Demucs vocals stems | `--songs songs.jsonl --model htdemucs --jobs` |
 | `extract_f0.py` | CREPE f0/conf/rms @100 Hz from stems | `--model-capacity full --viterbi` |
 | `synth_queries.py` | hum / whistle resynthesis + sep-vocal sung chunks; writes `pairs_synth.jsonl` | `--kinds hum,whistle,sing --per-song 20 --seed` |
@@ -238,7 +238,7 @@ Rules:
   - Tag releases; the server pins `H2S_MODEL_REVISION`.
 - **Dataset repo** `<user>/hum2song-pairs`:
   - Publish: manifests (IDs, timestamps, splits), synthetic queries generated **only from FMA/MTG-Jamendo** (CC-licensed audio), eval manifests, dataset card.
-  - Do **not** re-upload personal yt-dlp audio or restricted datasets (MIR-QBSH, HumTrans, etc.: link and give download scripts).
+  - Do **not** re-upload owned or permission-gated audio, or restricted datasets (MIR-QBSH, HumTrans, etc.: link and give download scripts).
 - **Space** `<user>/hum2song-demo`: Gradio app in `space/`, catalog limited to FMA/Jamendo, embeds on CPU, local FAISS or the public API; decision loop optional (it would need the key as a Space secret).
 - Pattern references: m-a-p (code on GitHub, weights and demo Space on HF), OpenAI Whisper (GitHub package + HF model + Space).
 
