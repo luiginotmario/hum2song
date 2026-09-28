@@ -960,7 +960,7 @@ Training with CHAD real pairs, CHAD **test** songs (2,482 hums, 145 songs, 140 w
 
 - DTW alone (on the path's span) is weaker than seq but adds about 1.6 points top-1 on CHAD test in the fusion.
 - Top-10 is capped by base's top-50 recall; the re-rank only reorders that shortlist.
-- Compute: about 3 minutes for all four sets on one A100 host (embedding of windows is the main cost).
+- Compute: about 5 minutes for all four sets on one A100 host (embedding of windows is the main cost).
 
 **Takeaways.**
 - **The largest gain of the project on real audio, with no training.** CHAD test top-1 +16 points (0.303 → 0.465); MTG-QBH ×7 (0.034 → 0.246); MLEnd ×4.
