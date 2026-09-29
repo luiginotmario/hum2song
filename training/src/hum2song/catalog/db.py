@@ -2,6 +2,10 @@
 
 Search ranks chunks by cosine distance (HNSW index), then groups them by song; a song's
 score is its best chunk (SPEC §1), and the matching chunk's start time is returned too.
+The window table (D-025) holds 5 s windows; `window_votes` is the window-level first stage:
+each query window retrieves its nearest windows, and a song scores the mean over query
+windows of its best window (a query window that does not reach the song counts that
+window's weakest retrieved similarity).
 """
 
 from dataclasses import dataclass
@@ -9,8 +13,10 @@ from pathlib import Path
 
 import numpy as np
 
-SCHEMA_SQL = Path(__file__).resolve().parents[4] / "sql" / "001_library.sql"
+SQL_DIR = Path(__file__).resolve().parents[4] / "sql"
+SCHEMA_FILES = ("001_library.sql", "002_windows.sql")
 CHUNK_CANDIDATES = 400
+WINDOW_CANDIDATES = 400
 EF_SEARCH = 400
 SONG_COLUMNS = (
     "song_id",
@@ -47,7 +53,8 @@ def connect(url: str):
 
 
 def ensure_schema(connection) -> None:
-    connection.execute(SCHEMA_SQL.read_text(encoding="utf-8"))
+    for name in SCHEMA_FILES:
+        connection.execute((SQL_DIR / name).read_text(encoding="utf-8"))
 
 
 def indexed_songs(connection) -> set[str]:
@@ -121,3 +128,54 @@ def song_hits(connection, query: np.ndarray, top_k: int) -> list[SongHit]:
         SongHit(song, *titles.get(song, ("", "")), round(similarity, 4), start)
         for song, start, similarity in ranked
     ]
+
+
+def windowed_songs(connection) -> set[str]:
+    return {row[0] for row in connection.execute("SELECT DISTINCT song_id FROM windows")}
+
+
+def insert_windows(connection, song_id: str, starts, embeddings) -> None:
+    """A song's windows in one transaction (re-inserting replaces them)."""
+    with connection.transaction():
+        connection.execute("DELETE FROM windows WHERE song_id = %s", (song_id,))
+        with connection.cursor().copy(
+            "COPY windows (song_id, start_s, embedding) FROM STDIN"
+        ) as copy:
+            for start, vector in zip(starts, embeddings, strict=True):
+                copy.write_row((song_id, float(start), vector_text(vector)))
+
+
+def nearest_windows(connection, query: np.ndarray, limit: int = WINDOW_CANDIDATES) -> list:
+    """(song_id, cosine similarity) of the `limit` closest windows."""
+    connection.execute(f"SET hnsw.ef_search = {max(EF_SEARCH, limit)}")
+    rows = connection.execute(
+        "SELECT song_id, 1 - (embedding <=> %s) AS similarity "
+        "FROM windows ORDER BY embedding <=> %s LIMIT %s",
+        (query.astype(np.float32), query.astype(np.float32), limit),
+    ).fetchall()
+    return [(song, float(similarity)) for song, similarity in rows]
+
+
+def vote(per_window: list[list[tuple]]) -> dict[str, float]:
+    """Mean over query windows of each song's best window; a missing song gets that
+    query window's weakest retrieved similarity."""
+    best = [best_similarity(rows) for rows in per_window]
+    floors = [min(b.values(), default=0.0) for b in best]
+    songs = set().union(*best) if best else set()
+    return {
+        song: float(np.mean([b.get(song, f) for b, f in zip(best, floors, strict=True)]))
+        for song in songs
+    }
+
+
+def best_similarity(rows: list[tuple]) -> dict[str, float]:
+    best: dict[str, float] = {}
+    for song, similarity in rows:
+        best[song] = max(similarity, best.get(song, -2.0))
+    return best
+
+
+def window_votes(connection, query_windows: np.ndarray, limit: int = WINDOW_CANDIDATES) -> list:
+    """(song_id, vote) of every song reached by a query window, best first."""
+    votes = vote([nearest_windows(connection, window, limit) for window in query_windows])
+    return sorted(votes.items(), key=lambda item: -item[1])

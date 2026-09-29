@@ -1,5 +1,6 @@
 import numpy as np
 
+from hum2song.catalog.db import vote
 from hum2song.catalog.matching import (
     NO_MATCH,
     dtw_mae,
@@ -9,7 +10,9 @@ from hum2song.catalog.matching import (
     sequence_path,
     windows,
 )
+from hum2song.catalog.octave import octave_correct
 from hum2song.catalog.real_pool import charts_pool
+from hum2song.catalog.rerank import fused_rank, rank_all, recall_at, target_rank
 
 
 def melody(seconds: float, offset: float = 0.0) -> np.ndarray:
@@ -74,3 +77,58 @@ def test_charts_pool_keeps_split_targets_previews_and_fma():
     assert charts_pool({"role": "distractor", "source": "deezer_preview"}, "chad", None)
     assert not charts_pool({"role": "distractor", "source": "youtube_full"}, "chad", None)
     assert charts_pool({"role": "fma"}, "chad", None)
+
+
+def test_octave_correct_removes_short_jump_and_keeps_leap():
+    contour = melody(10.0)
+    jumped = contour.copy()
+    jumped[100:130] += 12.0
+    jumped[300:310] = np.nan
+    fixed = octave_correct(jumped)
+    voiced = ~np.isnan(jumped)
+    assert np.allclose(fixed[voiced], contour[voiced], atol=1e-4)
+    assert np.isnan(fixed[300:310]).all()
+
+
+def test_octave_correct_keeps_small_intervals():
+    contour = np.full(300, 60.0, dtype=np.float32)
+    contour[100:140] += 7.0
+    contour[200:220] -= 8.0
+    assert np.allclose(octave_correct(contour), contour, atol=1e-4)
+
+
+def rerank_item(base, window, seq, hit):
+    base, window = np.array(base, float), np.array(window, float)
+    return {
+        "base": base,
+        "window": window,
+        "seq": np.array(seq, float),
+        "dtw": np.zeros(len(base)),
+        "hit": np.array(hit),
+        "base_rank": rank_all(base),
+        "window_rank": rank_all(window),
+        "fallback": {"base": 99, "window": 99, "union": 99},
+    }
+
+
+def test_rank_all_and_target_rank():
+    scores = np.array([0.1, 0.9, 0.5])
+    assert rank_all(scores).tolist() == [3, 1, 2]
+    keep = np.array([True, True, True])
+    assert target_rank(scores, np.array([False, False, True]), keep) == 2
+    assert target_rank(scores, np.array([False, False, False]), keep) is None
+
+
+def test_window_first_stage_finds_target_base_misses():
+    item = rerank_item([3, 2, 1], [1, 2, 3], [0, 0, 1], [False, False, True])
+    assert fused_rank(item, (1, 0, 0, 0), "base", 2) == 99
+    assert fused_rank(item, (0, 0, 1, 0), "window", 2) == 1
+    assert fused_rank(item, (0, 0, 1, 0), "union", 1) == 1
+    assert recall_at([item], "base", 2) == 0.0 and recall_at([item], "window", 1) == 1.0
+
+
+def test_window_vote_imputes_missing_songs_with_weakest_hit():
+    votes = vote([[("a", 0.9), ("b", 0.5)], [("b", 0.8), ("c", 0.4)]])
+    assert votes["a"] == np.float64(np.mean([0.9, 0.4]))
+    assert votes["b"] == np.float64(np.mean([0.5, 0.8]))
+    assert votes["c"] == np.float64(np.mean([0.5, 0.4]))

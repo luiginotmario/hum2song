@@ -970,3 +970,48 @@ Training with CHAD real pairs, CHAD **test** songs (2,482 hums, 145 songs, 140 w
 **Trade-off / what we gave up.** About 5× more embeddings per song (1 s hop windows) and per-query DP and DTW on 50 songs. Fine offline, but the API would need a window index. One model seed only; weights picked on 29 val songs.
 
 **Revisit when.** Moving this into the API (window index in pgvector), or when a new model is trained: re-run with the same weights and the same selection rule.
+
+## D-024 · Octave-error correction of the song-side melody: no gain, not adopted
+**Date:** 2026-09-28
+
+**Context.** In D-022, octave folding shrank the "hum and song melody disagree by more than 2 semitones" group from 429 to 159 CHAD test hums. That made song-side octave errors look like the biggest fixable bucket. Luigi asked to fix them first and to measure on CHAD val before test.
+
+**Options.**
+- Octave-correct the song contours before chunking and windowing.
+- Also correct the hum contours.
+- Leave contours alone and fold octaves only in the DTW re-ranking cost.
+
+**Decision.** Try all three, re-ranking exactly as in D-023, and pick on CHAD val.
+- **Correction** (`catalog/octave.py`): a voiced frame that lies more than `limit` semitones from the running median of the voiced frames around it is moved by whole octaves towards that median. Two passes; gaps don't count towards the window. Ordinary melodic intervals are kept.
+  - A first version folded every frame into ±6 semitones of the median. That destroys real leaps: CHAD val re-ranked top-1 fell from 0.356 to 0.250. It was dropped and its files kept in `results/d024/v1_fold_all` on the server.
+- **Sweep on CHAD val** (568 hums): windows 1.5 / 3 / 6 s, limits 9 / 10.5 semitones, hums corrected too, and DTW with an octave-folded cost.
+- **Stated rule:** a variant must beat the baseline by more than 0.5 point top-1 on val to be adopted, otherwise the simpler option wins.
+
+**Results.** Files: `docs/paper/results/d024/`. Top-1 / top-10, D-023 re-ranking (base + seq + dtw, weights re-chosen on val for each variant).
+
+| Variant | CHAD val |
+|---|---|
+| None (D-023) | **0.356** / 0.452 |
+| Songs, window 1.5 s, limit 9 | 0.356 / 0.437 |
+| Songs, window 3 s, limit 9 | 0.350 / 0.449 |
+| Songs, window 6 s, limit 9 | 0.352 / 0.449 |
+| Songs, window 3 s, limit 10.5 | 0.354 / 0.444 |
+| Songs and hums, window 3 s | 0.345 / 0.444 |
+| Octave-folded DTW cost only | 0.357 / 0.449 |
+| Songs window 3 s + folded DTW | 0.349 / 0.449 |
+
+- **Nothing passes the rule**, so nothing is adopted. For the record, two variants were also run on test (not used for any choice):
+  - folded DTW: CHAD test 0.473 / 0.553 (D-023: 0.465 / 0.550), MTG-QBH 0.237 (0.246), MLEnd 0.117 (0.119);
+  - song correction, window 3 s: CHAD test 0.468 / 0.542, MTG-QBH 0.203, MLEnd 0.117.
+- **How much the corrector changes:** about 2% of voiced frames in CHAD target songs (10% of songs have more than 5% of frames moved), and 0.6% in CHAD hums.
+- **MIR-QBSH:** unaffected by construction. Its references are MIDI, and the model is unchanged.
+
+**Takeaways.**
+- **The octave bucket was not really fixable this way.** The model was trained with octave-error augmentation (D-011/D-012), so short octave jumps already cost it little.
+- The larger octave disagreements E0 measured are long stretches (longer than half a window) where the reference sits an octave away, e.g. a harmony or a different singer. A local corrector cannot tell those from real register changes.
+- Correcting the hums hurts, so the hum side is not where the octave errors are.
+- The bucket's size in D-022 came from the DTW measure, not from what limits retrieval.
+
+**Trade-off / what we gave up.** Salience-based input (review E3, octave-folded salience) remains the principled route for reference-side octave and harmony errors. It needs retraining.
+
+**Revisit when.** E3 (salience input) is run, or a melody extractor with explicit octave tracking is available.

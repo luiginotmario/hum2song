@@ -83,3 +83,27 @@ def _same_song_mask(song_ids: list[str], device: torch.device) -> torch.Tensor:
                 if left != right:
                     mask[left, right] = True
     return mask
+
+
+def clews_loss(
+    query: torch.Tensor,
+    refs: torch.Tensor,
+    song_ids: list[str],
+    gamma: float = 5.0,
+    eps: float = 1.0e-6,
+) -> torch.Tensor:
+    """CLEWS loss (Serrà et al., ICML 2025) for one query segment per song and several
+    reference segments per song (D-026).
+
+    query (B, D) and refs (B, R, D) are unit vectors (the index uses cosine), so the squared
+    distance is 2 - 2 cos. Reductions: the positive is a song's best reference segment (the
+    one-query-segment case of best-pair-without-replacement), a negative is another song's
+    closest segment (R_min). Loss = mean positive d^2 + log(eps + mean_neg exp(-gamma d^2)).
+    """
+    distance = 2.0 - 2.0 * torch.einsum("id,jrd->ijr", query, refs)
+    reduced = distance.min(dim=2).values
+    positive = torch.diagonal(reduced)
+    negative_mask = ~_same_song_mask(song_ids, reduced.device)
+    negative_mask.fill_diagonal_(False)
+    negatives = reduced[negative_mask]
+    return positive.mean() + torch.log(eps + torch.exp(-gamma * negatives).mean())

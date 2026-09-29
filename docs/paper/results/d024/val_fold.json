@@ -1,0 +1,73 @@
+{
+ "window_s": 5.0,
+ "hop_s": 1.0,
+ "octave_window_s": 0.0,
+ "octave_limit_st": 9.0,
+ "fix_queries": false,
+ "dtw_fold": true,
+ "chosen_on": "chad_val",
+ "variants": {
+  "base": {
+   "weights": [
+    1.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "source": "base",
+   "k": 50
+  },
+  "window_vote": {
+   "weights": [
+    0.0,
+    1.0,
+    0.0,
+    0.0
+   ],
+   "source": "window",
+   "k": 50
+  },
+  "base+seq+dtw (D-023)": {
+   "weights": [
+    1.0,
+    0.0,
+    2.0,
+    2.0
+   ],
+   "source": "base",
+   "k": 50
+  }
+ },
+ "results": {
+  "chad_val": {
+   "base": {
+    "top1": 0.2306338028169014,
+    "top5": 0.3204225352112676,
+    "top10": 0.3855633802816901,
+    "mrr": 0.28155433850866535,
+    "queries": 568
+   },
+   "window_vote": {
+    "top1": 0.3626760563380282,
+    "top5": 0.44014084507042256,
+    "top10": 0.4876760563380282,
+    "mrr": 0.4022643078454636,
+    "queries": 568
+   },
+   "base+seq+dtw (D-023)": {
+    "top1": 0.3573943661971831,
+    "top5": 0.4225352112676056,
+    "top10": 0.448943661971831,
+    "mrr": 0.3910371663130601,
+    "queries": 568
+   }
+  }
+ },
+ "candidate_recall": {
+  "chad_val": {
+   "base@50": 0.4982394366197183,
+   "window@50": 0.5633802816901409,
+   "union@50": 0.6109154929577465
+  }
+ }
+}

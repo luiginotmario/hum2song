@@ -6,6 +6,8 @@ comma list whose mean is used, e.g. HumTrans val plus MLEnd val whistles and hum
 Optional whistle training (D-015): whistle-like augmentation of hum queries and pairs of
 MLEnd train-split whistles with other train-split people's hums. Optional CHAD pairs
 (D-019): real hums with the hummed window of the real recording, train-split songs only.
+Optional song-window pairs (D-026, E2a): a second loader of self-supervised windows from
+real song melody tracks, trained with the CLEWS loss next to the InfoNCE loss.
 """
 
 import math
@@ -41,8 +43,14 @@ from hum2song.contour.evaluate import (
 from hum2song.contour.features import midi_contour
 from hum2song.contour.mlend import MLEndValidation, read_song_holdout, training_pairs
 from hum2song.contour.model import ContourEncoder
+from hum2song.contour.song_pairs import (
+    SongWindowDataset,
+    collate_song_windows,
+    load_song_routes,
+    training_songs,
+)
 from hum2song.logutil import get_logger
-from hum2song.losses import info_nce_symmetric
+from hum2song.losses import clews_loss, info_nce_symmetric
 from hum2song.manifest import PairRecord, read_pairs
 from hum2song.midi_render import parse_midi
 from hum2song.seed import seed_everything
@@ -204,11 +212,40 @@ def lr_multiplier(step: int, warmup: int, total: int) -> float:
     return 0.5 * (1.0 + math.cos(math.pi * progress))
 
 
-def train_step(model, batch: dict, optimizer, device, config: ContourConfig) -> float:
+def song_window_dataset(root: Path, config: ContourConfig) -> SongWindowDataset:
+    rows = training_songs(root, split_list(config.song_libraries), config.song_fma_parity)
+    routes = load_song_routes(rows)
+    with_mix = sum(route["alt"] is not None for route in routes.values())
+    LOGGER.info("song-window pairs: %s songs (%s with a mix route)", len(routes), with_mix)
+    return SongWindowDataset(
+        routes,
+        augment_spec(config),
+        config.seed,
+        refs=config.song_refs,
+        offset_s=config.song_offset_s,
+        mix_prob=config.song_mix_prob,
+        query_s=(config.query_min_s, config.query_max_s),
+    )
+
+
+def song_window_loss(model, batch: dict, device, config: ContourConfig) -> torch.Tensor:
+    """CLEWS loss of one song-window batch (D-026)."""
+    with torch.autocast("cuda", dtype=torch.bfloat16, enabled=device.type == "cuda"):
+        query = model(batch["query"].to(device), batch["query_valid"].to(device))
+        refs = model(batch["refs"].to(device), batch["refs_valid"].to(device))
+    refs = refs.float().reshape(query.shape[0], batch["refs_per_song"], -1)
+    return clews_loss(query.float(), refs, batch["song_id"], config.clews_gamma, config.clews_eps)
+
+
+def train_step(
+    model, batch: dict, optimizer, device, config: ContourConfig, song_batch=None
+) -> float:
     with torch.autocast("cuda", dtype=torch.bfloat16, enabled=device.type == "cuda"):
         query = model(batch["query"].to(device), batch["query_valid"].to(device))
         song = model(batch["song"].to(device), batch["song_valid"].to(device))
     loss = info_nce_symmetric(query.float(), song.float(), batch["song_id"], model.temperature())
+    if song_batch is not None:
+        loss = loss + config.song_loss_weight * song_window_loss(model, song_batch, device, config)
     optimizer.zero_grad(set_to_none=True)
     loss.backward()
     torch.nn.utils.clip_grad_norm_(model.parameters(), config.grad_clip)
@@ -234,6 +271,23 @@ def batches(loader: DataLoader, dataset: Dataset):
         set_epoch(dataset, epoch)
         yield from loader
         epoch += 1
+
+
+def song_batches(root: Path, config: ContourConfig):
+    """Endless song-window batches (D-026), or None when switched off."""
+    if not config.song_pairs:
+        return None
+    dataset = song_window_dataset(root, config)
+    loader = DataLoader(
+        dataset,
+        batch_size=config.song_batch_size,
+        shuffle=True,
+        drop_last=True,
+        num_workers=max(config.num_workers // 2, 0),
+        collate_fn=collate_song_windows,
+        persistent_workers=config.num_workers > 1,
+    )
+    return batches(loader, dataset)
 
 
 def selection_score(metrics: dict[str, float], select_metric: str) -> float:
@@ -306,6 +360,7 @@ def run_training(config: ContourConfig, tracker) -> dict:
         collate_fn=collate_pairs,
         persistent_workers=config.num_workers > 0,
     )
+    song_stream = song_batches(root, config)
     model = build_model(config).to(device)
     load_initial_weights(model, config, device)
     optimizer = torch.optim.AdamW(
@@ -319,7 +374,8 @@ def run_training(config: ContourConfig, tracker) -> dict:
     for step in range(1, config.steps + 1):
         for group in optimizer.param_groups:
             group["lr"] = config.lr * lr_multiplier(step, config.warmup_steps, config.steps)
-        loss = train_step(model, next(stream), optimizer, device, config)
+        song_batch = next(song_stream) if song_stream is not None else None
+        loss = train_step(model, next(stream), optimizer, device, config, song_batch)
         if step % config.log_every == 0:
             rate = step / max(time.time() - started, 1.0e-9)
             tracker.log(

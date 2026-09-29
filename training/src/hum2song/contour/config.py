@@ -67,6 +67,18 @@ class ContourConfig:
     # after `early_stop_patience` validations without a better val/select (0 = never).
     init_ckpt: str = ""
     early_stop_patience: int = 0
+    # E2a (D-026): self-supervised song-window pairs with the CLEWS loss, added to the
+    # InfoNCE loss of the other pairs with weight `song_loss_weight`.
+    song_pairs: bool = False
+    song_libraries: str = "youtube_charts_v1"
+    song_fma_parity: str = "even"
+    song_batch_size: int = 64
+    song_refs: int = 4
+    song_offset_s: float = 3.0
+    song_mix_prob: float = 0.5
+    song_loss_weight: float = 1.0
+    clews_gamma: float = 5.0
+    clews_eps: float = 1.0e-6
 
     def resolved_data_root(self) -> Path:
         return Path(self.data_root or os.environ.get("H2S_DATA", DEFAULT_DATA_ROOT))

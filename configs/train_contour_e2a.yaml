@@ -1,0 +1,57 @@
+# E2a (docs/DECISIONS.md D-026): fine-tune the D-012 model with self-supervised song-window
+# pairs from real song melody tracks (YouTube chart distractors + even-numbered FMA songs;
+# odd FMA songs stay untouched evaluation distractors) and the CLEWS loss, next to the usual
+# HumTrans InfoNCE pairs. No CHAD pairs. All values fixed before training; the stop rule and
+# selection are the D-021 ones (CHAD val songs only).
+#   python training/scripts/train_contour.py --config configs/train_contour_e2a.yaml
+# Reported checkpoint: best.pt = best val/chad_val_top1 (val songs only; test songs unseen).
+run_name: contour_e2a
+steps: 3000
+batch_size: 256
+lr: 0.00003
+weight_decay: 0.05
+warmup_steps: 100
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 100
+select_metric: val/chad_val_top1
+stretch_min: 0.5
+stretch_max: 1.9
+warp_depth: 0.3
+interval_scale: 0.25
+drift_semitones: 1.0
+jitter_semitones: 0.25
+dropout_prob: 0.6
+octave_error_prob: 0.15
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0
+synthetic_midi_dirs: ""
+holdout_midi_dir: raw/essen_midi/deutschl
+holdout_count: 2000
+synthetic_exclude: ""
+chad_pairs: false
+chad_val: true
+init_ckpt: ckpt/contour_v2_s0/last.pt
+early_stop_patience: 5
+song_pairs: true
+song_libraries: youtube_charts_v1
+song_fma_parity: even
+song_batch_size: 64
+song_refs: 4
+song_offset_s: 3.0
+song_mix_prob: 0.5
+song_loss_weight: 1.0
+clews_gamma: 5.0
+clews_eps: 0.000001
