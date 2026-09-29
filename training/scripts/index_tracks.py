@@ -66,6 +66,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--names", nargs="+", default=["youtube_v1", "youtube_charts_v1"])
     parser.add_argument("--db", required=True, help="postgresql:// URL")
     parser.add_argument("--ckpt", type=Path, default=None)
+    parser.add_argument("--force", action="store_true", help="re-embed songs already in the DB")
     return parser.parse_args(argv)
 
 
@@ -78,7 +79,7 @@ def main(argv: list[str] | None = None) -> None:
     model_ver = f"{ckpt.parent.name}/{ckpt.name}"
     connection = connect(args.db)
     ensure_schema(connection)
-    done = indexed_songs(connection)
+    done = set() if args.force else indexed_songs(connection)
     songs = [
         (n, r) for n, r in library_songs(args.data_root, args.names) if r["song_id"] not in done
     ]

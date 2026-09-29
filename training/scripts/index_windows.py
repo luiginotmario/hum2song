@@ -79,6 +79,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--data-root", type=Path, default=Path(DEFAULT_DATA_ROOT))
     parser.add_argument("--db", required=True, help="postgresql:// URL")
     parser.add_argument("--ckpt", type=Path, default=None)
+    parser.add_argument("--force", action="store_true", help="re-embed songs already in the DB")
     return parser.parse_args(argv)
 
 
@@ -90,7 +91,8 @@ def main(argv: list[str] | None = None) -> None:
     connection = connect(args.db)
     ensure_schema(connection)
     files = track_files(args.data_root)
-    windowed, contoured = windowed_songs(connection), contoured_songs(connection)
+    windowed = set() if args.force else windowed_songs(connection)
+    contoured = set() if args.force else contoured_songs(connection)
     todo = [
         s
         for s in searchable_songs(connection)

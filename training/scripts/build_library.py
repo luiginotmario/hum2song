@@ -87,6 +87,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--name", default="fma_full_3k")
     parser.add_argument("--db", required=True, help="postgresql:// URL")
     parser.add_argument("--ckpt", type=Path, default=None)
+    parser.add_argument("--force", action="store_true", help="re-embed songs already in the DB")
     parser.add_argument("--shard", type=int, default=0)
     parser.add_argument("--shards", type=int, default=1)
     parser.add_argument("--workers", type=int, default=6)
@@ -111,7 +112,7 @@ def main(argv: list[str] | None = None) -> None:
     model_ver = f"{ckpt.parent.name}/{ckpt.name}"
     connection = connect(args.db)
     ensure_schema(connection)
-    done = indexed_songs(connection)
+    done = set() if args.force else indexed_songs(connection)
     songs = read_jsonl(library_dir / "songs.jsonl")[args.shard :: args.shards]
     songs = [s for s in songs if s["song_id"] not in done]
     LOGGER.info("shard %s/%s: %s songs to index", args.shard, args.shards, len(songs))

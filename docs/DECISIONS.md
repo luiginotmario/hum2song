@@ -1292,5 +1292,30 @@ For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) g
 
 **Revisit when.**
 - Seeds 1–2, or a second cover per group, to see how far the gain goes.
-- The library is re-indexed with `contour_e2b_s0` and the live API is switched.
+- Done in D-029: library and live API are on `contour_e2b_s0`.
 - More CHAD covers become available without the bot check (or with a JS runtime that stays inside the D-019 rules).
+
+## D-029 · Live library re-indexed on the adopted E2b model
+**Date:** 2026-09-29
+
+**Context.** D-028 adopted `contour_e2b_s0/best.pt` as the serving model, but the pgvector library (chunks, windows, contours) and the live API still used D-012 (`contour_v2_s0/last.pt`). Mixed encoder and index would make search wrong.
+
+**Options.**
+- Leave the index on D-012 until a later batch.
+- **Re-embed everything with E2b and point the API at it.**
+
+**Decision.** Full re-index with E2b, then restart the API.
+- `--force` on `build_library.py`, `index_tracks.py` and `index_windows.py` re-embeds songs already in the database (insert still replaces one song at a time; CASCADE clears that song's chunks/windows/contours).
+- Job `jobs/d029a.sh`: stop uvicorn → re-embed FMA (`fma_full_3k`) and YouTube (`youtube_v1`, `youtube_charts_v1`) with `--ckpt ckpt/contour_e2b_s0/best.pt --force` → rebuild windows and contours → start uvicorn with `H2S_CKPT` pointing at the E2b checkpoint.
+- Contours themselves do not depend on the encoder; they are rewritten because CASCADE drops them with the song row.
+
+**Results.**
+- Library: **4,001 songs**, **3,781 searchable**, **106,063 chunks**, window index present; every song's `model_ver` is `contour_e2b_s0/best.pt`.
+- `/health` reports `"model": "contour_e2b_s0/best.pt"`.
+- Smoke search (one CHAD hum, `mode=windows`): HTTP 200; warm latency about **0.45 s** per query (cold first call about 8.5 s for model and cache load).
+
+**Takeaways.** The live demo now serves the model that D-028 adopted. Re-index cost was about 40 minutes on the A100 (most of it window embedding).
+
+**Trade-off / what we gave up.** Search was offline for the re-index window. A `psql` truncate at the start of the job failed (client not on PATH); `--force` still replaced every song, so the end state is clean.
+
+**Revisit when.** A new model is adopted (E3 or later): re-run the same job with the new checkpoint.
