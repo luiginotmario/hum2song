@@ -1,0 +1,17 @@
+# Local decision thresholds (D-032). Melody rank scores are the primary signal.
+# OpenRouter phrases follow-ups when OPENROUTER_API_KEY is set; otherwise templates.
+# Jev slug left empty until confirmed (SPEC §8) — local policy decides the branch.
+
+temperature: 0.35          # softmax temp = temperature * (s1 - s_last); relative, mode-agnostic
+t_show: 0.42               # P(top-1) at/above this → clear winner
+show_min_rel_gap: 0.40     # (s1-s2)/(s1-s_last) must also clear this for show
+t_few: 0.70                # P(top-5) at/above this (and not show) → follow-up
+min_voiced_s: 1.0          # below → ask to hum again
+retry_min_entropy: 1.85    # top-10 softmax entropy at/above this → too flat, hum again
+min_results_for_show: 1
+followup_n: 3              # how many top songs to mention as options
+max_turns: 2
+llm_model: openai/gpt-4o-mini
+jev_model: ""              # empty = do not call Jev; local thresholds only
+openrouter_timeout_s: 8.0
+openrouter_base_url: https://openrouter.ai/api/v1

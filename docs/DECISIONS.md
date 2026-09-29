@@ -1392,3 +1392,44 @@ Lit-review expected held-out / full whistle ~0.63 → **0.68–0.72** (best case
 **Trade-off / what we gave up.** About 0.2 GPU-h train + about 0.5 h eval. Skipped PESTO self-supervised whistle tracker (E4b). One seed only.
 
 **Revisit when.** E4b (PESTO / spectral-peak self-sup on unlabeled whistles) is tried, or a larger set of **real** whistle→song pairs with many melodies exists, or audio-level whistle synthesis + re-tracking changes what the peak tracker sees.
+
+## D-032 · Decision layer: show / follow-up / hum-again from melody scores (+ optional OpenRouter phrasing)
+**Date:** 2026-09-29
+
+**Context.** Lit-review E0–E4 are done; serving stays on E2b (`contour_e2b_s0/best.pt`, D-028/D-029). PLAN/SPEC call for a decision layer after ranked search: confident clear winner, one follow-up question, or ask the user to hum again. SPEC §8 planned Jev + LLM via OpenRouter, with a **local threshold fallback**. The live API only returned ranked songs (D-017/D-027). Luigi asked for this layer next, toward a usable app path—not a full UI yet.
+
+**Options.**
+- Hard-code UI rules with no server decision.
+- Full Jev-on-OpenRouter before any local path (blocked: no `OPENROUTER_API_KEY` on Lambda or the box; Jev model slug still unconfirmed in SPEC).
+- **Local score policy as the branch picker** (melody scores primary), OpenRouter only for phrasing when the key is present; templates otherwise. Wire `/decide` + optional `decide=1` on `/search`.
+
+**Decision.** Local-first decision layer (`training/src/hum2song/decide/`, `configs/decide.yaml`), matching SPEC’s fallback and the “LLM never picks the song” rule.
+- **Features:** top scores, gap12/gap15, softmax P(top-1)/P(top-5), entropy, voiced_s, turn.
+- **Policy:** `show` if P(top-1) ≥ `t_show` and relative gap (s1−s2)/(s1−s5) ≥ `show_min_rel_gap`; `ask_followup` if the top few carry mass and the list is not flat; `ask_retry` if too quiet, empty, or entropy too high (almost flat top-10).
+- **Phrasing:** templates always; `OPENROUTER_API_KEY` + `llm_model` may rewrite follow-up / tips. `jev_model` left empty until the TypeSafe slug is confirmed—Jev is not called.
+- **API:** `POST /decide` (JSON search payload) and `POST /search?decide=true` (attaches `decision`). `/health` reports `decide: true` and `openrouter: false|true`.
+- **Tests:** `tests/test_decide.py` (mocked scores, no network). Live smoke on Lambda with fake payloads + one MIR-QBSH wav.
+
+**Results (smoke, local policy; OpenRouter not configured).**
+| Case | Action |
+|---|---|
+| Clear top (9.2 vs 5.1) | `show` — “Best match: Clear Hit — X.” |
+| Close top-5 (~6.2…5.7) | `ask_followup` — which of top few / lyric-year hint; options listed |
+| Almost-flat top-10 | `ask_retry` — hum chorus ~10 s |
+| voiced_s 0.3 | `ask_retry` — barely caught a melody |
+| Real MIR-QBSH query + `decide=true` | `show` on the live E2b index (example top gap ~1.43) |
+
+**Takeaways.**
+- Branching works without OpenRouter; scores stay the source of truth.
+- **`OPENROUTER_API_KEY` is missing** on Lambda and the box. LLM phrasing and any future Jev call need Luigi to provide the key via the product secret flow (not pasted in chat). Until then, templates are used.
+- Thresholds in `decide.yaml` are a starting point, not calibrated show-precision (SPEC’s `calibrate_jev.py` / ECE still future work).
+
+**Trade-off / what we gave up.**
+- No multi-turn `/v1/answer` session store yet; no metadata filter re-rank; no Jev beliefs.
+- Follow-up options are top song labels (plus “not sure”), not decade/lang splits from `songs.meta` (often empty in the live library).
+
+**Revisit when.**
+- `OPENROUTER_API_KEY` is installed and a cheap `LLM_MODEL` is chosen.
+- Jev slug is confirmed (`typesafe/jev-router` vs `~typesafe/jev-latest`).
+- Val logs exist to calibrate `t_show` / `t_few` / entropy for a target show-precision.
+- Building `/v1/answer` + session filters for the follow-up loop.
