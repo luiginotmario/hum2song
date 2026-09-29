@@ -1,0 +1,3508 @@
+{
+ "library": {
+  "songs": 3859,
+  "searchable": 3639,
+  "chunks": 101549
+ },
+ "probed_library": "youtube_charts_v1",
+ "rendered": {
+  "top1": 0.5882352941176471,
+  "top5": 0.7200811359026369,
+  "top10": 0.7789046653144016,
+  "mrr": 0.6510322644569912,
+  "queries": 493
+ },
+ "by_genre": {
+  "chart": {
+   "top1": 0.5686274509803921,
+   "top5": 0.6666666666666666,
+   "top10": 0.7254901960784313,
+   "mrr": 0.6217721628621282,
+   "queries": 51
+  },
+  "dance": {
+   "top1": 0.7454545454545455,
+   "top5": 0.7818181818181819,
+   "top10": 0.8181818181818182,
+   "mrr": 0.7704407713498622,
+   "queries": 55
+  },
+  "pop_chart": {
+   "top1": 0.5684754521963824,
+   "top5": 0.7183462532299741,
+   "top10": 0.7803617571059431,
+   "mrr": 0.6379180455997046,
+   "queries": 387
+  }
+ },
+ "by_track": {
+  "mix": {
+   "top1": 0.42105263157894735,
+   "top5": 0.47368421052631576,
+   "top10": 0.47368421052631576,
+   "mrr": 0.45194931773879143,
+   "queries": 19
+  },
+  "vocals": {
+   "top1": 0.5949367088607594,
+   "top5": 0.729957805907173,
+   "top10": 0.7911392405063291,
+   "mrr": 0.6590123825743873,
+   "queries": 474
+  }
+ },
+ "audio": {},
+ "probes": [
+  {
+   "song_id": "youtube:0iMPhRWExTo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:0qrZFkIvbtc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.84,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:0XfOGBp52kc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:0ZgjmE6xdaw",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:10EX-_h4pYc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.56,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:11T6kF66dKY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.16,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:14li6J1u50Y",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.52,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:14PLRhIEAy8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.88,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:1mbbr-cJsrk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.76,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:1qYz7rfgLWE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.98,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:1RKqOmSkGgM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.08,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:1y6smkh6c-0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.6,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:1YeI_vDgCEA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.38,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:24o_iGVXlG0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.0,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:2CahsXpahGM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.16,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:2D17Pat5wWw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.16,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:2Ek3WMM7I-0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.92,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:2kme-mUuWTg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.64,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:2myad4oWqPA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.7,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:2uZnbzTG1jY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.02,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:2V_uAAAH-_Q",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.0,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:2Y4zvxK0wYM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:341_o9S8kBk",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:3eApJGC02dA",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.76,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:3g5AbGTqvt0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.98,
+   "rank": 7
+  },
+  {
+   "song_id": "youtube:3gm_eLS_eR8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:3igA3hkJhDo",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.12,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:3i_MBzr7LWs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.12,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:3inw26U-os4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.84,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:3W9zTpRFlzw",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:446TNAxwg_g",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.64,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:-46UaU8OWZ4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.3,
+   "rank": 7
+  },
+  {
+   "song_id": "youtube:4Jh35L6_igQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:4pJx72N-x6k",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:4ZAZxXFLkEQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.74,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:51zjlMhdSTE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.98,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:57Mha7aNUR4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.94,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:5bReeNoKcx4",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:5CVrij8tcP8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.6,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:5dbEhBKGOtY",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.66,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:5DCdL1zdpdM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.12,
+   "rank": 17
+  },
+  {
+   "song_id": "youtube:5SOk9tATfB8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.02,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:5y_KJAg8bHI",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.68,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:5ZbnA8SdPu8",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 1.1,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:61ymOWwOwuk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.86,
+   "rank": 49
+  },
+  {
+   "song_id": "youtube:6cucosmPj-A",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.1,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:6da5__GEito",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.54,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:6iwX2Jl1XDM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.86,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:6oJkXrNYBA4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.76,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:6UpiotASY6o",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.56,
+   "rank": 8
+  },
+  {
+   "song_id": "youtube:-7AfRAU69d8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.38,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:7_eXiEbx1e0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.04,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:7frfkBdV0-w",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:7jA-tE-4BYI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.22,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:7JqHV53dvdE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.8,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:7l22qaD31iE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:7vpyTP9pgvo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.48,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:7zCq6y06k7Q",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 5.12,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:82z2UfNkbuo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.92,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:8asamgeHgw0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.38,
+   "rank": 8
+  },
+  {
+   "song_id": "youtube:8AtiHCDGZ8c",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:8c6jIwNpG00",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:8e7S8l4s1OM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.06,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:8Ebqe2Dbzls",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.04,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:-8feR8A4ybY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 4.26,
+   "rank": 29
+  },
+  {
+   "song_id": "youtube:8JYJJRxMOZs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.28,
+   "rank": 7
+  },
+  {
+   "song_id": "youtube:8K6PVT230E0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:8Plxv6a44TA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 3.36,
+   "rank": 23
+  },
+  {
+   "song_id": "youtube:8zplgsjDLuM",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 6.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:93ASUImTedo",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.5,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:983bBbJx0Mk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.1,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:9g08kucPQtE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.0,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:9mVXPLlnSu4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:9OQBDdNHmXo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.12,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:9rnLg7fPUAk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:9usFmiEE4BY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.62,
+   "rank": 14
+  },
+  {
+   "song_id": "youtube:_a0T5qwxANg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.54,
+   "rank": 7
+  },
+  {
+   "song_id": "youtube:a4tdS3IB294",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.4,
+   "rank": 17
+  },
+  {
+   "song_id": "youtube:a5uQMwRMHcs",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:A7SW6VxW26s",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.34,
+   "rank": 23
+  },
+  {
+   "song_id": "youtube:A9mUt5mMO-Q",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Ab6E2BsuLJ0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.42,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:adj9x1nBKDA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.28,
+   "rank": 10
+  },
+  {
+   "song_id": "youtube:AdNAYPNdWyc",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 2.08,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:aeDdS9aIpck",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.28,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:aezstCBHOPQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.12,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:aFpfY-EZwFo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.74,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:aKA4wH3Mg7Y",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.32,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:Ao81ziiXHhs",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:AqdvXNDnUEc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:asew9BF1wdw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.14,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:AtKZKl7Bgu0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.04,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:AxRWo0zkI30",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.26,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:b7kmP1fsGg8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.78,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:bAgG7tGtJnk",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 8.02,
+   "rank": 27
+  },
+  {
+   "song_id": "youtube:bde372WN2lg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.3,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:BeihlMOalMI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.52,
+   "rank": 13
+  },
+  {
+   "song_id": "youtube:bJ7yyX4Qic4",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 8.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:bK_DFrflujo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.06,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:BlTopk-muo4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.88,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:bLzUmfLckEw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.86,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:BpR280fXISA",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.66,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:bUU4eDJAs-Q",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:bwb8oA6JBDc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.72,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:bXlk2q_kt3I",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:BZpZzJnZ5to",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.5,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:C7PHEPmdT1w",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.02,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:cbHkzwa0QmM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:cHZb0Sq5KOA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.16,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:CocEMWdc7Ck",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.52,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:CQ8lDA2ECCE",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.72,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:cSlTR0ZVjGI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.62,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:CtRn6eqVnvY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:CUbJQGqFoi0",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:cWppAbqm9I8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.24,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:D2HMHH6sRBY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.82,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:d5gf9dXbPi0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.3,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:D9G1VOjN_84",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.8,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:d_cjgF4N_wA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.54,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:dFGIn9bi-Vw",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 5.3,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:DhK0fZ_hs04",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:DKaxuPbgyFM",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 10.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Dll6VJ2C7wo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:DLQq1A6o4DQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.86,
+   "rank": 9
+  },
+  {
+   "song_id": "youtube:DNsD2cD-ddA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.78,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:D_Ot1lyOlSE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:dpnTd9Dx2OM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": 18
+  },
+  {
+   "song_id": "youtube:e1dJoKCU4Pw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:_e1flpv2nL8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.3,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:e2_kwRND5aE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.26,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:efjIR3MPWTE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.36,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:eImqMRP2Uxg",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 8.96,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:ejEzHE5ZMT8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:EJIwNQb6tWA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.6,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:ejK2BlmWLL8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.58,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:_EmOYuzBP1I",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ePQe5E69INg",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.36,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:eRRz29Q-RJc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.48,
+   "rank": 15
+  },
+  {
+   "song_id": "youtube:EVbtjaWXQVg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.84,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:Ewr6snhvnJo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ewZ9KPO2xN0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:-eyn_B3uQ7g",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:F7o0upORtCw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:f9CPymNwkYw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.28,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:f9VhA9Thv1I",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:FahpcPq-07E",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.46,
+   "rank": 32
+  },
+  {
+   "song_id": "youtube:fAuT8_dboWo",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.88,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:fCeiUX59_FM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.18,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:fCRCLsJQWUQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:F-E5I374xJo",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.3,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:FeMeopQqB6s",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.16,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:fGe8drSjqHI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.98,
+   "rank": 16
+  },
+  {
+   "song_id": "youtube:FgIeGTF2g4M",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:FI-kgW7Srnc",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.14,
+   "rank": 8
+  },
+  {
+   "song_id": "youtube:FKIlve29-_U",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.94,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:FkOpwodhROI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.68,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:fmbLCMGtEQc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 4.88,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:fnFoxHIUIt4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.52,
+   "rank": 26
+  },
+  {
+   "song_id": "youtube:fOQ_-gZsnYQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.18,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:FOqKN-ouAUE",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 5.64,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:f-OWO1aZz0g",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.06,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Fq1xXWs5MxY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.42,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Fqey8LxQxFU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.52,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:fRIhCiUVaKs",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 8.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:fTRiH8SQxKs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.14,
+   "rank": 23
+  },
+  {
+   "song_id": "youtube:FVdjZYfDuLE",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 8.88,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:FvOpPeKSf_4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.1,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:FX1_FXlKxXY",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:fYD7YsSRHOY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.8,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:gLiSH7_sLaU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.68,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:GQAOrCOknCY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.42,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:gtsIM0_TCcU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.52,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:GwXVMhVjjCI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:G-z30uk_Xn4",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 5.48,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:h8ETCqX712c",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.7,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:HCgltcEaB_0",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 5.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:hCLkVrp_4CE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.04,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:HCq1OcAEAm0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:HeOpRzcqKrE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.34,
+   "rank": 11
+  },
+  {
+   "song_id": "youtube:HfWLgELllZs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:HJb0VYVtaNc",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:hLOheGDwD_0",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.48,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:hocnjL2FBTk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 2.2,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:hqunRm_dSHw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.06,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:HsLXc5d_1yg",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.38,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:htToA3wcFl4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.68,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:HukyFUAVuGo",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:hWjwNgiLMgA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.66,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:HyQn-jkug-w",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 4.98,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:HYwNM1t9ltI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.5,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:I4DjHHVHWAE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.76,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:i8_w_m6HLJ0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.3,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:ic8j13piAhQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.86,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:icB2j0cP2Z0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.8,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:ICWZfdZ5XI4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.38,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:iDYf4GNIgSc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.42,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:i-gyZ35074k",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.02,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:IhJZs4GwKYo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.26,
+   "rank": 22
+  },
+  {
+   "song_id": "youtube:iNZzS0dODpM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.94,
+   "rank": 41
+  },
+  {
+   "song_id": "youtube:iopo-N8_euk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.98,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:IpIhCdqa-mg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:iwyAxyE2Ajg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:IXA6bQsVNjs",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:J3It1NoqDjQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.76,
+   "rank": 21
+  },
+  {
+   "song_id": "youtube:jALeORvCJG8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.9,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:JCwIu4DxhtE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 1.38,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:jeJ82KDZkoA",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 1.3,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:jfVVXYTZykw",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.88,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:JGKgbmz_gcU",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.6,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:JmAW1h7j9CM",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.06,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:J_nziODUGcw",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.72,
+   "rank": 15
+  },
+  {
+   "song_id": "youtube:JObirEJtKsg",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 10.5,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:JrOpU2uwz80",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:jsptjaAef7Q",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:JTXzaD18lrk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.86,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:JWKI1QAufZU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.64,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:jWzhWRHm1Do",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.74,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:jY_98uXc3D0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.06,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:K0CLc_zOWYc",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.2,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:kdemFfbS5H0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 5.72,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:KE35_SlTdn4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.44,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:kg-2tDkJUCc",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:KH_29cXDs8U",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.26,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:kKpctBHTOGU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:kOn-HdEg6AQ",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.02,
+   "rank": 14
+  },
+  {
+   "song_id": "youtube:kOpzgDGjy6s",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.2,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Kpz4Ro5iD1Q",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Kr4EQDVETuA",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:KRUWn3dLoRg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.58,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:KtlgYxa6BMU",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:KxcDLQK6h8U",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 13
+  },
+  {
+   "song_id": "youtube:kXOKQCtttbw",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.08,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:l08Zw-RY__Q",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.54,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:L5ObBoQ7Sbo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:l9Q7GISatW0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 10.1,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:lA8F9sIhGdg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.2,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LCINMcL42i8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.98,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:lcjeCm9mAVs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 1.02,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:Lf9OgcXV5cE",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:lH2rQyG_0pk",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.42,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:LIIDh-qI9oI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.48,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ljxYE-aJD3A",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LL-gyhZVvx0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.72,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LNDHulbTj_A",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LnxVONZ55nQ",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.5,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LPnDCTqW7zw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.5,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:lQMHoAs6PdY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.52,
+   "rank": 11
+  },
+  {
+   "song_id": "youtube:lSrLb_rERdI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.2,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:lt9RmG4uq8U",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.84,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:ltmvaOdr8zk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.04,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LuKm4L9ryB0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.78,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LuxizOvIbog",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 5.12,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LvJdIYhC3Ck",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.58,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:LXuSOkf2M3c",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.56,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:m0NZ-aH0G1g",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.78,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:m7-C15MoO2o",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:McEoTIqoRKk",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.4,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:MdcoTp-vnBE",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:MKivwrA6_bw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:mKzg_ZdDSRc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.0,
+   "rank": 7
+  },
+  {
+   "song_id": "youtube:MlThQTo6D8A",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:MoCaWpRAkVA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:mp-IZEFqrG0",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.98,
+   "rank": 40
+  },
+  {
+   "song_id": "youtube:mpK5PcoRMYw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.1,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:msGuqelopMA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.16,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:mX19AV35PhI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.52,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:myDIeOjqQos",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:MYFFA242azM",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.18,
+   "rank": 12
+  },
+  {
+   "song_id": "youtube:MYZHUoMCfZ4",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.7,
+   "rank": 15
+  },
+  {
+   "song_id": "youtube:myZistq5lRM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:MZV0CIFQbbE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.38,
+   "rank": 23
+  },
+  {
+   "song_id": "youtube:N6i1SeRmKL0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.48,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:N9bKBAA22Go",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.2,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:nb8CnIo_-_A",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:NEnephbahLA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.94,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:NF-kLy44Hls",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.8,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:nGa59e7H6Sw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.98,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:NIlz3g3DgCU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 8
+  },
+  {
+   "song_id": "youtube:NPqDIwWMtxg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.82,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:ntp9_iznQ-0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.22,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:nWr4r-3bHBc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": 28
+  },
+  {
+   "song_id": "youtube:NY4ReCSqf0g",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.92,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:NYH6Oa4PXlY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.76,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:nyuo9-OjNNg",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 5.8,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:nZjTtuNR3Og",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:o8OjEIITii4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.22,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:OBV1mEOmIGY",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:OCogbzIvYg0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.68,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:oCP4zQBJEAg",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:oe1154JNsok",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.16,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Oie--p6YqJo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.18,
+   "rank": 7
+  },
+  {
+   "song_id": "youtube:OIOxapjYbKQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.38,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:OpQFFLBMEPI",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.38,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:oSBh6a0QJg8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.14,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:oTlnCP_yRAo",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 1.74,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:OulCYepVX-U",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.76,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:p38WgakuYDo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:P6LeMSLYhko",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:P8Am-QTUQes",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:p9krqzXPAv8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.58,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:p9rllutpWq4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.6,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:pAv3IXlKeNU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.94,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:paXrGCcU1gY",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.52,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:pE0ueXPeEws",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.36,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:pEskP0ulPlA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.22,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:PfBU5YDtEV0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.04,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:PfH7jq_uSCM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.04,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:PfwIpoVMvNs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.6,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:pGMk-pb1ks8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.14,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:phtcAd8j6Ro",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.26,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:psuRGfAaju4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.7,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:pUjE9H8QlA4",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:pvIJyRkS9y0",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.24,
+   "rank": 10
+  },
+  {
+   "song_id": "youtube:pXyUUUFtNJc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.18,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Py9S2bD0RZQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:pzeefqfSMjY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:PZtwxD5Myk0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 4.58,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:Q3E3jArGOqg",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 6.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Q_6OZd6FFYg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Q8RUBHlK4-A",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Qb8q4ijHk_M",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:qbHu2Y7rnNM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:QdV2TvL3tBw",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.26,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:qdVXbLusVEc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.34,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:qE0UI5wHW8w",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:QFkUlwl_2N0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.94,
+   "rank": 10
+  },
+  {
+   "song_id": "youtube:QFy0hQ3lY-w",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.96,
+   "rank": 11
+  },
+  {
+   "song_id": "youtube:QIUIpMcNbdk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:QkaWdvv-jKg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.46,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:QMGGaNynpLI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:QMN7nwCm3HI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.2,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:qod03PVTLqk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Qop5XLgwkNc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.4,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:QTRaN-82Ip4",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.72,
+   "rank": 26
+  },
+  {
+   "song_id": "youtube:qV0LHCHf-pE",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:QxPeRC82Uo0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:R3a8k4TfVOI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.0,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:-r687V8yqKY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.28,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:r9mtIDNtCCk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.6,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:raAOCSSC9nM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.6,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ra-h_p-vD2s",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.6,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:rdCYTDkh5b4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.4,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:RDH71p3LgWM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.06,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:reRklDZc370",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.6,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:riCP9x31Kuk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.66,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:RKPheMpH73A",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:RO75uUZiAw0",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.98,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:RoeXmaSE7Lo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:RsKQOm_iJug",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:RSSUa2qW4tc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:ru64eEvd6Ak",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.92,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:rwlFWWGaZ5Y",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.0,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:RwT77rlp2CE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.52,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:RyJ5GbzEZC0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.76,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:-sDxILbFz2M",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.78,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:S-fl_h_uJWc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.74,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:SiYS5Krxj_Y",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 8.94,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:SNFoqhQjXb8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.12,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:SOJpE1KMUbo",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.24,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:SOn3_0Oav0k",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.7,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:soNLLPokjC4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.32,
+   "rank": 7
+  },
+  {
+   "song_id": "youtube:SQnc1QibapQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:sqSA-SY5Hro",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:sRs2o36a1Us",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 4.88,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:ssq6X6alZ3w",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:stV2UD_vmxY",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 9.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Sv5yCzPCkv8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.62,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:svcboYY81wU",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.68,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:SVFA5iBqMes",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.28,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:SWpAYbgHmTo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.28,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:S_WTdJ0t4bo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.52,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:T0T9GyM28tg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.42,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:T3md2U4VSgk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.74,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:T-578RNysss",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.54,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:T6eK-2OQtew",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:_tbCnZvU_0Y",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.48,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:tdVAqxNLXiw",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 5.76,
+   "rank": 8
+  },
+  {
+   "song_id": "youtube:tGVRsIDNuKU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.36,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:TK7hyqAagyY",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 3.18,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:tNJhkrpLGT8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 21
+  },
+  {
+   "song_id": "youtube:tNxUxm3-658",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:t_OyQhiqXgA",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.44,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:tQ0yjYUFKAE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:TrnUKfSg_kg",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.4,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:tRQe3HjZEzw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.3,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:TtgZb0uGUGI",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ttRUvEasTlw",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 0.82,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:ttZmxLyB1J0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.24,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:tZnNLoPKriU",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.9,
+   "rank": 15
+  },
+  {
+   "song_id": "youtube:Tzu0302_Gzk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.04,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:U5-fwUrixZ8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.54,
+   "rank": 48
+  },
+  {
+   "song_id": "youtube:u657A8JebgA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.96,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:U8F5G5wR1mk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.22,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:UdGMRQg5szM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:UfJVqffTSjA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.42,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:uFLt7knYUek",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.68,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:UGbDWUtqMsQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ukbiRcyzrpc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.3,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:U-l4ya3ejko",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.78,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:UN-yhsiC_pk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 1.18,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:UpYu9FgcxKo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.16,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:UR5dciiZvUg",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.46,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:uRn3Y6xIX5o",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:UsR08cY8k0A",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.06,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:uweWiCLT8Eg",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:UyAKpowkUDA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:uz2-eYojYAM",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.74,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:v1t4MTqdfyI",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 7.88,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:V1Z586zoeeE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.0,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:V2G8ESoDXm8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:V7UgPHjN9qE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": 9
+  },
+  {
+   "song_id": "youtube:v9T_MGfzq7I",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.1,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:VB6VrrXPCi0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.48,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:vb8wloc4Xpw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:VFwmKL5OL-Q",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.64,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:vHBBBJ0RWRI",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.56,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:VJA43ZH4-Ak",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.66,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Vllfvt1CMJc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Vnoz5uBEWOA",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 8.4,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:vp6XdbG3AhA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:_vQ_IMg81xc",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 7.04,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Vs64cZbeY88",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.42,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:vSE8AlZllI0",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 5.82,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:VtmKHE5IyEQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.92,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:vVlzNwSQsIo",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 7.14,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:vvU1NDPCxas",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 3.78,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:_VZ4uCpHpEU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 1.08,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:W4xNuO4T3w0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.1,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:W50HtcPAeSs",
+   "genre": "dance",
+   "track": "vocals",
+   "voiced_s": 6.32,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:WcIcVapfqXw",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.18,
+   "rank": 23
+  },
+  {
+   "song_id": "youtube:wlmUnWLaeog",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:wOrF9Pk-K5Y",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 5.32,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Wp6tk_6AZws",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 1.62,
+   "rank": 20
+  },
+  {
+   "song_id": "youtube:-WtNCR3EDS4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.0,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:WvZnX0P04Q0",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.3,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:W_YOJWZIjxo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:X4r_eTtS4Lo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.64,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:X70Bq5XDZJk",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.34,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:x8VkB8ap_FQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.76,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:xBLFEsEAa4g",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 12
+  },
+  {
+   "song_id": "youtube:XcK8JdVlcXY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.78,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:XdQOkD7Dp2k",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 4.76,
+   "rank": 20
+  },
+  {
+   "song_id": "youtube:xhkqAsByZjs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.0,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:XOb9ghjs7lo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": 13
+  },
+  {
+   "song_id": "youtube:XqN2qFvY64U",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:XqpQpt_cmhE",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.08,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:xSXOHksF_8g",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.0,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:xuOOAQoDKN0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.94,
+   "rank": 9
+  },
+  {
+   "song_id": "youtube:xv3YJg7Treo",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 7.22,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:xy3AcmW0lrQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.86,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:Y0rnNtpAYhc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.74,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:Y2QpQP8wPG8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.06,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Y3jq_WIHP9k",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.1,
+   "rank": 3
+  },
+  {
+   "song_id": "youtube:y3VXl9nMEu4",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 1.82,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:Y6jyPJ8QJK8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.66,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Y6TFSTHUxi0",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:y89VfXolfvA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 10.7,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:YHH4giJHWB8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.96,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:YhtlFUATVLA",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.42,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:YIvwCIwDQT8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.48,
+   "rank": 44
+  },
+  {
+   "song_id": "youtube:yJDJ9eWx3ac",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.3,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:yjki-9Pthh0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:YJNFAaWJhp0",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.28,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:yK7MoYrzAag",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.2,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:yka6mulGMmU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:_ymicn0_GYc",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.4,
+   "rank": 4
+  },
+  {
+   "song_id": "youtube:YRNyamyBOIQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.72,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:yrtWLyp5gLI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:YT57RMxA-Eo",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:yy9PuYMU29g",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.56,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:Yyd5kmngrOU",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.14,
+   "rank": 25
+  },
+  {
+   "song_id": "youtube:Z0CQf3JDKAY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.78,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:z0GKGpObgPY",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 9.36,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:z2_Lrg6rRks",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.02,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Z4N8lzKNfy4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.2,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:Z78VT2yf3WQ",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.82,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:z9Q9OzL_wI8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.64,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:zAfrPjTvSNs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.16,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:zE53Otfrr0k",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.2,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ZedyYemvZ8c",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.56,
+   "rank": 5
+  },
+  {
+   "song_id": "youtube:zFCUfy4LDVs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.08,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:zg30FeLT9z4",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.64,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:zG5YzRxOcsI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.4,
+   "rank": 8
+  },
+  {
+   "song_id": "youtube:zhaTJhpzfm8",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.18,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:zHd4rSpZn48",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.24,
+   "rank": 2
+  },
+  {
+   "song_id": "youtube:zLhDdFGkvzI",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 6.66,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:-zLml4bc_Gs",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.66,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:zln8SZO6yYY",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.3,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:zLxXqEZ5OoA",
+   "genre": "chart",
+   "track": "vocals",
+   "voiced_s": 6.44,
+   "rank": null
+  },
+  {
+   "song_id": "youtube:ZVVvJjwzl6c",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 5.86,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:ZVZPYCuS91Y",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 8.74,
+   "rank": 1
+  },
+  {
+   "song_id": "youtube:zwa7NzNBQig",
+   "genre": "pop_chart",
+   "track": "vocals",
+   "voiced_s": 7.58,
+   "rank": 6
+  },
+  {
+   "song_id": "youtube:ZYuyX-fzeGQ",
+   "genre": "pop_chart",
+   "track": "mix",
+   "voiced_s": 6.08,
+   "rank": 1
+  }
+ ]
+}

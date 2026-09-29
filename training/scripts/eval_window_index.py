@@ -46,7 +46,7 @@ def stored_windows(connection) -> tuple[list[str], np.ndarray, np.ndarray]:
     songs = sorted({song for song, _ in rows})
     index = {song: i for i, song in enumerate(songs)}
     owners = np.array([index[song] for song, _ in rows])
-    return songs, owners, np.stack([np.asarray(e, dtype=np.float32) for _, e in rows])
+    return songs, owners, np.stack([e.to_numpy().astype(np.float32) for _, e in rows])
 
 
 def exact_votes(query_win: np.ndarray, stored: tuple, device) -> list[str]:

@@ -846,6 +846,70 @@ Training with CHAD real pairs, CHAD **test** songs (2,482 hums, 145 songs, 140 w
 - D-020's larger full-song library is ready. Then re-measure `full_fma`.
 - Before any publication, review YouTube's terms and D-009.
 
+## D-020 · Scaling the served library with full-length chart songs (Tier Y), and how rendered hums fare by genre and track
+**Date:** 2026-09-28
+
+**Context.** D-019 showed that full recordings, not 30 s previews, are what real hums can find. The served library (pgvector, D-017) held 3,000 FMA songs, mostly obscure and license-clean. A realistic hum-to-song service needs the songs people actually hum: chart hits. Luigi approved growing the library from YouTube under the D-019 Tier Y rules:
+- Mac-only downloads in `~/hum2song_yt/` with the standalone yt-dlp;
+- no cookies or installs; stop on a bot check;
+- audio is transient, and only melody features and metadata are kept.
+
+He also asked that house/instrumental songs be measured separately from vocal songs.
+
+**Options.**
+- **Chart previews** (D-018). Too short (D-019).
+- **Licensed catalog** (Tier L). No permission.
+- **Full-length chart songs from YouTube, features only.** Chosen.
+
+**Decision.**
+- **Queue** (`/workspace/yt/queue.tsv` on the agent box; tags in `tag_meta.json`): 13,692 tagged chart entries. After deduplication, 11,291 searches are queued, plus the first 300-song batch that ran before the queue existed. Searches use `ytsearch1` with "artist - title audio". Sources:
+  - Billboard Hot 100 year-end lists 1960–2025 (6,259);
+  - Deezer charts (2,783);
+  - Billboard dance (650);
+  - Spotify daily top 200 for 9 markets;
+  - a house/electronic list (1,000).
+- **Genre tags:** `pop_chart`, `chart`, `dance` and `house_electronic`. Songs whose artist/title key or video id matches any evaluation target (CHAD, MTG-QBH, MLEnd) are dropped before extraction.
+- **Batches** of about 300 run through the D-019 transfer path. Extraction goes into `library/youtube_charts_v1` (role `distractor`, source `youtube_full`), then `index_tracks.py`.
+  - The index uses the vocal track, or the full mix when the vocal stem gives no voiced chunk (instrumental and house songs).
+  - About 3–10% of downloads fail with HTTP 403 (no JS runtime) and are skipped. No bot check so far.
+- **Measurement** (`probe_library.py`, extended): the rendered-hum probe of D-017 on the served library.
+  - Every probed song's indexed track is humanized and augmented, cut to 8–12 s, rendered as a harmonic tone and searched through the API path.
+  - Results are broken down by genre tag and by the track the index used (vocals vs mix fallback).
+  - This is a **self-retrieval probe** (the query comes from the indexed melody), so it measures the index and the model's tolerance to hum-like distortion, not real-hum accuracy (that is D-019/D-023/D-025).
+
+**Results.** Files: `docs/paper/results/d020/`. Library at measurement time:
+- 3,859 songs, of which 3,639 are searchable, with 101,549 chunks;
+- 3,000 FMA, 363 `youtube_v1` evaluation targets and 496 `youtube_charts_v1` chart songs;
+- a further batch of ~300 is downloading.
+
+Top-1 / top-10:
+
+| Probe | Songs | Result |
+|---|---|---|
+| All chart songs | 493 | 0.588 / 0.779 |
+| · `pop_chart` | 387 | 0.568 / 0.780 |
+| · `chart` (Deezer) | 51 | 0.569 / 0.725 |
+| · `dance` | 55 | 0.745 / 0.818 |
+| · indexed from the vocal stem | 474 | 0.595 / 0.791 |
+| · indexed from the mix (no usable vocals) | 19 | 0.421 / 0.474 |
+| FMA songs (500 of 3,000) in the same library | 500 | 0.546 / 0.750 |
+
+For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) gave 0.582 / 0.764.
+
+**Takeaways.**
+- **Chart songs are as findable as FMA songs.** Growing the library by 30% with full-length hits costs FMA songs about 3 points top-1 on the probe, as expected from more distractors.
+- **Songs without a usable vocal stem are the weak spot:** 0.42 top-1 against 0.60, on a small sample (19). Their mix-track melody mixes instruments.
+  - Only 4% of chart songs fell back to the mix so far.
+  - The dance songs downloaded so far have vocals and probe well.
+  - The 1,000 house/electronic songs in the queue have not been downloaded yet, so the house/instrumental measurement is still pending. The breakdown is in place and will be re-run when they arrive.
+- The real-hum effect of the larger library is measured with the D-025 first stage, not with this probe.
+
+**Trade-off / what we gave up.**
+- Tier Y data cannot be published. Only ids, titles and features are kept, and the paper must disclose the source.
+- The probe is optimistic by construction (self-retrieval).
+
+**Revisit when.** The house/electronic batches are in: re-run the probe by genre and track. Also when the library passes about 10k songs: re-measure real hums at `full_fma`.
+
 ## D-021 · Fine-tuning D-012 on CHAD real pairs (1 seed): no clear gain
 **Date:** 2026-09-28
 

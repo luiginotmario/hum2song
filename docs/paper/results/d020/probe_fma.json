@@ -1,0 +1,3536 @@
+{
+ "library": {
+  "songs": 3859,
+  "searchable": 3639,
+  "chunks": 101549
+ },
+ "probed_library": "fma_full_3k",
+ "rendered": {
+  "top1": 0.546,
+  "top5": 0.706,
+  "top10": 0.75,
+  "mrr": 0.6188068841574899,
+  "queries": 500
+ },
+ "by_genre": {
+  "unknown": {
+   "top1": 0.546,
+   "top5": 0.706,
+   "top10": 0.75,
+   "mrr": 0.6188068841574899,
+   "queries": 500
+  }
+ },
+ "by_track": {
+  "vocals": {
+   "top1": 0.546,
+   "top5": 0.706,
+   "top10": 0.75,
+   "mrr": 0.6188068841574899,
+   "queries": 500
+  }
+ },
+ "audio": {},
+ "probes": [
+  {
+   "song_id": "fma:000171",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.46,
+   "rank": 41
+  },
+  {
+   "song_id": "fma:000178",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000351",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000359",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.16,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000507",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000511",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.74,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:000675",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.44,
+   "rank": 34
+  },
+  {
+   "song_id": "fma:000768",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000807",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:000862",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 3.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001117",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001119",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.98,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:001149",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001286",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 11.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001366",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001413",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.66,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001421",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001521",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.18,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001543",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.26,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:001609",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001665",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001693",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:001698",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.64,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001890",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.1,
+   "rank": null
+  },
+  {
+   "song_id": "fma:001896",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003271",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003353",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003408",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.96,
+   "rank": null
+  },
+  {
+   "song_id": "fma:003551",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 36
+  },
+  {
+   "song_id": "fma:003616",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003658",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003721",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.2,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:003766",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:003819",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.8,
+   "rank": null
+  },
+  {
+   "song_id": "fma:003973",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.72,
+   "rank": 17
+  },
+  {
+   "song_id": "fma:004334",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:004346",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.44,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:004421",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.64,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:004446",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.08,
+   "rank": 12
+  },
+  {
+   "song_id": "fma:004500",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.0,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:004508",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.8,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:004603",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:004748",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:005050",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:005409",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.0,
+   "rank": 20
+  },
+  {
+   "song_id": "fma:005567",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.7,
+   "rank": 35
+  },
+  {
+   "song_id": "fma:006440",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.52,
+   "rank": null
+  },
+  {
+   "song_id": "fma:006602",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.74,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:007710",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.18,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:009201",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009535",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009733",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009737",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009793",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009987",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:009996",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.38,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:010155",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.22,
+   "rank": null
+  },
+  {
+   "song_id": "fma:010439",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:010726",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.02,
+   "rank": null
+  },
+  {
+   "song_id": "fma:010808",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 3.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:010833",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.98,
+   "rank": null
+  },
+  {
+   "song_id": "fma:010936",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011198",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.44,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011283",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.78,
+   "rank": null
+  },
+  {
+   "song_id": "fma:011822",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011834",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.16,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:011899",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.22,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:012067",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012146",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012264",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.46,
+   "rank": null
+  },
+  {
+   "song_id": "fma:012408",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.56,
+   "rank": null
+  },
+  {
+   "song_id": "fma:012412",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012630",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.72,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:012690",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012793",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:012819",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:012821",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.82,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:013731",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.48,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:013780",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:013880",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.38,
+   "rank": null
+  },
+  {
+   "song_id": "fma:014101",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:014369",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.1,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:014716",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:014756",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:014942",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:015124",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.76,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:015229",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:015280",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.74,
+   "rank": 23
+  },
+  {
+   "song_id": "fma:016310",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:016760",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.68,
+   "rank": null
+  },
+  {
+   "song_id": "fma:017592",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.8,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:017602",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:017610",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.54,
+   "rank": null
+  },
+  {
+   "song_id": "fma:017895",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.84,
+   "rank": null
+  },
+  {
+   "song_id": "fma:017915",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:018097",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:018202",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.14,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:018214",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.02,
+   "rank": 14
+  },
+  {
+   "song_id": "fma:019125",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:019186",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:019509",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:019735",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.1,
+   "rank": null
+  },
+  {
+   "song_id": "fma:019794",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.56,
+   "rank": 30
+  },
+  {
+   "song_id": "fma:020012",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:020266",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:020343",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.76,
+   "rank": null
+  },
+  {
+   "song_id": "fma:020508",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:020961",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.9,
+   "rank": null
+  },
+  {
+   "song_id": "fma:021567",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 17
+  },
+  {
+   "song_id": "fma:021588",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.76,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:021657",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:021677",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.94,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:021743",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.78,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:022078",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.24,
+   "rank": 22
+  },
+  {
+   "song_id": "fma:023339",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.86,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:024367",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.02,
+   "rank": null
+  },
+  {
+   "song_id": "fma:025665",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:026012",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.52,
+   "rank": null
+  },
+  {
+   "song_id": "fma:026298",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:026486",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:027305",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:027612",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:028441",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:029267",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.34,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:029277",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:029290",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.48,
+   "rank": null
+  },
+  {
+   "song_id": "fma:029417",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:030040",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:030045",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.5,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:030060",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.78,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:030161",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 3.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:031618",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.42,
+   "rank": 12
+  },
+  {
+   "song_id": "fma:031765",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.82,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:031843",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.8,
+   "rank": null
+  },
+  {
+   "song_id": "fma:032689",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.42,
+   "rank": null
+  },
+  {
+   "song_id": "fma:032767",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.64,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:032768",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.9,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:033336",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:033537",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:033994",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034085",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.52,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:034146",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034214",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.74,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:034377",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034407",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.36,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:034476",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.74,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:034851",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:034984",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.4,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:035187",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:035551",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.12,
+   "rank": null
+  },
+  {
+   "song_id": "fma:036219",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.68,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:036490",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 33
+  },
+  {
+   "song_id": "fma:036643",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:036695",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:038317",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:038552",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.98,
+   "rank": null
+  },
+  {
+   "song_id": "fma:039438",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 3.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:042400",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.88,
+   "rank": null
+  },
+  {
+   "song_id": "fma:042456",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.24,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:042530",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.44,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:042936",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:042942",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043028",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043458",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.8,
+   "rank": null
+  },
+  {
+   "song_id": "fma:043638",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.4,
+   "rank": 16
+  },
+  {
+   "song_id": "fma:043796",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.86,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:043811",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.5,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:043894",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043911",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043912",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:043917",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.58,
+   "rank": null
+  },
+  {
+   "song_id": "fma:044233",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.02,
+   "rank": 23
+  },
+  {
+   "song_id": "fma:044278",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:045055",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.46,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:045056",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:045127",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.18,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:045374",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:045463",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.18,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:046195",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.6,
+   "rank": 12
+  },
+  {
+   "song_id": "fma:046203",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:046475",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:047106",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:047474",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:047600",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.88,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:048227",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:048444",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:048810",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.58,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:048981",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.78,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:049105",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:050297",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.3,
+   "rank": 44
+  },
+  {
+   "song_id": "fma:050305",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:052355",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.18,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:052360",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:052379",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.48,
+   "rank": 22
+  },
+  {
+   "song_id": "fma:052957",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.5,
+   "rank": null
+  },
+  {
+   "song_id": "fma:053736",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:054006",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 24
+  },
+  {
+   "song_id": "fma:054041",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:054470",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 3.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:055116",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.14,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:055290",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:055436",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:056125",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:056657",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.6,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:056658",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:056692",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:057496",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:057663",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.44,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:058394",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:058397",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:058398",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:059373",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:059666",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 27
+  },
+  {
+   "song_id": "fma:059905",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:059975",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.28,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:060474",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.06,
+   "rank": null
+  },
+  {
+   "song_id": "fma:060607",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.94,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:060893",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:061124",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.56,
+   "rank": null
+  },
+  {
+   "song_id": "fma:061484",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:061590",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.96,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:061742",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:061890",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.06,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:062575",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:062658",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.36,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:062869",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.12,
+   "rank": 44
+  },
+  {
+   "song_id": "fma:062965",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.64,
+   "rank": null
+  },
+  {
+   "song_id": "fma:062986",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:063011",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.56,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:063097",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.6,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:063101",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.9,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:063394",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.14,
+   "rank": 9
+  },
+  {
+   "song_id": "fma:063789",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064222",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.2,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:064257",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064261",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064263",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:064644",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:065254",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:065628",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.12,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:065688",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:065695",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.98,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:065883",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:066403",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 9
+  },
+  {
+   "song_id": "fma:066444",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.02,
+   "rank": 18
+  },
+  {
+   "song_id": "fma:066713",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.3,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:067241",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:067249",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 3.44,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:067267",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.74,
+   "rank": null
+  },
+  {
+   "song_id": "fma:069561",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069930",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069933",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069935",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:069938",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:070392",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:070406",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.56,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:070820",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.68,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:070874",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:070882",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:071086",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:071303",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.5,
+   "rank": null
+  },
+  {
+   "song_id": "fma:071609",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.66,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:071625",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072050",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072064",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072234",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:072622",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.42,
+   "rank": 9
+  },
+  {
+   "song_id": "fma:073178",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:073183",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.52,
+   "rank": null
+  },
+  {
+   "song_id": "fma:073483",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.2,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:073767",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.34,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:074524",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:074944",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.08,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:075082",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:075090",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.12,
+   "rank": 49
+  },
+  {
+   "song_id": "fma:075413",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.12,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:075583",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:075686",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:075925",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:076130",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.92,
+   "rank": 14
+  },
+  {
+   "song_id": "fma:076207",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.5,
+   "rank": null
+  },
+  {
+   "song_id": "fma:076350",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:077382",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:077779",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.12,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:078839",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.48,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:078843",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:079371",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:080033",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:080783",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:081081",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.76,
+   "rank": 31
+  },
+  {
+   "song_id": "fma:081155",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.72,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:082468",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:082696",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.1,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:082723",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:082901",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.94,
+   "rank": 18
+  },
+  {
+   "song_id": "fma:083552",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:084285",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:084787",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.78,
+   "rank": 27
+  },
+  {
+   "song_id": "fma:084797",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.02,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:085428",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.62,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:085535",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.42,
+   "rank": null
+  },
+  {
+   "song_id": "fma:085709",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.64,
+   "rank": null
+  },
+  {
+   "song_id": "fma:086180",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:087967",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:088848",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.68,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:088856",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:090119",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.08,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090145",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:090320",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090588",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090831",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:090982",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:091226",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.14,
+   "rank": null
+  },
+  {
+   "song_id": "fma:091305",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.74,
+   "rank": 27
+  },
+  {
+   "song_id": "fma:091322",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.14,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:091851",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.24,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:091866",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.62,
+   "rank": null
+  },
+  {
+   "song_id": "fma:091938",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.24,
+   "rank": 34
+  },
+  {
+   "song_id": "fma:092496",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.1,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:093019",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.74,
+   "rank": 10
+  },
+  {
+   "song_id": "fma:093056",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.3,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:093425",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.82,
+   "rank": 50
+  },
+  {
+   "song_id": "fma:094631",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.8,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:094857",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:095246",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.12,
+   "rank": null
+  },
+  {
+   "song_id": "fma:095521",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:095674",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096660",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.28,
+   "rank": 12
+  },
+  {
+   "song_id": "fma:096668",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.18,
+   "rank": 43
+  },
+  {
+   "song_id": "fma:096669",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.34,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096698",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096752",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.84,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:096764",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.92,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:096945",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:097585",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:097896",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.58,
+   "rank": null
+  },
+  {
+   "song_id": "fma:097979",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.3,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:098314",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 1.98,
+   "rank": null
+  },
+  {
+   "song_id": "fma:098598",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.56,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:098663",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:098797",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.72,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:099373",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:099431",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:103540",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:103796",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.96,
+   "rank": 14
+  },
+  {
+   "song_id": "fma:104135",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.68,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:104219",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:105943",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:106445",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:106452",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:106695",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.44,
+   "rank": null
+  },
+  {
+   "song_id": "fma:107024",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.08,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:107202",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.6,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:107386",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:107812",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:107953",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:108461",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.6,
+   "rank": null
+  },
+  {
+   "song_id": "fma:109446",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:109489",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.56,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:110260",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.58,
+   "rank": null
+  },
+  {
+   "song_id": "fma:110545",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.68,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:110856",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 11.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:110935",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.76,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:111697",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:112347",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:112449",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:112453",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.72,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:113030",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.64,
+   "rank": 15
+  },
+  {
+   "song_id": "fma:113035",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.94,
+   "rank": 6
+  },
+  {
+   "song_id": "fma:113277",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:113312",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:115949",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.46,
+   "rank": null
+  },
+  {
+   "song_id": "fma:116078",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.02,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116603",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116606",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.4,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116632",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.22,
+   "rank": 21
+  },
+  {
+   "song_id": "fma:116732",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116903",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:116906",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.22,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:117236",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.98,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:117942",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.8,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:118563",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:118637",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.62,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:118639",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:119566",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.58,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:120516",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:120517",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.94,
+   "rank": null
+  },
+  {
+   "song_id": "fma:120545",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.48,
+   "rank": 23
+  },
+  {
+   "song_id": "fma:121312",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.04,
+   "rank": 29
+  },
+  {
+   "song_id": "fma:121322",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:121737",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:122120",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.28,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:122463",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:122533",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:122936",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.66,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:123102",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.32,
+   "rank": null
+  },
+  {
+   "song_id": "fma:123105",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123278",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.26,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123393",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123612",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.66,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:123615",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.66,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123632",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.84,
+   "rank": 26
+  },
+  {
+   "song_id": "fma:123635",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123750",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.38,
+   "rank": null
+  },
+  {
+   "song_id": "fma:123783",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.96,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:123845",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.34,
+   "rank": null
+  },
+  {
+   "song_id": "fma:124492",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.44,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:124707",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.6,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:124721",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.92,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:124728",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:124997",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.48,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:125194",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:125654",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.24,
+   "rank": null
+  },
+  {
+   "song_id": "fma:126038",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126041",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.42,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126043",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126178",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126297",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126461",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.62,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:126483",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126484",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.14,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126527",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.1,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126530",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126959",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.6,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:126977",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.94,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:127019",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.24,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127021",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.76,
+   "rank": null
+  },
+  {
+   "song_id": "fma:127022",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.8,
+   "rank": null
+  },
+  {
+   "song_id": "fma:127052",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127181",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.38,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:127198",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.98,
+   "rank": null
+  },
+  {
+   "song_id": "fma:127307",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127326",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127335",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:127910",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.9,
+   "rank": 12
+  },
+  {
+   "song_id": "fma:127911",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.6,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:128475",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.6,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:128476",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.32,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:129045",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.06,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:129405",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.86,
+   "rank": 14
+  },
+  {
+   "song_id": "fma:129488",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.7,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:130370",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.4,
+   "rank": null
+  },
+  {
+   "song_id": "fma:130398",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.0,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:130415",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.72,
+   "rank": 16
+  },
+  {
+   "song_id": "fma:130530",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:130854",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.98,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:131172",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:132170",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:132799",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.2,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:132954",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.62,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:133630",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.5,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:134319",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.46,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:134502",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.14,
+   "rank": 33
+  },
+  {
+   "song_id": "fma:134934",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 0.26,
+   "rank": null
+  },
+  {
+   "song_id": "fma:135030",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.74,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:135365",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.64,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:135571",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:136048",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.86,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:137198",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.52,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:137897",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.94,
+   "rank": 27
+  },
+  {
+   "song_id": "fma:137907",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.86,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:138017",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.3,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:138411",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.32,
+   "rank": null
+  },
+  {
+   "song_id": "fma:139122",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.04,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:140119",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.04,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:142359",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:142530",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.66,
+   "rank": 21
+  },
+  {
+   "song_id": "fma:142574",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.96,
+   "rank": null
+  },
+  {
+   "song_id": "fma:142668",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 3.38,
+   "rank": 34
+  },
+  {
+   "song_id": "fma:143978",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.76,
+   "rank": 7
+  },
+  {
+   "song_id": "fma:144162",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.84,
+   "rank": 8
+  },
+  {
+   "song_id": "fma:144176",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.72,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:144214",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 2.6,
+   "rank": null
+  },
+  {
+   "song_id": "fma:144476",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.54,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:145601",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 10.3,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:145718",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.32,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:145980",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.06,
+   "rank": 5
+  },
+  {
+   "song_id": "fma:146693",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.78,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:147381",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.26,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:147952",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.18,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:148423",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.16,
+   "rank": 49
+  },
+  {
+   "song_id": "fma:148618",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.86,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:148625",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.7,
+   "rank": null
+  },
+  {
+   "song_id": "fma:148631",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.2,
+   "rank": 2
+  },
+  {
+   "song_id": "fma:149133",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.56,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149189",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.18,
+   "rank": 4
+  },
+  {
+   "song_id": "fma:149196",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.28,
+   "rank": 32
+  },
+  {
+   "song_id": "fma:149214",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.28,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149408",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.94,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149523",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.4,
+   "rank": 3
+  },
+  {
+   "song_id": "fma:149563",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:149570",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.68,
+   "rank": null
+  },
+  {
+   "song_id": "fma:150163",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 6.06,
+   "rank": null
+  },
+  {
+   "song_id": "fma:151775",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.14,
+   "rank": 11
+  },
+  {
+   "song_id": "fma:151969",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.12,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:151970",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 4.26,
+   "rank": null
+  },
+  {
+   "song_id": "fma:152104",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 9.08,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:152532",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 5.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:153726",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 8.38,
+   "rank": 1
+  },
+  {
+   "song_id": "fma:153913",
+   "genre": "unknown",
+   "track": "vocals",
+   "voiced_s": 7.36,
+   "rank": 1
+  }
+ ]
+}
