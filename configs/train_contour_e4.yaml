@@ -1,0 +1,65 @@
+# E4 (docs/DECISIONS.md D-031): whistle robustness via many-melody synthetic whistle
+# contours (interval compression, octave folding, gaps) from Essen MIDI + real-song
+# contours (E2a libraries), fine-tuned from E2b. No MLEnd whistle pairs (D-016: those
+# teach the 8 songs, not whistling). PESTO tracker fine-tune (lit E4b) skipped this run.
+#   python training/scripts/train_contour.py --config configs/train_contour_e4.yaml
+# Reported checkpoint: best.pt = best mean of HumTrans shift+7 and MLEnd val whistle.
+# CHAD val is logged for hum regression only (not used to pick the whistle checkpoint).
+run_name: contour_e4
+steps: 3000
+batch_size: 256
+lr: 0.00003
+weight_decay: 0.05
+warmup_steps: 100
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 100
+select_metric: val/humtrans_val_shift+7_top1,val/mlend_val_whistle_top1
+stretch_min: 0.5
+stretch_max: 1.9
+warp_depth: 0.3
+interval_scale: 0.25
+drift_semitones: 1.0
+jitter_semitones: 0.25
+dropout_prob: 0.6
+octave_error_prob: 0.15
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0
+# Essen for whistle-synth melodies (2,000 deutschl distractors always held out of training).
+synthetic_midi_dirs: raw/essen_midi/deutschl,raw/essen_midi/china
+holdout_midi_dir: raw/essen_midi/deutschl
+holdout_count: 2000
+synthetic_exclude: deut2282
+chad_pairs: false
+chad_val: true
+mlend_pairs: false
+mlend_val: true
+song_holdout: false
+init_ckpt: ckpt/contour_e2b_s0/best.pt
+early_stop_patience: 5
+song_pairs: false
+song_libraries: youtube_charts_v1
+song_fma_parity: even
+# Light whistle-like aug on HumTrans hums (query side).
+whistle_aug_prob: 0.2
+whistle_compress_min: 0.55
+whistle_compress_max: 0.85
+whistle_gap_prob: 0.9
+whistle_gap_max_s: 0.6
+whistle_fold_prob: 0.5
+whistle_fold_range_st: 6.0
+# E4: always-on whistle synth from Essen + song contours.
+whistle_synth: true
+whistle_synth_songs: true

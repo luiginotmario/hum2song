@@ -247,3 +247,51 @@ class SyntheticPairDataset(Dataset):
             "song": features_tensor(reference),
             "song_id": self.ids[index],
         }
+
+
+class WhistleSynthDataset(Dataset):
+    """E4: whistle-like queries from many melodies, paired with clean refs.
+
+    Always applies compress / octave-fold / gaps so the model sees whistle-shaped
+    queries without memorizing the tiny MLEnd song set (D-016 failure mode).
+    """
+
+    def __init__(
+        self,
+        melodies: dict[str, np.ndarray],
+        whistle: WhistleAugment,
+        augment: ContourAugment,
+        windows: PairWindows,
+        seed: int,
+    ) -> None:
+        self.ids = sorted(melodies)
+        self.melodies = melodies
+        self.whistle = whistle
+        self.augment = augment
+        self.windows = windows
+        self.seed = seed
+        self.epoch = EpochCounter()
+
+    def __len__(self) -> int:
+        return len(self.ids)
+
+    def __getitem__(self, index: int) -> dict:
+        rng = np.random.default_rng([self.seed, self.epoch.get(), index, 4])
+        melody = self.melodies[self.ids[index]]
+        query, reference = crop_pair(melody, melody, rng, self.windows)
+        always = WhistleAugment(
+            probability=1.0,
+            compress_min=self.whistle.compress_min,
+            compress_max=self.whistle.compress_max,
+            gap_prob=self.whistle.gap_prob,
+            gap_max_s=self.whistle.gap_max_s,
+            fold_prob=self.whistle.fold_prob,
+            fold_range_st=self.whistle.fold_range_st,
+        )
+        query = whistle_like(query, rng, always, FRAME_S)
+        query = augment_contour(humanize(query, rng, FRAME_S), rng, self.augment, FRAME_S)
+        return {
+            "query": features_tensor(query),
+            "song": features_tensor(reference),
+            "song_id": self.ids[index],
+        }

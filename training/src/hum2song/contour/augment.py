@@ -44,6 +44,27 @@ class WhistleAugment:
     compress_max: float = 0.85
     gap_prob: float = 0.9
     gap_max_s: float = 0.6
+    fold_prob: float = 0.0
+    fold_range_st: float = 6.0
+
+
+def octave_fold(contour: np.ndarray, range_st: float = 6.0) -> np.ndarray:
+    """Fold voiced pitches into ±range_st around the median (whistle octave folding, E4)."""
+    voiced = ~np.isnan(contour)
+    if not voiced.any():
+        return contour
+    median = float(np.median(contour[voiced]))
+    folded = contour.copy()
+    pitches = folded[voiced]
+    while True:
+        high = pitches > median + range_st
+        low = pitches < median - range_st
+        if not high.any() and not low.any():
+            break
+        pitches = np.where(high, pitches - 12.0, pitches)
+        pitches = np.where(low, pitches + 12.0, pitches)
+    folded[voiced] = pitches
+    return folded
 
 
 def whistle_like(
@@ -52,7 +73,12 @@ def whistle_like(
     if spec.probability <= 0.0 or float(rng.random()) >= spec.probability:
         return contour
     compressed = scale_intervals(contour, float(rng.uniform(spec.compress_min, spec.compress_max)))
-    gapped = voicing_gaps(compressed, rng, spec.gap_prob, spec.gap_max_s, frame_s)
+    folded = (
+        octave_fold(compressed, spec.fold_range_st)
+        if float(rng.random()) < spec.fold_prob
+        else compressed
+    )
+    gapped = voicing_gaps(folded, rng, spec.gap_prob, spec.gap_max_s, frame_s)
     return gapped.astype(np.float32)
 
 
@@ -89,6 +115,7 @@ def humanize(
 
 def smooth_voiced(contour: np.ndarray, width: int) -> np.ndarray:
     """Moving average of `width` frames over voiced frames; unvoiced frames stay NaN."""
+    width = min(max(width, 1), max(len(contour), 1))
     if width <= 1:
         return contour.copy()
     voiced = ~np.isnan(contour)

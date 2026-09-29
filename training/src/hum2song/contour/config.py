@@ -56,6 +56,10 @@ class ContourConfig:
     whistle_compress_max: float = 0.85
     whistle_gap_prob: float = 0.9
     whistle_gap_max_s: float = 0.6
+    whistle_fold_prob: float = 0.0
+    whistle_fold_range_st: float = 6.0
+    whistle_synth: bool = False
+    whistle_synth_songs: bool = True
     mlend_pairs: bool = False
     mlend_repeat: int = 2
     mlend_val: bool = False

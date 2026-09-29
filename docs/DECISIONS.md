@@ -1354,3 +1354,41 @@ For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) g
 **Trade-off / what we gave up.** About 1 GPU-h train + about 2 h eval. Did not re-download cover audio for real RMVPE salience (D-019 delete-after-copy; Mac not used).
 
 **Revisit when.** Source audio for the cover set (or another large song set) is available long enough to cache real 360-bin salience on both sides, or an octave-folded salience variant (Salamon 2013) is tried with real posteriors.
+
+## D-031 · E4: many-melody synthetic whistle contours (1 seed): modest held-out gain, hums hurt — keep E2b
+**Date:** 2026-09-29
+
+**Context.** The lit-review plan (E4) asked for whistle robustness from **many melodies**, not from MLEnd's 8 songs. D-015's whistle pairs helped test people but D-016 showed that gain was song familiarity (held-out Hakuna+Potter whistle→hums 0.456 vs D-012's 0.630). E4(a): synthetic whistle-like queries (interval compression 0.55–0.85, octave folding, gaps) from thousands of real-song contours and Essen MIDI. E4(b) PESTO fine-tune on unlabeled MLEnd whistle audio was optional and **skipped** this run. Serving stays on E2b unless E4 also wins on main hum metrics.
+
+**Options.**
+- Keep E2b serving (D-028 / D-029); leave whistles as-is.
+- **E4 synthetic many-melody whistle fine-tune** from E2b, then decide: adopt, dual whistle path, or keep E2b.
+
+**Decision.** E4(a), 1 seed, recipe fixed before training (`configs/train_contour_e4.yaml`).
+- **Train data:** HumTrans InfoNCE (light whistle-like aug, p=0.2) + **WhistleSynthDataset** always applying compress / fold (p=0.5, ±6 st) / gaps on windows from **7,545 melodies** (Essen deutschl+china minus 2,000 distractors and deut2282, plus E2a song contours: youtube_charts_v1 + even FMA). **No MLEnd whistle pairs.**
+- **Init:** `contour_e2b_s0/best.pt`. LR 3e-5, at most 3,000 steps, early-stop patience 5. Select on mean of HumTrans val shift+7 and MLEnd val whistle (CHAD logged only for hum regression). Best at step **100**.
+- **Code:** `WhistleSynthDataset`, `octave_fold`, `whistle_synth` config; short-contour fix in `smooth_voiced` (kernel longer than the clip).
+- **Evaluation:** D-016 `eval_mlend.py --split test --song-holdout`; full MLEnd test; MIR-QBSH +2,000; D-025 `eval_rerank.py --first-stage` on CHAD + MTG-QBH. Files: `docs/paper/results/d031/`.
+
+**Results.** Whistle = `whistle_peak→hum` centroid top-1 (8-way). Hum numbers = top-1 / top-10.
+
+| Setting | E2b | E4 |
+|---|---|---|
+| MLEnd test, **held-out songs** (Hakuna+Potter) whistle→hums | 0.589 | **0.622** |
+| MLEnd test, all 8 songs whistle→hums | 0.631 | 0.631 |
+| MLEnd test, held-out hum→hums | 0.869 | 0.865 |
+| CHAD test, **D-025 pipeline** | **0.533 / 0.638** | 0.525 / 0.635 |
+| MTG-QBH, D-025 | **0.695 / 0.754** | 0.653 / 0.737 |
+| MIR-QBSH +2,000 anywhere | **0.867 / 0.958** | 0.861 / 0.955 |
+
+Lit-review expected held-out / full whistle ~0.63 → **0.68–0.72** (best case). Observed full whistle **unchanged at 0.631**; held-out +3.3 pp vs E2b but still around D-012's D-016 held-out level (~0.63), not the hoped band.
+
+**Takeaways.**
+- Many-melody synthetic whistles **do not** deliver the review's expected jump. They give a small held-out gain over E2b and **no** gain on the full 8-way test.
+- Hums are **hurt**, especially MTG-QBH (−4.2 / −1.7 on D-025). CHAD test and MIR dip slightly.
+- **Keep E2b.** Do **not** adopt E4 for serving and do **not** keep a dual whistle encoder — the whistle upside is too small and the hum downside is clear.
+- D-016's lesson stands: teaching whistling needs something beyond contour-level squeeze-and-fold on MIDI/song F0 (or a better tracker, E4b, not tried here).
+
+**Trade-off / what we gave up.** About 0.2 GPU-h train + about 0.5 h eval. Skipped PESTO self-supervised whistle tracker (E4b). One seed only.
+
+**Revisit when.** E4b (PESTO / spectral-peak self-sup on unlabeled whistles) is tried, or a larger set of **real** whistle→song pairs with many melodies exists, or audio-level whistle synthesis + re-tracking changes what the peak tracker sees.

@@ -27,6 +27,7 @@ from hum2song.contour.data import (
     ContourPairDataset,
     PairWindows,
     SyntheticPairDataset,
+    WhistleSynthDataset,
     collate_pairs,
     load_query_contours,
     load_reference_contours,
@@ -42,7 +43,7 @@ from hum2song.contour.evaluate import (
     mir_sets,
     whole_reference,
 )
-from hum2song.contour.features import FEATURE_DIM, SALIENCE_FEATURE_DIM, midi_contour
+from hum2song.contour.features import FEATURE_DIM, FRAME_S, SALIENCE_FEATURE_DIM, midi_contour
 from hum2song.contour.mlend import MLEndValidation, read_song_holdout, training_pairs
 from hum2song.contour.model import ContourEncoder
 from hum2song.contour.song_pairs import (
@@ -107,6 +108,8 @@ def whistle_spec(config: ContourConfig) -> WhistleAugment:
         compress_max=config.whistle_compress_max,
         gap_prob=config.whistle_gap_prob,
         gap_max_s=config.whistle_gap_max_s,
+        fold_prob=config.whistle_fold_prob,
+        fold_range_st=config.whistle_fold_range_st,
     )
 
 
@@ -148,6 +151,23 @@ def synthetic_melodies(root: Path, config: ContourConfig) -> dict[str, np.ndarra
     return melodies
 
 
+def whistle_synth_melodies(root: Path, config: ContourConfig) -> dict[str, np.ndarray]:
+    """E4: Essen MIDI + real-song contours for whistle-shaped synthetic queries."""
+    min_frames = max(int(round(config.query_min_s / FRAME_S)), 1)
+    melodies = {
+        key: contour
+        for key, contour in synthetic_melodies(root, config).items()
+        if len(contour) >= min_frames
+    }
+    if not config.whistle_synth_songs:
+        return melodies
+    rows = training_songs(root, split_list(config.song_libraries), config.song_fma_parity)
+    for song_id, route in load_song_routes(rows).items():
+        if len(route["ref"]) >= min_frames:
+            melodies[f"whistle_song:{song_id}"] = route["ref"]
+    return melodies
+
+
 def song_holdout(config: ContourConfig) -> dict:
     """Held-out MLEnd songs and HumTrans exclusions (D-016); empty when switched off."""
     if not config.song_holdout:
@@ -156,7 +176,7 @@ def song_holdout(config: ContourConfig) -> dict:
 
 
 def training_dataset(root: Path, records, contours: dict, config: ContourConfig) -> Dataset:
-    """HumTrans hum pairs, plus MIDI-only synthetic pairs and MLEnd whistle pairs if enabled."""
+    """HumTrans hum pairs, plus MIDI/song synth, whistle-synth (E4), and MLEnd/CHAD if enabled."""
     holdout = song_holdout(config)
     excluded = set(holdout["humtrans_exclude"])
     humtrans = [r for r in select(records, "humtrans", "train") if r.song_id not in excluded]
@@ -171,11 +191,26 @@ def training_dataset(root: Path, records, contours: dict, config: ContourConfig)
             whistle_spec(config),
         )
     ]
-    melodies = synthetic_melodies(root, config)
-    if melodies:
-        parts.append(
-            SyntheticPairDataset(melodies, augment_spec(config), window_spec(config), config.seed)
-        )
+    if config.whistle_synth:
+        melodies = whistle_synth_melodies(root, config)
+        if melodies:
+            parts.append(
+                WhistleSynthDataset(
+                    melodies,
+                    whistle_spec(config),
+                    augment_spec(config),
+                    window_spec(config),
+                    config.seed,
+                )
+            )
+    else:
+        melodies = synthetic_melodies(root, config)
+        if melodies:
+            parts.append(
+                SyntheticPairDataset(
+                    melodies, augment_spec(config), window_spec(config), config.seed
+                )
+            )
     if config.mlend_pairs:
         parts.append(
             training_pairs(
