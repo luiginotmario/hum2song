@@ -90,3 +90,37 @@ def test_cover_batch_rows_drop_blocked_and_known(tmp_path):
     assert batch["dropped"] == {"blocked": 1, "known": 1, "no_meta": 1}
     assert sorted(p.name for p in audio.iterdir()) == ["o_g1.webm"]
     assert json.loads(json.dumps(batch["rows"][0]))["version"] == "original"
+
+
+def test_stitch_sections_places_segments(tmp_path):
+    from hum2song.contour.cover_pairs import stitch_sections
+
+    audio = tmp_path / "audio"
+    audio.mkdir()
+    (audio / "c1_g.s2.m4a").write_bytes(b"a")
+    (audio / "c1_g.s5.m4a").write_bytes(b"b")
+    (audio / "o_g.webm").write_bytes(b"c")
+
+    def decode(path, rate):
+        return np.full(rate, 0.5 if path.name.endswith("s2.m4a") else -0.5, dtype=np.float32)
+
+    assert stitch_sections(audio, decode, rate=100) == 1
+    assert sorted(p.name for p in audio.iterdir()) == ["c1_g.wav", "o_g.webm"]
+    import wave
+
+    with wave.open(str(audio / "c1_g.wav")) as handle:
+        samples = np.frombuffer(handle.readframes(handle.getnframes()), dtype="<i2")
+    assert len(samples) == 600 and samples[250] > 0 and samples[550] < 0 and samples[50] == 0
+
+
+def test_rename_id_files(tmp_path):
+    from hum2song.contour.cover_pairs import rename_id_files
+
+    (tmp_path / "audio").mkdir()
+    (tmp_path / "audio" / "v3_AbC-1.m4a").write_bytes(b"x")
+    (tmp_path / "v3_meta.tsv").write_text("AbC-1\t200\tSong\n", encoding="utf-8")
+    lst = tmp_path / "list.tsv"
+    lst.write_text("o_g\thttps://www.youtube.com/watch?v=AbC-1\t1-2\n", encoding="utf-8")
+    assert rename_id_files(tmp_path, lst) == 1
+    assert (tmp_path / "audio" / "o_g.m4a").exists()
+    assert (tmp_path / "e2b_meta.tsv").read_text(encoding="utf-8") == "o_g\tAbC-1\t200\tSong\n"

@@ -1243,4 +1243,54 @@ For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) g
 **Revisit when.**
 - Seeds 1–2, to see whether the clean-pool gain holds.
 - The chart library grows several-fold from the download batches: re-train on it.
-- Luigi approves E2b (cover pairs, real version variation instead of self-supervision).
+- E2b is done (D-028): clear gain; adopted.
+
+## D-028 · E2b: fine-tuning D-012 on CHAD cover → original pairs with the CLEWS loss (1 seed): clear gain, adopted
+**Date:** 2026-09-29
+
+**Context.** D-026 (E2a) fine-tuned D-012 on self-supervised windows of the songs we already had; the gain was inside seed noise. The review (E2) named real version variation as the stronger lever. Luigi approved E2b: download CHAD's cover set from YouTube under the D-019 rules (Mac only, standalone yt-dlp, no cookies, polite pacing, stop on the bot check, delete after copying, disclose in the paper), build cover→original contour pairs, fine-tune from D-012 with the CLEWS loss, evaluate with the D-025 pipeline, and check MIR-QBSH.
+
+**Options.**
+- Keep D-012 (serving model after D-026).
+- E2a (self-supervised song windows, D-026).
+- **E2b** (CHAD cover → original pairs).
+
+**Decision.** E2b, 1 seed, recipe fixed before training (`configs/train_contour_e2b.yaml`, `contour/cover_pairs.py`).
+- **Downloads (Mac, D-019 rules).**
+  - List: the 2,000 CHAD cover groups with the most aligned-fragment evidence (of 4,409 with an available original and at least one cover). Every CHAD hum group outside the train split (195 groups: test, val, unsplit) is excluded with all its videos. MTG-QBH and MLEnd titles are filtered by yt-dlp `--match-filter`. A post-filter also drops any recording whose video title names a CHAD / MTG / MLEnd evaluation song.
+  - Per group: the original and its best-correlated cover (shared fragment intervals from CHAD).
+  - First attempt: segment downloads (`--download-sections`, fragments ±4 s) at the lowest bitrate, 6 in parallel. YouTube throttled without a JS runtime (~9 downloads/min). Luigi approved a standalone `deno` binary inside `~/hum2song_yt` only; with it, six long-lived yt-dlp workers fetched whole files at 48 kbps (~46 downloads/min). Segments from the first attempt were placed on a silent timeline at their CHAD start times before extraction.
+  - Result: 3,004 audio files → 2,567 library rows after the title filter (206 blocked, 0 known). Melody extraction succeeded for all 2,596 tracks (29 already from an earlier harvest). Audio was deleted from the Mac and from Lambda after extraction. Scripts that rebuild the list are in `docs/paper/results/d028/download/`.
+- **Pairs:** 1,156 cover → original items (one cover per group; both tracks extracted). The query is a 3–12 s window of the cover's melody inside a shared fragment (vocal stem, or with probability 0.5 the full-mix track), humanized and augmented like a hum. The references are 4 windows of the original around the aligned position (±3 s, slightly longer or shorter, slightly stretched). The CLEWS loss takes the best reference window as the positive.
+- **Loss / training:** same as E2a (InfoNCE on HumTrans + CLEWS weight 1; from `contour_v2_s0/last.pt`, LR 3e-5, at most 3,000 steps; validate every 100 steps on CHAD val; stop after 5 validations without improvement). Best at step 800, early stop at 1,300; about 0.2 GPU-h.
+- **Evaluation:** `eval_rerank.py --first-stage` for both models on the same ~5.3k-song pool (charts + FMA + YouTube targets). Weights and first stage chosen on CHAD val separately per model. MIR-QBSH with `eval_contour.py` (+2,000 Essen distractors).
+
+**Results.** Files: `docs/paper/results/d028/`. CHAD val (selection): 0.394 → **0.434** (training validator; pipeline val 0.414 → 0.437). Top-1 / top-10:
+
+| Setting | D-012 s0 | E2b s0 |
+|---|---|---|
+| CHAD test, base score (old API) | 0.303 / 0.469 | **0.332 / 0.505** |
+| CHAD test, D-023 re-rank | 0.465 / 0.550 | **0.496 / 0.579** |
+| CHAD test, **D-025 pipeline** | 0.512 / 0.616 | **0.533 / 0.638** |
+| MTG-QBH, D-025 pipeline | 0.619 / 0.712 | **0.695 / 0.754** |
+| MLEnd, D-025 pipeline | 0.344 / 0.412 | **0.376 / 0.449** |
+
+- **MIR-QBSH +2,000 (anywhere):** 0.872 / 0.961 → 0.867 / 0.958 (−0.5 top-1, −0.3 top-10). Inside the review's pre-set limit of 0.01 top-10.
+- **HumTrans test:** 0.996 top-1, unchanged.
+- **Candidate recall** (union@200) rises slightly: CHAD test 0.752 → 0.766, MTG-QBH 0.847 → 0.864.
+
+**Takeaways.**
+- **Real cover → original pairs beat self-supervision.** E2a (1.8k self-supervised songs) moved CHAD test D-025 by −0.7 / +0.4; E2b (1.2k cover pairs) moves it by **+2.1 / +2.2**, and the base score by **+2.8 / +3.6**, outside D-012's own seed spread on CHAD test base top-1 (0.297–0.314).
+- Gains hold on every real-hum set. MTG-QBH jumps the most (+7.6 top-1), where the window first stage already helped most.
+- MIR-QBSH barely moves (−0.3 top-10), unlike D-021 and E2a (~2 top-1 points). Cover variation is closer to what the MIDI-reference protocol needs than either real-hum pairs of 116 songs or self-supervised song windows.
+- **E2b is adopted as the new serving model** (`contour_e2b_s0/best.pt`). Chunks, windows and contours must be re-indexed with it before the API switches (follow-up; not done in this decision).
+
+**Trade-off / what we gave up.**
+- YouTube downloads under D-019 (personal research, transient audio, disclosed). About 1.5 h of Mac wall-clock with deno; about 2 GPU-h of extraction; about 0.2 GPU-h of training; about 1.5 h of evaluation.
+- Only 1 seed. Only the best cover per group (no second cover). About half of the 2,000-group target became usable pairs (missing videos, title filter, failed downloads).
+- Deno binary on the Mac (deleted with the folder). Whole-file downloads for most of the set, because long-lived yt-dlp workers cannot cut different sections per video; segments from the first attempt were kept and stitched.
+
+**Revisit when.**
+- Seeds 1–2, or a second cover per group, to see how far the gain goes.
+- The library is re-indexed with `contour_e2b_s0` and the live API is switched.
+- More CHAD covers become available without the bot check (or with a JS runtime that stays inside the D-019 rules).

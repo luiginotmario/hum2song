@@ -18,6 +18,7 @@ import ast
 import csv
 import re
 import unicodedata
+import wave
 from pathlib import Path
 
 import numpy as np
@@ -240,3 +241,78 @@ def cover_batch_rows(batch_dir: Path, blocked: list, known: set[str]) -> dict:
         known.add(row["song_id"])
         rows.append(row)
     return {"rows": rows, "dropped": dropped}
+
+
+SECTION_FILE = re.compile(r"^(?P<tag>[^.]+)\.s(?P<start>\d+)\.\w+$")
+STITCH_RATE = 44100
+
+
+def section_files(audio_dir: Path) -> dict[str, list[tuple[float, Path]]]:
+    """tag -> [(start_s, file)] of segment downloads named <tag>.s<start>.<ext>."""
+    sections: dict[str, list[tuple[float, Path]]] = {}
+    for path in sorted(audio_dir.iterdir()):
+        match = SECTION_FILE.match(path.name)
+        if match:
+            sections.setdefault(match["tag"], []).append((float(match["start"]), path))
+    return sections
+
+
+def place_sections(parts: list[tuple[float, np.ndarray]], rate: int) -> np.ndarray:
+    """One silent timeline with every segment at its start time (later segments win)."""
+    end = max(int(start * rate) + len(audio) for start, audio in parts)
+    timeline = np.zeros(end, dtype=np.float32)
+    for start, audio in parts:
+        first = int(start * rate)
+        timeline[first : first + len(audio)] = audio
+    return timeline
+
+
+def write_wav(path: Path, audio: np.ndarray, rate: int) -> None:
+    with wave.open(str(path), "wb") as handle:
+        handle.setnchannels(1)
+        handle.setsampwidth(2)
+        handle.setframerate(rate)
+        handle.writeframes((np.clip(audio, -1.0, 1.0) * 32767).astype("<i2").tobytes())
+
+
+def stitch_sections(audio_dir: Path, decode, rate: int = STITCH_RATE) -> int:
+    """Replace each tag's segment files by <tag>.wav with the segments at their CHAD times, so
+    fragment intervals keep their absolute meaning; returns the number of stitched tags."""
+    sections = section_files(audio_dir)
+    for tag, files in sections.items():
+        parts = [(start, decode(path, rate)) for start, path in files]
+        write_wav(audio_dir / f"{tag}.wav", place_sections(parts, rate), rate)
+        for _start, path in files:
+            path.unlink()
+    return len(sections)
+
+
+def video_tags(list_path: Path) -> dict[str, str]:
+    """youtube id -> download tag from a download list (tag, watch URL, ...)."""
+    tags = {}
+    for line in list_path.read_text(encoding="utf-8").splitlines():
+        parts = line.split("\t")
+        if len(parts) >= 2 and "v=" in parts[1]:
+            tags[parts[1].split("v=", 1)[1]] = parts[0]
+    return tags
+
+
+def rename_id_files(batch_dir: Path, list_path: Path, prefix: str = "v3_") -> int:
+    """Files named <prefix><youtube id>.<ext> (id-named batch downloads) -> <tag>.<ext>, and
+    their meta lines (id, duration, title in <prefix>meta.tsv) appended to e2b_meta.tsv."""
+    tags = video_tags(list_path)
+    meta_path = batch_dir / f"{prefix}meta.tsv"
+    lines = meta_path.read_text(encoding="utf-8").splitlines() if meta_path.exists() else []
+    tagged = [
+        f"{tags[line.split(chr(9))[0]]}\t{line}" for line in lines if line.split("\t")[0] in tags
+    ]
+    with open(batch_dir / "e2b_meta.tsv", "a", encoding="utf-8") as handle:
+        handle.writelines(line + "\n" for line in tagged)
+    renamed = 0
+    for path in sorted((batch_dir / "audio").glob(f"{prefix}*")):
+        video = path.name[len(prefix) :].rsplit(".", 1)[0]
+        target = tags.get(video)
+        if target:
+            path.rename(path.with_name(f"{target}{path.suffix}"))
+            renamed += 1
+    return renamed

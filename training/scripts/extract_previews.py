@@ -116,10 +116,16 @@ def process_block(pool, client, rows, scratch, models, device, track_dir) -> lis
     return lines
 
 
+def status_name(shard: str) -> str:
+    """status.jsonl, or status_<i>of<n>.jsonl for a shard so parallel runs never interleave."""
+    return "status.jsonl" if shard == "0/1" else f"status_{shard.replace('/', 'of')}.jsonl"
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Extract melody tracks from previews")
     parser.add_argument("--data-root", type=Path, default=Path(DEFAULT_DATA_ROOT))
     parser.add_argument("--name", default="previews_v1")
+    parser.add_argument("--shard", default="0/1", help="i/n: every n-th pending row from i")
     return parser.parse_args(argv)
 
 
@@ -132,6 +138,8 @@ def main(argv: list[str] | None = None) -> None:
     track_dir.mkdir(parents=True, exist_ok=True)
     rows = [r for r in read_jsonl(library_dir / "previews.jsonl")]
     rows = [r for r in rows if not track_file(track_dir, r["song_id"]).exists()]
+    index, count = (int(v) for v in args.shard.split("/"))
+    rows = rows[index::count]
     models = {
         "separator": load_separator(device),
         "rmvpe": load_rmvpe(args.data_root / DEFAULT_RMVPE, device),
@@ -142,7 +150,7 @@ def main(argv: list[str] | None = None) -> None:
     with (
         tempfile.TemporaryDirectory(prefix="h2s_previews_") as scratch,
         ThreadPoolExecutor(DOWNLOAD_THREADS) as pool,
-        open(library_dir / "status.jsonl", "a", encoding="utf-8") as status,
+        open(library_dir / status_name(args.shard), "a", encoding="utf-8") as status,
     ):
         for first in range(0, len(rows), BLOCK):
             block = rows[first : first + BLOCK]
