@@ -22,6 +22,7 @@ from torch.utils.data import ConcatDataset, DataLoader, Dataset
 from hum2song.contour import chad
 from hum2song.contour.augment import ContourAugment, WhistleAugment
 from hum2song.contour.config import ContourConfig
+from hum2song.contour.cover_pairs import CoverPairDataset, cover_items
 from hum2song.contour.data import (
     ContourPairDataset,
     PairWindows,
@@ -212,6 +213,29 @@ def lr_multiplier(step: int, warmup: int, total: int) -> float:
     return 0.5 * (1.0 + math.cos(math.pi * progress))
 
 
+def cover_pair_dataset(root: Path, config: ContourConfig) -> CoverPairDataset:
+    items = cover_items(root)
+    groups = len({item["group"] for item in items})
+    LOGGER.info("cover pairs: %s covers of %s songs", len(items), groups)
+    return CoverPairDataset(
+        items,
+        augment_spec(config),
+        config.seed,
+        refs=config.song_refs,
+        offset_s=config.song_offset_s,
+        mix_prob=config.song_mix_prob,
+        query_s=(config.query_min_s, config.query_max_s),
+    )
+
+
+def song_dataset(root: Path, config: ContourConfig) -> SongWindowDataset:
+    """Song-window (D-026) or cover-pair (D-028) dataset for the CLEWS loss."""
+    builders = {"windows": song_window_dataset, "covers": cover_pair_dataset}
+    if config.song_source not in builders:
+        raise ValueError(f"unknown song_source: {config.song_source}")
+    return builders[config.song_source](root, config)
+
+
 def song_window_dataset(root: Path, config: ContourConfig) -> SongWindowDataset:
     rows = training_songs(root, split_list(config.song_libraries), config.song_fma_parity)
     routes = load_song_routes(rows)
@@ -277,7 +301,7 @@ def song_batches(root: Path, config: ContourConfig):
     """Endless song-window batches (D-026), or None when switched off."""
     if not config.song_pairs:
         return None
-    dataset = song_window_dataset(root, config)
+    dataset = song_dataset(root, config)
     loader = DataLoader(
         dataset,
         batch_size=config.song_batch_size,

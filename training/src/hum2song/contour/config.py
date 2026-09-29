@@ -79,6 +79,9 @@ class ContourConfig:
     song_loss_weight: float = 1.0
     clews_gamma: float = 5.0
     clews_eps: float = 1.0e-6
+    # E2b (D-028): "covers" swaps the self-supervised song windows for CHAD cover -> original
+    # pairs (contour/cover_pairs.py); loss and batch settings are the song_* ones above.
+    song_source: str = "windows"
 
     def resolved_data_root(self) -> Path:
         return Path(self.data_root or os.environ.get("H2S_DATA", DEFAULT_DATA_ROOT))
