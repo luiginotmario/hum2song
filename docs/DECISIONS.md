@@ -1079,3 +1079,64 @@ For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) g
 **Trade-off / what we gave up.** Salience-based input (review E3, octave-folded salience) remains the principled route for reference-side octave and harmony errors. It needs retraining.
 
 **Revisit when.** E3 (salience input) is run, or a melody extractor with explicit octave tracking is available.
+
+## D-025 · Window-level first stage: 5 s window votes over the whole library, plus a pgvector window index
+**Date:** 2026-09-28
+
+**Context.** D-023's re-ranking only reorders the top 50 songs of the API's 10 s chunk score, so a target outside that shortlist cannot be recovered. On CHAD test only 58% of targets are in the base top 50, and on MTG-QBH only 29%. Luigi asked for a window-level first stage with 5 s windows indexed in pgvector.
+
+**Options.**
+- A deeper chunk shortlist.
+- A first stage built from the same 5 s windows the re-ranker uses.
+
+**Decision.** Window first stage (`scripts/eval_rerank.py --first-stage`, `catalog/rerank.py`), D-012 model, D-019 headline pool. No retraining.
+- **Window vote:** each query window (5 s, 1 s hop) finds its best window in every song. A song's vote is the mean of those best similarities over the query windows. Order-free, and exact (GPU, all ~475k windows) in the offline evaluation.
+- **Candidates:** the top K songs by base, by window vote, or their union, with K ∈ {50, 100, 200}.
+- **Re-rank:** a z-scored weighted sum of base, window vote, seq and dtw (D-023). Weights come from {0, 0.5, 1, 2}, with base in {0, 1}.
+- The candidate source, K and the weights are **all chosen on CHAD val only**. Chosen: union of the top 200 by base and by window vote; weights base 1, window 1, seq 0.5, dtw 1.
+- **Serving:** `sql/002_windows.sql` (window table with an HNSW cosine index), `scripts/index_windows.py`, and `db.window_votes`. Each query window retrieves its 400 nearest windows; a song missing from a window's list gets that list's weakest similarity. `scripts/eval_window_index.py` compares these approximate votes with exact votes over the same stored windows.
+
+**Results.** Files: `docs/paper/results/d025/`. Top-1 / top-10 (MRR), same pool and queries as D-023:
+
+| Query set | Base (API) | D-023 re-rank | Window vote only | **First stage + re-rank** |
+|---|---|---|---|---|
+| CHAD val (568, selection) | 0.231 / 0.386 | 0.356 / 0.452 | 0.363 / 0.488 | 0.414 / 0.523 |
+| CHAD test (2,482) | 0.303 / 0.469 | 0.465 / 0.550 | 0.448 / 0.559 | **0.512 / 0.616** (0.549) |
+| MTG-QBH sung (118) | 0.034 / 0.153 | 0.246 / 0.288 | 0.602 / 0.720 | **0.619 / 0.712** (0.649) |
+| MLEnd hum (4,804) | 0.030 / 0.078 | 0.119 / 0.137 | 0.183 / 0.228 | **0.193 / 0.232** (0.208) |
+
+- **Candidate recall** (target among the candidates), base@50 → union@200:
+  - CHAD test 0.579 → 0.752;
+  - MTG-QBH 0.288 → 0.847;
+  - MLEnd 0.143 → 0.319.
+- **pgvector window index** (served library: 3,639 searchable songs, 494,528 windows; built in about 20 min). Target recall@50 / @200 on evenly spaced samples:
+
+| Query set | Chunk HNSW (API today) | Window HNSW votes | Exact window votes |
+|---|---|---|---|
+| CHAD val (546) | 0.500 / 0.628 | 0.562 / 0.641 | 0.568 / 0.645 |
+| CHAD test (600) | 0.587 / 0.688 | 0.650 / 0.730 | 0.658 / 0.733 |
+| MTG-QBH (110) | 0.300 / 0.427 | 0.845 / 0.891 | 0.818 / 0.882 |
+
+  - Approximate and exact votes find the target equally often (within 1 point, or better on MTG-QBH). Their top-50 lists overlap only 55–72%, because songs deep in the list get imputed scores.
+  - About 0.15 s per query for all three searches together (not a tuned latency measurement).
+- **MIR-QBSH:** unaffected by construction. The model is unchanged, and the MIR-QBSH protocol (contour vs MIDI, D-005) does not use the library search.
+
+**Takeaways.**
+- **The biggest single gain on real audio so far, still without training.** Against the API's score:
+  - CHAD test top-1 0.303 → 0.512 and top-10 0.469 → 0.616;
+  - MTG-QBH top-1 0.034 → 0.619 (18×);
+  - MLEnd 0.030 → 0.193.
+  - Against D-023: +4.7 top-1 and +6.6 top-10 on CHAD test.
+- **Long queries were the problem, and window votes fix it.** On MTG-QBH (27 s sung queries), the window vote alone reaches 0.602 top-1, while any single-embedding query stays below 0.05.
+- **It can be served.** The HNSW window index keeps the exact vote's recall, and needs about 5× the chunk index's rows.
+- MLEnd stays low: 4 of its 8 songs are in the library, and its hums are short and hard (D-015/D-016).
+
+**Trade-off / what we gave up.**
+- About 5× more vectors (494k vs 102k) and one HNSW query per query window.
+- The re-rank adds per-query DP and DTW on up to 400 songs, which is fine offline. The API still needs this pipeline wired in.
+- One model seed only; weights were picked on 29 val songs.
+
+**Revisit when.**
+- Wiring the pipeline into `server/` (window votes → re-rank).
+- After E2a or any new model: re-run with the same selection rule.
+- When the library passes ~10k songs: check the recall and latency of the window HNSW index.
