@@ -8,13 +8,13 @@ windows of its best window (a query window that does not reach the song counts t
 window's weakest retrieved similarity).
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
 
 SQL_DIR = Path(__file__).resolve().parents[4] / "sql"
-SCHEMA_FILES = ("001_library.sql", "002_windows.sql")
+SCHEMA_FILES = ("001_library.sql", "002_windows.sql", "003_contours.sql")
 CHUNK_CANDIDATES = 400
 WINDOW_CANDIDATES = 400
 EF_SEARCH = 400
@@ -40,6 +40,16 @@ class SongHit:
     artist: str
     score: float
     best_start_s: float
+
+
+@dataclass
+class SongVectors:
+    """What the re-ranking stage needs of one song (D-027)."""
+
+    chunks: np.ndarray
+    window_starts: np.ndarray = field(default_factory=lambda: np.zeros(0))
+    windows: np.ndarray = field(default_factory=lambda: np.zeros((0, 0), dtype=np.float32))
+    contour: np.ndarray = field(default_factory=lambda: np.zeros(0, dtype=np.float32))
 
 
 def connect(url: str):
@@ -179,3 +189,73 @@ def window_votes(connection, query_windows: np.ndarray, limit: int = WINDOW_CAND
     """(song_id, vote) of every song reached by a query window, best first."""
     votes = vote([nearest_windows(connection, window, limit) for window in query_windows])
     return sorted(votes.items(), key=lambda item: -item[1])
+
+
+def has_windows(connection) -> bool:
+    return bool(connection.execute("SELECT EXISTS (SELECT 1 FROM windows)").fetchone()[0])
+
+
+def contoured_songs(connection) -> set[str]:
+    return {row[0] for row in connection.execute("SELECT song_id FROM song_contours")}
+
+
+def contour_bytes(contour: np.ndarray) -> bytes:
+    return np.asarray(contour, dtype=np.float16).tobytes()
+
+
+def contour_from_bytes(data: bytes) -> np.ndarray:
+    return np.frombuffer(data, dtype=np.float16).astype(np.float32)
+
+
+def insert_contour(connection, song_id: str, contour: np.ndarray) -> None:
+    connection.execute(
+        "INSERT INTO song_contours (song_id, contour) VALUES (%s, %s) "
+        "ON CONFLICT (song_id) DO UPDATE SET contour = EXCLUDED.contour",
+        (song_id, contour_bytes(contour)),
+    )
+
+
+def stacked(rows: list[tuple]) -> dict[str, list]:
+    """song_id -> list of the remaining columns, in row order."""
+    grouped: dict[str, list] = {}
+    for song, *rest in rows:
+        grouped.setdefault(song, []).append(rest)
+    return grouped
+
+
+def as_matrix(vectors: list) -> np.ndarray:
+    return np.stack([v.to_numpy().astype(np.float32) for v in vectors])
+
+
+def song_vectors(connection, song_ids: list[str]) -> dict[str, SongVectors]:
+    """Chunk embeddings, windows (start, embedding) and contour of the given songs."""
+    chunks = stacked(
+        connection.execute(
+            "SELECT song_id, embedding FROM chunks WHERE song_id = ANY(%s)", (song_ids,)
+        ).fetchall()
+    )
+    windows = stacked(
+        connection.execute(
+            "SELECT song_id, start_s, embedding FROM windows WHERE song_id = ANY(%s) "
+            "ORDER BY song_id, start_s",
+            (song_ids,),
+        ).fetchall()
+    )
+    contours = dict(
+        connection.execute(
+            "SELECT song_id, contour FROM song_contours WHERE song_id = ANY(%s)", (song_ids,)
+        ).fetchall()
+    )
+    return {
+        song: SongVectors(
+            chunks=as_matrix([row[0] for row in rows]),
+            window_starts=np.array([row[0] for row in windows.get(song, [])], dtype=np.float32),
+            windows=as_matrix([row[1] for row in windows[song]])
+            if song in windows
+            else np.zeros((0, 0), dtype=np.float32),
+            contour=contour_from_bytes(contours[song])
+            if song in contours
+            else np.zeros(0, dtype=np.float32),
+        )
+        for song, rows in chunks.items()
+    }

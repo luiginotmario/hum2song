@@ -1140,3 +1140,46 @@ For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) g
 - Wiring the pipeline into `server/` (window votes → re-rank).
 - After E2a or any new model: re-run with the same selection rule.
 - When the library passes ~10k songs: check the recall and latency of the window HNSW index.
+
+## D-027 · The window pipeline in the live search API
+**Date:** 2026-09-28
+
+**Context.** D-025's first stage and re-ranking raised real-hum accuracy sharply, but only in the offline evaluation. `POST /search` still ranked songs by their best 10 s chunk (D-017).
+
+**Options.**
+- Keep chunks in the API and use windows offline only.
+- Serve the D-025 pipeline with exactly the offline settings.
+
+**Decision.** Serve it (`catalog/window_search.py`, `catalog/search.py`, `server/api.py`).
+- **First stage:** the top 200 songs from the chunk HNSW index (1,000 nearest chunks), plus the top 200 by window votes from the window HNSW index (400 nearest windows per 5 s query window).
+- **Features:** for each candidate, computed from its stored vectors: base, window vote, seq and dtw, the same functions as `eval_rerank.py`.
+- **Re-rank:** the D-025 weights (base 1, window 1, seq 0.5, dtw 1), chosen on CHAD val only.
+- **Storage:** `sql/003_contours.sql` stores each song's melody contour (float16) for the DTW step. `index_windows.py` now fills both windows and contours, and the batch job runs it after `index_tracks.py`.
+- **Memory:** candidate vectors are cached in the API process after first use (`SongCache`).
+- **Queries:** the whole-query embedding keeps the first 20 s as before. Query windows cover up to 60 s.
+- **API:** `mode=windows` (default) or `mode=chunks`. `windows` falls back to chunks when the library has no window index. `/health` reports whether the window index exists. The response adds `mode`; each result's `score` is the fused score, and `best_start_s` is where the matched path starts in the song.
+- **Tests:** `tests/test_window_search.py` covers the grid placement, the ranking of a time-consistent song, songs without windows, the cache, contour storage, the fallback and mode validation.
+
+**Results.** File: `docs/paper/results/d027/live_v2_s0.json`. `scripts/eval_live_search.py` sends real hums (cached contours, so no RMVPE time) through the same functions `/search` calls, against the served library: 3,639 searchable songs, including all CHAD, MTG-QBH and MLEnd targets. Samples are evenly spaced. Top-1 / top-10, mean search time:
+
+| Query set | Chunks (D-017 API) | Windows (D-027) |
+|---|---|---|
+| CHAD test (300) | 0.300 / 0.447, 0.02 s | **0.517 / 0.657**, 0.34 s |
+| CHAD val (300) | 0.147 / 0.240, 0.02 s | **0.260 / 0.337**, 0.45 s |
+| MTG-QBH sung (110) | 0.036 / 0.127, 0.02 s | **0.618 / 0.755**, 0.56 s |
+
+- The live path reproduces the offline D-025 gain (CHAD test 0.512 / 0.616 and MTG-QBH 0.619 / 0.712 offline, on a different pool).
+- CHAD val is lower here than offline because the served library contains every CHAD song (train and test too) as competitors. Offline, the pool held only the val songs' own targets.
+- Search time grows from about 0.02 s to 0.3–0.6 s per query on the A100 host, before RMVPE. Most of that is the HNSW window queries and the first database load of candidate vectors.
+
+**Takeaways.**
+- **The API now serves the best pipeline we have**, with the same numbers as the offline evaluation.
+- Latency is acceptable for a hum search (RMVPE on the audio costs more), but it is 15–25× the chunk search.
+
+**Trade-off / what we gave up.**
+- Memory in the API process grows with the songs that have been candidates: up to ~0.5 GB of window vectors at today's library size.
+- A second index and a contour table must be kept in sync by the batch job.
+
+**Revisit when.**
+- The library passes ~10k songs: measure HNSW recall, latency and cache memory, and consider batching the window queries into one SQL call.
+- A new model is adopted: re-index chunks, windows and contours with it.

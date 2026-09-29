@@ -1,4 +1,6 @@
-"""Minimal search API: POST /search with an audio file -> top-k songs (D-017).
+"""Minimal search API: POST /search with an audio file -> top-k songs (D-017, D-027).
+
+`mode=windows` (default) runs the D-025 window pipeline; `mode=chunks` the D-017 search.
 
     H2S_DATABASE_URL=postgresql://... H2S_CKPT=... H2S_RMVPE=... \\
         uvicorn hum2song.server.api:app --host 127.0.0.1 --port 8000
@@ -13,8 +15,9 @@ from typing import Annotated
 import torch
 from fastapi import FastAPI, File, HTTPException, UploadFile
 
-from hum2song.catalog.db import connect, library_counts
-from hum2song.catalog.search import QueryEncoder, search_audio
+from hum2song.catalog.db import connect, has_windows, library_counts
+from hum2song.catalog.search import MODES, QueryEncoder, search_audio
+from hum2song.catalog.window_search import SongCache
 
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 DEFAULT_TOP_K = 10
@@ -34,13 +37,28 @@ def database():
     return connect(os.environ["H2S_DATABASE_URL"])
 
 
+@lru_cache(maxsize=1)
+def song_cache() -> SongCache:
+    return SongCache()
+
+
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", **library_counts(database()), "model": encoder().model_ver}
+    counts = library_counts(database())
+    return {
+        "status": "ok",
+        **counts,
+        "window_index": has_windows(database()),
+        "model": encoder().model_ver,
+    }
 
 
 @app.post("/search")
-async def search(audio: Annotated[UploadFile, File()], top_k: int = DEFAULT_TOP_K) -> dict:
+async def search(
+    audio: Annotated[UploadFile, File()], top_k: int = DEFAULT_TOP_K, mode: str = "windows"
+) -> dict:
+    if mode not in MODES:
+        raise HTTPException(status_code=422, detail=f"mode must be one of {list(MODES)}")
     data = await audio.read()
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=413, detail="audio larger than 10 MB")
@@ -48,4 +66,11 @@ async def search(audio: Annotated[UploadFile, File()], top_k: int = DEFAULT_TOP_
     with tempfile.NamedTemporaryFile(suffix=suffix) as handle:
         handle.write(data)
         handle.flush()
-        return search_audio(encoder(), database(), Path(handle.name), min(top_k, MAX_TOP_K))
+        return search_audio(
+            encoder(),
+            database(),
+            Path(handle.name),
+            min(top_k, MAX_TOP_K),
+            mode=mode,
+            cache=song_cache(),
+        )

@@ -25,7 +25,7 @@ from hum2song.catalog.fma import read_jsonl
 from hum2song.catalog.probe import hum_crop, rank_of, render_hum, summarize_ranks
 from hum2song.catalog.real_eval import pick_track
 from hum2song.catalog.real_pool import load_tracks
-from hum2song.catalog.search import QueryEncoder, search_audio
+from hum2song.catalog.search import QueryEncoder, search_audio, voiced_seconds
 from hum2song.config import DEFAULT_DATA_ROOT
 from hum2song.contour.features import rmvpe_contour
 from hum2song.contour.melody import TRACK_RATE
@@ -61,7 +61,8 @@ def rendered_query(contour: np.ndarray, rng: np.random.Generator) -> np.ndarray:
 
 def probe_song(encoder, connection, song_id: str, path: Path, genre: str, rng) -> dict:
     kind, contour = indexed_track(path)
-    embedding, voiced_s = encoder.embed(rendered_query(contour, rng))
+    query = encoder.contour(rendered_query(contour, rng))
+    embedding, voiced_s = encoder.embed(query), voiced_seconds(query)
     results = [asdict(hit) for hit in song_hits(connection, embedding, TOP_K)]
     return {
         "song_id": song_id,

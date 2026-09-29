@@ -1,10 +1,10 @@
-"""Index 5 s windows of every indexed song into pgvector for the first stage (D-025).
+"""Index 5 s windows and the melody contour of every indexed song (D-025, D-027).
 
     python scripts/index_windows.py --db postgresql://...
 
 Windows come from the same melody track the chunk index used (vocals, or the mix for
-instrumental songs), cut exactly as in scripts/eval_rerank.py. Songs that already have
-windows are skipped.
+instrumental songs), cut exactly as in scripts/eval_rerank.py; the contour of that track is
+stored for the re-ranking stage of live search. Songs that already have both are skipped.
 """
 
 import argparse
@@ -17,7 +17,9 @@ import torch
 
 from hum2song.catalog.db import (
     connect,
+    contoured_songs,
     ensure_schema,
+    insert_contour,
     insert_windows,
     library_counts,
     searchable_songs,
@@ -50,16 +52,21 @@ def track_files(root: Path) -> dict[str, Path]:
     return found
 
 
-def song_windows(path: Path) -> list:
+def indexed_contour(path: Path) -> np.ndarray | None:
+    """Contour of the track the chunk index used, None when it has no voiced chunk."""
     tracks = load_tracks(str(path))
     kind, chunks = pick_track(tracks, METHOD)
-    if not chunks:
-        return []
-    return chunk_contour(rmvpe_contour(tracks[kind]), WIN_S, HOP_S, MIN_VOICED)
+    return rmvpe_contour(tracks[kind]) if chunks else None
 
 
-def index_song(connection, song_id: str, path: Path, model, device) -> int:
-    found = song_windows(path)
+def index_song(connection, song_id: str, path: Path, model, device, windowed: bool) -> int:
+    contour = indexed_contour(path)
+    if contour is None:
+        return 0
+    insert_contour(connection, song_id, contour)
+    if windowed:
+        return 0
+    found = chunk_contour(contour, WIN_S, HOP_S, MIN_VOICED)
     if not found:
         return 0
     embeddings = embed_contours(model, [w.contour for w in found], device)
@@ -83,9 +90,13 @@ def main(argv: list[str] | None = None) -> None:
     connection = connect(args.db)
     ensure_schema(connection)
     files = track_files(args.data_root)
-    done = windowed_songs(connection)
-    todo = [s for s in searchable_songs(connection) if s not in done and s in files]
-    counts = [index_song(connection, s, files[s], model, device) for s in todo]
+    windowed, contoured = windowed_songs(connection), contoured_songs(connection)
+    todo = [
+        s
+        for s in searchable_songs(connection)
+        if s in files and (s not in windowed or s not in contoured)
+    ]
+    counts = [index_song(connection, s, files[s], model, device, s in windowed) for s in todo]
     windows = connection.execute("SELECT count(*) FROM windows").fetchone()[0]
     LOGGER.info(
         "windowed %s songs (%s windows); table: %s windows; %s",
