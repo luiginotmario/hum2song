@@ -1183,3 +1183,64 @@ For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) g
 **Revisit when.**
 - The library passes ~10k songs: measure HNSW recall, latency and cache memory, and consider batching the window queries into one SQL call.
 - A new model is adopted: re-index chunks, windows and contours with it.
+
+## D-026 · E2a: fine-tuning D-012 on self-supervised real-song windows with the CLEWS loss (1 seed): small gain, within seed noise
+**Date:** 2026-09-28
+
+**Context.** D-019 and D-021 found that real hum pairs from 116 CHAD songs do not help, and the review (E2) named song diversity on the reference side as the lever. E2a is the license-clean version: self-supervised pairs from real song melody tracks we already have, with CLEWS-style weak labels (Serrà et al., ICML 2025) so that no single reference window is assumed to be "the" match.
+
+**Options.**
+- **E2a** (no new data).
+- **E2b** (CHAD cover songs; needs new downloads and Luigi's OK, not started).
+
+**Decision.** E2a, 1 seed, recipe fixed before training (`configs/train_contour_e2a.yaml`, `contour/song_pairs.py`, `losses.clews_loss`).
+- **Songs:** 1,806 songs with usable melody tracks.
+  - 473 YouTube chart songs, which are distractors and never targets. 473 of the 1,806 have a mix track.
+  - The **even-numbered half of FMA** (1,333 after filters).
+  - Any song whose normalized title matches an evaluation target is dropped.
+  - The odd FMA half stays untouched, and a "clean" pool without the trained FMA half is reported next to the headline pool.
+- **Pairs:** the query is a 3–12 s window of the song's vocal-stem melody, or with probability 0.5 the same window of the full-mix melody when the song has one (a second extraction route). It is humanized and augmented with the D-021 query augmentation. The references are 4 vocal-stem windows starting within ±3 s of the query, each slightly longer or shorter and slightly stretched.
+- **Loss:**
+  - InfoNCE on HumTrans pairs, exactly as in D-012, plus the CLEWS loss on the song-window batch (weight 1).
+  - CLEWS terms: the positive is the best of a song's 4 reference windows, and each negative is another song's closest window (R_min). Loss = mean positive d² + log(ε + mean exp(−γ d²)), with γ = 5 and ε = 1e-6.
+  - d² is 2 − 2 cos on unit vectors, because the index uses cosine similarity; the paper uses unnormalized Euclidean distance.
+- **Training:**
+  - From `contour_v2_s0/last.pt`, LR 3e-5, at most 3,000 steps.
+  - Validate every 100 steps on CHAD val songs and stop after 5 validations without improvement (the D-021 rule). The reported checkpoint is `best.pt`.
+  - The song batch was cut from 128 to 64 songs after two out-of-memory crashes, before any completed training. A data bug on nearly silent windows was fixed at the same point.
+  - Result: best at step 1,800, early stop at 2,300; about 0.4 GPU-h.
+- **Evaluation:** `eval_rerank.py --first-stage` for both models. The base score (the old API), the D-023 re-rank and the D-025 pipeline are each chosen on CHAD val separately for each model and pool. MIR-QBSH is run with `eval_contour.py` (+2,000 Essen distractors).
+
+**Results.** Files: `docs/paper/results/d026/`. CHAD val (selection): 0.394 → **0.440** in the training validator (145-song pool). Top-1 / top-10:
+
+| Setting | D-012 s0 | E2a s0 |
+|---|---|---|
+| **Headline pool (`charts_fma`, ~5.3k songs)** | | |
+| CHAD test, base score (old API) | 0.303 / 0.469 | 0.314 / 0.490 |
+| CHAD test, D-023 re-rank | 0.465 / 0.550 | 0.471 / 0.577 |
+| CHAD test, **D-025 pipeline** | **0.512** / 0.616 | 0.505 / **0.620** |
+| MTG-QBH, D-025 pipeline | **0.619** / 0.712 | 0.593 / **0.720** |
+| MLEnd, D-025 pipeline | 0.193 / 0.232 | **0.195 / 0.240** |
+| **Clean pool (trained FMA half removed, ~3.8k songs)** | | |
+| CHAD test, base score | 0.328 / 0.505 | 0.345 / 0.520 |
+| CHAD test, **D-025 pipeline** | 0.521 / 0.635 | **0.531 / 0.641** |
+| MTG-QBH, D-025 pipeline | 0.593 / **0.737** | **0.636** / 0.729 |
+| MLEnd, D-025 pipeline | 0.200 / 0.249 | **0.207 / 0.254** |
+
+- **MIR-QBSH +2,000:** 0.872 / 0.961 → 0.852 / 0.953 (−2.0 top-1, −0.8 top-10). This is inside the review's pre-set limit of 0.01 top-10, but top-1 drops as in D-021 (0.856).
+- **HumTrans test:** 0.994 top-1, unchanged.
+- **Candidate recall** (union@200) rises slightly: CHAD test 0.752 → 0.760, MTG-QBH 0.847 → 0.881.
+
+**Takeaways.**
+- **Better embeddings, but the pipeline absorbs most of the gain.** The model-level scores improve on CHAD test by +1.1 top-1 and +2.1 top-10 (base score), and +2.7 top-10 after the D-023 re-rank.
+- With the D-025 pipeline on top, the combined system moves by −0.7 / +0.4 on the headline pool and +1.0 / +0.6 on the clean pool.
+- A single seed cannot resolve these differences: D-012's own seed spread on CHAD test base top-1 is 0.297–0.314. **So E2a does not clearly beat D-012 on CHAD test**, and it is not adopted for serving.
+- **Self-supervised song windows do not hurt real hums, unlike training on 116 songs of real pairs (D-019).** On the clean pool, where the trained songs cannot act as distractors, the gains are consistent across all three real-hum sets. But they are small at 1.8k songs.
+- MIR-QBSH top-1 pays about 2 points again. Anything trained towards real recordings drifts slightly away from the MIDI-reference protocol.
+
+**Trade-off / what we gave up.** One seed (about 0.4 GPU-h plus about 1.5 h of evaluation per seed). Only 1.8k songs, far from the review's 20k+ target: FMA's full audio is not downloaded beyond the 3k library.
+
+**Revisit when.**
+- Seeds 1–2, to see whether the clean-pool gain holds.
+- The chart library grows several-fold from the download batches: re-train on it.
+- Luigi approves E2b (cover pairs, real version variation instead of self-supervision).
