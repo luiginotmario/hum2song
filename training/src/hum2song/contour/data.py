@@ -25,6 +25,7 @@ from hum2song.contour.augment import (
 from hum2song.contour.features import (
     FRAME_S,
     contour_features,
+    contour_salience_features,
     midi_contour,
     rmvpe_contour,
     trim_unvoiced,
@@ -77,7 +78,21 @@ def seconds_to_frames(seconds: float) -> int:
     return max(int(round(seconds / FRAME_S)), 1)
 
 
+INPUT_KIND = "contour"
+
+
+def set_input_kind(kind: str) -> None:
+    """Switch hard-F0 features (D-012) and soft-salience features (E3) for this process."""
+    global INPUT_KIND
+    if kind not in ("contour", "salience"):
+        raise ValueError(f"unknown input_kind: {kind}")
+    INPUT_KIND = kind
+
+
 def features_tensor(contour: np.ndarray) -> torch.Tensor:
+    """Hard-F0 features (D-012) or soft-salience features from the same contour (E3)."""
+    if INPUT_KIND == "salience":
+        return torch.from_numpy(contour_salience_features(contour))
     return torch.from_numpy(contour_features(contour))
 
 

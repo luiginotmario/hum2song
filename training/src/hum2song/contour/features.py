@@ -137,3 +137,101 @@ def contour_features(contour: np.ndarray) -> np.ndarray:
     features[voiced, 0] = (contour[voiced] - median) / SEMITONE_SCALE
     features[:, 1] = voiced
     return features
+
+
+SALIENT_HALF_ST = 18.0
+SALIENT_BINS = int(round(2 * SALIENT_HALF_ST * 100 / RMVPE_CENTS_STEP)) + 1  # 181
+SALIENCE_FEATURE_DIM = SALIENT_BINS + 1
+SOFT_PEAK_ST = 0.5
+
+
+def bin_for_hz(f0_hz: float) -> int:
+    """RMVPE salience bin of a frequency (clamped)."""
+    cents = 1200.0 * np.log2(max(f0_hz, 1.0e-6) / 10.0)
+    bin_index = round((cents - RMVPE_CENTS_OFFSET) / RMVPE_CENTS_STEP)
+    return int(np.clip(bin_index, 0, RMVPE_CENTS_BINS - 1))
+
+
+def soft_salience(track: np.ndarray) -> np.ndarray:
+    """(frames, 360) soft peak around each voiced F0; for MIDI and F0-only caches (E3)."""
+    f0, confidence = track[0], track[1]
+    voiced = (confidence >= CONFIDENCE_THRESHOLD) & (f0 > F0_MIN_HZ) & (f0 < F0_MAX_HZ)
+    frames = np.zeros((len(f0), RMVPE_CENTS_BINS), dtype=np.float32)
+    if not voiced.any():
+        return frames
+    sigma = SOFT_PEAK_ST * 100.0 / RMVPE_CENTS_STEP
+    centers = np.array([bin_for_hz(float(v)) for v in f0[voiced]])
+    bins = np.arange(RMVPE_CENTS_BINS)[None, :]
+    peak = np.exp(-0.5 * ((bins - centers[:, None]) / sigma) ** 2)
+    peak /= np.maximum(peak.max(axis=1, keepdims=True), 1.0e-6)
+    frames[voiced] = peak * confidence[voiced, None]
+    return frames
+
+
+def crop_salience(salience: np.ndarray, center_bin: int) -> np.ndarray:
+    """(frames, SALIENT_BINS) window of ±SALIENT_HALF_ST around center_bin, zero-padded."""
+    half = SALIENT_BINS // 2
+    first, last = center_bin - half, center_bin + half + 1
+    src_first, src_last = max(first, 0), min(last, RMVPE_CENTS_BINS)
+    dst_first = src_first - first
+    out = np.zeros((len(salience), SALIENT_BINS), dtype=np.float32)
+    out[:, dst_first : dst_first + (src_last - src_first)] = salience[:, src_first:src_last]
+    return out
+
+
+def salience_features(salience: np.ndarray) -> np.ndarray:
+    """(frames, SALIENT_BINS+1): crop centred on the clip's median voiced pitch, plus voicing.
+
+    Key invariance comes from the crop centre (CHAD: 3 octaves around the mean; here ±18 st
+    around the median). The voicing channel is the peak salience, thresholded like hard F0.
+    """
+    peak = salience.max(axis=1)
+    voiced = peak >= CONFIDENCE_THRESHOLD
+    features = np.zeros((len(salience), SALIENT_BINS + 1), dtype=np.float32)
+    if not voiced.any():
+        return features
+    centers = salience[voiced].argmax(axis=1)
+    center = int(np.median(centers))
+    cropped = crop_salience(salience, center)
+    row_max = cropped.max(axis=1, keepdims=True)
+    features[:, :-1] = cropped / np.maximum(row_max, 1.0e-6)
+    features[:, -1] = voiced.astype(np.float32)
+    return features
+
+
+def decimate_salience(salience: np.ndarray, factor: int = DECIMATE) -> np.ndarray:
+    """Mean-pool salience along time to FRAME_S (same factor as the hard-F0 contour)."""
+    usable = len(salience) // factor * factor
+    if usable == 0:
+        return salience[:1]
+    return salience[:usable].reshape(-1, factor, salience.shape[1]).mean(axis=1)
+
+
+_SOFT_OFFSETS = np.arange(-4, 5)
+_SOFT_WEIGHTS = np.exp(-0.5 * (_SOFT_OFFSETS / (SOFT_PEAK_ST * 100.0 / RMVPE_CENTS_STEP)) ** 2).astype(
+    np.float32
+)
+_SOFT_WEIGHTS /= _SOFT_WEIGHTS.max()
+
+
+def contour_salience_features(contour: np.ndarray) -> np.ndarray:
+    """(frames, SALIENCE_FEATURE_DIM) soft-salience features from a cleaned FRAME_S contour.
+
+    Used when only F0 is cached (YouTube covers, MIDI refs): a narrow Gaussian around each
+    voiced pitch, cropped ±SALIENT_HALF_ST around the clip median. Real RMVPE salience is
+    preferred when the audio is still on disk (see salience_features).
+    """
+    voiced = ~np.isnan(contour)
+    features = np.zeros((len(contour), SALIENCE_FEATURE_DIM), dtype=np.float32)
+    if not voiced.any():
+        return features
+    median = float(np.median(contour[voiced]))
+    half = SALIENT_BINS // 2
+    centers = half + np.round((contour[voiced] - median) * 100.0 / RMVPE_CENTS_STEP).astype(np.int32)
+    rows = np.flatnonzero(voiced)
+    for shift, weight in zip(_SOFT_OFFSETS, _SOFT_WEIGHTS, strict=True):
+        cols = centers + int(shift)
+        keep = (cols >= 0) & (cols < SALIENT_BINS)
+        features[rows[keep], cols[keep]] = weight
+    features[:, -1] = voiced.astype(np.float32)
+    return features

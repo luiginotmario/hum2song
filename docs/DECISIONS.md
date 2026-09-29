@@ -1319,3 +1319,38 @@ For reference, the FMA probe on the FMA-only library (2,783 searchable, D-017) g
 **Trade-off / what we gave up.** Search was offline for the re-index window. A `psql` truncate at the start of the job failed (client not on PATH); `--force` still replaced every song, so the end state is clean.
 
 **Revisit when.** A new model is adopted (E3 or later): re-run the same job with the new checkpoint.
+
+## D-030 · E3: soft-salience input instead of hard F0 (1 seed): clear loss, keep E2b
+**Date:** 2026-09-29
+
+**Context.** The lit-review plan (E3) asked for RMVPE's 360-bin salience, cropped to ±18 st around the clip's median voiced pitch, with a voicing channel, trained like the best E2 variant (E2b). The hope was that keeping pitch alternatives would help on reference-side octave and harmony errors that hard F0 cannot recover. D-024 already noted salience as the principled route for those errors.
+
+**Options.**
+- Keep E2b hard-F0 serving model (D-028 / D-029).
+- **E3 soft-salience encoder**, same cover→original CLEWS recipe as E2b.
+
+**Decision.** E3, 1 seed, recipe fixed before training (`configs/train_contour_e3.yaml`, `input_kind: salience`).
+- **Input:** for every contour (hum, MIDI, cover, original) build an 181-bin soft peak (±18 st at 20 cents/bin) centred on the clip's median voiced pitch, plus a voicing channel (182-d features). The crop gives key invariance the same way hard F0 uses median normalisation.
+- **Limitation (disclosed):** under D-019 the YouTube cover audio was deleted after F0 extraction, so this run cannot feed *real* RMVPE 360-bin salience on the song side. Soft peaks are rebuilt from the cached hard F0. That tests the salience-shaped front end and the crop, but it does **not** preserve RMVPE's alternate peaks on references. HumTrans / MIDI sides use the same soft-from-F0 path for consistency.
+- **Training:** E2b cover pairs (1,156) + HumTrans InfoNCE; init from `contour_e2b_s0/best.pt` with compatible tensors only (front end random, 84/85 tensors loaded); LR 3e-5, at most 3,000 steps; select on CHAD val; early-stop patience 5. Best at step 2,600 (val top-1 **0.363**); about 1 GPU-h.
+- **Evaluation:** `eval_rerank.py --first-stage` for E2b and E3 on the same pool; MIR-QBSH +2,000.
+
+**Results.** Files: `docs/paper/results/d030/`. Top-1 / top-10:
+
+| Setting | E2b (hard F0) | E3 (soft salience) |
+|---|---|---|
+| CHAD val (selection) | 0.434 | 0.363 |
+| CHAD test, base score | **0.332 / 0.505** | 0.268 / 0.422 |
+| CHAD test, **D-025 pipeline** | **0.533 / 0.638** | 0.481 / 0.595 |
+| MTG-QBH, D-025 | **0.695 / 0.754** | 0.542 / 0.653 |
+| MLEnd, D-025 | **0.376 / 0.449** | 0.287 / 0.377 |
+| MIR-QBSH +2,000 anywhere | **0.867 / 0.958** | 0.728 / 0.898 |
+
+**Takeaways.**
+- Soft-from-F0 salience is **worse on every set**, including a large MIR regression (−6 top-10 points, outside the 0.01 limit).
+- With no real multi-hypothesis salience on the song side, E3 cannot do what the review asked. The soft peak is a blurred hard F0; the new front end has to re-learn pitch from a wider input and does not catch up in 3k steps.
+- **E2b stays the serving model.** Live index from D-029 is unchanged.
+
+**Trade-off / what we gave up.** About 1 GPU-h train + about 2 h eval. Did not re-download cover audio for real RMVPE salience (D-019 delete-after-copy; Mac not used).
+
+**Revisit when.** Source audio for the cover set (or another large song set) is available long enough to cache real 360-bin salience on both sides, or an octave-folded salience variant (Salamon 2013) is tried with real posteriors.

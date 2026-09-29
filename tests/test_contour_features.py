@@ -79,3 +79,18 @@ def test_features_ignore_transposition():
 def test_trim_unvoiced():
     contour = np.array([np.nan, 60.0, np.nan, 61.0, np.nan])
     assert len(trim_unvoiced(contour)) == 3
+
+
+def test_contour_salience_features_centred_and_voiced():
+    import numpy as np
+
+    from hum2song.contour.features import SALIENCE_FEATURE_DIM, contour_salience_features
+
+    contour = np.full(100, np.nan, dtype=np.float32)
+    contour[20:80] = 60.0
+    contour[50] = 62.0
+    features = contour_salience_features(contour)
+    assert features.shape == (100, SALIENCE_FEATURE_DIM)
+    assert features[10, -1] == 0 and features[50, -1] == 1
+    assert features[50, :-1].max() == 1.0
+    assert features[50, :-1].argmax() != features[40, :-1].argmax()

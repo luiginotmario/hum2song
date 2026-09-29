@@ -62,9 +62,11 @@ class ContourEncoder(nn.Module):
         dropout: float = 0.1,
         out_dim: int = 256,
         temperature_init: float = 0.07,
+        in_dim: int = FEATURE_DIM,
     ) -> None:
         super().__init__()
-        self.front = ConvFront(FEATURE_DIM, dim)
+        self.in_dim = in_dim
+        self.front = ConvFront(in_dim, dim)
         self.register_buffer(
             "positions", sinusoidal_positions(MAX_POSITIONS, dim), persistent=False
         )

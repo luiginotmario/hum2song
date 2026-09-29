@@ -82,6 +82,9 @@ class ContourConfig:
     # E2b (D-028): "covers" swaps the self-supervised song windows for CHAD cover -> original
     # pairs (contour/cover_pairs.py); loss and batch settings are the song_* ones above.
     song_source: str = "windows"
+    # E3 (D-030): "salience" feeds soft/real RMVPE salience (±18 st crop + voicing)
+    # instead of the hard-F0 (pitch, voicing) features.
+    input_kind: str = "contour"
 
     def resolved_data_root(self) -> Path:
         return Path(self.data_root or os.environ.get("H2S_DATA", DEFAULT_DATA_ROOT))

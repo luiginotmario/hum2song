@@ -32,6 +32,7 @@ from hum2song.contour.data import (
     load_reference_contours,
     midi_index,
     set_epoch,
+    set_input_kind,
 )
 from hum2song.contour.evaluate import (
     ContourSet,
@@ -41,7 +42,7 @@ from hum2song.contour.evaluate import (
     mir_sets,
     whole_reference,
 )
-from hum2song.contour.features import midi_contour
+from hum2song.contour.features import FEATURE_DIM, SALIENCE_FEATURE_DIM, midi_contour
 from hum2song.contour.mlend import MLEndValidation, read_song_holdout, training_pairs
 from hum2song.contour.model import ContourEncoder
 from hum2song.contour.song_pairs import (
@@ -60,6 +61,10 @@ LOGGER = get_logger(__name__)
 GROUPS = ("humtrans", "mirqbsh")
 
 
+def input_dim(config: ContourConfig) -> int:
+    return SALIENCE_FEATURE_DIM if config.input_kind == "salience" else FEATURE_DIM
+
+
 def build_model(config: ContourConfig) -> ContourEncoder:
     return ContourEncoder(
         dim=config.dim,
@@ -68,6 +73,7 @@ def build_model(config: ContourConfig) -> ContourEncoder:
         dropout=config.dropout,
         out_dim=config.out_dim,
         temperature_init=config.temperature_init,
+        in_dim=input_dim(config),
     )
 
 
@@ -75,6 +81,7 @@ def load_checkpoint(path: Path, device: torch.device) -> tuple[ContourEncoder, C
     """Model in eval mode on `device`, its config, and the step it was saved at."""
     payload = torch.load(path, map_location="cpu", weights_only=False)
     config = ContourConfig(**payload["config"])
+    set_input_kind(config.input_kind)
     model = build_model(config)
     model.load_state_dict(payload["model"])
     return model.to(device).eval(), config, int(payload["step"])
@@ -351,8 +358,16 @@ def load_initial_weights(model, config: ContourConfig, device) -> None:
         return
     path = config.resolved_data_root() / config.init_ckpt
     state = torch.load(path, map_location=device, weights_only=False)["model"]
-    model.load_state_dict(state)
-    LOGGER.info("initialised from %s", path)
+    current = model.state_dict()
+    compatible = {k: v for k, v in state.items() if k in current and current[k].shape == v.shape}
+    missing = model.load_state_dict(compatible, strict=False)
+    LOGGER.info(
+        "initialised from %s (%s/%s tensors; skipped %s)",
+        path,
+        len(compatible),
+        len(state),
+        len(missing.missing_keys) + len(missing.unexpected_keys),
+    )
 
 
 def should_stop(best: dict, step: int, config: ContourConfig) -> bool:
@@ -364,6 +379,7 @@ def should_stop(best: dict, step: int, config: ContourConfig) -> bool:
 
 def run_training(config: ContourConfig, tracker) -> dict:
     """Train, validate every val_every steps, and return the final and selected metrics."""
+    set_input_kind(config.input_kind)
     seed_everything(config.seed)
     torch.manual_seed(config.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

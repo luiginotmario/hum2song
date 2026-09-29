@@ -1,0 +1,56 @@
+# E3 (docs/DECISIONS.md D-030): same recipe as E2b (cover → original CLEWS pairs) but the
+# encoder reads soft-salience features (±18 st crop of a Gaussian around each F0, plus voicing)
+# instead of hard F0. Real RMVPE 360-bin salience needs the source audio; under D-019 the
+# cover audio was deleted after extraction, so song and MIDI sides use soft salience from the
+# cached F0. Transformers weights initialise from E2b; the new front end is random.
+#   python training/scripts/train_contour.py --config configs/train_contour_e3.yaml
+run_name: contour_e3
+steps: 3000
+batch_size: 256
+lr: 0.00003
+weight_decay: 0.05
+warmup_steps: 100
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 100
+select_metric: val/chad_val_top1
+stretch_min: 0.5
+stretch_max: 1.9
+warp_depth: 0.3
+interval_scale: 0.25
+drift_semitones: 1.0
+jitter_semitones: 0.25
+dropout_prob: 0.6
+octave_error_prob: 0.15
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0
+synthetic_midi_dirs: ""
+holdout_midi_dir: raw/essen_midi/deutschl
+holdout_count: 2000
+synthetic_exclude: ""
+chad_pairs: false
+chad_val: true
+init_ckpt: ckpt/contour_e2b_s0/best.pt
+early_stop_patience: 5
+song_pairs: true
+song_source: covers
+song_batch_size: 64
+song_refs: 4
+song_offset_s: 3.0
+song_mix_prob: 0.5
+song_loss_weight: 1.0
+clews_gamma: 5.0
+clews_eps: 0.000001
+input_kind: salience
