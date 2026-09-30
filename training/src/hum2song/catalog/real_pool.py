@@ -14,6 +14,7 @@ from hum2song.contour import chad
 from hum2song.contour.features import rmvpe_contour
 
 FMA_LIBRARY = "fma_full_3k"
+FMA_LIBRARIES = ("fma_full_3k", "fma_full_extra_3k", "fma_electronic_1k")
 QUERY_CACHE = "library/query_contours.npz"
 PREVIEW_SOURCES = ("itunes_preview", "deezer_preview")
 FULL_SOURCE = "youtube_full"
@@ -30,17 +31,29 @@ def library_rows(root: Path, names: list[str]) -> list[dict]:
 
 
 def fma_rows(root: Path) -> list[dict]:
-    tracks = root / "library" / FMA_LIBRARY / "tracks"
-    return [
-        {
-            "song_id": s["song_id"],
-            "role": "fma",
-            "target_id": None,
-            "source": "fma_full",
-            "_track": str(tracks / f"{s['song_id'].replace(':', '_')}.npy"),
-        }
-        for s in read_jsonl(root / "library" / FMA_LIBRARY / "songs.jsonl")
-    ]
+    """All open-licence FMA library folders (D-017 base + D-033 extras)."""
+    rows = []
+    seen: set[str] = set()
+    for name in FMA_LIBRARIES:
+        songs_path = root / "library" / name / "songs.jsonl"
+        if not songs_path.exists():
+            continue
+        tracks = root / "library" / name / "tracks"
+        for song in read_jsonl(songs_path):
+            if song["song_id"] in seen:
+                continue
+            seen.add(song["song_id"])
+            rows.append(
+                {
+                    "song_id": song["song_id"],
+                    "role": "fma",
+                    "target_id": None,
+                    "source": "fma_full",
+                    "genre": song.get("genre"),
+                    "_track": str(tracks / f"{song['song_id'].replace(':', '_')}.npy"),
+                }
+            )
+    return rows
 
 
 def load_tracks(path: str) -> dict | None:

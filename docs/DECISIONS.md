@@ -1433,3 +1433,50 @@ Lit-review expected held-out / full whistle ~0.63 → **0.68–0.72** (best case
 - Jev slug is confirmed (`typesafe/jev-router` vs `~typesafe/jev-latest`).
 - Val logs exist to calibrate `t_show` / `t_few` / entropy for a target show-precision.
 - Building `/v1/answer` + session filters for the follow-up loop.
+
+## D-033 · Grow live library with more open FMA (extra vocal 3k + Electronic 1k); no Mac, no piracy
+**Date:** 2026-09-29
+
+**Context.** Live search sat at about **4,001 songs / 3,781 searchable** (D-017 `fma_full_3k` + YouTube chart/full targets), serving E2b (`contour_e2b_s0/best.pt`). Luigi chose growth from **free open catalogs only** (FMA and similar): no Mac downloads, no YouTube chart queue, no scraping illegal sources. FMA `fma_full` still has far more CC-licensed tracks than the first 3k vocal draw. D-009 also lists MTG-Jamendo as Tier P; it has no fetch/index path in-repo yet.
+
+**Options.**
+- Pull chart YouTube / Mac house batch (rejected for this round).
+- Start MTG-Jamendo (needs new catalog code + large download).
+- **Reuse D-017 FMA ranged zip:** another vocal-genre 3k disjoint from `fma_full_3k`, plus 1k Electronic (melody-search gap: Electronic was excluded from D-017 vocals).
+
+**Decision.**
+- Extend `select_tracks` / `fetch_fma.py` with `--genres`, `--exclude-libraries`, and a second seed.
+- **`fma_full_extra_3k`:** seed **20260929**, same vocal genres and 60–420 s as D-017, exclude ids in `fma_full_3k`. Genre mix: Rock 1755, Hip-Hop 455, Folk 321, Pop 279, International 143, Soul-RnB 18, Country 16, Blues 13. All 3,000 downloaded.
+- **`fma_electronic_1k`:** seed **20260929**, genre Electronic only, 60–420 s. All 1,000 downloaded.
+- Build both with **E2b** (`build_library.py`), then `index_windows.py` over `FMA_LIBRARIES = (fma_full_3k, fma_full_extra_3k, fma_electronic_1k)`.
+- Mac untouched; chart YouTube queue left pending.
+
+**Results** (Lambda `/health` + DB after `BUILD_DONE` 2026-09-30 02:19 UTC ≈ 22:19 ET Sep 29).
+
+| Scope | Songs | Searchable | 10 s chunks |
+|---|---:|---:|---:|
+| Before (live) | 4,001 | 3,781 | — |
+| After (live) | **8,001** | **7,245** | **187,570** |
+| Δ | +4,000 | +3,464 | — |
+| `fma_full_3k` (unchanged) | 3,000 | 2,783 | 70,844 |
+| `fma_full_extra_3k` | 3,000 | 2,775 | 70,568 |
+| `fma_electronic_1k` | 1,000 | 689 | 10,939 |
+| All FMA in DB | 7,000 | 6,247 | 152,351 |
+| YouTube full (unchanged) | 1,001 | 998 | 35,219 |
+
+Window index: **7,245** songs windowed (**912,917** five-second windows); this run added **3,464** newly windowed songs (**396,039** windows). Electronic searchable share is lower (~69%) than vocal (~92.5%), as expected when vocal-stem chunks are sparse.
+
+**Takeaways.**
+- Open FMA growth is the fastest legal lever with existing tooling; +3.5k searchable in one night.
+- Electronic helps catalog breadth but yields fewer voiced chunks per track under the vocal-stem pipeline.
+- MTG-Jamendo / JamendoMaxCaps remain documented Tier P options (D-009) but were not ingested here.
+
+**Trade-off / what we gave up.**
+- No MTG-Jamendo this round; no chart/Mac commercial growth.
+- Genre skew still FMA-heavy (Rock-dominated vocals).
+- No new real-hum accuracy number on the expanded distractor pool (re-run live eval when needed).
+
+**Revisit when.**
+- MTG-Jamendo (or another CC full-track set) has a fetch + build path and disk budget.
+- More FMA genres or a larger Electronic draw if hummed electronic hooks matter.
+- Live CHAD / MTG-QBH / MLEnd eval on the 8k library to measure distractor cost.

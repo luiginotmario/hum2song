@@ -27,7 +27,7 @@ from hum2song.catalog.db import (
 )
 from hum2song.catalog.library import chunk_contour
 from hum2song.catalog.real_eval import pick_track
-from hum2song.catalog.real_pool import FMA_LIBRARY, load_tracks
+from hum2song.catalog.real_pool import FMA_LIBRARIES, load_tracks
 from hum2song.config import DEFAULT_DATA_ROOT
 from hum2song.contour.evaluate import embed_contours
 from hum2song.contour.features import rmvpe_contour
@@ -36,7 +36,7 @@ from hum2song.logutil import configure_logging, get_logger
 
 LOGGER = get_logger(__name__)
 DEFAULT_CKPT = "ckpt/contour_v2_s0/last.pt"
-LIBRARIES = ("youtube_v1", "youtube_charts_v1", "previews_v1", FMA_LIBRARY)
+LIBRARIES = ("youtube_v1", "youtube_charts_v1", "previews_v1", *FMA_LIBRARIES)
 WIN_S = 5.0
 HOP_S = 1.0
 MIN_VOICED = 0.25

@@ -43,12 +43,24 @@ def load_tracks(csv_path: Path) -> pd.DataFrame:
     )
 
 
-def select_tracks(tracks: pd.DataFrame, count: int, seed: int = SELECTION_SEED) -> pd.DataFrame:
-    """`count` tracks drawn with `seed` among vocal-leaning genres and 1-7 minute durations."""
+def select_tracks(
+    tracks: pd.DataFrame,
+    count: int,
+    seed: int = SELECTION_SEED,
+    genres: tuple[str, ...] = VOCAL_GENRES,
+    exclude_ids: set[int] | frozenset[int] | None = None,
+) -> pd.DataFrame:
+    """`count` tracks drawn with `seed` among `genres` and 1-7 minute durations.
+
+    `exclude_ids` drops track ids already in another library (D-033 growth).
+    """
     eligible = tracks[
-        tracks["genre"].isin(VOCAL_GENRES) & tracks["duration_s"].between(*DURATION_S)
+        tracks["genre"].isin(genres) & tracks["duration_s"].between(*DURATION_S)
     ].sort_index()
-    order = np.random.default_rng(seed).permutation(len(eligible))[:count]
+    if exclude_ids:
+        eligible = eligible[~eligible.index.isin(exclude_ids)]
+    take = min(count, len(eligible))
+    order = np.random.default_rng(seed).permutation(len(eligible))[:take]
     return eligible.iloc[np.sort(order)]
 
 
