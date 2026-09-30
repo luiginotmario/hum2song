@@ -108,12 +108,14 @@ def test_page_is_served_and_search_is_proxied():
         assert status == 200
         text = page.decode()
         assert 'id="listen"' in text
-        assert "Hum a few seconds." in text
-        assert ">Listen<" in text
-        style, _ = fetch(f"http://127.0.0.1:{ui_port}/app.css")
+        assert "Tap to Listen" in text
+        assert 'aria-label="Tap to listen"' in text
+        style, css = fetch(f"http://127.0.0.1:{ui_port}/app.css")
         script, _ = fetch(f"http://127.0.0.1:{ui_port}/app.js")
         worklet, _ = fetch(f"http://127.0.0.1:{ui_port}/capture-worklet.js")
         assert style == script == worklet == 200
+        assert b"#60a088" in css
+        assert b"backdrop-filter" not in css
 
         wav = wav_bytes()
         body, kind = multipart(wav)

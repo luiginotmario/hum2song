@@ -1,6 +1,6 @@
 # Hum screen
 
-One page. Tap the button, hum a few seconds, tap again. The clip goes to the live search API (`POST /search?decide=true`) and the page shows one of three results: the song title, a short list to pick from, or a note to hum again.
+One teal screen. A mic line and “Tap to Listen” sit above a large circle. Tap the circle, hum a few seconds, tap again. The clip goes to the live search API (`POST /search?decide=true`) and the same screen shows one of three results: the song title, a short list to pick from, or a note to hum again.
 
 The browser records a WAV (the API reads audio with soundfile, which does not take MediaRecorder webm). This server serves the page and forwards `/search`, `/health`, and `/decide` to the API, so the page and the API are the same origin. The running search process does not need a restart.
 

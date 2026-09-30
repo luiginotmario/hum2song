@@ -3,21 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#60a088" />
   <title>Hum</title>
   <link rel="stylesheet" href="/app.css" />
 </head>
 <body data-phase="idle">
   <main class="screen">
-    <section class="copy">
-      <h1 id="headline">Hum a few seconds.</h1>
-      <p id="detail">Tap to listen.</p>
-    </section>
-    <div id="choices" class="choices"></div>
-    <div class="stage">
+    <header class="prompt">
+      <svg class="mic" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="9" y="2.5" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="M6.5 11a5.5 5.5 0 0 0 11 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        <path d="M12 16.5V20.5M8.5 20.5h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </svg>
+      <h1 id="headline">Tap to Listen</h1>
+      <p id="detail"></p>
+    </header>
+    <div class="stage" id="stage">
       <canvas id="bars" aria-hidden="true"></canvas>
-      <button id="listen" class="pressable" type="button" aria-label="Listen">Listen</button>
+      <span class="halo" aria-hidden="true"></span>
+      <button id="listen" type="button" aria-label="Tap to listen"></button>
     </div>
+    <section class="below">
+      <div id="choices" class="choices"></div>
+    </section>
   </main>
   <script src="/app.js"></script>
 </body>

@@ -1,8 +1,8 @@
 const LISTEN_MAX_MS = 12000;
 const MIN_CLIP_S = 0.6;
 const SEARCH_URL = "/search?decide=true&mode=windows&top_k=10";
-const BAR_COUNT = 16;
-const BAR_COLORS = ["#ff375f", "#bf5af2", "#5e5ce6", "#64d2ff", "#30d158"];
+const BAR_COUNT = 40;
+const READY = new Set(["idle", "winner", "followup", "retry"]);
 
 const state = {
   chunks: [],
@@ -29,6 +29,10 @@ function reducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function phase() {
+  return document.body.dataset.phase;
+}
+
 function setCopy(headline, detail) {
   els.headline.textContent = headline;
   els.detail.textContent = detail || "";
@@ -38,17 +42,16 @@ function clearChoices() {
   els.choices.replaceChildren();
 }
 
-function buttonLabel(phase) {
-  if (phase === "listening") return "Stop";
-  if (phase === "searching") return "Searching";
-  return "Listen";
+function listenLabel(name) {
+  if (name === "listening") return "Stop and search";
+  if (name === "searching" || name === "arming") return "Searching";
+  return "Tap to listen";
 }
 
-function setPhase(phase) {
-  document.body.dataset.phase = phase;
-  els.listen.disabled = phase === "searching" || phase === "arming";
-  els.listen.textContent = buttonLabel(phase);
-  els.listen.setAttribute("aria-label", buttonLabel(phase));
+function setPhase(name) {
+  document.body.dataset.phase = name;
+  els.listen.disabled = name === "searching" || name === "arming";
+  els.listen.setAttribute("aria-label", listenLabel(name));
 }
 
 function songLabel(item) {
@@ -70,37 +73,47 @@ function isUnsure(label) {
 
 function showIdle() {
   setPhase("idle");
-  setCopy("Hum a few seconds.", "Tap to listen.");
+  setCopy("Tap to Listen", "");
   clearChoices();
 }
 
 function showWinner(title, artist) {
-  setPhase("idle");
+  setPhase("winner");
   setCopy(title || "Match", artist || "");
   clearChoices();
 }
 
 function showRetry(message) {
-  setPhase("idle");
-  setCopy("Hum again.", message || "Try a clearer bit of the tune.");
+  setPhase("retry");
+  setCopy("Hum again", message || "Try a clearer bit of the tune.");
   clearChoices();
+}
+
+function addChoice(label) {
+  const button = document.createElement("button");
+  button.type = "button";
+  const parts = splitLabel(label);
+  const title = document.createElement("span");
+  title.className = "choice-title";
+  title.textContent = parts.title;
+  button.appendChild(title);
+  if (parts.artist && !isUnsure(label)) {
+    const artist = document.createElement("span");
+    artist.className = "choice-artist";
+    artist.textContent = parts.artist;
+    button.appendChild(artist);
+  }
+  button.addEventListener("click", () => choose(label));
+  els.choices.appendChild(button);
 }
 
 function showFollowup(decision) {
   const follow = decision.followup || {};
   const options = follow.options || [];
-  setPhase("idle");
+  setPhase("followup");
   setCopy("Which song?", follow.question || decision.message || "A few songs are close.");
   clearChoices();
-  options.forEach((label, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "pressable";
-    button.textContent = label;
-    button.style.animationDelay = `${index * 40}ms`;
-    button.addEventListener("click", () => choose(label));
-    els.choices.appendChild(button);
-  });
+  options.forEach((label) => addChoice(label));
 }
 
 function choose(label) {
@@ -140,7 +153,7 @@ function formData(blob) {
 
 async function searchClip(blob) {
   setPhase("searching");
-  setCopy("Searching.", "Matching that melody.");
+  setCopy("Searching", "Matching the melody.");
   try {
     const response = await fetch(SEARCH_URL, { method: "POST", body: formData(blob) });
     if (!response.ok) throw new Error(String(response.status));
@@ -280,9 +293,10 @@ function stopTracks() {
 }
 
 async function beginListening() {
-  if (document.body.dataset.phase !== "idle") return;
+  if (!READY.has(phase())) return;
   setPhase("arming");
   clearChoices();
+  setCopy("Listening", "");
   try {
     const stream = await openMic();
     const context = new AudioContext();
@@ -295,7 +309,7 @@ async function beginListening() {
     attachAnalyser(context, source);
     state.stopCapture = await attachCapture(context, source);
     setPhase("listening");
-    setCopy("Listening.", "0s. Tap again to search.");
+    setCopy("Listening", "0s · tap again to search");
     state.timer = window.setTimeout(() => finishListening(), LISTEN_MAX_MS);
   } catch (_error) {
     stopTracks();
@@ -304,7 +318,7 @@ async function beginListening() {
 }
 
 async function finishListening() {
-  if (document.body.dataset.phase !== "listening") return;
+  if (phase() !== "listening") return;
   setPhase("arming");
   const seconds = (performance.now() - state.startedAt) / 1000;
   const samples = mergeSamples(state.chunks);
@@ -318,22 +332,22 @@ async function finishListening() {
 }
 
 function onListenClick() {
-  if (document.body.dataset.phase === "listening") {
+  if (phase() === "listening") {
     finishListening();
     return;
   }
-  if (document.body.dataset.phase === "idle") beginListening();
+  if (READY.has(phase())) beginListening();
 }
 
 function tickClock() {
-  if (document.body.dataset.phase !== "listening") return;
+  if (phase() !== "listening") return;
   const seconds = Math.max(0, Math.round((performance.now() - state.startedAt) / 1000));
-  els.detail.textContent = `${seconds}s. Tap again to search.`;
+  els.detail.textContent = `${seconds}s · tap again to search`;
 }
 
 function barTargets() {
   const quiet = new Array(BAR_COUNT).fill(0);
-  if (document.body.dataset.phase !== "listening" || !state.analyser || !state.freq) return quiet;
+  if (phase() !== "listening" || !state.analyser || !state.freq) return quiet;
   state.analyser.getByteFrequencyData(state.freq);
   const level = Math.min(1, state.level * 7);
   const usable = Math.max(1, Math.floor(state.freq.length * 0.7));
@@ -341,34 +355,21 @@ function barTargets() {
   for (let i = 0; i < BAR_COUNT; i += 1) {
     const index = Math.min(usable - 1, Math.floor((i / BAR_COUNT) * usable));
     const shape = state.freq[index] / 255;
-    targets.push(0.06 + level * (0.35 + 0.65 * shape) * 0.94);
+    targets.push(0.12 + level * (0.28 + 0.72 * shape) * 0.88);
   }
   return targets;
 }
 
-function mixColor(t) {
-  const scaled = Math.min(0.999, Math.max(0, t)) * (BAR_COLORS.length - 1);
-  const index = Math.floor(scaled);
-  const frac = scaled - index;
-  const from = hexRgb(BAR_COLORS[index]);
-  const to = hexRgb(BAR_COLORS[index + 1]);
-  const channel = (a, b) => Math.round(a + (b - a) * frac);
-  return `rgb(${channel(from[0], to[0])}, ${channel(from[1], to[1])}, ${channel(from[2], to[2])})`;
-}
-
-function hexRgb(hex) {
-  return [1, 3, 5].map((start) => parseInt(hex.slice(start, start + 2), 16));
-}
-
-function traceRoundRect(ctx, x, y, w, h) {
-  const radius = Math.min(w / 2, h / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.arcTo(x + w, y, x + w, y + h, radius);
-  ctx.arcTo(x + w, y + h, x, y + h, radius);
-  ctx.arcTo(x, y + h, x, y, radius);
-  ctx.arcTo(x, y, x + w, y, radius);
-  ctx.closePath();
+function ringGeometry() {
+  const canvas = els.bars;
+  const dpr = canvas.clientWidth ? canvas.width / canvas.clientWidth : 1;
+  const orb = (els.listen.offsetWidth / 2) * dpr;
+  const limit = Math.min(canvas.width, canvas.height) / 2 - 4 * dpr;
+  return {
+    dpr,
+    inner: orb + 8 * dpr,
+    maxLen: Math.max(10 * dpr, limit - orb - 8 * dpr),
+  };
 }
 
 function drawBars() {
@@ -377,21 +378,24 @@ function drawBars() {
   const width = canvas.width;
   const height = canvas.height;
   ctx.clearRect(0, 0, width, height);
-  const gap = width * 0.014;
-  const barWidth = (width - gap * (BAR_COUNT + 1)) / BAR_COUNT;
-  const maxH = height * 0.9;
+  const { dpr, inner, maxLen } = ringGeometry();
+  const cx = width / 2;
+  const cy = height / 2;
+  ctx.lineCap = "round";
+  ctx.lineWidth = Math.max(2, 3.1 * dpr);
   for (let i = 0; i < BAR_COUNT; i += 1) {
-    const barH = Math.max(0, state.heights[i]) * maxH;
-    if (barH < 1) continue;
-    const x = gap + i * (barWidth + gap);
-    const y = (height - barH) / 2;
-    ctx.shadowColor = mixColor(i / (BAR_COUNT - 1));
-    ctx.shadowBlur = reducedMotion() ? 0 : height * 0.035;
-    ctx.fillStyle = ctx.shadowColor;
-    traceRoundRect(ctx, x, y, barWidth, barH);
-    ctx.fill();
+    const amount = state.heights[i];
+    if (amount < 0.03) continue;
+    const angle = -Math.PI / 2 + (i / BAR_COUNT) * Math.PI * 2;
+    const length = 6 * dpr + amount * maxLen;
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.4 + 0.6 * amount})`;
+    ctx.beginPath();
+    ctx.moveTo(cx + cos * inner, cy + sin * inner);
+    ctx.lineTo(cx + cos * (inner + length), cy + sin * (inner + length));
+    ctx.stroke();
   }
-  ctx.shadowBlur = 0;
 }
 
 function resizeCanvas() {
@@ -407,9 +411,12 @@ function resizeCanvas() {
 function tick() {
   const targets = barTargets();
   const ease = reducedMotion() ? 0.85 : 0.28;
+  let energy = 0;
   for (let i = 0; i < BAR_COUNT; i += 1) {
     state.heights[i] += (targets[i] - state.heights[i]) * ease;
+    energy += state.heights[i];
   }
+  els.stage.style.setProperty("--level", (energy / BAR_COUNT).toFixed(3));
   drawBars();
   tickClock();
   window.requestAnimationFrame(tick);
@@ -421,6 +428,7 @@ function boot() {
   els.listen = $("listen");
   els.bars = $("bars");
   els.choices = $("choices");
+  els.stage = $("stage");
   els.listen.addEventListener("click", onListenClick);
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
