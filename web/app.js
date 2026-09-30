@@ -352,10 +352,14 @@ function barTargets() {
   const level = Math.min(1, state.level * 7);
   const usable = Math.max(1, Math.floor(state.freq.length * 0.7));
   const targets = [];
+  const now = performance.now();
   for (let i = 0; i < BAR_COUNT; i += 1) {
     const index = Math.min(usable - 1, Math.floor((i / BAR_COUNT) * usable));
     const shape = state.freq[index] / 255;
-    targets.push(0.12 + level * (0.28 + 0.72 * shape) * 0.88);
+    const wave = reducedMotion() ? 0.5 : 0.5 + 0.5 * Math.sin(now / 240 + i * 0.55);
+    const breathe = 0.34 + wave * 0.28;
+    const audio = level * (0.3 + 0.7 * shape);
+    targets.push(Math.min(1, breathe + audio * 0.85));
   }
   return targets;
 }
@@ -382,15 +386,15 @@ function drawBars() {
   const cx = width / 2;
   const cy = height / 2;
   ctx.lineCap = "round";
-  ctx.lineWidth = Math.max(2, 3.1 * dpr);
+  ctx.lineWidth = Math.max(2.5, 4 * dpr);
   for (let i = 0; i < BAR_COUNT; i += 1) {
     const amount = state.heights[i];
-    if (amount < 0.03) continue;
+    if (amount < 0.04) continue;
     const angle = -Math.PI / 2 + (i / BAR_COUNT) * Math.PI * 2;
-    const length = 6 * dpr + amount * maxLen;
+    const length = 8 * dpr + amount * maxLen;
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.4 + 0.6 * amount})`;
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.72 + 0.28 * amount})`;
     ctx.beginPath();
     ctx.moveTo(cx + cos * inner, cy + sin * inner);
     ctx.lineTo(cx + cos * (inner + length), cy + sin * (inner + length));
