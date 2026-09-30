@@ -3,6 +3,8 @@
 `mode=windows` (default) runs the D-025 window pipeline; `mode=chunks` the D-017 search.
 `decide=1` on /search attaches a decision (show / ask_followup / ask_retry). POST /decide
 accepts an existing search JSON (for smoke tests without re-embedding).
+Browsers may call this API from another origin (CORS *). The hum screen does not
+need that: `python web/serve.py` proxies /search on the same origin.
 
     H2S_DATABASE_URL=postgresql://... H2S_CKPT=... H2S_RMVPE=... \
         uvicorn hum2song.server.api:app --host 127.0.0.1 --port 8000
@@ -16,6 +18,7 @@ from typing import Annotated, Any
 
 import torch
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from hum2song.catalog.db import connect, has_windows, library_counts
@@ -29,6 +32,12 @@ DEFAULT_TOP_K = 10
 MAX_TOP_K = 50
 
 app = FastAPI(title="hum2song search")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @lru_cache(maxsize=1)

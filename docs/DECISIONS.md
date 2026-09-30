@@ -1480,3 +1480,76 @@ Window index: **7,245** songs windowed (**912,917** five-second windows); this r
 - MTG-Jamendo (or another CC full-track set) has a fetch + build path and disk budget.
 - More FMA genres or a larger Electronic draw if hummed electronic hooks matter.
 - Live CHAD / MTG-QBH / MLEnd eval on the 8k library to measure distractor cost.
+
+## D-034 · One-screen hum UI: listen button, level bars, three decide states
+**Date:** 2026-09-30
+
+**Context.** D-032 can already show a winner, ask which song, or ask for another hum, on the live E2b API. There was no page to hum into. The API listens on `127.0.0.1:8000` on the Lambda box, and soundfile will not read a browser MediaRecorder webm. The look follows the whop-llc screen (white page, 40px bold heading, one solid blue button, slate type). No Whop name, logo, or copy.
+
+**Options.**
+- A multi-page recorder, result, and player, as in the early spec sketch.
+- Open the API on the public internet and call it from a hosted site.
+- **One static screen, plus a tiny same-origin proxy**, leaving the running search process alone.
+
+**Decision.** One screen in `web/` (`index.html`, `app.css`, `app.js`).
+- One listen button, the same solid control as that screen (blue, 48px, 14px radius). While the mic is open, colored bars behind it follow the mic level. The heading is 40px bold at −0.022em. Follow-up choices are quiet 12px-radius rows.
+- The clip is 16-bit WAV, posted to `POST /search?decide=true` (windows mode).
+- The page shows one of the three actions: the winning title, the follow-up choices, or the hum-again line.
+- Picking a listed song shows that title. "Not sure" goes back to humming. There is still no `/v1/answer` session (D-032), so the pick is not a second search.
+- `python web/serve.py` serves the page and forwards `/search`, `/health`, and `/decide` to `H2S_API` (default `http://127.0.0.1:8000`). Same origin, so the running API does not need a restart.
+- The API also allows any browser origin (CORS `*`) the next time uvicorn starts. Search results are unchanged.
+
+**Trade-off / what we gave up.**
+- No player for the matched moment.
+- A follow-up pick does not re-rank the library.
+- The page is not a public URL by itself. Open the local server, and use an SSH tunnel if you are not on the box. The mic needs localhost or https.
+
+**Revisit when.**
+- `/v1/answer` exists and a follow-up pick should filter the search.
+- The API is on a public host with TLS.
+
+---
+
+## D-035 · Listen screen is a one-tap teal circle (supersedes the D-034 look)
+**Date:** 2026-09-30
+
+**Context.** D-034 put the hum page on a white field with a blue button, matching the whop-llc screen. That page was only a loose reference for craft. The gesture is one tap to listen, and the white page was the wrong product.
+
+**Options.**
+- Keep the D-034 white page and blue button.
+- A frosted phone UI.
+- **A solid muted teal field, white type, and one large circle.**
+
+**Decision.** Same `web/` screen, new look. D-034’s proxy and the three decide states stay.
+- Full-bleed solid teal (`#60a088`). Bold white type. No menus, no white page, no frosted panels.
+- Above the circle: a small white mic and “Tap to Listen”.
+- The control is a large lighter circle with a thin white ring. Tap starts listening; tap again stops and searches. While the mic is open, white level bars and a pulse sit around the circle.
+- After search, that same screen shows the song title, a short pick list, or “Hum again”.
+- No Shazam name, logo, or wordmark.
+- `python web/serve.py` still forwards `/search` to the API on port 8000.
+
+**Trade-off / what we gave up.** The D-034 type match. A long title or pick list shares the circle’s screen instead of a separate results page.
+
+**Revisit when.** The screen needs a player for the matched moment, or it moves into a native app with its own chrome.
+
+---
+
+## D-036 · White page, black listen control, covers with preview and YouTube
+**Date:** 2026-09-30
+
+**Context.** D-035 drew the screen as a teal circle. That look was rejected. The page should be a plain white desktop screen, with a black control, and a match should carry artwork, a short preview, and a link out to YouTube.
+
+**Options.**
+- Keep the teal circle.
+- A frosted component kit, or the earlier blue button.
+- **A white field, a solid black circle, and free catalog metadata.**
+
+**Decision.** Same `web/` screen. D-035’s look is dropped. The proxy and the three decide states stay.
+- White background, black text, one solid black circle. Click or tap starts listening; click again searches. The level bars and pulse stay, drawn in black so they read on white at laptop width as well as on a phone.
+- After search, the same screen lists each match: cover, title, artist, preview, and YouTube.
+- `GET /meta` on `web/serve.py` asks the iTunes Search API, then Deezer, then MusicBrainz plus the Cover Art Archive. Results are cached in memory. A missing preview is omitted. YouTube is only `youtube.com/results?search_query=` opened in a new tab. Nothing is scraped or downloaded from YouTube.
+- `/search`, `/health`, and `/decide` still proxy to the API on port 8000.
+
+**Trade-off / what we gave up.** The teal one-tap screen. Artwork depends on those public catalogs, so an unknown title shows the row without a picture. The preview is a store clip, not the matched moment in our library.
+
+**Revisit when.** We host our own art, or we can play the matched section of the track.
