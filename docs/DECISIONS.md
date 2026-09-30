@@ -1531,3 +1531,25 @@ Window index: **7,245** songs windowed (**912,917** five-second windows); this r
 **Trade-off / what we gave up.** The D-034 type match. A long title or pick list shares the circle’s screen instead of a separate results page.
 
 **Revisit when.** The screen needs a player for the matched moment, or it moves into a native app with its own chrome.
+
+---
+
+## D-036 · White page, black listen control, covers with preview and YouTube
+**Date:** 2026-09-30
+
+**Context.** D-035 drew the screen as a teal circle. That look was rejected. The page should be a plain white desktop screen, with a black control, and a match should carry artwork, a short preview, and a link out to YouTube.
+
+**Options.**
+- Keep the teal circle.
+- A frosted component kit, or the earlier blue button.
+- **A white field, a solid black circle, and free catalog metadata.**
+
+**Decision.** Same `web/` screen. D-035’s look is dropped. The proxy and the three decide states stay.
+- White background, black text, one solid black circle. Click or tap starts listening; click again searches. The level bars and pulse stay, drawn in black so they read on white at laptop width as well as on a phone.
+- After search, the same screen lists each match: cover, title, artist, preview, and YouTube.
+- `GET /meta` on `web/serve.py` asks the iTunes Search API, then Deezer, then MusicBrainz plus the Cover Art Archive. Results are cached in memory. A missing preview is omitted. YouTube is only `youtube.com/results?search_query=` opened in a new tab. Nothing is scraped or downloaded from YouTube.
+- `/search`, `/health`, and `/decide` still proxy to the API on port 8000.
+
+**Trade-off / what we gave up.** The teal one-tap screen. Artwork depends on those public catalogs, so an unknown title shows the row without a picture. The preview is a store clip, not the matched moment in our library.
+
+**Revisit when.** We host our own art, or we can play the matched section of the track.

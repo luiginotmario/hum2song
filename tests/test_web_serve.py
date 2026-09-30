@@ -114,8 +114,10 @@ def test_page_is_served_and_search_is_proxied():
         script, _ = fetch(f"http://127.0.0.1:{ui_port}/app.js")
         worklet, _ = fetch(f"http://127.0.0.1:{ui_port}/capture-worklet.js")
         assert style == script == worklet == 200
-        assert b"#60a088" in css
+        assert b"#60a088" not in css
         assert b"backdrop-filter" not in css
+        assert b"#ffffff" in css
+        assert b"background: #000" in css
 
         wav = wav_bytes()
         body, kind = multipart(wav)
@@ -148,6 +150,98 @@ def test_missing_api_is_a_clear_error():
     finally:
         ui.shutdown()
         ui.server_close()
+
+
+class Body:
+    def __init__(self, payload: bytes):
+        self.payload = payload
+
+    def read(self) -> bytes:
+        return self.payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+
+def test_meta_is_answered_locally():
+    screen = load_screen()
+    screen.lookup_meta = lambda title, artist: {
+        "title": title,
+        "artist": artist,
+        "cover": "https://example.com/cover.jpg",
+        "preview": "https://example.com/preview.m4a",
+    }
+    api = serve_api()
+    RecordingApi.last = None
+    ui = screen.listen("127.0.0.1", 0, f"http://{api.server_address[0]}:{api.server_address[1]}")
+    try:
+        status, body = fetch(
+            f"http://127.0.0.1:{ui.server_address[1]}/meta?title=Purple%20Rain&artist=Prince"
+        )
+        assert status == 200
+        meta = json.loads(body)
+        assert meta["cover"] == "https://example.com/cover.jpg"
+        assert meta["preview"].endswith(".m4a")
+        assert RecordingApi.last is None
+        status, _ = fetch(f"http://127.0.0.1:{ui.server_address[1]}/meta")
+        assert status == 400
+    finally:
+        ui.shutdown()
+        ui.server_close()
+        api.shutdown()
+        api.server_close()
+
+
+def test_lookup_meta_reads_itunes_then_deezer():
+    screen = load_screen()
+    itunes = json.dumps(
+        {
+            "results": [
+                {
+                    "trackName": "Purple Rain",
+                    "artistName": "Prince",
+                    "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/x/100x100bb.jpg",
+                    "previewUrl": "https://audio-ssl.itunes.apple.com/preview.m4a",
+                }
+            ]
+        }
+    ).encode()
+    deezer = json.dumps(
+        {
+            "data": [
+                {
+                    "title": "When Doves Cry",
+                    "artist": {"name": "Prince"},
+                    "album": {"cover_xl": "https://e-cdns-images.dzcdn.net/images/cover/abc.jpg"},
+                    "preview": "https://cdns-preview.dzcdn.net/stream/preview.mp3",
+                }
+            ]
+        }
+    ).encode()
+
+    def fetch(request, timeout=8):
+        url = request.full_url
+        if "itunes.apple.com" in url and "When" in url:
+            return Body(b'{"results":[]}')
+        if "itunes.apple.com" in url:
+            return Body(itunes)
+        if "deezer.com" in url:
+            return Body(deezer)
+        raise AssertionError(url)
+
+    hit = screen.lookup_meta("Purple Rain", "Prince", fetch=fetch)
+    assert "300x300bb" in hit["cover"]
+    assert hit["preview"].endswith(".m4a")
+    fallback = screen.lookup_meta("When Doves Cry", "Prince", fetch=fetch)
+    assert fallback["cover"].startswith("https://e-cdns-images.dzcdn.net/")
+    assert fallback["preview"].endswith(".mp3")
+    youtube = "https://www.youtube.com/results?search_query="
+    page = (ROOT / "web" / "app.js").read_text()
+    assert youtube in page
+    assert "youtube.com/watch" not in page
 
 
 def test_unknown_paths_are_not_served():

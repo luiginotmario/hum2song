@@ -3,30 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#60a088" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Hum</title>
   <link rel="stylesheet" href="/app.css" />
 </head>
 <body data-phase="idle">
   <main class="screen">
     <header class="prompt" aria-live="polite">
-      <svg class="mic" viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="9" y="2.5" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8" />
-        <path d="M6.5 11a5.5 5.5 0 0 0 11 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-        <path d="M12 16.5V20.5M8.5 20.5h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-      </svg>
       <h1 id="headline">Tap to Listen</h1>
-      <p id="detail"></p>
+      <p id="detail">Hum a few seconds, then click again.</p>
     </header>
     <div class="stage" id="stage">
       <canvas id="bars" aria-hidden="true"></canvas>
       <span class="halo halo-a" aria-hidden="true"></span>
       <span class="halo halo-b" aria-hidden="true"></span>
-      <button id="listen" type="button" aria-label="Tap to listen"></button>
+      <button id="listen" type="button" aria-label="Tap to listen">
+        <svg class="glyph glyph-mic" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="9" y="3" width="6" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="1.8" />
+          <path d="M7 11a5 5 0 0 0 10 0M12 16v4M9 20h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        <svg class="glyph glyph-stop" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="7" y="7" width="10" height="10" rx="1.5" fill="currentColor" />
+        </svg>
+      </button>
     </div>
-    <section class="below">
-      <div id="choices" class="choices"></div>
-    </section>
+    <section class="results" id="choices"></section>
   </main>
   <script src="/app.js"></script>
 </body>

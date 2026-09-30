@@ -17,6 +17,8 @@ const state = {
   stopCapture: null,
   timer: 0,
   results: [],
+  previewAudio: null,
+  previewButton: null,
 };
 
 const els = {};
@@ -38,7 +40,8 @@ function setCopy(headline, detail) {
   els.detail.textContent = detail || "";
 }
 
-function clearChoices() {
+function clearResults() {
+  stopPreview();
   els.choices.replaceChildren();
 }
 
@@ -71,40 +74,136 @@ function isUnsure(label) {
   return text.includes("not sure") || text.includes("none of these");
 }
 
+function youtubeUrl(title, artist) {
+  const query = [title, artist].filter(Boolean).join(" ");
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+}
+
+function stopPreview() {
+  if (state.previewAudio) {
+    state.previewAudio.pause();
+    state.previewAudio = null;
+  }
+  if (state.previewButton) {
+    state.previewButton.textContent = "Preview";
+    state.previewButton.classList.remove("is-playing");
+    state.previewButton = null;
+  }
+}
+
+function togglePreview(url, button) {
+  if (state.previewButton === button && state.previewAudio && !state.previewAudio.paused) {
+    stopPreview();
+    return;
+  }
+  stopPreview();
+  const audio = new Audio(url);
+  state.previewAudio = audio;
+  state.previewButton = button;
+  button.textContent = "Pause";
+  button.classList.add("is-playing");
+  audio.addEventListener("ended", stopPreview);
+  audio.play().catch(() => stopPreview());
+}
+
 function showIdle() {
   setPhase("idle");
-  setCopy("Tap to Listen", "");
-  clearChoices();
+  setCopy("Tap to Listen", "Hum a few seconds, then click again.");
+  clearResults();
 }
 
 function showWinner(title, artist) {
   setPhase("winner");
   setCopy(title || "Match", artist || "");
-  clearChoices();
+  clearResults();
+  if (title) appendSong({ title, artist }, null);
 }
 
 function showRetry(message) {
   setPhase("retry");
   setCopy("Hum again", message || "Try a clearer bit of the tune.");
-  clearChoices();
+  clearResults();
 }
 
-function addChoice(label) {
+function appendUnsure(label) {
   const button = document.createElement("button");
   button.type = "button";
-  const parts = splitLabel(label);
-  const title = document.createElement("span");
-  title.className = "choice-title";
-  title.textContent = parts.title;
-  button.appendChild(title);
-  if (parts.artist && !isUnsure(label)) {
-    const artist = document.createElement("span");
-    artist.className = "choice-artist";
-    artist.textContent = parts.artist;
-    button.appendChild(artist);
-  }
+  button.className = "unsure";
+  button.textContent = label;
   button.addEventListener("click", () => choose(label));
   els.choices.appendChild(button);
+}
+
+function appendSong(item, confirmLabel) {
+  const title = (item.title || "").trim() || "Match";
+  const artist = (item.artist || "").trim();
+  const row = document.createElement("article");
+  row.className = "song";
+
+  const slot = document.createElement("div");
+  slot.className = "cover-slot";
+  const cover = document.createElement("img");
+  cover.className = "cover";
+  cover.alt = "";
+  cover.hidden = true;
+  slot.appendChild(cover);
+
+  const copy = document.createElement("div");
+  copy.className = "song-copy";
+  const titleEl = document.createElement(confirmLabel ? "button" : "h2");
+  titleEl.className = "song-title";
+  titleEl.textContent = title;
+  if (confirmLabel) {
+    titleEl.type = "button";
+    titleEl.addEventListener("click", () => choose(confirmLabel));
+  }
+  const artistEl = document.createElement("p");
+  artistEl.className = "song-artist";
+  artistEl.textContent = artist;
+  copy.append(titleEl, artistEl);
+
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  const preview = document.createElement("button");
+  preview.type = "button";
+  preview.className = "preview";
+  preview.textContent = "Preview";
+  preview.hidden = true;
+  const youtube = document.createElement("a");
+  youtube.className = "youtube";
+  youtube.textContent = "YouTube";
+  youtube.href = youtubeUrl(title, artist);
+  youtube.target = "_blank";
+  youtube.rel = "noopener noreferrer";
+  actions.append(preview, youtube);
+
+  row.append(slot, copy, actions);
+  els.choices.appendChild(row);
+  fillMeta(title, artist, cover, preview);
+}
+
+async function fillMeta(title, artist, cover, preview) {
+  const url = `/meta?title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return;
+    const meta = await response.json();
+    if (meta.cover) {
+      cover.alt = "";
+      cover.src = meta.cover;
+      cover.hidden = false;
+      cover.addEventListener("error", () => {
+        cover.hidden = true;
+        cover.removeAttribute("src");
+      });
+    }
+    if (meta.preview) {
+      preview.hidden = false;
+      preview.addEventListener("click", () => togglePreview(meta.preview, preview));
+    }
+  } catch (_error) {
+    preview.hidden = true;
+  }
 }
 
 function showFollowup(decision) {
@@ -112,8 +211,18 @@ function showFollowup(decision) {
   const options = follow.options || [];
   setPhase("followup");
   setCopy("Which song?", follow.question || decision.message || "A few songs are close.");
-  clearChoices();
-  options.forEach((label) => addChoice(label));
+  clearResults();
+  options.forEach((label) => {
+    if (isUnsure(label)) {
+      appendUnsure(label);
+      return;
+    }
+    const match = state.results.find((item) => songLabel(item) === label);
+    const parts = match
+      ? { title: (match.title || "").trim() || splitLabel(label).title, artist: (match.artist || "").trim() }
+      : splitLabel(label);
+    appendSong(parts, label);
+  });
 }
 
 function choose(label) {
@@ -154,6 +263,7 @@ function formData(blob) {
 async function searchClip(blob) {
   setPhase("searching");
   setCopy("Searching", "Matching the melody.");
+  clearResults();
   try {
     const response = await fetch(SEARCH_URL, { method: "POST", body: formData(blob) });
     if (!response.ok) throw new Error(String(response.status));
@@ -295,7 +405,7 @@ function stopTracks() {
 async function beginListening() {
   if (!READY.has(phase())) return;
   setPhase("arming");
-  clearChoices();
+  clearResults();
   setCopy("Listening", "");
   try {
     const stream = await openMic();
@@ -309,7 +419,7 @@ async function beginListening() {
     attachAnalyser(context, source);
     state.stopCapture = await attachCapture(context, source);
     setPhase("listening");
-    setCopy("Listening", "0s · tap again to search");
+    setCopy("Listening", "0s · click again to search");
     state.timer = window.setTimeout(() => finishListening(), LISTEN_MAX_MS);
   } catch (_error) {
     stopTracks();
@@ -342,7 +452,7 @@ function onListenClick() {
 function tickClock() {
   if (phase() !== "listening") return;
   const seconds = Math.max(0, Math.round((performance.now() - state.startedAt) / 1000));
-  els.detail.textContent = `${seconds}s · tap again to search`;
+  els.detail.textContent = `${seconds}s · click again to search`;
 }
 
 function barTargets() {
@@ -371,8 +481,8 @@ function ringGeometry() {
   const limit = Math.min(canvas.width, canvas.height) / 2 - 4 * dpr;
   return {
     dpr,
-    inner: orb + 8 * dpr,
-    maxLen: Math.max(10 * dpr, limit - orb - 8 * dpr),
+    inner: orb + 10 * dpr,
+    maxLen: Math.max(12 * dpr, limit - orb - 10 * dpr),
   };
 }
 
@@ -386,7 +496,7 @@ function drawBars() {
   const cx = width / 2;
   const cy = height / 2;
   ctx.lineCap = "round";
-  ctx.lineWidth = Math.max(2.5, 4 * dpr);
+  ctx.lineWidth = Math.max(2.5, 3.5 * dpr);
   for (let i = 0; i < BAR_COUNT; i += 1) {
     const amount = state.heights[i];
     if (amount < 0.04) continue;
@@ -394,7 +504,7 @@ function drawBars() {
     const length = 8 * dpr + amount * maxLen;
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.72 + 0.28 * amount})`;
+    ctx.strokeStyle = `rgba(0, 0, 0, ${0.45 + 0.55 * amount})`;
     ctx.beginPath();
     ctx.moveTo(cx + cos * inner, cy + sin * inner);
     ctx.lineTo(cx + cos * (inner + length), cy + sin * (inner + length));
