@@ -5,7 +5,8 @@
   --line: #d2d2d7;
   --fill: #f5f5f7;
   --orb: 168px;
-  --stage: 300px;
+  --stage: 280px;
+  --prompt: 140px;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 }
 
@@ -28,46 +29,54 @@ body {
 
 .screen {
   width: min(720px, 100%);
-  min-height: 100dvh;
+  height: 100dvh;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 36px 28px 32px;
+  display: grid;
+  grid-template-rows: var(--prompt) var(--stage) minmax(0, 1fr);
+  justify-items: center;
+  align-content: start;
+  padding: 24px 28px 16px;
+  overflow: hidden;
 }
 
 .prompt {
+  width: 100%;
+  height: var(--prompt);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 36rem;
+  overflow: hidden;
 }
 
 h1 {
+  width: 100%;
+  height: 88px;
   margin: 0;
+  flex: none;
   font-size: 40px;
   font-weight: 600;
   letter-spacing: -0.022em;
-  line-height: 1.1;
-  text-wrap: balance;
+  line-height: 44px;
+  overflow: hidden;
 }
 
 #detail {
+  width: 100%;
+  height: 44px;
   margin: 8px 0 0;
-  min-height: 1.35em;
+  flex: none;
   color: var(--muted);
   font-size: 17px;
-  text-wrap: balance;
+  line-height: 22px;
+  overflow: hidden;
 }
-
-#detail:empty { display: none; }
 
 .stage {
   position: relative;
   width: var(--stage);
   height: var(--stage);
-  margin: 8px 0 4px;
+  margin: 0;
   display: grid;
   place-items: center;
   flex: none;
@@ -166,10 +175,14 @@ body[data-phase="retry"] .glyph-mic {
 
 .results {
   width: 100%;
-  margin-top: 8px;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  overflow: auto;
+  scrollbar-width: none;
 }
 
-.results:empty { display: none; }
+.results::-webkit-scrollbar { display: none; }
 
 .song {
   display: grid;
@@ -293,49 +306,27 @@ button.song-title:focus-visible {
   #listen:hover:not(:disabled) { background: #1c1c1e; }
 }
 
-@media (min-width: 900px) {
-  body[data-phase="winner"] .screen,
-  body[data-phase="followup"] .screen {
-    width: min(960px, 100%);
-    display: grid;
-    grid-template-columns: var(--stage) minmax(0, 1fr);
-    grid-template-areas:
-      "prompt prompt"
-      "stage results";
-    column-gap: 36px;
-    row-gap: 4px;
-    align-items: center;
-    justify-items: center;
-  }
-
-  body[data-phase="winner"] .prompt,
-  body[data-phase="followup"] .prompt {
-    grid-area: prompt;
-  }
-
-  body[data-phase="winner"] .stage,
-  body[data-phase="followup"] .stage {
-    grid-area: stage;
-    margin: 0;
-  }
-
-  body[data-phase="winner"] .results,
-  body[data-phase="followup"] .results {
-    grid-area: results;
-    margin: 0;
-    align-self: center;
-  }
-}
-
 @media (max-width: 720px) {
   :root {
-    --orb: min(168px, 46vw);
-    --stage: min(320px, 92vw);
+    --orb: 136px;
+    --stage: 210px;
+    --prompt: 110px;
   }
 
-  .screen { padding: 32px 20px 36px; }
+  .screen { padding: 16px 20px 12px; }
 
-  h1 { font-size: 32px; }
+  h1 {
+    height: 64px;
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  #detail {
+    height: 40px;
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 20px;
+  }
 
   .song {
     grid-template-columns: 64px minmax(0, 1fr);
