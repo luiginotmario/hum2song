@@ -1480,3 +1480,40 @@ Window index: **7,245** songs windowed (**912,917** five-second windows); this r
 - MTG-Jamendo (or another CC full-track set) has a fetch + build path and disk budget.
 - More FMA genres or a larger Electronic draw if hummed electronic hooks matter.
 - Live CHAD / MTG-QBH / MLEnd eval on the 8k library to measure distractor cost.
+
+## D-037 · Add Purple Rain + hummable classics to live YouTube index
+**Date:** 2026-09-30
+
+**Context.** Live library sat at **8,001 / 7,245 searchable** after D-033 FMA growth. Hum-demo gaps remained for undeniable classics (Prince – Purple Rain absent; Thriller, Sweet Child O Mine, Hotel California, Under Pressure, Africa, etc. missing or only weak FMA near-matches). Prior YouTube chart path (D-019/D-020) is the established legal research ingest: yt-dlp audio → melody tracks only → pgvector with live E2b.
+
+**Options.**
+- Wait for Mac chart queue / Beatport-style batch (slow; Mac download aversion).
+- Spotified / piracy rip (rejected).
+- **Reuse `add_youtube_batch.py` + extract/index with `contour_e2b_s0/best.pt`**, downloads wherever YouTube allows (Lambda IP bot-blocked; box + short Mac retry).
+
+**Decision.** Ingest a curated classics list as `youtube_full` distractors tagged `classics_hum_d037` into `youtube_charts_v1`, same vocal/mix + 5 s window pipeline as live search. Skip titles already present. Prefer official/audio YouTube IDs. Do not restart API (DB + SongCache are hot).
+
+**Results.**
+| | Before | After |
+|---|---:|---:|
+| songs | 8,001 | **8,060** |
+| searchable | 7,245 | **7,304** |
+| chunks | 187,570 | **189,919** |
+| windows | 912,917 | **924,305** |
+
+- **Purple Rain** `youtube:OOM6TiWJdps` — 32 chunks, 144 windows.
+- **59** new classics searchable (batch1 +31, batch2 +28; target_like drops: Sounds of Silence, Stairway to Heaven, Dont Start Now, My Way, Wish You Were Here).
+- Full title list + song_ids: `/lambda/nfs/hum2song-data/results/d037/RESULT.md`.
+
+**Takeaways.**
+- Live demo coverage for hummed classics improved without touching FMA or restarting uvicorn.
+- YouTube download must not assume Lambda egress; keep a short Mac/box fallback for bot walls.
+- `target_like` guard still drops eval-colliding videos (intentional).
+
+**Trade-off.**
+- Lyrics/unofficial uploads used when official audio blocked; melody fingerprint research use only (Tier Y).
+- A handful of wanted titles still absent (target_like).
+
+**Revisit when.**
+- Need Stairway / remaining drops with alternate video IDs that clear `target_like`.
+- Lambda gains working YouTube cookies / egress so Mac is unused.
