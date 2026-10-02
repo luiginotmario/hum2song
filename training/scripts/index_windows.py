@@ -44,11 +44,10 @@ METHOD = "vocals_or_mix"
 
 
 def track_files(root: Path) -> dict[str, Path]:
-    """song_id -> cached track file, first library that has it."""
+    """song_id -> cached track file, first library that has it (any library/*/tracks)."""
     found: dict[str, Path] = {}
-    for name in LIBRARIES:
-        for path in sorted((root / "library" / name / "tracks").glob("*.np[yz]")):
-            found.setdefault(path.stem.replace("_", ":", 1), path)
+    for path in sorted((root / "library").glob("*/tracks/*.np[yz]")):
+        found.setdefault(path.stem.replace("_", ":", 1), path)
     return found
 
 

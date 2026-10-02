@@ -14,7 +14,7 @@ from hum2song.contour import chad
 from hum2song.contour.features import rmvpe_contour
 
 FMA_LIBRARY = "fma_full_3k"
-FMA_LIBRARIES = ("fma_full_3k", "fma_full_extra_3k", "fma_electronic_1k")
+FMA_LIBRARIES = ("fma_full_3k", "fma_full_extra_3k", "fma_electronic_1k", "fma_full_extra2_3k", "fma_electronic_extra_2k")
 QUERY_CACHE = "library/query_contours.npz"
 PREVIEW_SOURCES = ("itunes_preview", "deezer_preview")
 FULL_SOURCE = "youtube_full"
@@ -31,7 +31,7 @@ def library_rows(root: Path, names: list[str]) -> list[dict]:
 
 
 def fma_rows(root: Path) -> list[dict]:
-    """All open-licence FMA library folders (D-017 base + D-033 extras)."""
+    """All open-licence FMA library folders (D-017 base + D-033/D-038 extras)."""
     rows = []
     seen: set[str] = set()
     for name in FMA_LIBRARIES:

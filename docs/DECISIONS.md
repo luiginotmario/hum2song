@@ -1517,3 +1517,53 @@ Window index: **7,245** songs windowed (**912,917** five-second windows); this r
 **Revisit when.**
 - Need Stairway / remaining drops with alternate video IDs that clear `target_like`.
 - Lambda gains working YouTube cookies / egress so Mac is unused.
+
+## D-038 · Grow live library with more open FMA (+3k vocal +2k Electronic); re-eval CHAD/MTG on E2b
+**Date:** 2026-10-02
+
+**Context.** Live library sat at **8,060 / 7,304 searchable** after D-037 classics. Luigi asked to grow from free open catalogs (FMA) on Lambda only, keep E2b (`contour_e2b_s0/best.pt`), and re-run real-hum CHAD + MTG evals. Prior cited bars were CHAD ~53%/64% and MTG ~70%/75% on smaller pools; D-033 had grown to ~8k without a fresh live eval.
+
+**Options.**
+- Start MTG-Jamendo (no in-repo fetch path yet).
+- YouTube/Mac commercial growth (rejected for this round).
+- **Reuse D-033 FMA ranged-zip path:** another vocal 3k + Electronic 2k, exclude existing FMA ids, build+window with E2b, then `eval_live_search.py`.
+
+**Decision.**
+- `fma_full_extra2_3k`: seed **20261002**, D-017 vocal genres, 60–420 s, exclude `fma_full_3k` + `fma_full_extra_3k` + `fma_electronic_1k`. 3,000 downloaded.
+- `fma_electronic_extra_2k`: seed **20261002**, Electronic only. 2,000 downloaded.
+- Build both with E2b (`build_library.py`), then `index_windows.py` (track discovery generalized to any `library/*/tracks`).
+- Extend `FMA_LIBRARIES` to include the two new folders.
+- Before and after live evals on the same windows pipeline; no training, no API model switch.
+
+**Results.** Files: `/lambda/nfs/hum2song-data/results/d038/` (`RESULT.md`, `live_before.json`, `live_after.json`).
+
+| | Songs | Searchable | Chunks | Window songs |
+|---|---:|---:|---:|---:|
+| Before | 8,060 | 7,304 | 189,919 | 7,304 |
+| After | **13,060** | **11,467** | **284,472** | **11,467** |
+| Δ | +5,000 | +4,163 | +94,553 | +4,163 |
+
+Live windows top-1 / top-10 (MRR), `eval_live_search.py`, E2b:
+
+| Set | Before (8k) | After (13k) |
+|---|---|---|
+| CHAD test (300) | **0.513 / 0.670** (0.570) | **0.483 / 0.657** (0.545) |
+| CHAD val (300) | 0.257 / 0.360 (0.290) | 0.250 / 0.347 (0.281) |
+| MTG-QBH sung (110) | **0.645 / 0.800** (0.701) | **0.655 / 0.791** (0.704) |
+
+Vs prior cited ~0.53/0.64 CHAD and ~0.70/0.75 MTG: after-grow CHAD is a few points lower on top-1 (more distractors); MTG holds. Weights unchanged — not a model regression.
+
+**Takeaways.**
+- Open FMA growth remains the fastest legal catalog lever (+5k songs in one Lambda job).
+- Larger distractor pool costs ~3 CHAD top-1 points vs the 8k snapshot; top-10 nearly flat.
+- Electronic searchable yield is still lower than vocal (as in D-033).
+
+**Trade-off / what we gave up.**
+- No MTG-Jamendo; no chart/Mac commercial batch.
+- Live search latency rose slightly with library size.
+
+**Revisit when.**
+- MTG-Jamendo fetch path exists.
+- HNSW recall/latency at 11k+ searchable needs a retune.
+- Live demo still needs more hummed commercial titles (separate from FMA growth).
+
