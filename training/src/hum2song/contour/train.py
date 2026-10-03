@@ -8,6 +8,8 @@ MLEnd train-split whistles with other train-split people's hums. Optional CHAD p
 (D-019): real hums with the hummed window of the real recording, train-split songs only.
 Optional song-window pairs (D-026, E2a): a second loader of self-supervised windows from
 real song melody tracks, trained with the CLEWS loss next to the InfoNCE loss.
+Optional hum-to-song pairs (D-039): that same CLEWS loader, with a synthetic hum or sung
+query of the vocal melody instead of a cover or a second song window.
 """
 
 import math
@@ -44,6 +46,7 @@ from hum2song.contour.evaluate import (
     whole_reference,
 )
 from hum2song.contour.features import FEATURE_DIM, FRAME_S, SALIENCE_FEATURE_DIM, midi_contour
+from hum2song.contour.hum_pairs import HumSongDataset
 from hum2song.contour.mlend import MLEndValidation, read_song_holdout, training_pairs
 from hum2song.contour.model import ContourEncoder
 from hum2song.contour.song_pairs import (
@@ -270,9 +273,29 @@ def cover_pair_dataset(root: Path, config: ContourConfig) -> CoverPairDataset:
     )
 
 
-def song_dataset(root: Path, config: ContourConfig) -> SongWindowDataset:
-    """Song-window (D-026) or cover-pair (D-028) dataset for the CLEWS loss."""
-    builders = {"windows": song_window_dataset, "covers": cover_pair_dataset}
+def hum_song_dataset(root: Path, config: ContourConfig) -> HumSongDataset:
+    """Synthetic hum or sung query vs the song vocal melody (D-039). No covers, no whistle."""
+    rows = training_songs(root, split_list(config.song_libraries), config.song_fma_parity)
+    routes = load_song_routes(rows)
+    LOGGER.info("hum-to-song pairs: %s songs", len(routes))
+    return HumSongDataset(
+        routes,
+        augment_spec(config),
+        config.seed,
+        refs=config.song_refs,
+        offset_s=config.song_offset_s,
+        query_s=(config.query_min_s, config.query_max_s),
+        extra_s=(config.ref_extra_min_s, config.ref_extra_max_s),
+    )
+
+
+def song_dataset(root: Path, config: ContourConfig):
+    """Song-window (D-026), cover-pair (D-028), or hum-to-song (D-039) rows for CLEWS."""
+    builders = {
+        "windows": song_window_dataset,
+        "covers": cover_pair_dataset,
+        "hums": hum_song_dataset,
+    }
     if config.song_source not in builders:
         raise ValueError(f"unknown song_source: {config.song_source}")
     return builders[config.song_source](root, config)

@@ -1,0 +1,63 @@
+# D-039: fine-tune E2b so a hummed or sung query sits near the matching song's vocal
+# melody and away from other songs. Queries are synthetic hums (humanize + the augment
+# below) or sung-style distortions of that vocal melody, plus HumTrans and CHAD train
+# hums. Not cover pairs. Not whistles. Same ContourEncoder and checkpoint format as E2b.
+#   python training/scripts/train_contour.py --config configs/train_contour_hum.yaml
+# Checkpoint: $H2S_DATA/ckpt/contour_hum_s0/best.pt (best val/chad_val_top1; test unseen).
+# Launch and the adopt gate: docs/paper/results/d039/LAUNCH.md
+run_name: contour_hum_s0
+steps: 3000
+batch_size: 256
+lr: 0.00003
+weight_decay: 0.05
+warmup_steps: 100
+grad_clip: 1.0
+dim: 256
+layers: 6
+heads: 4
+dropout: 0.1
+out_dim: 256
+temperature_init: 0.07
+num_workers: 16
+seed: 0
+log_every: 50
+val_every: 100
+select_metric: val/chad_val_top1
+stretch_min: 0.5
+stretch_max: 1.9
+warp_depth: 0.3
+interval_scale: 0.25
+drift_semitones: 1.0
+jitter_semitones: 0.25
+dropout_prob: 0.6
+octave_error_prob: 0.15
+query_min_s: 3.0
+query_max_s: 12.0
+ref_start_jitter_s: 1.0
+ref_extra_min_s: -1.0
+ref_extra_max_s: 3.0
+shift_semitones: 7.0
+synthetic_midi_dirs: ""
+holdout_midi_dir: raw/essen_midi/deutschl
+holdout_count: 2000
+synthetic_exclude: ""
+whistle_aug_prob: 0.0
+whistle_synth: false
+mlend_pairs: false
+mlend_val: false
+chad_pairs: true
+chad_repeat: 1
+chad_val: true
+input_kind: contour
+init_ckpt: ckpt/contour_e2b_s0/best.pt
+early_stop_patience: 5
+song_pairs: true
+song_libraries: youtube_charts_v1
+song_fma_parity: all
+song_source: hums
+song_batch_size: 64
+song_refs: 4
+song_offset_s: 3.0
+song_loss_weight: 1.0
+clews_gamma: 5.0
+clews_eps: 0.000001

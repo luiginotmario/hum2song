@@ -83,8 +83,9 @@ class ContourConfig:
     song_loss_weight: float = 1.0
     clews_gamma: float = 5.0
     clews_eps: float = 1.0e-6
-    # E2b (D-028): "covers" swaps the self-supervised song windows for CHAD cover -> original
-    # pairs (contour/cover_pairs.py); loss and batch settings are the song_* ones above.
+    # "windows" (D-026): self-supervised song windows. "covers" (D-028): CHAD cover ->
+    # original. "hums" (D-039): synthetic hum or sung query vs the vocal melody.
+    # Loss and batch settings are the song_* ones above.
     song_source: str = "windows"
     # E3 (D-030): "salience" feeds soft/real RMVPE salience (±18 st crop + voicing)
     # instead of the hard-F0 (pitch, voicing) features.

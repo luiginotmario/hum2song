@@ -1567,3 +1567,45 @@ Vs prior cited ~0.53/0.64 CHAD and ~0.70/0.75 MTG: after-grow CHAD is a few poin
 - HNSW recall/latency at 11k+ searchable needs a retune.
 - Live demo still needs more hummed commercial titles (separate from FMA growth).
 
+## D-039 · Hum-to-song fine-tune from E2b: synthetic and real hums vs the vocal melody (recipe fixed, not trained)
+**Date:** 2026-10-03
+
+**Context.** Live search is still E2b, `ckpt/contour_e2b_s0/best.pt` (D-028, D-029). That run was a cover→original CLEWS fine-tune of the D-012 contour encoder. After D-038 grew the open library to about 13k songs / 11.5k searchable, the same weights on `eval_live_search.py` (windows) stayed flat: CHAD test **0.483 / 0.657**, MTG-QBH sung **0.655 / 0.791**. Luigi says live humming still feels bad, and asked to train the way Google Hum to Search and ByteHum do: a hummed or sung query close to the matching song, other songs far, including when the hum is off-pitch, off-tempo, and noisy. Whistle is out of scope for this run. This checkout cannot see the Lambda data or the A100 (`/lambda/nfs/hum2song-data`), so this entry fixes the recipe and does not report a result.
+
+**What those systems actually did, from the notes already in this repo.** Hum to Search (Frank, 2020; blog only, no public numbers) embeds a query and a recording segment and trains with metric learning. The lever they describe is query variety: sung segments with pitch and tempo augmentation were not enough for humming; they added synthetic hums made from extracted pitch. ByteHum (Du et al., ICASSP 2024) is abstract-only in `docs/research/lit_review_real_audio.md`; its numbers are unverified. The abstract's relevant piece is domain adaptation from separated song audio toward hums. It is not a license to start another cover-song run. Jeong's contour QbH (no paper) is the closest public cousin: distort an extracted melody into a hum, then match it to the song.
+
+**Options.**
+- Another cover pass on E2b. Rejected. E2b is already the live model, and the ask is hum↔song, not cover↔original.
+- A new spectrogram or CNN tower in the style of Hum to Search or ByteHum. Rejected. The repo already has the melody encoder and the metric-learning path: `ContourEncoder`, symmetric InfoNCE, and CLEWS. The encoder reads F0, so a new audio front end would be a different system.
+- Whistle pairs or E4 again. Out of scope. D-031 kept E2b because whistle training hurt hums.
+- **This recipe.** Fine-tune E2b. Positive pairs are a synthetic hum or a sung-style distortion of a song's vocal melody, against windows of that vocal melody, over the indexed open songs (eval-target titles still dropped). Real CHAD train hums stay in the InfoNCE batch, against the recording's vocal window. HumTrans hum↔MIDI stays as the other InfoNCE term, as in E2b.
+
+**Decision.** One seed, recipe fixed before any run (`configs/train_contour_hum.yaml`, `contour/hum_pairs.py`). Entrypoint is the existing trainer:
+
+```bash
+export H2S_DATA=/lambda/nfs/hum2song-data
+python training/scripts/train_contour.py --config configs/train_contour_hum.yaml
+```
+
+- **Model.** Unchanged `ContourEncoder` (256-d, 6 layers, hard F0). Init `ckpt/contour_e2b_s0/best.pt`. Checkpoints stay `{model, config, step, metrics}`; `load_checkpoint` and the live server need no code change. There is no format swap.
+- **Hum↔song term.** `song_source: hums`, CLEWS, weight 1.0, 64 songs × 4 vocal windows. With probability 0.75 the query is `humanize` (glides, vibrato) then the E2b augment (stretch 0.5–1.9, drift 1 st, jitter 0.25 st, interval scale 0.25, dropout 0.6, octave slips 0.15). Otherwise it is the same augment without `humanize` (sung-style). References are the vocal melody, stretched only by 0.85–1.15, so the off-tempo is on the query. Songs: `youtube_charts_v1` plus every indexed FMA library (`song_fma_parity: all`). The D-026 title filter still drops evaluation targets.
+- **Real hums.** `chad_pairs: true` (train-split songs only, once per epoch) and the usual HumTrans pairs. CHAD val top-1 selects `best.pt`. Early stop patience 5, at most 3,000 steps, LR 3e-5. CHAD test is not a training song split and is not the select metric.
+- **Off.** `whistle_aug_prob: 0`, `whistle_synth: false`, `mlend_pairs: false`, `mlend_val: false`, `input_kind: contour` (E3 salience lost to E2b).
+
+**Adopt gate (the only result that replaces E2b).** Not this decision. After training, re-index the live library with the new file, then run the same live windows eval as D-038. Commands and the four numbers to beat are in `docs/paper/results/d039/LAUNCH.md`. Replace E2b only if CHAD test and MTG-QBH sung are **both** strictly above D-038 on **both** top-1 and top-10 (0.483 / 0.657 and 0.655 / 0.791). A tie, or a gain on only one set, keeps E2b. Those bars are this library's E2b snapshot. They are not Hum to Search or ByteHum numbers; neither source gives a figure we can cite as a target.
+
+**What we gave up.**
+- Cover pairs for this run. E2b stays live until the gate passes.
+- Google's spectrogram embedding, their neural hum/whistle generator, and their batch-confidence loss. `confidence_loss` exists for the MERT trainer and has no contour-run evidence, so it is not added.
+- ByteHum's cover-dataset weak supervision and any separate adaptation network. The "adaptation" here is synthetic hums of vocal F0, which is unsupervised for the open songs, plus the CHAD train hums we already have.
+- Audio-domain noise (room, babble, mic). This encoder never sees that. "Noisy" means contour jitter, voicing gaps, and short octave slips.
+- Global transposition as an off-pitch trick. Median centering already removes it. Off-pitch is drift, interval error, and jitter.
+- E2a's held-out odd FMA half, and E2a's mix-route query. The gate is the live library, not an FMA-half probe, and the positive is the vocal melody.
+- An in-place re-index overwrites the E2b vectors. If the gate fails, re-index `contour_e2b_s0/best.pt` before starting the API again (LAUNCH.md).
+
+**Revisit when.**
+- The Lambda job has a `results/d039/live.json` to log as a result, win or miss.
+- CHAD rises and MTG falls: do not adopt; a sung-heavier mix would be a new decision.
+- Both miss: do not stack a cover pass on this checkpoint without a new decision.
+- Whistle is still a separate question (D-031).
+
