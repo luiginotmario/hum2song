@@ -10,6 +10,8 @@ Optional song-window pairs (D-026, E2a): a second loader of self-supervised wind
 real song melody tracks, trained with the CLEWS loss next to the InfoNCE loss.
 Optional hum-to-song pairs (D-039): that same CLEWS loader, with a synthetic hum or sung
 query of the vocal melody instead of a cover or a second song window.
+Optional whistle and wrong-lyrics pairs (D-040): CLEWS on re-tracked synthetic queries,
+with the HumTrans InfoNCE term scaled by hum_loss_weight. That run does not replace E2b.
 """
 
 import math
@@ -59,6 +61,8 @@ from hum2song.logutil import get_logger
 from hum2song.losses import clews_loss, info_nce_symmetric
 from hum2song.manifest import PairRecord, read_pairs
 from hum2song.midi_render import parse_midi
+from hum2song.query_synth.dataset import QuerySynthDataset
+from hum2song.query_synth.manifest import train_rows
 from hum2song.seed import seed_everything
 
 LOGGER = get_logger(__name__)
@@ -289,12 +293,30 @@ def hum_song_dataset(root: Path, config: ContourConfig) -> HumSongDataset:
     )
 
 
+def query_synth_dataset(root: Path, config: ContourConfig) -> QuerySynthDataset:
+    """Re-tracked whistle and wrong-lyrics queries vs the vocal melody (D-040)."""
+    rows = train_rows(root / config.query_synth_manifest)
+    dataset = QuerySynthDataset(
+        root,
+        rows,
+        config.seed,
+        refs=config.song_refs,
+        offset_s=config.song_offset_s,
+        extra_s=(config.ref_extra_min_s, config.ref_extra_max_s),
+    )
+    if len(dataset) == 0:
+        raise FileNotFoundError(f"no contour files for {config.query_synth_manifest}")
+    LOGGER.info("query-synth pairs: %s", len(dataset))
+    return dataset
+
+
 def song_dataset(root: Path, config: ContourConfig):
-    """Song-window (D-026), cover-pair (D-028), or hum-to-song (D-039) rows for CLEWS."""
+    """Song-window (D-026), cover (D-028), hum (D-039), or query-synth (D-040) rows."""
     builders = {
         "windows": song_window_dataset,
         "covers": cover_pair_dataset,
         "hums": hum_song_dataset,
+        "query_synth": query_synth_dataset,
     }
     if config.song_source not in builders:
         raise ValueError(f"unknown song_source: {config.song_source}")
@@ -332,7 +354,8 @@ def train_step(
     with torch.autocast("cuda", dtype=torch.bfloat16, enabled=device.type == "cuda"):
         query = model(batch["query"].to(device), batch["query_valid"].to(device))
         song = model(batch["song"].to(device), batch["song_valid"].to(device))
-    loss = info_nce_symmetric(query.float(), song.float(), batch["song_id"], model.temperature())
+    nce = info_nce_symmetric(query.float(), song.float(), batch["song_id"], model.temperature())
+    loss = config.hum_loss_weight * nce
     if song_batch is not None:
         loss = loss + config.song_loss_weight * song_window_loss(model, song_batch, device, config)
     optimizer.zero_grad(set_to_none=True)

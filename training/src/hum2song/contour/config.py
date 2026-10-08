@@ -85,8 +85,13 @@ class ContourConfig:
     clews_eps: float = 1.0e-6
     # "windows" (D-026): self-supervised song windows. "covers" (D-028): CHAD cover ->
     # original. "hums" (D-039): synthetic hum or sung query vs the vocal melody.
+    # "query_synth" (D-040): re-tracked whistle and wrong-lyrics queries.
     # Loss and batch settings are the song_* ones above.
     song_source: str = "windows"
+    # Scales the HumTrans InfoNCE term. 1.0 keeps every older config. D-040 uses a
+    # small value so the hum baseline does not dominate the new query types.
+    hum_loss_weight: float = 1.0
+    query_synth_manifest: str = "query_synth/manifest.jsonl"
     # E3 (D-030): "salience" feeds soft/real RMVPE salience (±18 st crop + voicing)
     # instead of the hard-F0 (pitch, voicing) features.
     input_kind: str = "contour"

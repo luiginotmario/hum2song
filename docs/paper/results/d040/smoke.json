@@ -1,0 +1,54 @@
+{
+  "origin": "synthetic",
+  "presentation": "synthetic; not a recording of a person",
+  "files": [
+    "whistle.wav",
+    "wrong_lyrics.wav"
+  ],
+  "whistle": {
+    "origin": "synthetic",
+    "style": "whistle",
+    "seconds": 3.28,
+    "median_hz": 1558.24281858773,
+    "tracker_median_abs_st": 0.044719696044921875,
+    "syllables": [],
+    "h2_db_drawn": -48.329470712177276,
+    "probe_h2_db": -46.2095758865826,
+    "peak": 0.949999988079071
+  },
+  "wrong_lyrics": {
+    "origin": "synthetic",
+    "style": "wrong_lyrics",
+    "seconds": 3.46,
+    "median_hz": 390.09532668378006,
+    "tracker_median_abs_st": 0.10628509521484375,
+    "syllables": [
+      "du",
+      "la",
+      "lo",
+      "du",
+      "na",
+      "lu",
+      "lu",
+      "lu",
+      "la",
+      "lu",
+      "me",
+      "ma",
+      "ma",
+      "lu",
+      "me",
+      "lu",
+      "ma"
+    ],
+    "h2_db_drawn": null,
+    "probe_h2_db": -11.901731996917388,
+    "peak": 0.949999988079071
+  },
+  "timbre_probe": {
+    "whistle_h2_db": -46.2095758865826,
+    "singing_h2_db": -11.901731996917388,
+    "whistle_hz": 1318.5,
+    "singing_hz": 261.6
+  }
+}
