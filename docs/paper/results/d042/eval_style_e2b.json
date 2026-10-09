@@ -1,0 +1,19 @@
+{
+  "checkpoint": "/lambda/nfs/hum2song-data/ckpt/contour_e2b_s0/best.pt",
+  "step": 800,
+  "origin": "synthetic",
+  "whistle": {
+    "count": 4263,
+    "n_songs": 11050,
+    "top1": 0.17992024395965284,
+    "top10": 0.29134412385643915,
+    "mrr": 0.2200509250426047
+  },
+  "wrong_lyrics": {
+    "count": 4263,
+    "n_songs": 11050,
+    "top1": 0.19305653295801078,
+    "top10": 0.3138634764250528,
+    "mrr": 0.2348075547071137
+  }
+}

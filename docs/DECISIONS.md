@@ -1715,3 +1715,27 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Given up (from the result).** The MLEnd pairs likely taught tune familiarity rather than whistle robustness; the run cannot separate that from the other three changes.
 
 **Revisit when (from the result).** Rerun without `mlend_pairs` (keep the selection fix and `query_aug`) to see whether synthetic-only training keeps D-040's held-out-song MLEnd number while gaining D-041's synthetic number; or when real whistles can be scored against song recordings.
+
+
+## D-042 · Whistle + wrong-lyrics without MLEnd training data (1 seed): clean real test, still no gain over E2b — keep E2b
+**Date:** 2026-10-09
+
+**Context.** D-041 changed four things at once (synthetic-val selection, 4× longer run, per-epoch query augmentation, MLEnd whistle → hum pairs on 6 of the 8 songs). On the two MLEnd songs it never trained on, real whistle top-1 fell to 0.456 (41 of 90) against 0.589 for E2b and 0.656 for D-040, while it rose on the 6 trained songs: the MLEnd pairs taught tunes, not whistling (same as D-015 → D-016). Because D-041 trained on MLEnd, only 90 of the 339 MLEnd test whistles were a clean test for it.
+
+**Options.** (a) Rerun D-041 without the MLEnd pairs (keep selection, length, augmentation). (b) Keep the MLEnd pairs but hold out more songs. (c) Stop whistle fine-tuning until real whistles can be scored against song recordings.
+
+**Decision.** (a). `configs/train_contour_qsynth_d042.yaml` = the D-041 config with `mlend_pairs: false` and `mlend_val: false`; nothing else changed (same seed, init E2b, 12,000 steps, synthetic-val selection with the HumTrans guard, `query_aug`). No MLEnd data is trained or validated on, so all 8 MLEnd songs (339 test whistles) are a clean real test for D-042. This isolates the MLEnd-pair effect from the other three D-041 changes. Chain: `results/d042/run_chain.sh` scores D-042 best/last, D-041 best, D-040 last and E2b on identical sets. The live server, `H2S_CKPT` and the index were not touched.
+
+**Given up.** The only real whistle training signal we have. (b) would keep it but shrink the clean test below 90 whistles. Still one seed.
+
+**Result** (`docs/paper/results/d042/README.md`, printed by `summarize.py`). Early stop did not fire; best step 11,250, last step 12,000. Guard held at every validation.
+- Synthetic hold-out **[synthetic]**, top-1, E2b → D-041 best → D-042 best: whistle 0.180 → 0.253 → 0.251; wrong-lyrics 0.193 → 0.269 → 0.264; both 0.186 → 0.261 → 0.258. The MLEnd pairs were not what drove D-041's synthetic gain.
+- Hums **[real]**, top-1, E2b → D-042 best: HumTrans test 0.996 → 0.992 (766 → 763 of 769); MIR-QBSH 48 `anywhere` 0.955 → 0.950 (4,232 → 4,209 of 4,431).
+- MLEnd whistle (peak) → hums, centroid, test people **[real, clean for D-042]**, top-1, E2b → D-042 best: Hakuna + Potter 53 → 56 of 90 (0.589 → 0.622); other 6 161 → 154 of 249 (0.647 → 0.618); **all 8 214 → 210 of 339 (0.631 → 0.619)**, top-3 0.770 → 0.752. D-042 last: 55 / 154 / 209.
+- D-041 best, D-040 last and E2b re-scored in this chain equal the committed D-041 files exactly.
+
+**Decision (from the result).** Not adopted. Removing the MLEnd pairs fixed D-041's held-out drop (41 → 56 of 90), but D-042 does not beat E2b on the full clean real test (210 vs 214 of 339) and costs hums slightly. +3 of 90 on two songs is inside noise (binomial SE ~0.05). E2b stays live; no `H2S_CKPT` swap, no re-index.
+
+**Given up (from the result).** Three rounds (D-040, D-041, D-042) now raise synthetic top-1 by 5–7 points without moving real MLEnd whistle → hum top-1 beyond noise. More synthetic-only tuning against this renderer is unlikely to show up on real whistles.
+
+**Revisit when.** Real whistles or wrong-lyrics singing can be scored against song recordings (MLEnd / MTG-QBH target audio as owned files, or a new recorded set), or the renderer changes in a way that targets the real-vs-synthetic gap (neural SVS, real-whistle tracker errors), or there is time for more seeds.

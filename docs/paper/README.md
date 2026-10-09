@@ -4,7 +4,7 @@ Every measured number in `SIGNALS.md` points to a file in this folder.
 
 | path | what |
 |---|---|
-| `paper.md` | full paper draft (whistle and wrong-lyrics query-by-melody; D-040 and D-041 results) |
+| `paper.md` | full paper draft (whistle and wrong-lyrics query-by-melody; D-040, D-041 and D-042 results) |
 | `SIGNALS.md` | signal-physics definitions and measured numbers (§S1–§S8) |
 | `REFERENCES_and_CAPTION.md` | contour figure: methods, numbers (old vs new), draft caption, references |
 | `WHISTLE_F0_VALIDATION.md` | whistle F0 validation on all MLEnd whistles and the downstream retrieval check |
@@ -16,6 +16,7 @@ Every measured number in `SIGNALS.md` points to a file in this folder.
 | `results/` | JSON/CSV outputs of the scripts |
 | `results/d040/summarize.py` | prints every D-040 number used in `paper.md` from the JSON in that folder |
 | `results/d041/summarize.py` | prints every D-041 number used in `paper.md` (tables also in `results/d041/README.md`) |
+| `results/d042/summarize.py` | prints every D-042 number used in `paper.md` (tables also in `results/d042/README.md`) |
 | `results/superseded/` | first-version outputs (RMVPE-fix whistles, DTW with silent fallback), kept for the old-vs-new comparison |
 
 Reproduce (CPU only; MLEnd Hums and Whistles in `$R`, run inside `scripts/`):

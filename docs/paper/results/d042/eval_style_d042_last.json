@@ -1,0 +1,19 @@
+{
+  "checkpoint": "/lambda/nfs/hum2song-data/ckpt/contour_qsynth_d042_s0/last.pt",
+  "step": 12000,
+  "origin": "synthetic",
+  "whistle": {
+    "count": 4263,
+    "n_songs": 11050,
+    "top1": 0.25193525686136525,
+    "top10": 0.3748533896317148,
+    "mrr": 0.29516039678681094
+  },
+  "wrong_lyrics": {
+    "count": 4263,
+    "n_songs": 11050,
+    "top1": 0.2650715458597232,
+    "top10": 0.398311048557354,
+    "mrr": 0.3125347918838474
+  }
+}
