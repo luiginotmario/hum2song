@@ -1658,3 +1658,60 @@ Physics of the two signals is `docs/paper/SIGNALS.md` and is not restated here. 
 - Owned recordings of the eight MLEnd titles, or of the MTG-QBH songs, are placed under `owned/`. Until then those two eval sections stay blocked.
 - A public wrong-lyrics QBH set shows up. The synthetic hold-out stays labeled synthetic even then.
 
+
+## D-040 result · Synthetic whistle + wrong-lyrics fine-tune (1 seed): synthetic gain, real whistle mixed — keep E2b
+**Date:** 2026-10-08 (logged 2026-10-09)
+
+**Context.** Result of the D-040 recipe, run on Lambda (`docs/paper/results/d040/`). Run 1 early-stopped at step 500 with best step 0; run 2 (patience off) ran 3,000 steps. Both picked step 0 on HumTrans val (0.9948 at step 0, never exceeded), so `best.pt` = E2b weights and `last.pt` (step 3,000) is what is reported.
+
+**Result** (`docs/paper/results/d040/summarize.py`; re-scored identically in the D-041 chain).
+- Synthetic hold-out **[synthetic]**, 11,050-song gallery, top-1 E2b → D-040 last: whistle 0.180 → 0.226, wrong-lyrics 0.193 → 0.238, both 0.186 → 0.232.
+- Hums **[real]**: HumTrans test 0.996 → 0.991, MIR-QBSH 48 `anywhere` 0.955 → 0.944.
+- MLEnd whistle (peak) → hums, centroid, test people **[real]**: all 8 songs 0.631 → 0.611; Hakuna + Potter 0.589 → 0.656 (90 whistles, within noise); other 6 0.647 → 0.594.
+
+**Decision.** Not adopted. E2b stays live. The selection metric could not move, which D-041 fixes.
+
+**Given up.** No checkpoint selection for this run; `last.pt` is the end of a fixed schedule.
+
+**Revisit when.** Superseded by D-041.
+
+
+## D-041 · Whistle + wrong-lyrics round 2 (1 seed): bigger synthetic gain, real held-out whistle worse — keep E2b
+**Date:** 2026-10-09
+
+**Context.** D-040 fine-tuned E2b on synthetic whistle and wrong-lyrics queries (86,110 queries, 11,083 songs, song-disjoint train/val/test). Its best.pt stayed at step 0 because selection used HumTrans hum val, which is already ~0.995 from the start. last.pt (step 3000) beat E2b on the synthetic test set by about 5 points top-1 (whistle 0.180 to 0.226, wrong lyrics 0.193 to 0.238), with hums flat.
+
+**State-of-the-art check (short).**
+- Google Hum to Search (2020 blog): real sung/hummed pairs plus pitch/tempo augmentation. Synthetic hums/whistles came from SPICE pitch, first rendered as tones and later by a neural generator. They also mixed clips of the same melody from different singers into extra pairs, and added a batch-confidence loss on top of the triplet loss.
+- CHAD QbH (arXiv 2312.01092): NT-Xent with a multi-similarity miner, time stretch 0.8–1.25, pitch shift ±4 st. It says a portion of real hum data is needed for pure humming.
+- ByteHum (ICASSP 2024): raw-audio CNN, weak supervision from source-separated covers, unsupervised domain adaptation.
+
+**Options.** (a) Use MLEnd train-split real whistle-to-hum pairs. (b) Use neural singing synthesis (SoulX-Singer / Vevo2) or a better source-filter render. (c) Hard negatives, bigger batches, or tempo augmentation. Plus the selection fix and a longer run.
+
+**Decision.**
+1. Select on the synthetic VAL split: mean of whistle and wrong-lyrics top-1, with up to 3,000 queries per style ranked over 24 windows per val song (~1.1k songs). Guard: HumTrans val shift+7 top-1 may not fall more than 1 point below step 0, or the checkpoint is not eligible. Implemented as `qsynth_val`, `guard_metric`, `guard_max_drop`.
+2. Run up to 12,000 steps (4× D-040), validating every 250 steps, with early stop after 8 validations (2,000 steps) without a better selection score.
+3. (a) **Yes.** Add MLEnd train-performer whistle-to-hum pairs (`mlend_pairs`, repeat 2, 1,714 pairs) with `song_holdout` on, so the two held-out songs (Hakuna, Potter) and all test performers stay out of training. This is the only real whistle data we have, and both Google and CHAD say real query data matters. Caveat: the MLEnd "seen songs" numbers are now in-domain by tune, though not by performer. The clean real-data number is the held-out-songs protocol.
+4. (c) **Tempo/voicing augmentation: yes.** The D-040 queries were rendered once, so a 4× longer run would replay the same 68,714 contours about 11 times. Each epoch now applies a fresh light augmentation to every query: stretch 0.8–1.25 (the CHAD range), warp 0.1, drift 0.3 st, jitter 0.1 st, voicing gaps p=0.3, octave slip p=0.05. There is no interval scaling, because the render already carries wrong intervals and dropped notes. Flag: `query_aug`.
+5. (b) **Neural SVS: no, not this round.** The tower sees only re-tracked F0, so a better voice timbre helps only through tracker errors. The source-filter render already has vibrato, glides, tempo warp, wrong intervals, and dropped notes. Installing a neural SVS and rendering ~40k clips is hours of work with an uncertain gain.
+6. (c) **Hard negatives / bigger batch: not this round.** A 128-song CLEWS batch ran out of memory on the 40 GB A100. True mining needs an embedding pass per epoch. Deferred.
+
+**Given up.** Clean attribution, because selection, length, MLEnd pairs and augmentation change together in one round. MLEnd seen-song numbers are no longer a clean test. Neural SVS realism and hard-negative mining were deferred.
+
+**Revisit when.** Synthetic val plateaus while real MLEnd held-out-song whistle does not move. Or when real sung/whistled queries against song audio become scorable (CHAD/MTG target audio back on disk). Or when there is GPU memory or time for mining or SVS rendering.
+
+Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`. Chain: `results/d041/run_chain.sh`. E2b stays live.
+
+**Run note: OOM restart.** Attempt 1 (launched 2026-10-09 03:18 UTC) hit CUDA out-of-memory at step ~3,900 of 12,000 on the 40 GB A100 (34.4 GiB allocated by PyTorch, ~1 GB held by the live search server on the same GPU). It was archived to `results/d041/attempt1_oom/` (its best.pt, step 3,750, kept as `best_step3750.pt`). Attempt 2 was relaunched from scratch at 02:32 ET (06:32 UTC) with `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True` to reduce allocator fragmentation; same config, same code (`d041_code.patch`), same seed. It finished with `train exit=0`. The live server, `H2S_CKPT` and the index were not touched. The code on main has the guard split into two small helpers (`guard_passes`, `apply_guard`) with the same behavior as the patch that ran.
+
+**Result** (`docs/paper/results/d041/README.md`, printed by `summarize.py`). Early stop fired at step 11,500; best step 9,500 (synthetic val select 0.374 vs 0.288 at step 0). HumTrans guard held at every validation.
+- Synthetic hold-out **[synthetic]**, top-1, E2b → D-040 last → D-041 best: whistle 0.180 → 0.226 → **0.253**; wrong-lyrics 0.193 → 0.238 → **0.269**; both 0.186 → 0.232 → **0.261**.
+- Hums **[real]**, top-1, E2b → D-041 best: HumTrans test 0.996 → 0.993; MIR-QBSH 48 `anywhere` 0.955 → 0.949.
+- MLEnd whistle (peak) → hums, centroid, test people **[real]**, top-1, E2b → D-040 last → D-041 best: **held-out songs (Hakuna + Potter, clean)** 0.589 → 0.656 → **0.456** (53 → 59 → 41 of 90); seen songs (other 6, **not clean** for D-041: trained on those tunes) 0.647 → 0.594 → 0.707; all 8 0.631 → 0.611 → 0.640.
+- D-041 last (step 11,500) is within 0.003 of best on every synthetic and hum row, and equal on MLEnd held-out top-1 (0.456).
+
+**Decision.** Not adopted. D-041 does not beat E2b on the clean real number (MLEnd held-out songs, −0.133 top-1) and costs hums slightly. The seen-song MLEnd gain is song familiarity, the same pattern as D-015 → D-016 (held-out 0.456 there too). E2b stays live; no `H2S_CKPT` swap, no re-index.
+
+**Given up (from the result).** The MLEnd pairs likely taught tune familiarity rather than whistle robustness; the run cannot separate that from the other three changes.
+
+**Revisit when (from the result).** Rerun without `mlend_pairs` (keep the selection fix and `query_aug`) to see whether synthetic-only training keeps D-040's held-out-song MLEnd number while gaining D-041's synthetic number; or when real whistles can be scored against song recordings.

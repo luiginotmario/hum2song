@@ -1,0 +1,160 @@
+diff --git a/training/src/hum2song/contour/config.py b/training/src/hum2song/contour/config.py
+index 9ae7f18..80869be 100644
+--- a/training/src/hum2song/contour/config.py
++++ b/training/src/hum2song/contour/config.py
+@@ -92,6 +92,18 @@ class ContourConfig:
+     # small value so the hum baseline does not dominate the new query types.
+     hum_loss_weight: float = 1.0
+     query_synth_manifest: str = "query_synth/manifest.jsonl"
++    # D-041: select checkpoints on the synthetic whistle + wrong-lyrics VAL split, with
++    # comma-listed guard metrics that may not drop more than guard_max_drop below step 0.
++    qsynth_val: bool = False
++    qsynth_val_max: int = 3000
++    qsynth_val_windows: int = 24
++    guard_metric: str = ""
++    guard_max_drop: float = 0.01
++    # D-041: fresh tempo/voicing augmentation of each synthetic query every epoch.
++    # The D-040 queries were rendered once, so longer training would replay them.
++    query_aug: bool = False
++    query_aug_stretch_min: float = 0.8
++    query_aug_stretch_max: float = 1.25
+     # E3 (D-030): "salience" feeds soft/real RMVPE salience (±18 st crop + voicing)
+     # instead of the hard-F0 (pitch, voicing) features.
+     input_kind: str = "contour"
+diff --git a/training/src/hum2song/contour/train.py b/training/src/hum2song/contour/train.py
+index 9a3ce6c..484a3bb 100644
+--- a/training/src/hum2song/contour/train.py
++++ b/training/src/hum2song/contour/train.py
+@@ -63,6 +63,7 @@ from hum2song.manifest import PairRecord, read_pairs
+ from hum2song.midi_render import parse_midi
+ from hum2song.query_synth.dataset import QuerySynthDataset
+ from hum2song.query_synth.manifest import train_rows
++from hum2song.query_synth.validate import QuerySynthValidation
+ from hum2song.seed import seed_everything
+ 
+ LOGGER = get_logger(__name__)
+@@ -293,6 +294,25 @@ def hum_song_dataset(root: Path, config: ContourConfig) -> HumSongDataset:
+     )
+ 
+ 
++def query_augment_spec(config: ContourConfig) -> ContourAugment:
++    """D-041: light per-epoch augmentation of an already rendered synthetic query.
++
++    Tempo 0.8-1.25 as in the CHAD QbH recipe and Google's pitch/tempo variation; small
++    local warp, drift, jitter and voicing gaps. No interval scaling: the render already
++    carries wrong intervals and dropped notes.
++    """
++    return ContourAugment(
++        stretch_min=config.query_aug_stretch_min,
++        stretch_max=config.query_aug_stretch_max,
++        warp_depth=0.1,
++        interval_scale=0.0,
++        drift_semitones=0.3,
++        jitter_semitones=0.1,
++        dropout_prob=0.3,
++        octave_error_prob=0.05,
++    )
++
++
+ def query_synth_dataset(root: Path, config: ContourConfig) -> QuerySynthDataset:
+     """Re-tracked whistle and wrong-lyrics queries vs the vocal melody (D-040)."""
+     rows = train_rows(root / config.query_synth_manifest)
+@@ -303,6 +323,7 @@ def query_synth_dataset(root: Path, config: ContourConfig) -> QuerySynthDataset:
+         refs=config.song_refs,
+         offset_s=config.song_offset_s,
+         extra_s=(config.ref_extra_min_s, config.ref_extra_max_s),
++        augment=query_augment_spec(config) if config.query_aug else None,
+     )
+     if len(dataset) == 0:
+         raise FileNotFoundError(f"no contour files for {config.query_synth_manifest}")
+@@ -424,6 +445,18 @@ def validation_metrics(model, sets, extra: list, device) -> dict:
+ def run_validation(model, sets, device, step: int, tracker, best: dict, config, validators) -> dict:
+     metrics = validation_metrics(model, sets, validators, device)
+     metrics["val/select"] = selection_score(metrics, config.select_metric)
++    guards = split_list(config.guard_metric)
++    if guards:
++        base = best.setdefault("guard_base", {name: metrics.get(name) for name in guards})
++        ok = all(
++            name in metrics
++            and base.get(name) is not None
++            and metrics[name] >= base[name] - config.guard_max_drop
++            for name in guards
++        )
++        metrics["val/guard_ok"] = float(ok)
++        if not ok:
++            metrics["val/select"] = float("-inf")
+     tracker.log(metrics, step=step)
+     LOGGER.info("step %s %s", step, " ".join(f"{k}={v:.4f}" for k, v in sorted(metrics.items())))
+     score = metrics["val/select"]
+@@ -472,6 +505,16 @@ def run_training(config: ContourConfig, tracker) -> dict:
+     held_out = set(song_holdout(config)["songs"])
+     validators = [MLEndValidation(root, "val", exclude_songs=held_out)] if config.mlend_val else []
+     validators += [chad.ChadValidation(root)] if config.chad_val else []
++    if config.qsynth_val:
++        validators.append(
++            QuerySynthValidation(
++                root,
++                config.query_synth_manifest,
++                config.qsynth_val_windows,
++                config.qsynth_val_max,
++                config.seed,
++            )
++        )
+     loader = DataLoader(
+         dataset,
+         batch_size=config.batch_size,
+diff --git a/training/src/hum2song/query_synth/dataset.py b/training/src/hum2song/query_synth/dataset.py
+index f0581b1..48ef646 100644
+--- a/training/src/hum2song/query_synth/dataset.py
++++ b/training/src/hum2song/query_synth/dataset.py
+@@ -5,18 +5,21 @@ from pathlib import Path
+ import numpy as np
+ from torch.utils.data import Dataset
+ 
++from hum2song.contour.augment import ContourAugment, augment_contour
+ from hum2song.contour.data import EpochCounter, features_tensor
++from hum2song.contour.features import FRAME_S
+ from hum2song.contour.hum_pairs import vocal_window
+ from hum2song.query_synth.manifest import require_synthetic
+ 
+ MIN_REF_FRAMES = 1
++MIN_AUG_VOICED = 20
+ 
+ 
+ class QuerySynthDataset(Dataset):
+     """One re-tracked synthetic query and several vocal windows of the same song.
+ 
+-    The query contour is what the tracker read off the rendered audio. It is not
+-    augmented again. Reference windows are the song vocal melody, near the cut
++    The query contour is what the tracker read off the rendered audio. With
++    `augment` (D-041) it gets a fresh light tempo/voicing augmentation each epoch. Reference windows are the song vocal melody, near the cut
+     the query was made from.
+     """
+ 
+@@ -28,6 +31,7 @@ class QuerySynthDataset(Dataset):
+         refs: int = 4,
+         offset_s: float = 3.0,
+         extra_s: tuple[float, float] = (-1.0, 3.0),
++        augment: ContourAugment | None = None,
+     ) -> None:
+         self.root = root
+         self.rows = [row for row in rows if _ref_exists(root, row)]
+@@ -37,6 +41,7 @@ class QuerySynthDataset(Dataset):
+         self.refs = refs
+         self.offset_s = offset_s
+         self.extra_s = extra_s
++        self.augment = augment
+         self.epoch = EpochCounter()
+         self._songs: dict[str, np.ndarray] = {}
+ 
+@@ -54,6 +59,10 @@ class QuerySynthDataset(Dataset):
+         rng = np.random.default_rng([self.seed, self.epoch.get(), index, 7])
+         row = self.rows[index]
+         query = np.load(self.root / row["contour"])
++        if self.augment is not None:
++            augmented = augment_contour(query, rng, self.augment, FRAME_S)
++            if int(np.sum(~np.isnan(augmented))) >= MIN_AUG_VOICED:
++                query = augmented
+         ref = self.song(row["song_id"], row["ref_contour"])
+         windows = [
+             vocal_window(

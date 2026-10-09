@@ -1,6 +1,6 @@
 # Finding a song from a whistle or from singing with the wrong words: query-by-melody with physics-based synthetic queries and a key-invariant contour encoder
 
-**Draft, 2026-10-08.** Luigi Rivolta (hum2song). Every number below points to a file in this repository. Synthetic results are marked **[synthetic]**, results on real recordings of people are marked **[real]**, and hand-picked examples are marked **[best case]**. Sections marked **[D-041 PLACEHOLDER]** will be filled from the D-041 run, which is in progress and is not reported here.
+**Draft, 2026-10-09.** Luigi Rivolta (hum2song). Every number below points to a file in this repository. Synthetic results are marked **[synthetic]**, results on real recordings of people are marked **[real]**, and hand-picked examples are marked **[best case]**. D-041 (round 2) numbers were added on 2026-10-09 from `docs/paper/results/d041/` (printed by `summarize.py` there).
 
 ---
 
@@ -12,7 +12,7 @@ Our system matches the melody only. A query is converted to a pitch track (F0), 
 
 The new contribution is a synthetic query pipeline (D-040). From the vocal melody of 11,083 open songs we render audio of (a) a whistle, a near-sinusoid moved into 500–4,000 Hz with a weak second harmonic, breath noise and a room, and (b) a source-filter voice singing random syllables from a fixed list (la, na, ma, du, lu, ni, me, lo), so the words can never be the song's words. Human errors (a wrong note, a dropped note, drift, tempo warp, octave slips) are applied first, and each rendering is re-tracked with the tracker a real query would get. The tracked contours are used to fine-tune E2b against vocal-melody windows of the same song with the CLEWS loss [7].
 
-On held-out songs, with 8,526 synthetic queries against 11,050 songs, the fine-tuned model raises top-1 from 0.180 to 0.226 on synthetic whistles and from 0.193 to 0.238 on synthetic wrong-lyrics singing **[synthetic]**. Hum retrieval is almost unchanged (HumTrans test top-1 0.996 → 0.991, MIR-QBSH 48-song top-1 0.955 → 0.944) **[real]**. On real whistles we have only one test, MLEnd whistle → other people's hums, 8 songs. There the result is mixed: top-1 0.631 → 0.611 over all 8 songs, and 0.589 → 0.656 on two songs (90 queries), which is within sampling noise **[real]**. We could not yet score real whistles or real wrong-lyrics singing against the actual song recordings, because the target recordings are not available to us (§9). The training run also exposed a checkpoint-selection bug: selection used a hum metric that was already saturated, so the "best" checkpoint was the starting model (§8.3). We therefore make no claim that the method beats E2b on real queries yet.
+On held-out songs, with 8,526 synthetic queries against 11,050 songs, the fine-tuned model raises top-1 from 0.180 to 0.226 on synthetic whistles and from 0.193 to 0.238 on synthetic wrong-lyrics singing **[synthetic]**. Hum retrieval is almost unchanged (HumTrans test top-1 0.996 → 0.991, MIR-QBSH 48-song top-1 0.955 → 0.944) **[real]**. On real whistles we have only one test, MLEnd whistle → other people's hums, 8 songs. There the result is mixed: top-1 0.631 → 0.611 over all 8 songs, and 0.589 → 0.656 on two songs (90 queries), which is within sampling noise **[real]**. We could not yet score real whistles or real wrong-lyrics singing against the actual song recordings, because the target recordings are not available to us (§9). The training run also exposed a checkpoint-selection bug: selection used a hum metric that was already saturated, so the "best" checkpoint was the starting model (§8.3). A second round (D-041) fixed selection (synthetic val with a hum guard), trained 4× longer with per-epoch query augmentation, and added real MLEnd whistle → hum pairs from training performers of 6 of the 8 songs. It raises synthetic top-1 further, to 0.253 (whistle) and 0.269 (wrong lyrics) **[synthetic]**, with hums nearly flat (HumTrans 0.993, MIR-QBSH 0.949) **[real]**. But on the two MLEnd songs it never trained on, real whistle top-1 falls to 0.456 (E2b 0.589), while it rises on the 6 trained songs: the real-data gain is song familiarity, not whistle robustness (§7.3). We therefore make no claim that the method beats E2b on real queries, and E2b stays the live model.
 
 ---
 
@@ -32,7 +32,7 @@ On held-out songs, with 8,526 synthetic queries against 11,050 songs, the fine-t
 1. A physics-based synthetic query generator for whistles and nonsense-syllable singing, locked frame-by-frame to the vocal melody of real songs and re-tracked with the tracker a real query would get (§5.2, D-040). Its physics is the one measured and defined in `SIGNALS.md`.
 2. A melody-only retrieval system built on a key-invariant contour encoder, with a separate whistle tracker validated on all 1,702 usable MLEnd whistles (SIGNALS §S8, D-007), a windowed song index, and a re-ranking pipeline (D-025, D-027).
 3. A measured comparison with a music foundation model (MERT [8]) under the same hum protocol, which motivates the contour encoder (§7.4).
-4. An honest account of what worked and what did not: D-039 (hum fine-tune: no gain), D-040 (synthetic gain, real whistle result mixed), and the checkpoint-selection failure (§8).
+4. An honest account of what worked and what did not: D-039 (hum fine-tune: no gain), D-040 (synthetic gain, real whistle result mixed), the checkpoint-selection failure and its fix (§8), and D-041 (larger synthetic gain, worse on real held-out whistles).
 
 ---
 
@@ -152,7 +152,7 @@ Open full-length tracks: FMA (`fma_full`, several disjoint seeded draws) plus Yo
 
 ### 6.3 Protocols
 - **Synthetic hold-out** (`eval_query_synth.py`, in memory): each test-split query against up to 24 windows of 8 s of every song; a song's score is its best window. Test songs were never trained on; training songs remain in the gallery as distractors.
-- **MLEnd query-by-example** (`eval_mlend.py --split test --song-holdout`, D-013, D-016): each test person's whistle is scored against the centroid of other people's hums of each of the 8 songs; the query's own performer is excluded. It is an 8-way closed set (chance top-1 0.125) and compares query types; it is **not** whistle-against-song retrieval. Hakuna and Potter are the songs held out from whistle-pair training in D-016. Neither E2b nor D-040 trained on MLEnd, so for these two models the split only names a subset.
+- **MLEnd query-by-example** (`eval_mlend.py --split test --song-holdout`, D-013, D-016): each test person's whistle is scored against the centroid of other people's hums of each of the 8 songs; the query's own performer is excluded. It is an 8-way closed set (chance top-1 0.125) and compares query types; it is **not** whistle-against-song retrieval. Hakuna and Potter are the songs held out from whistle-pair training in D-016. Neither E2b nor D-040 trained on MLEnd, so for these two models the split only names a subset. D-041 trained on MLEnd **train-performer** whistle → hum pairs of the other 6 songs (test performers excluded), so for D-041 only Hakuna + Potter is a clean test; its other-6 numbers measure song familiarity (as in D-016).
 - **Live search** (`eval_live_search.py`, D-027, D-038): real hums through the full served pipeline against the 11.5k-song index.
 
 Metrics: top-1, top-10 (top-3 for 8-way MLEnd), MRR.
@@ -173,7 +173,15 @@ Held-out songs, 4,263 queries per style, 11,050-song gallery. Source: `docs/pape
 
 These queries come from the same generator the model was trained on (different songs), so this table measures fit to the generator on new melodies, not robustness to real people. One seed. With 4,263 queries per style the binomial standard error of a top-1 near 0.2 is about 0.006, so the gain is far outside query-sampling noise; seed-to-seed variance is not measured.
 
-> **[D-041 PLACEHOLDER]** Synthetic hold-out, same protocol, for the D-041 checkpoint selected on synthetic val (mean whistle / wrong-lyrics top-1, HumTrans guard ≤ 1 point). Fill from `results/d041/eval*.json`. Do not edit the D-040 rows.
+**D-041 [synthetic].** Same protocol and queries, all four checkpoints re-scored in one chain. Source: `docs/paper/results/d041/eval_style_*.json`, `eval_*.json`. D-041 best.pt is step 9,500, chosen on the synthetic **val** split (mean whistle / wrong-lyrics top-1, ~1.1k val songs, HumTrans guard ≤ 1 point), not on these test numbers; D-041 last.pt (step 11,500) is within 0.003 of it on every row, so the selection does not flatter the result.
+
+| Query style | E2b top-1 / top-10 / MRR | D-040 step 3000 | D-041 best (step 9500) | D-041 last (step 11500) | Δ top-1 D-041 best vs E2b |
+|---|---|---|---|---|---|
+| Synthetic whistle | 0.180 / 0.291 / 0.220 | 0.226 / 0.342 / 0.267 | **0.253 / 0.378 / 0.297** | 0.254 / 0.379 / 0.298 | +0.073 |
+| Synthetic wrong-lyrics singing | 0.193 / 0.314 / 0.235 | 0.238 / 0.365 / 0.283 | **0.269 / 0.401 / 0.314** | 0.269 / 0.403 / 0.315 | +0.076 |
+| Both (8,526) | 0.186 / 0.303 / 0.227 | 0.232 / 0.354 / 0.275 | **0.261 / 0.389 / 0.305** | 0.262 / 0.391 / 0.306 | +0.075 |
+
+The D-040 and E2b numbers re-scored in the D-041 chain equal the D-040 files exactly. Over D-040, D-041 adds +0.027 (whistle) and +0.031 (wrong lyrics) top-1. The same caveat applies: same generator as training, one seed, and four changes at once (selection, length, augmentation, MLEnd pairs), so the gain is not attributed to any one of them.
 
 ### 7.2 Hum baseline **[real]**
 
@@ -186,6 +194,16 @@ Source: `hum_baseline` in `docs/paper/results/d040/eval_e2b.json` and `eval_last
 | MIR-QBSH, 48 songs, `anywhere`, no distractors (4,431) | 0.955 / 0.993 | 0.944 / 0.991 |
 
 The small hum term (weight 0.15) kept hums nearly intact: −0.005 HumTrans top-1, −0.011 MIR-QBSH top-1. We did not rerun MIR-QBSH with the 2,000 Essen distractors for D-040; E2b scores 0.867 / 0.958 there (`anywhere`, D-028).
+
+D-041 (`docs/paper/results/d041/eval_d041_best.json`, `eval_d041_last.json`), top-1 / top-10:
+
+| Set | E2b | D-041 best (step 9500) | D-041 last (step 11500) |
+|---|---|---|---|
+| HumTrans test (769) | 0.996 / 1.000 | 0.993 / 1.000 | 0.993 / 1.000 |
+| HumTrans test, query +7 st | 0.996 / 1.000 | 0.995 / 1.000 | 0.995 / 1.000 |
+| MIR-QBSH, 48 songs, `anywhere` (4,431) | 0.955 / 0.993 | 0.949 / 0.991 | 0.947 / 0.991 |
+
+D-041 costs hums −0.003 HumTrans and −0.006 MIR-QBSH top-1 against E2b, slightly less than D-040.
 
 ### 7.3 Real whistles on MLEnd **[real]**
 
@@ -201,7 +219,15 @@ Other rows from the same files (all 8 songs, top-1): whistle via RMVPE-fix → h
 
 **Reading.** There is no clear real-whistle gain. On Hakuna + Potter, D-040 gets 6 more of 90 whistles right at top-1 (binomial standard error about 0.05, so within noise). On the other 6 songs it gets about 13 fewer of 249 right. Over all 8 songs top-1 falls by 0.020 and top-3 rises by 0.012. Earlier whistle work shows the same pattern of small, song-dependent changes (D-016, D-031). This test also matches whistles to hums, not to the song recording, which is the task we care about (§9).
 
-> **[D-041 PLACEHOLDER]** MLEnd rows for D-041. D-041 adds MLEnd **train-split** whistle → hum pairs (held-out songs and test performers excluded), so its MLEnd numbers on the 6 trained songs measure song familiarity as in D-016; only the Hakuna + Potter rows are comparable with the table above.
+**D-041.** D-041 trained on MLEnd **train-performer** whistle → hum pairs of the 6 songs other than Hakuna and Potter (test performers excluded). Its Hakuna + Potter row is the clean real number; its other-6 row is **not clean** (the model has learned those tunes from other people). Source: `docs/paper/results/d041/eval_mlend_*.json`; same protocol and key as above.
+
+| Songs | Whistles | E2b top-1 / top-3 / MRR | D-040 step 3000 | D-041 best (step 9500) | D-041 last (step 11500) |
+|---|---|---|---|---|---|
+| Hakuna + Potter **[real, clean]** | 90 | 0.589 / 0.711 / 0.698 | 0.656 / 0.789 / 0.741 | **0.456 / 0.700 / 0.620** | 0.456 / 0.678 / 0.619 |
+| Other 6 **[real, not clean for D-041]** | 249 | 0.647 / 0.791 / 0.742 | 0.594 / 0.779 / 0.720 | 0.707 / 0.863 / 0.803 | 0.707 / 0.867 / 0.804 |
+| All 8 **[real, mixed]** | 339 | 0.631 / 0.770 / 0.731 | 0.611 / 0.782 / 0.725 | 0.640 / 0.820 / 0.754 | 0.640 / 0.817 / 0.755 |
+
+**Reading.** On the clean songs D-041 gets 41 of 90 whistles right at top-1, against 53 for E2b and 59 for D-040: worse than both, beyond the ~0.05 standard error against E2b. On the 6 trained songs it gains 0.060 top-1 over E2b. This is the D-015 → D-016 pattern again (held-out songs 0.630 → 0.456 there): real whistle pairs from 6 songs teach those tunes, not whistling in general, and here they also undo D-040's held-out gain. The all-8 number (0.640) mixes the two and should not be read as a whistle gain.
 
 ### 7.4 MERT baseline vs the contour encoder (hums) **[real]**
 
@@ -228,7 +254,7 @@ The MERT run continued Stage A2 from `ckpt/stage_a2/last.pt` with the D-010 reci
 
 Protocols differ in distractors, references and vocal extraction, so this table places our numbers next to published ones; it is not a ranking. D-040 has not been run through the live pipeline (§9).
 
-> **[D-041 PLACEHOLDER]** If D-041 is re-indexed or scored offline on cached song contours, add CHAD test / MTG-QBH rows here with the same D-038 protocol.
+D-041 was not re-indexed and not run through the live pipeline: it fails the real held-out whistle check (§7.3), so E2b stays live and no CHAD / MTG-QBH rows exist for it.
 
 ---
 
@@ -242,8 +268,9 @@ Protocols differ in distractors, references and vocal extraction, so this table 
 | D-016 | Same, with Hakuna + Potter held out | held-out songs 0.630 → 0.456 (worse): the D-015 gain was song familiarity | – |
 | D-031 | Contour-level synthetic whistles, 7,545 melodies | held-out 0.589 → 0.622; all 8 unchanged at 0.631 | MTG-QBH −4.2 top-1 |
 | D-040 | Audio-level synthetic whistle + wrong-lyrics singing, re-tracked | held-out 0.589 → 0.656; all 8 0.631 → 0.611 | HumTrans −0.005, MIR-48 −0.011 top-1 |
+| D-041 | D-040 + synthetic-val selection, 4× longer, per-epoch query augmentation, MLEnd whistle pairs on 6 songs | held-out 0.589 → 0.456 (worse); other 6 (trained tunes, not clean) 0.647 → 0.707 | HumTrans −0.003, MIR-48 −0.006 top-1 |
 
-Rendering and re-tracking (D-040) costs hums far less than contour editing (D-031), and gives a clear gain on synthetic queries. Neither has yet shown a reliable gain on real whistles.
+Rendering and re-tracking (D-040) costs hums far less than contour editing (D-031), and gives a clear gain on synthetic queries. Neither has yet shown a reliable gain on real whistles. Adding real MLEnd whistle pairs (D-015/D-016, D-041) repeatedly helps the trained tunes and hurts or does not help the held-out ones.
 
 ### 8.2 D-039: hum fine-tune with self-match positives
 D-039 fine-tuned E2b with synthetic hums made by distorting each song's own vocal F0, plus CHAD train hums and HumTrans. The first run early-stopped at step 500 with no improvement. A rerun with early stopping off for 3,000 steps reached CHAD val top-1 0.4359 at step 2,200 against 0.4341 at step 0 (`results/d039/train_long.log`): no real gain, not adopted. Our reading: positives that are distorted crops of the song's own F0 teach the model little that the CHAD-val task (real hums against vocal-stem melody) needs, because the reference-side errors (stem drop-outs, octave errors, harmonies; D-022) are not in the positives.
@@ -256,7 +283,7 @@ D-040 selected checkpoints on HumTrans val top-1 with a +7 semitone shift. That 
 
 The same problem appeared in D-012, where HumTrans val was saturated and `last.pt` had to be reported. The lesson: a selection metric must be able to move on the thing being trained. D-041 selects on the synthetic **val** split (mean whistle and wrong-lyrics top-1) with HumTrans as a guard.
 
-> **[D-041 PLACEHOLDER]** Validation curve of the new selection metric, the selected step, and whether early stopping fired.
+**D-041 selection** (`docs/paper/results/d041/train.log`; full curve in `results/d041/README.md`). The new metric moves: synthetic val select (mean whistle / wrong-lyrics top-1) rose from 0.288 at step 0 to 0.335 at step 2,000, 0.358 at 5,000, and a best of 0.374 at step 9,500 (whistle 0.351, wrong lyrics 0.397), then plateaued. Early stopping fired at step 11,500 after 8 validations without a better score. The HumTrans guard (val +7 st top-1 ≥ 0.9848) held at every validation (range 0.9908–0.9948). The first attempt ran out of GPU memory at step ~3,900 and was restarted from scratch with `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`, same config and seed (D-041). The val gallery is ~1.1k songs, so these values are higher than the 11k-song test numbers and are not comparable to them. The fix worked as a selection rule, but the metric it selects on is synthetic; it does not see the real held-out whistle drop in §7.3.
 
 ### 8.4 Other negative results that shaped the method
 - Training from scratch on 116 songs of real CHAD hum pairs lost 6 top-1 points on CHAD test (D-019); fine-tuning gently gave +1.0, inside seed noise (D-021).
@@ -271,8 +298,8 @@ The same problem appeared in D-012, where HumTrans val was saturated and `last.p
 1. **No real whistle or wrong-lyrics query has been scored against the actual song recording.** MLEnd ships whistles but not the 8 songs; MTG-QBH ships sung queries but not the 81 recordings; the earlier feature-only copies of those recordings were deleted after melody extraction, and downloads from the GPU host are blocked. Our real-whistle evidence is whistle → other people's hums (§7.3), and our sung evidence is MTG-QBH through E2b, not D-040.
 2. **MLEnd has only 8 songs** and 26 whistling test people. Per-song effects dominate (§7.3), and the "held-out" pair is 2 songs, 90 whistles.
 3. **The main gain is on synthetic queries** generated by the same renderer used in training. The renderer is simple: one-reflection room, no learned singer timbre, fixed formants, a fixed 8-syllable inventory.
-4. **One seed** for D-039 and D-040. Seed spread was 0.297–0.314 CHAD top-1 for D-012 (D-019), so differences of a point or two are not resolved.
-5. **No checkpoint selection** for D-040 (§8.3); `last.pt` is reported.
+4. **One seed** for D-039, D-040 and D-041. Seed spread was 0.297–0.314 CHAD top-1 for D-012 (D-019), so differences of a point or two are not resolved.
+5. **No checkpoint selection** for D-040 (§8.3); `last.pt` is reported. D-041 selects on synthetic val only; no real whistle val exists that is free of the trained tunes.
 6. **Song side.** Melody comes from the vocal stem. Instrumental hooks and sections with no sung melody are unreachable; on CHAD test, 19.4% of all queries were misses whose reference section was under 30% voiced in the vocal stem (D-022).
 7. **Whistles above about 2 kHz** are tracked poorly by RMVPE-fix, and the spectral peak voices nothing at 0 dB SNR with the 6 dB gate (SIGNALS §S8, D-007).
 8. **No direct comparison with Google or ByteHum numbers**: Google publishes none, and we could not read ByteHum's results.
@@ -288,13 +315,13 @@ The same problem appeared in D-012, where HumTrans val was saturated and `last.p
 - **Run D-040/D-041 through the live pipeline** on CHAD and MTG-QBH (cached song contours), with the D-039 adopt gate (both sets above 0.483 / 0.657 and 0.655 / 0.791).
 - **More seeds** for any change smaller than about 2 points.
 
-> **[D-041 PLACEHOLDER]** Conclusion update once D-041 results exist.
+- **Separate the D-041 changes**: rerun D-041 without the MLEnd pairs (keep the selection fix and query augmentation) to test whether synthetic-only training keeps D-040's held-out MLEnd number while gaining D-041's synthetic number.
 
 ---
 
 ## 11. Conclusion
 
-A melody-only contour encoder with a whistle-specific tracker is a practical base for whistle and wrong-lyrics search: lyrics and timbre cannot mislead it, and key changes are removed exactly. Rendering synthetic whistles and nonsense-syllable singing from real song melodies, then re-tracking them, improves retrieval of such synthetic queries on new songs by about 4.6 top-1 points and costs hums about half a point. Whether that carries over to real people whistling and singing against real recordings is still open: the one real whistle test we can run is mixed, and the target recordings needed for the decisive test are not available yet.
+A melody-only contour encoder with a whistle-specific tracker is a practical base for whistle and wrong-lyrics search: lyrics and timbre cannot mislead it, and key changes are removed exactly. Rendering synthetic whistles and nonsense-syllable singing from real song melodies, then re-tracking them, improves retrieval of such synthetic queries on new songs by about 4.6 top-1 points and costs hums about half a point. A second round with a working selection rule, longer training and per-epoch augmentation (D-041) raises the synthetic gain to about 7.5 points, still at about half a point of hum cost. Whether that carries over to real people whistling and singing against real recordings is still open: the one real whistle test we can run is mixed for D-040, and for D-041, which also trained on real whistles of 6 of the 8 test songs, it is worse on the 2 songs it never saw (0.456 vs 0.589 for E2b). E2b remains the live model. The target recordings needed for the decisive test are not available yet.
 
 ---
 
@@ -341,5 +368,7 @@ Files in `docs/paper/results/d040/` (copied from `/lambda/nfs/hum2song-data/resu
 | `eval_mlend_e2b.json`, `eval_mlend.json`, `eval_mlend_last.json` | MLEnd test people |
 | `smoke.json` | one-clip renderer check |
 | `summarize.py` | prints every D-040 number in this paper |
+
+D-041 files are in `docs/paper/results/d041/` (`README.md` lists them; `summarize.py` prints every D-041 number in this paper).
 
 D-039 files in `docs/paper/results/d039/`: `train_long.log` (contour hum fine-tune), `train_mert.yaml`, `train_mert.log`, `eval_step8000.json` (MERT), and the invalid library eval with its README.

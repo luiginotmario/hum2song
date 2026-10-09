@@ -63,6 +63,7 @@ from hum2song.manifest import PairRecord, read_pairs
 from hum2song.midi_render import parse_midi
 from hum2song.query_synth.dataset import QuerySynthDataset
 from hum2song.query_synth.manifest import train_rows
+from hum2song.query_synth.validate import QuerySynthValidation
 from hum2song.seed import seed_everything
 
 LOGGER = get_logger(__name__)
@@ -293,6 +294,25 @@ def hum_song_dataset(root: Path, config: ContourConfig) -> HumSongDataset:
     )
 
 
+def query_augment_spec(config: ContourConfig) -> ContourAugment:
+    """D-041: light per-epoch augmentation of an already rendered synthetic query.
+
+    Tempo 0.8-1.25 as in the CHAD QbH recipe and Google's pitch/tempo variation; small
+    local warp, drift, jitter and voicing gaps. No interval scaling: the render already
+    carries wrong intervals and dropped notes.
+    """
+    return ContourAugment(
+        stretch_min=config.query_aug_stretch_min,
+        stretch_max=config.query_aug_stretch_max,
+        warp_depth=0.1,
+        interval_scale=0.0,
+        drift_semitones=0.3,
+        jitter_semitones=0.1,
+        dropout_prob=0.3,
+        octave_error_prob=0.05,
+    )
+
+
 def query_synth_dataset(root: Path, config: ContourConfig) -> QuerySynthDataset:
     """Re-tracked whistle and wrong-lyrics queries vs the vocal melody (D-040)."""
     rows = train_rows(root / config.query_synth_manifest)
@@ -303,6 +323,7 @@ def query_synth_dataset(root: Path, config: ContourConfig) -> QuerySynthDataset:
         refs=config.song_refs,
         offset_s=config.song_offset_s,
         extra_s=(config.ref_extra_min_s, config.ref_extra_max_s),
+        augment=query_augment_spec(config) if config.query_aug else None,
     )
     if len(dataset) == 0:
         raise FileNotFoundError(f"no contour files for {config.query_synth_manifest}")
@@ -421,9 +442,29 @@ def validation_metrics(model, sets, extra: list, device) -> dict:
     return metrics
 
 
+def guard_passes(metrics: dict, base: dict, guards: list[str], max_drop: float) -> bool:
+    """True when every guard metric is within max_drop of its step-0 value (D-041)."""
+    return all(
+        name in metrics and base.get(name) is not None and metrics[name] >= base[name] - max_drop
+        for name in guards
+    )
+
+
+def apply_guard(metrics: dict, best: dict, config: ContourConfig) -> None:
+    """Make a checkpoint ineligible (select = -inf) when a guard metric drops too far."""
+    guards = split_list(config.guard_metric)
+    if not guards:
+        return
+    base = best.setdefault("guard_base", {name: metrics.get(name) for name in guards})
+    ok = guard_passes(metrics, base, guards, config.guard_max_drop)
+    metrics["val/guard_ok"] = float(ok)
+    metrics["val/select"] = metrics["val/select"] if ok else float("-inf")
+
+
 def run_validation(model, sets, device, step: int, tracker, best: dict, config, validators) -> dict:
     metrics = validation_metrics(model, sets, validators, device)
     metrics["val/select"] = selection_score(metrics, config.select_metric)
+    apply_guard(metrics, best, config)
     tracker.log(metrics, step=step)
     LOGGER.info("step %s %s", step, " ".join(f"{k}={v:.4f}" for k, v in sorted(metrics.items())))
     score = metrics["val/select"]
@@ -472,6 +513,16 @@ def run_training(config: ContourConfig, tracker) -> dict:
     held_out = set(song_holdout(config)["songs"])
     validators = [MLEndValidation(root, "val", exclude_songs=held_out)] if config.mlend_val else []
     validators += [chad.ChadValidation(root)] if config.chad_val else []
+    if config.qsynth_val:
+        validators.append(
+            QuerySynthValidation(
+                root,
+                config.query_synth_manifest,
+                config.qsynth_val_windows,
+                config.qsynth_val_max,
+                config.seed,
+            )
+        )
     loader = DataLoader(
         dataset,
         batch_size=config.batch_size,
