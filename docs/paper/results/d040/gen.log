@@ -1,0 +1,4 @@
+2026-10-08 08:14:03,443 INFO __main__: rendering 11083 songs (vocal_f0) into /lambda/nfs/hum2song-data/query_synth
+--- restart with --workers 8 (single worker was ~42 songs/min); sidecars reused
+2026-10-08 08:19:06,610 INFO __main__: rendering 11083 songs (vocal_f0) into /lambda/nfs/hum2song-data/query_synth
+2026-10-08 08:50:39,802 INFO __main__: wrote 86110 queries to /lambda/nfs/hum2song-data/query_synth/manifest.jsonl

@@ -1,0 +1,60 @@
+2026-10-08 08:54:34,163 INFO hum2song.contour.train: training pairs: ['ContourPairDataset=13080']
+2026-10-08 08:54:54,403 INFO hum2song.contour.train: query-synth pairs: 68714
+2026-10-08 08:54:54,957 INFO hum2song.contour.train: initialised from /lambda/nfs/hum2song-data/ckpt/contour_e2b_s0/best.pt (85/85 tensors; skipped 0)
+2026-10-08 08:55:07,203 INFO hum2song.contour.train: step 0 val/humtrans_val_mrr=0.9979 val/humtrans_val_shift+7_mrr=0.9967 val/humtrans_val_shift+7_top1=0.9948 val/humtrans_val_shift+7_top10=1.0000 val/humtrans_val_top1=0.9974 val/humtrans_val_top10=1.0000 val/mir48_anywhere_mrr=0.9702 val/mir48_anywhere_top1=0.9551 val/mir48_anywhere_top10=0.9928 val/mir48_start10_mrr=0.9649 val/mir48_start10_top1=0.9485 val/mir48_start10_top10=0.9896 val/mir48_start_multi_mrr=0.9826 val/mir48_start_multi_top1=0.9752 val/mir48_start_multi_top10=0.9939 val/select=0.9948
+2026-10-08 08:55:33,786 INFO hum2song.contour.train: step 50 loss -7.8371 temp 0.0432 1.9 steps/s
+2026-10-08 08:55:56,022 INFO hum2song.contour.train: step 100 loss -7.9078 temp 0.0432 2.1 steps/s
+2026-10-08 08:56:01,318 INFO hum2song.contour.train: step 100 val/humtrans_val_mrr=0.9971 val/humtrans_val_shift+7_mrr=0.9965 val/humtrans_val_shift+7_top1=0.9948 val/humtrans_val_shift+7_top10=1.0000 val/humtrans_val_top1=0.9961 val/humtrans_val_top10=1.0000 val/mir48_anywhere_mrr=0.9694 val/mir48_anywhere_top1=0.9546 val/mir48_anywhere_top10=0.9921 val/mir48_start10_mrr=0.9631 val/mir48_start10_top1=0.9463 val/mir48_start10_top10=0.9907 val/mir48_start_multi_mrr=0.9821 val/mir48_start_multi_top1=0.9752 val/mir48_start_multi_top10=0.9937 val/select=0.9948
+2026-10-08 08:56:23,913 INFO hum2song.contour.train: step 150 loss -7.7579 temp 0.0433 2.0 steps/s
+2026-10-08 08:56:46,185 INFO hum2song.contour.train: step 200 loss -7.8861 temp 0.0433 2.0 steps/s
+2026-10-08 08:56:51,424 INFO hum2song.contour.train: step 200 val/humtrans_val_mrr=0.9972 val/humtrans_val_shift+7_mrr=0.9951 val/humtrans_val_shift+7_top1=0.9922 val/humtrans_val_shift+7_top10=1.0000 val/humtrans_val_top1=0.9961 val/humtrans_val_top10=1.0000 val/mir48_anywhere_mrr=0.9660 val/mir48_anywhere_top1=0.9485 val/mir48_anywhere_top10=0.9916 val/mir48_start10_mrr=0.9610 val/mir48_start10_top1=0.9431 val/mir48_start10_top10=0.9903 val/mir48_start_multi_mrr=0.9815 val/mir48_start_multi_top1=0.9738 val/mir48_start_multi_top10=0.9935 val/select=0.9922
+2026-10-08 08:57:13,658 INFO hum2song.contour.train: step 250 loss -7.8372 temp 0.0434 2.0 steps/s
+2026-10-08 08:57:36,406 INFO hum2song.contour.train: step 300 loss -7.7848 temp 0.0435 2.0 steps/s
+2026-10-08 08:57:41,774 INFO hum2song.contour.train: step 300 val/humtrans_val_mrr=0.9978 val/humtrans_val_shift+7_mrr=0.9958 val/humtrans_val_shift+7_top1=0.9935 val/humtrans_val_shift+7_top10=1.0000 val/humtrans_val_top1=0.9974 val/humtrans_val_top10=1.0000 val/mir48_anywhere_mrr=0.9641 val/mir48_anywhere_top1=0.9454 val/mir48_anywhere_top10=0.9916 val/mir48_start10_mrr=0.9564 val/mir48_start10_top1=0.9359 val/mir48_start10_top10=0.9898 val/mir48_start_multi_mrr=0.9802 val/mir48_start_multi_top1=0.9713 val/mir48_start_multi_top10=0.9937 val/select=0.9935
+2026-10-08 08:58:04,148 INFO hum2song.contour.train: step 350 loss -7.9221 temp 0.0435 2.0 steps/s
+2026-10-08 08:58:26,522 INFO hum2song.contour.train: step 400 loss -7.8107 temp 0.0436 2.0 steps/s
+2026-10-08 08:58:31,987 INFO hum2song.contour.train: step 400 val/humtrans_val_mrr=0.9977 val/humtrans_val_shift+7_mrr=0.9958 val/humtrans_val_shift+7_top1=0.9935 val/humtrans_val_shift+7_top10=1.0000 val/humtrans_val_top1=0.9974 val/humtrans_val_top10=1.0000 val/mir48_anywhere_mrr=0.9629 val/mir48_anywhere_top1=0.9431 val/mir48_anywhere_top10=0.9912 val/mir48_start10_mrr=0.9553 val/mir48_start10_top1=0.9343 val/mir48_start10_top10=0.9892 val/mir48_start_multi_mrr=0.9797 val/mir48_start_multi_top1=0.9707 val/mir48_start_multi_top10=0.9937 val/select=0.9935
+2026-10-08 08:58:54,286 INFO hum2song.contour.train: step 450 loss -7.7056 temp 0.0436 2.0 steps/s
+2026-10-08 08:59:16,721 INFO hum2song.contour.train: step 500 loss -7.9513 temp 0.0437 2.0 steps/s
+2026-10-08 08:59:22,036 INFO hum2song.contour.train: step 500 val/humtrans_val_mrr=0.9979 val/humtrans_val_shift+7_mrr=0.9958 val/humtrans_val_shift+7_top1=0.9935 val/humtrans_val_shift+7_top10=1.0000 val/humtrans_val_top1=0.9974 val/humtrans_val_top10=1.0000 val/mir48_anywhere_mrr=0.9632 val/mir48_anywhere_top1=0.9440 val/mir48_anywhere_top10=0.9919 val/mir48_start10_mrr=0.9567 val/mir48_start10_top1=0.9364 val/mir48_start10_top10=0.9894 val/mir48_start_multi_mrr=0.9794 val/mir48_start_multi_top1=0.9704 val/mir48_start_multi_top10=0.9937 val/select=0.9935
+2026-10-08 08:59:22,038 INFO hum2song.contour.train: early stop at step 500 (best step 0)
+{
+  "last": {
+    "val/mir48_start10_top1": 0.936357481381178,
+    "val/mir48_start10_top10": 0.9893929135635297,
+    "val/mir48_start10_mrr": 0.95673143891293,
+    "val/mir48_start_multi_top1": 0.9704355675919657,
+    "val/mir48_start_multi_top10": 0.9936808846761453,
+    "val/mir48_start_multi_mrr": 0.9793958620017047,
+    "val/mir48_anywhere_top1": 0.9440306928458587,
+    "val/mir48_anywhere_top10": 0.991875423155044,
+    "val/mir48_anywhere_mrr": 0.9632355843194496,
+    "val/humtrans_val_top1": 0.9973856209150327,
+    "val/humtrans_val_top10": 1.0,
+    "val/humtrans_val_mrr": 0.9978758169934641,
+    "val/humtrans_val_shift+7_top1": 0.9934640522875817,
+    "val/humtrans_val_shift+7_top10": 1.0,
+    "val/humtrans_val_shift+7_mrr": 0.9957749766573295,
+    "val/select": 0.9934640522875817
+  },
+  "last_step": 500,
+  "selected_step": 0,
+  "selected": {
+    "val/mir48_start10_top1": 0.9485443466486121,
+    "val/mir48_start10_top10": 0.9896185962536673,
+    "val/mir48_start10_mrr": 0.9649499486839277,
+    "val/mir48_start_multi_top1": 0.9751749040848567,
+    "val/mir48_start_multi_top10": 0.993906567366283,
+    "val/mir48_start_multi_mrr": 0.982614330904982,
+    "val/mir48_anywhere_top1": 0.9550891446626044,
+    "val/mir48_anywhere_top10": 0.9927781539155947,
+    "val/mir48_anywhere_mrr": 0.9702052126801498,
+    "val/humtrans_val_top1": 0.9973856209150327,
+    "val/humtrans_val_top10": 1.0,
+    "val/humtrans_val_mrr": 0.9978991596638656,
+    "val/humtrans_val_shift+7_top1": 0.9947712418300654,
+    "val/humtrans_val_shift+7_top10": 1.0,
+    "val/humtrans_val_shift+7_mrr": 0.9967320261437909,
+    "val/select": 0.9947712418300654
+  }
+}

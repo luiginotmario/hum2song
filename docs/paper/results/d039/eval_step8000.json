@@ -1,0 +1,275 @@
+{
+  "baselines": {
+    "acrcloud_mirex_top10": 0.99,
+    "chad_top10_jang_midi": 0.921,
+    "chad_top10_jang_real": 0.868,
+    "chad_top10_mtg_qbh": 0.883
+  },
+  "matching": "Matching uses the melody only. A query may be a hum, a whistle, or sung lyrics, and the words may be wrong or nonsense.",
+  "protocol_note": "CHAD top-10 0.921 is the Jang MIDI-reference number on a database of about 2600 MIDIs (arXiv:2312.01092, Table 1). This eval ranks each query against the reference clips in the manifest, plus any extra distractor songs that were requested. The two top-10 numbers sit side by side in the report; they match the CHAD protocol only when the reference set does.",
+  "query_types": [
+    "hum",
+    "whistle",
+    "sing"
+  ],
+  "results": [
+    {
+      "baselines": {
+        "acrcloud_mirex_top10": 0.99,
+        "chad_top10_jang_midi": 0.921,
+        "chad_top10_jang_real": 0.868,
+        "chad_top10_mtg_qbh": 0.883
+      },
+      "chad_comparison": "not comparable to CHAD 0.921: that number is the MIR-QBSH Jang MIDI protocol, not the humtrans set",
+      "chad_top10": null,
+      "comparable_to_chad": false,
+      "count": 769,
+      "delta_top10_vs_chad": null,
+      "distractor_count": 48,
+      "headline": "metrics",
+      "metrics": {
+        "count": 769,
+        "mrr": 0.9709027859873115,
+        "top1": 0.9466840052015605,
+        "top10": 0.9986996098829649,
+        "top3": 0.9947984395318595
+      },
+      "missing_references": false,
+      "ours_top10": 0.9986996098829649,
+      "per_qtype": {
+        "hum": {
+          "count": 769,
+          "mrr": 0.9709027859873115,
+          "top1": 0.9466840052015605,
+          "top10": 0.9986996098829649,
+          "top3": 0.9947984395318595
+        },
+        "sing": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        },
+        "whistle": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        }
+      },
+      "per_query_type": {
+        "hum": {
+          "count": 769,
+          "mrr": 0.9709027859873115,
+          "top1": 0.9466840052015605,
+          "top10": 0.9986996098829649,
+          "top3": 0.9947984395318595
+        },
+        "sing": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        },
+        "whistle": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        }
+      },
+      "protocol_note": "CHAD top-10 0.921 is the Jang MIDI-reference number on a database of about 2600 MIDIs (arXiv:2312.01092, Table 1). This eval ranks each query against the reference clips in the manifest, plus any extra distractor songs that were requested. The two top-10 numbers sit side by side in the report; they match the CHAD protocol only when the reference set does.",
+      "protocol_songs": null,
+      "reference_songs": 25,
+      "set": "humtrans",
+      "skip_reason": null,
+      "skipped": false,
+      "split": "test",
+      "target_songs": 25,
+      "targets_only": {
+        "count": 769,
+        "mrr": 0.9736382025718826,
+        "top1": 0.9505851755526658,
+        "top10": 1.0,
+        "top3": 0.9960988296488946
+      },
+      "targets_only_note": "targets_only ranks each query against the set's own reference songs and nothing else (48 songs for MIR-QBSH). It is always reported, and it is the headline number when no distractors are available. HumTrans renders are never used as distractors: they are the training distribution, share its synthesis, and are locked to HumTrans hums. Each reference is one clip, its first crop_seconds; songs are not chunked in this eval."
+    },
+    {
+      "baselines": {
+        "acrcloud_mirex_top10": 0.99,
+        "chad_top10_jang_midi": 0.921,
+        "chad_top10_jang_real": 0.868,
+        "chad_top10_mtg_qbh": 0.883
+      },
+      "chad_comparison": "not comparable to CHAD 0.921: 48 of 48 MIR-QBSH songs and 0 distractor songs (need 48 songs plus at least 2000 distractors)",
+      "chad_top10": 0.921,
+      "comparable_to_chad": false,
+      "count": 4431,
+      "delta_top10_vs_chad": -0.31933,
+      "distractor_count": 0,
+      "headline": "targets_only",
+      "metrics": {
+        "count": 4431,
+        "mrr": 0.30388477170878403,
+        "top1": 0.1688106522229745,
+        "top10": 0.6016700519070187,
+        "top3": 0.327465583389754
+      },
+      "missing_references": false,
+      "ours_top10": 0.6016700519070187,
+      "per_qtype": {
+        "hum": {
+          "count": 4352,
+          "mrr": 0.30058319828921637,
+          "top1": 0.16636029411764705,
+          "top10": 0.5971966911764706,
+          "top3": 0.3226102941176471
+        },
+        "sing": {
+          "count": 79,
+          "mrr": 0.4857638542652457,
+          "top1": 0.3037974683544304,
+          "top10": 0.8481012658227848,
+          "top3": 0.5949367088607594
+        },
+        "whistle": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        }
+      },
+      "per_query_type": {
+        "hum": {
+          "count": 4352,
+          "mrr": 0.30058319828921637,
+          "top1": 0.16636029411764705,
+          "top10": 0.5971966911764706,
+          "top3": 0.3226102941176471
+        },
+        "sing": {
+          "count": 79,
+          "mrr": 0.4857638542652457,
+          "top1": 0.3037974683544304,
+          "top10": 0.8481012658227848,
+          "top3": 0.5949367088607594
+        },
+        "whistle": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        }
+      },
+      "protocol_note": "CHAD top-10 0.921 is the Jang MIDI-reference number on a database of about 2600 MIDIs (arXiv:2312.01092, Table 1). This eval ranks each query against the reference clips in the manifest, plus any extra distractor songs that were requested. The two top-10 numbers sit side by side in the report; they match the CHAD protocol only when the reference set does.",
+      "protocol_songs": 48,
+      "reference_songs": 48,
+      "set": "mirqbsh",
+      "skip_reason": null,
+      "skipped": false,
+      "split": "test",
+      "target_songs": 48,
+      "targets_only": {
+        "count": 4431,
+        "mrr": 0.30388477170878403,
+        "top1": 0.1688106522229745,
+        "top10": 0.6016700519070187,
+        "top3": 0.327465583389754
+      },
+      "targets_only_note": "targets_only ranks each query against the set's own reference songs and nothing else (48 songs for MIR-QBSH). It is always reported, and it is the headline number when no distractors are available. HumTrans renders are never used as distractors: they are the training distribution, share its synthesis, and are locked to HumTrans hums. Each reference is one clip, its first crop_seconds; songs are not chunked in this eval."
+    },
+    {
+      "baselines": {
+        "acrcloud_mirex_top10": 0.99,
+        "chad_top10_jang_midi": 0.921,
+        "chad_top10_jang_real": 0.868,
+        "chad_top10_mtg_qbh": 0.883
+      },
+      "chad_comparison": "not comparable to CHAD 0.921: that number is the MIR-QBSH Jang MIDI protocol, not the mtgqbh set",
+      "chad_top10": 0.883,
+      "comparable_to_chad": false,
+      "count": 118,
+      "delta_top10_vs_chad": -0.883,
+      "distractor_count": 48,
+      "headline": "metrics",
+      "metrics": {
+        "count": 118,
+        "mrr": 9.999999989999972e-10,
+        "top1": 0.0,
+        "top10": 0.0,
+        "top3": 0.0
+      },
+      "missing_references": false,
+      "ours_top10": 0.0,
+      "per_qtype": {
+        "hum": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        },
+        "sing": {
+          "count": 118,
+          "mrr": 9.999999989999972e-10,
+          "top1": 0.0,
+          "top10": 0.0,
+          "top3": 0.0
+        },
+        "whistle": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        }
+      },
+      "per_query_type": {
+        "hum": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        },
+        "sing": {
+          "count": 118,
+          "mrr": 9.999999989999972e-10,
+          "top1": 0.0,
+          "top10": 0.0,
+          "top3": 0.0
+        },
+        "whistle": {
+          "count": 0,
+          "mrr": null,
+          "top1": null,
+          "top10": null,
+          "top3": null
+        }
+      },
+      "protocol_note": "CHAD top-10 0.921 is the Jang MIDI-reference number on a database of about 2600 MIDIs (arXiv:2312.01092, Table 1). This eval ranks each query against the reference clips in the manifest, plus any extra distractor songs that were requested. The two top-10 numbers sit side by side in the report; they match the CHAD protocol only when the reference set does.",
+      "protocol_songs": null,
+      "reference_songs": 0,
+      "set": "mtgqbh",
+      "skip_reason": null,
+      "skipped": false,
+      "split": "test",
+      "target_songs": 0,
+      "targets_only": {
+        "count": 118,
+        "mrr": 9.999999989999972e-10,
+        "top1": 0.0,
+        "top10": 0.0,
+        "top3": 0.0
+      },
+      "targets_only_note": "targets_only ranks each query against the set's own reference songs and nothing else (48 songs for MIR-QBSH). It is always reported, and it is the headline number when no distractors are available. HumTrans renders are never used as distractors: they are the training distribution, share its synthesis, and are locked to HumTrans hums. Each reference is one clip, its first crop_seconds; songs are not chunked in this eval."
+    }
+  ]
+}

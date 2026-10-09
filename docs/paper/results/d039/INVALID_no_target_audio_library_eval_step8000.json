@@ -1,0 +1,62 @@
+{
+ "ckpt": "/lambda/nfs/hum2song-data/ckpt/stage_a2_d039/step_8000.pt",
+ "index_songs": 11973,
+ "index_windows": 307934,
+ "live_songs": 13060,
+ "sets": {
+  "chad_val": {
+   "all": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0,
+    "mrr": 0.0,
+    "queries": 300
+   },
+   "target_in_mert_index": {
+    "top1": NaN,
+    "top5": NaN,
+    "top10": NaN,
+    "mrr": NaN,
+    "queries": 0
+   },
+   "queries": 300,
+   "targets_missing_from_index": 300
+  },
+  "chad_test": {
+   "all": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0,
+    "mrr": 0.0,
+    "queries": 300
+   },
+   "target_in_mert_index": {
+    "top1": NaN,
+    "top5": NaN,
+    "top10": NaN,
+    "mrr": NaN,
+    "queries": 0
+   },
+   "queries": 300,
+   "targets_missing_from_index": 300
+  },
+  "mtgqbh_sing": {
+   "all": {
+    "top1": 0.0,
+    "top5": 0.0,
+    "top10": 0.0,
+    "mrr": 0.0,
+    "queries": 110
+   },
+   "target_in_mert_index": {
+    "top1": NaN,
+    "top5": NaN,
+    "top10": NaN,
+    "mrr": NaN,
+    "queries": 0
+   },
+   "queries": 110,
+   "targets_missing_from_index": 110
+  }
+ }
+}
