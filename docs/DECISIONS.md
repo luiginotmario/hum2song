@@ -1739,3 +1739,21 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Given up (from the result).** Three rounds (D-040, D-041, D-042) now raise synthetic top-1 by 5–7 points without moving real MLEnd whistle → hum top-1 beyond noise. More synthetic-only tuning against this renderer is unlikely to show up on real whistles.
 
 **Revisit when.** Real whistles or wrong-lyrics singing can be scored against song recordings (MLEnd / MTG-QBH target audio as owned files, or a new recorded set), or the renderer changes in a way that targets the real-vs-synthetic gap (neural SVS, real-whistle tracker errors), or there is time for more seeds.
+
+## D-043 · Real query collection via Prolific (whistle + any/wrong-lyrics singing)
+**Date:** 2026-10-11
+
+**Context.** D-040–D-042 all improved synthetic whistle / wrong-lyrics retrieval (~+7 pts) but not real whistles (MLEnd held-out 56/90 vs E2b 53/90, within noise). The synthetic queries are too clean; no real whistle dataset exists to buy (only MLEnd, 8 songs). Luigi chose paid crowd collection on Prolific, starting with a cheap pilot.
+
+**Options.**
+- Buy data (Shaip / LXT custom, $15k+; no whistle sets exist).
+- micro1 / Scale / Surge managed collection (sales-led, ~$10–30k).
+- **Own record page + Prolific self-serve** (~$2 per participant at $9/hr, no minimum).
+
+**Decision.** `tools/collect/`: FastAPI page on Lambda port 8300 behind a Cloudflare quick tunnel (HTTPS for mic). Consent (training + publishing a research model/dataset; only the Prolific ID stored) → 3 s mic level check → 10 prompts alternating whistle / sing-with-any-words, drawn from 48 well-known songs already in the live index (`youtube:*` ids), each with a linked iTunes 30 s preview played for 15 s. 8–20 s clips, re-record allowed, "don't know this song" skip. Raw browser audio (webm/opus, m4a on Safari; echo cancel / noise suppression / AGC off). Stored under `owned/prolific/<STUDY_ID>/` with per-clip JSON and `manifest.csv` (PID, study, session, song, mode, attempts, duration, timestamps, user agent). Redirects to the Prolific completion URL.
+
+**Pilot.** 10 participants × ~10 min, ~$1.50 each (~$20 incl. fees). Check audio quality, skip rate, whistle vs sing balance before scaling to ~200 people.
+
+**Use.** Real clips are test-first (song-disjoint split held out); only the rest feeds fine-tuning. Revisit synthetic realism by comparing synthetic vs real F0 statistics.
+
+**Revisit when.** Pilot quality is poor (noise, preview bleed, wrong song), or a stable hostname is needed (quick tunnel URL changes on restart).

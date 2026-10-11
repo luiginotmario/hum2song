@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>hum2song · Whistle & Sing</title>
+<style>
+  :root { --ink:#1d1d1f; --sub:#6e6e73; --line:#e5e5ea; --blue:#0071e3; --red:#ff3b30; --green:#34c759; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#fff; color:var(--ink);
+         font:17px/1.47 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+         -webkit-font-smoothing:antialiased; }
+  main { max-width:560px; margin:0 auto; padding:48px 24px 64px; }
+  h1 { font-size:34px; line-height:1.15; letter-spacing:-.02em; margin:0 0 12px; }
+  h2 { font-size:28px; letter-spacing:-.015em; margin:4px 0 2px; }
+  p, li { color:var(--sub); }
+  .eyebrow { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--sub); }
+  .card { border:1px solid var(--line); border-radius:18px; padding:24px; margin:20px 0; }
+  .mode { display:inline-block; padding:4px 12px; border-radius:999px; background:#f2f2f7; font-weight:600; color:var(--ink); }
+  button { font:inherit; font-weight:600; border:0; border-radius:999px; padding:14px 26px; cursor:pointer; }
+  button:disabled { opacity:.35; cursor:default; }
+  .primary { background:var(--blue); color:#fff; }
+  .ghost { background:#f2f2f7; color:var(--ink); }
+  .link { background:none; color:var(--blue); padding:10px 0; }
+  .rec { background:var(--red); color:#fff; width:100%; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .row > * { flex:1; }
+  .meter { height:8px; background:#f2f2f7; border-radius:4px; overflow:hidden; margin:16px 0 8px; }
+  .meter > div { height:100%; width:0; background:var(--green); transition:width .08s; }
+  .progress { height:4px; background:#f2f2f7; border-radius:2px; margin-bottom:28px; }
+  .progress > div { height:100%; background:var(--blue); border-radius:2px; width:0; transition:width .3s; }
+  .status { min-height:24px; font-size:15px; color:var(--sub); }
+  .hidden { display:none; }
+  audio { width:100%; margin-top:12px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="progress"><div id="bar"></div></div>
+
+  <section id="consent">
+    <div class="eyebrow">hum2song research</div>
+    <h1>Whistle and sing a few songs</h1>
+    <p>You'll hear the start of about 10 well-known songs. For each one, you'll either whistle the melody or sing it with any words you like, such as "la la la". Each recording is about 15–20 seconds. The whole study takes about 10 minutes.</p>
+    <div class="card">
+      <p><b>Consent.</b> Your recordings will be used to train and evaluate a song-matching research model, and may be published as part of a research dataset and paper. We store your Prolific ID only to process payment and do not collect any other personal information. Please don't say your name or other personal details in the recordings. You can stop at any time by closing this page.</p>
+      <p>Use a quiet room. Headphones help so the song preview isn't picked up by the mic.</p>
+    </div>
+    <button class="primary" id="agree">I agree, continue</button>
+  </section>
+
+  <section id="miccheck" class="hidden">
+    <div class="eyebrow">Step 1</div>
+    <h1>Mic check</h1>
+    <p>Press the button and whistle or say something for 3 seconds.</p>
+    <div class="meter"><div id="level"></div></div>
+    <div class="status" id="micStatus"></div>
+    <div class="row"><button class="rec" id="micTest">Test microphone (3 s)</button></div>
+    <div class="row"><button class="primary" id="micOk" disabled>Start</button></div>
+  </section>
+
+  <section id="prompt" class="hidden">
+    <div class="eyebrow" id="step"></div>
+    <h2 id="title"></h2>
+    <p id="artist" style="margin-top:0"></p>
+    <div class="card">
+      <span class="mode" id="mode"></span>
+      <p id="modeHelp"></p>
+      <button class="ghost" id="preview">▶ Hear a 15 s preview</button>
+      <audio id="previewAudio" preload="none"></audio>
+    </div>
+    <div class="meter"><div id="level2"></div></div>
+    <div class="status" id="recStatus"></div>
+    <div class="row"><button class="rec" id="record">● Record</button></div>
+    <audio id="playback" controls class="hidden"></audio>
+    <div class="row">
+      <button class="primary" id="submit" disabled>Submit &amp; next</button>
+    </div>
+    <button class="link" id="skip">I don't know this song</button>
+  </section>
+
+  <section id="done" class="hidden">
+    <h1>Thank you!</h1>
+    <p>All recordings are saved. Taking you back to Prolific…</p>
+    <p><a id="doneLink" href="#">Click here if nothing happens.</a></p>
+  </section>
+</main>
+
+<script>
+const MIN_CLIP_S = 8;
+const MAX_CLIP_S = 20;
+const PREVIEW_S = 15;
+const MIC_TEST_S = 3;
+const SILENCE_RMS = 0.01;
+const MODE_TEXT = {
+  whistle: ["Whistle", "Whistle the main melody (the part people would sing)."],
+  sing: ["Sing (any words)", "Sing the melody with any words: \"la la la\", made-up words, or wrong lyrics are all fine."],
+};
+
+const params = new URLSearchParams(location.search);
+const session = {
+  pid: params.get("PROLIFIC_PID") || "",
+  study: params.get("STUDY_ID") || "",
+  sessionId: params.get("SESSION_ID") || "",
+};
+const state = { config: null, queue: [], seen: new Set(), index: 0, song: null, mode: null,
+                stream: null, analyser: null, recorder: null, blob: null, duration: 0, attempts: 0 };
+const $ = (id) => document.getElementById(id);
+
+function show(id) {
+  for (const s of document.querySelectorAll("section")) s.classList.add("hidden");
+  $(id).classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+
+function shuffle(list) {
+  const out = [...list];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function nextSong() {
+  const song = state.queue.find((s) => !state.seen.has(s.song_id));
+  if (song) state.seen.add(song.song_id);
+  return song;
+}
+
+function pickMime() {
+  const options = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg"];
+  return options.find((m) => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || "";
+}
+
+async function openMic() {
+  if (state.stream) return;
+  state.stream = await navigator.mediaDevices.getUserMedia({
+    audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+  });
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  state.analyser = ctx.createAnalyser();
+  state.analyser.fftSize = 2048;
+  ctx.createMediaStreamSource(state.stream).connect(state.analyser);
+}
+
+function rms() {
+  const buf = new Float32Array(state.analyser.fftSize);
+  state.analyser.getFloatTimeDomainData(buf);
+  return Math.sqrt(buf.reduce((acc, v) => acc + v * v, 0) / buf.length);
+}
+
+function record(seconds, meterId, onTick) {
+  return new Promise((resolve) => {
+    const mime = pickMime();
+    const chunks = [];
+    const rec = new MediaRecorder(state.stream, mime ? { mimeType: mime } : {});
+    const start = performance.now();
+    let peak = 0;
+    const meter = setInterval(() => {
+      const level = rms();
+      peak = Math.max(peak, level);
+      $(meterId).style.width = Math.min(100, level * 400) + "%";
+      onTick && onTick((performance.now() - start) / 1000);
+    }, 80);
+    rec.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+    rec.onstop = () => {
+      clearInterval(meter);
+      $(meterId).style.width = "0";
+      const duration = (performance.now() - start) / 1000;
+      resolve({ blob: new Blob(chunks, { type: rec.mimeType || mime }), peak, duration });
+    };
+    rec.start();
+    state.recorder = rec;
+    setTimeout(() => rec.state === "recording" && rec.stop(), seconds * 1000);
+  });
+}
+
+async function micTest() {
+  $("micTest").disabled = true;
+  try {
+    await openMic();
+  } catch (err) {
+    $("micStatus").textContent = "Microphone blocked. Please allow mic access in your browser and try again.";
+    $("micTest").disabled = false;
+    return;
+  }
+  $("micStatus").textContent = "Listening…";
+  const { peak } = await record(MIC_TEST_S, "level");
+  const ok = peak > SILENCE_RMS;
+  $("micStatus").textContent = ok ? "Sounds good ✓" : "We couldn't hear anything. Check your mic and try again.";
+  $("micOk").disabled = !ok;
+  $("micTest").disabled = false;
+}
+
+function renderPrompt() {
+  const total = state.config.prompts;
+  const [modeName, modeHelp] = MODE_TEXT[state.mode];
+  $("step").textContent = `Song ${state.index + 1} of ${total}`;
+  $("bar").style.width = (state.index / total) * 100 + "%";
+  $("title").textContent = state.song.title;
+  $("artist").textContent = state.song.artist;
+  $("mode").textContent = modeName;
+  $("modeHelp").textContent = modeHelp;
+  $("preview").classList.toggle("hidden", !state.song.preview_url);
+  $("previewAudio").src = state.song.preview_url || "";
+  $("playback").classList.add("hidden");
+  $("submit").disabled = true;
+  $("record").textContent = "● Record";
+  $("recStatus").textContent = `Record about 15–20 seconds. Pause the preview first.`;
+  state.blob = null;
+  state.attempts = 0;
+}
+
+function loadPrompt() {
+  state.song = nextSong();
+  state.mode = state.index % 2 === 0 ? "whistle" : "sing";
+  if (!state.song) return finish();
+  renderPrompt();
+}
+
+function playPreview() {
+  const audio = $("previewAudio");
+  audio.currentTime = 0;
+  audio.play();
+  setTimeout(() => audio.pause(), PREVIEW_S * 1000);
+}
+
+function stopRecording() {
+  if (state.recorder && state.recorder.state === "recording") state.recorder.stop();
+}
+
+async function toggleRecord() {
+  if (state.recorder && state.recorder.state === "recording") return stopRecording();
+  $("previewAudio").pause();
+  $("submit").disabled = true;
+  $("record").textContent = "■ Stop";
+  $("skip").disabled = true;
+  const tick = (t) => ($("recStatus").textContent = `Recording… ${t.toFixed(0)} s`);
+  const { blob, peak, duration } = await record(MAX_CLIP_S, "level2", tick);
+  state.attempts += 1;
+  $("skip").disabled = false;
+  $("record").textContent = "↻ Re-record";
+  const tooShort = duration < MIN_CLIP_S;
+  const silent = peak <= SILENCE_RMS;
+  $("recStatus").textContent = tooShort ? `Please record at least ${MIN_CLIP_S} seconds.`
+    : silent ? "That was silent. Please try again." : "Listen back, then submit or re-record.";
+  if (tooShort || silent) return;
+  state.blob = blob;
+  state.duration = duration;
+  $("playback").src = URL.createObjectURL(blob);
+  $("playback").classList.remove("hidden");
+  $("submit").disabled = false;
+}
+
+async function submitClip() {
+  $("submit").disabled = true;
+  $("recStatus").textContent = "Uploading…";
+  const form = new FormData();
+  form.append("audio", state.blob, "clip");
+  const fields = {
+    prolific_pid: session.pid, study_id: session.study, session_id: session.sessionId,
+    song_id: state.song.song_id, mode: state.mode, prompt_index: state.index,
+    attempts: state.attempts, duration_s: state.duration.toFixed(2),
+    client_ts: new Date().toISOString(), user_agent: navigator.userAgent,
+  };
+  Object.entries(fields).forEach(([k, v]) => form.append(k, v));
+  const resp = await fetch("/api/clip", { method: "POST", body: form }).catch(() => null);
+  if (!resp || !resp.ok) {
+    $("recStatus").textContent = "Upload failed. Please check your connection and press Submit again.";
+    $("submit").disabled = false;
+    return;
+  }
+  state.index += 1;
+  if (state.index >= state.config.prompts) return finish();
+  loadPrompt();
+}
+
+function skipSong() {
+  $("previewAudio").pause();
+  loadPrompt();
+}
+
+function finish() {
+  $("bar").style.width = "100%";
+  $("doneLink").href = state.config.completion_url;
+  show("done");
+  setTimeout(() => (location.href = state.config.completion_url), 2000);
+}
+
+async function boot() {
+  state.config = await (await fetch("/api/config")).json();
+  state.queue = shuffle(state.config.songs);
+  $("agree").onclick = () => show("miccheck");
+  $("micTest").onclick = micTest;
+  $("micOk").onclick = () => { show("prompt"); loadPrompt(); };
+  $("preview").onclick = playPreview;
+  $("record").onclick = toggleRecord;
+  $("submit").onclick = submitClip;
+  $("skip").onclick = skipSong;
+}
+
+boot();
+</script>
+</body>
+</html>
