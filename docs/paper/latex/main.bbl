@@ -1,0 +1,154 @@
+\begin{thebibliography}{20}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Amatov et~al.(2023)Amatov, Lamanov, Titov, Vovk, Makarov, and
+  Kudinov]{amatov2023chad}
+A.~Amatov, D.~Lamanov, M.~Titov, I.~Vovk, I.~Makarov, and M.~Kudinov.
+\newblock A semi-supervised deep learning approach to dataset collection for
+  query-by-humming task, 2023.
+
+\bibitem[Defferrard et~al.(2017)Defferrard, Benzi, Vandergheynst, and
+  Bresson]{defferrard2017fma}
+Micha{\"e}l Defferrard, Kirell Benzi, Pierre Vandergheynst, and Xavier Bresson.
+\newblock {FMA}: A dataset for music analysis.
+\newblock In \emph{Proc. International Society for Music Information Retrieval
+  Conference (ISMIR)}, pages 316--323, 2017.
+
+\bibitem[D{\'e}fossez(2021)]{defossez2021hybrid}
+Alexandre D{\'e}fossez.
+\newblock Hybrid spectrogram and waveform source separation.
+\newblock In \emph{Proc. ISMIR 2021 Workshop on Music Source Separation}, 2021.
+\newblock arXiv:2111.03600.
+
+\bibitem[Dias et~al.(2008)Dias, Ventura, and Gaspar]{dias2008whistling}
+B.~Dias, R.~Ventura, and J.~Gaspar.
+\newblock Automatic transcription of musical whistling: Comparing pitch
+  detection methods.
+\newblock Institute for Systems and Robotics, Instituto Superior T{\'e}cnico,
+  Lisbon, 2008.
+
+\bibitem[Du et~al.(2024)Du, Zou, Liu, Liang, Chu, and Zhu]{du2024bytehum}
+Xingjian Du, Pei Zou, Mingyu Liu, Xia Liang, Minghang Chu, and Bilei Zhu.
+\newblock {ByteHum}: Fast and accurate query-by-humming in the wild.
+\newblock In \emph{Proc. IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 1111--1115, 2024.
+\newblock \doi{10.1109/ICASSP48485.2024.10448117}.
+
+\bibitem[Frank(2020)]{frank2020hum}
+Christian Frank.
+\newblock The machine learning behind hum to search.
+\newblock Google Research Blog, November 2020.
+\newblock
+  \url{https://research.google/blog/the-machine-learning-behind-hum-to-search/}.
+
+\bibitem[Gfeller et~al.(2020)Gfeller, Frank, Roblek, Sharifi, Tagliasacchi, and
+  Velimirovi{\'c}]{gfeller2020spice}
+Beat Gfeller, Christian Frank, Dominik Roblek, Matt Sharifi, Marco
+  Tagliasacchi, and Mihajlo Velimirovi{\'c}.
+\newblock {SPICE}: Self-supervised pitch estimation.
+\newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language
+  Processing}, 28, 2020.
+\newblock arXiv:1910.11664.
+
+\bibitem[Jang()]{mirqbsh}
+Jyh-Shing~Roger Jang.
+\newblock {MIR-QBSH} corpus.
+\newblock MIR Lab, National Taiwan University.
+\newblock \url{http://mirlab.org/dataset/public/}.
+
+\bibitem[Jang and Lee(2008)]{jang2008progressive}
+Jyh-Shing~Roger Jang and Hong-Ru Lee.
+\newblock A general framework of progressive filtering and its application to
+  query by singing/humming.
+\newblock \emph{IEEE Transactions on Audio, Speech, and Language Processing},
+  16\penalty0 (2):\penalty0 350--358, 2008.
+\newblock \doi{10.1109/TASL.2007.913035}.
+
+\bibitem[Kim et~al.(2018)Kim, Salamon, Li, and Bello]{kim2018crepe}
+Jong~Wook Kim, Justin Salamon, Peter Li, and Juan~Pablo Bello.
+\newblock {CREPE}: A convolutional representation for pitch estimation.
+\newblock In \emph{Proc. IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, pages 161--165, 2018.
+\newblock arXiv:1802.06182.
+
+\bibitem[Li et~al.(2024)Li, Yuan, Zhang, et~al.]{li2024mert}
+Yizhi Li, Ruibin Yuan, Ge~Zhang, et~al.
+\newblock {MERT}: Acoustic music understanding model with large-scale
+  self-supervised training.
+\newblock In \emph{Proc. International Conference on Learning Representations
+  (ICLR)}, 2024.
+\newblock arXiv:2306.00107.
+
+\bibitem[Liu et~al.(2024)Liu, Li, Li, and Shan]{liu2024humtrans}
+Shansong Liu, Xu~Li, Dian Li, and Ying Shan.
+\newblock {HumTrans}: A novel open-source dataset for humming melody
+  transcription and beyond.
+\newblock In \emph{Proc. IEEE International Conference on Acoustics, Speech and
+  Signal Processing (ICASSP)}, 2024.
+\newblock arXiv:2309.09623.
+
+\bibitem[{MLEnd}()]{mlend}
+{MLEnd}.
+\newblock {MLEnd} hums and whistles dataset.
+\newblock Queen Mary University of London.
+\newblock \url{https://mlenddatasets.github.io/hums_whistles/}.
+
+\bibitem[Nilsson et~al.(2008)Nilsson, Bart{\r{u}}n{\v{e}}k, Nordberg, and
+  Claesson]{nilsson2008whistle}
+Mikael Nilsson, Josef~Str{\"o}m Bart{\r{u}}n{\v{e}}k, J{\"o}rgen Nordberg, and
+  Ingvar Claesson.
+\newblock Human whistle detection and frequency estimation.
+\newblock In \emph{Proc. Congress on Image and Signal Processing (CISP)},
+  volume~5, pages 737--741, 2008.
+\newblock \doi{10.1109/CISP.2008.415}.
+
+\bibitem[Qian et~al.(2026)Qian, Meng, et~al.]{soulxsinger2026}
+Jiale Qian, Hao Meng, et~al.
+\newblock {SoulX-Singer}: Towards high-quality zero-shot singing voice
+  synthesis, 2026.
+
+\bibitem[Salamon et~al.(2013)Salamon, Serr{\`a}, and
+  G{\'o}mez]{salamon2013tonal}
+Justin Salamon, Joan Serr{\`a}, and Emilia G{\'o}mez.
+\newblock Tonal representations for music retrieval: From version
+  identification to query-by-humming.
+\newblock \emph{International Journal of Multimedia Information Retrieval},
+  2:\penalty0 45--58, 2013.
+\newblock \doi{10.1007/s13735-012-0026-0}.
+
+\bibitem[Serr{\`a} et~al.(2025)Serr{\`a}, Araz, Bogdanov, and
+  Mitsufuji]{serra2025clews}
+Joan Serr{\`a}, R.~Oguz Araz, Dmitry Bogdanov, and Yuki Mitsufuji.
+\newblock Supervised contrastive learning from weakly-labeled audio segments
+  for musical version matching.
+\newblock In \emph{Proc. International Conference on Machine Learning (ICML)},
+  volume 267 of \emph{PMLR}, pages 53923--53939, 2025.
+\newblock arXiv:2502.16936.
+
+\bibitem[Shen and Lee(2007)]{shen2007whistle}
+Hung-Che Shen and Chungnan Lee.
+\newblock Whistle for music: Using melody transcription and approximate string
+  matching for content-based query over a {MIDI} database.
+\newblock \emph{Multimedia Tools and Applications}, 35\penalty0 (3):\penalty0
+  259--283, 2007.
+\newblock \doi{10.1007/s11042-007-0128-5}.
+
+\bibitem[Wei et~al.(2023)Wei, Cao, Dan, and Chen]{wei2023rmvpe}
+Haojie Wei, Xueke Cao, Tangpeng Dan, and Yueguo Chen.
+\newblock {RMVPE}: A robust model for vocal pitch estimation in polyphonic
+  music.
+\newblock In \emph{Proc. Interspeech}, pages 5421--5425, 2023.
+\newblock arXiv:2306.15412.
+
+\bibitem[Zhang et~al.(2025)Zhang, Zhang, Wang, Wang, Chen, Jia, Chen, and
+  Wu]{zhang2025vevo2}
+Xueyao Zhang, Junan Zhang, Yuancheng Wang, Chaoren Wang, Yuanzhe Chen, Dongya
+  Jia, Zhuo Chen, and Zhizheng Wu.
+\newblock {Vevo2}: Bridging controllable speech and singing voice generation
+  via unified prosody learning, 2025.
+
+\end{thebibliography}
