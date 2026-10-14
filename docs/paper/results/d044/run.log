@@ -1,0 +1,26 @@
+counts [clips, performers]: {"train": {"hum": [2812, 136], "whistle": [1148, 82]}, "val": {"hum": [1020, 45], "whistle": [310, 21]}, "test": {"hum": [972, 45], "whistle": [339, 26]}}
+E2b zero-shot test whistle->hums top1 0.6313
+train frac 0.1 seed 0: 14 performers
+  step 0 val whistle->hums top1 0.7935
+  step 100 loss 1.375 val whistle->hums top1 0.8323
+  step 200 loss 1.159 val whistle->hums top1 0.8548
+  step 300 loss 0.479 val whistle->hums top1 0.8484
+  -> test whistle->hums top1 0.6342 top3 0.7758
+train frac 0.25 seed 0: 34 performers
+  step 0 val whistle->hums top1 0.7935
+  step 100 loss 2.062 val whistle->hums top1 0.8355
+  step 200 loss 1.258 val whistle->hums top1 0.8516
+  step 300 loss 1.857 val whistle->hums top1 0.8419
+  -> test whistle->hums top1 0.6254 top3 0.7935
+train frac 0.5 seed 0: 68 performers
+  step 0 val whistle->hums top1 0.7935
+  step 100 loss 2.089 val whistle->hums top1 0.8194
+  step 200 loss 1.497 val whistle->hums top1 0.8516
+  step 300 loss 1.917 val whistle->hums top1 0.8581
+  -> test whistle->hums top1 0.6549 top3 0.8112
+train frac 1.0 seed 0: 136 performers
+  step 0 val whistle->hums top1 0.7935
+  step 100 loss 1.995 val whistle->hums top1 0.8129
+  step 200 loss 1.865 val whistle->hums top1 0.8484
+  step 300 loss 1.577 val whistle->hums top1 0.8806
+  -> test whistle->hums top1 0.6726 top3 0.8201

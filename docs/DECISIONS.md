@@ -1757,3 +1757,26 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Use.** Real clips are test-first (song-disjoint split held out); only the rest feeds fine-tuning. Revisit synthetic realism by comparing synthetic vs real F0 statistics.
 
 **Revisit when.** Pilot quality is poor (noise, preview bleed, wrong song), or a stable hostname is needed (quick tunnel URL changes on restart).
+
+## D-044 · Closed-set real-whistle fine-tune on MLEnd's 8 songs (performer-disjoint)
+**Date:** 2026-10-14
+
+**Context.** D-040–D-042 raised synthetic whistle / wrong-lyrics top-1 by ~7 points but did not beat E2b on real MLEnd whistles when scored clean (all 8 songs, no MLEnd in training). D-041's gain on the 6 songs it trained on was tune familiarity, not whistling. The paper was scoped to a closed-set real-whistle study on MLEnd's 8 songs (plus the synthetic-to-real findings) instead of waiting for Prolific. Need: train and test on the same 8 songs with test performers held out, so the number answers "does real whistle fine-tuning help when the song set is fixed?" — not open-set generalization to new songs.
+
+**Options.** (a) Closed-set fine-tune of E2b on MLEnd train-performer whistle→hum and hum→hum pairs, select on val performers, score test performers with the D-013 query-by-example protocol (centroid of other people's hums; query performer left out), with a nested 10/25/50/100% train-performer curve and bootstrap CIs. (b) Wait for Prolific real queries against song recordings (open-set / song-side scoring). (c) More synthetic-only rounds.
+
+**Decision.** (a). Script: `docs/paper/results/d044/run_d044.py` (CPU only; no synthetic queries). Init E2b; InfoNCE with same-song masking; 300 steps; LR $3\times10^{-5}$; checkpoint selected on val whistle→hums top-1. Train-frac curve with seed 0 only. Results: `docs/paper/results/d044/results.json`, `run.log`, `SUMMARY.md`. No live `H2S_CKPT` swap, no re-index, no GPU.
+
+**Result** (`summarize.py` on `results.json`; MRR = mean $1/(\mathrm{rank}+1)$ from ranks). Test: 339 whistles, 26 performers; chance top-1 0.125.
+- E2b zero-shot whistle→hums: top-1 **0.631** (214/339), clip 95% CI [0.581, 0.681], performer CI [0.500, 0.753]; top-3 **0.770**; MRR 0.731.
+- FT 10% (14 train performers): top-1 0.634 [0.584, 0.684]; top-3 0.776; MRR 0.735.
+- FT 25% (34): top-1 0.625 [0.575, 0.678]; top-3 0.794; MRR 0.738.
+- FT 50% (68): top-1 0.655 [0.605, 0.705]; top-3 0.811; MRR 0.757.
+- FT 100% (136): top-1 **0.673** (228/339) [0.622, 0.723], performer CI [0.536, 0.801]; top-3 **0.820**; MRR 0.768.
+- Full-train gain over E2b: +0.041 top-1 (+14 of 339), +0.050 top-3. Clip CIs overlap; performer CIs are wide. Curve is roughly monotonic after 25%.
+
+**Decision (from the result).** Report as a closed-set ceiling on these 8 songs, not as a deployed open-set model. E2b stays live for open retrieval; D-044 weights are experiment-only. Paper Table `tab:closedset` filled; `\closedsetpendingfalse`.
+
+**Given up.** Open-set / new-song claims; song-recording references (MLEnd has none); multiple seeds; Prolific-scale data for this paper version.
+
+**Revisit when.** Real whistles (or wrong-lyrics singing) can be scored against song recordings on a larger song set (Prolific / owned audio), or when more seeds are affordable on CPU/GPU without idle cost.

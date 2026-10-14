@@ -18,9 +18,9 @@
 \newcommand{\st}{\,st}
 
 % ---- Closed-set real-whistle training results ----
-% Set to \closedsetpendingfalse and fill Table~\ref{tab:closedset} when the run finishes.
+% Filled from docs/paper/results/d044/results.json (D-044).
 \newif\ifclosedsetpending
-\closedsetpendingtrue
+\closedsetpendingfalse
 
 \title{Whistle and Wrong Lyrics: Synthetic Queries Are Not Enough\\for Real-World Query-by-Melody}
 \author{Luigi Rivolta\\Independent Researcher\\\texttt{EMAIL@PLACEHOLDER}}
@@ -30,7 +30,7 @@
 \maketitle
 
 \begin{abstract}
-People look up a song by humming it, but also by whistling it or singing it with the wrong words. Published query-by-humming systems and benchmarks focus on hums and sung queries; whistles and wrong-lyrics singing are rarely studied, and no public dataset pairs them with song recordings. We study both query types with a melody-only retrieval system: a key-normalized pitch track (F0) embedded by a 5.2M-parameter contour encoder, with a spectral-peak tracker for whistles. We make three contributions. First, a physics-grounded synthetic query generator that renders whistles (a near-sinusoid with a weak second harmonic, placed in the human whistle register) and nonsense-syllable singing (a source-filter voice) from the vocal melodies of 11,083 songs, then re-tracks each rendering with the tracker a real query would get. Second, a controlled study over three training rounds. Training on these queries raises top-1 retrieval of held-out synthetic queries against an 11,050-song gallery from 0.180 to 0.251 for whistles and from 0.193 to 0.264 for wrong-lyrics singing, at a hum cost of under one point. The gain does not transfer to real whistles: on the MLEnd test performers the best synthetic-only model gets 210 of 339 whistles right at top-1, against 214 for the baseline. Adding real whistles of 6 of the 8 test tunes to training helps those tunes and drops the 2 held-out tunes from 53 to 41 of 90, and a saturated selection metric silently returned the starting weights in the first round. Third, a scoped, closed-set real-whistle evaluation on MLEnd's 8 songs. Code is public; models and data will be released.
+People look up a song by humming it, but also by whistling it or singing it with the wrong words. Published query-by-humming systems and benchmarks focus on hums and sung queries; whistles and wrong-lyrics singing are rarely studied, and no public dataset pairs them with song recordings. We study both query types with a melody-only retrieval system: a key-normalized pitch track (F0) embedded by a 5.2M-parameter contour encoder, with a spectral-peak tracker for whistles. We make three contributions. First, a physics-grounded synthetic query generator that renders whistles (a near-sinusoid with a weak second harmonic, placed in the human whistle register) and nonsense-syllable singing (a source-filter voice) from the vocal melodies of 11,083 songs, then re-tracks each rendering with the tracker a real query would get. Second, a controlled study over three training rounds. Training on these queries raises top-1 retrieval of held-out synthetic queries against an 11,050-song gallery from 0.180 to 0.251 for whistles and from 0.193 to 0.264 for wrong-lyrics singing, at a hum cost of under one point. The gain does not transfer to real whistles: on the MLEnd test performers the best synthetic-only model gets 210 of 339 whistles right at top-1, against 214 for the baseline. Adding real whistles of 6 of the 8 test tunes to training helps those tunes and drops the 2 held-out tunes from 53 to 41 of 90, and a saturated selection metric silently returned the starting weights in the first round. Third, a closed-set real-whistle fine-tune on MLEnd's 8 songs with performer-disjoint splits raises whistle$\to$hum top-1 from 0.631 (E2b zero-shot; clip 95\% CI $[0.581, 0.681]$) to 0.673 with all train performers (CI $[0.622, 0.723]$); this is closed-set on known songs, not open-set generalization. Code is public; models and data will be released.
 \end{abstract}
 
 \section{Introduction}
@@ -47,7 +47,7 @@ Google's Hum to Search reports that a model trained mostly on sung clips ``worke
 \begin{enumerate}
 \item A physics-grounded synthetic query generator for whistles and nonsense-syllable singing, locked frame by frame to the vocal melody of real songs and re-tracked with the tracker a real query would get (Section~\ref{sec:gen}).
 \item A controlled study of synthetic-query training over three rounds (D-040, D-041, D-042). It improves synthetic-query retrieval by about 7 top-1 points across 11k songs but does not transfer to real whistles. It also documents two pitfalls: training on real whistles of the test tunes teaches the tunes, not whistling, and a saturated selection metric returns the starting checkpoint (Sections~\ref{sec:results}--\ref{sec:lessons}).
-\item A scoped, closed-set real-whistle evaluation on the 8 songs of MLEnd Hums and Whistles \citep{mlend} (Section~\ref{sec:mlend}).
+\item A closed-set real-whistle fine-tune on the 8 songs of MLEnd Hums and Whistles \citep{mlend}: performer-disjoint, E2b zero-shot whistle$\to$hum top-1 0.631 $\to$ 0.673 with all train performers (Section~\ref{sec:closedset}).
 \item An open-source release (Section~\ref{sec:release}).
 \end{enumerate}
 
@@ -208,7 +208,7 @@ D-042 best & 0.622 / 0.722 / 0.709 (56) & 0.618 / 0.763 / 0.724 (154) & 0.619 / 
 
 \subsection{Closed-set real-whistle training}\label{sec:closedset}
 
-Following the scoped design, a model is trained and tested on real whistles within MLEnd's 8 songs, with test performers disjoint from training performers. This is a closed-set result by construction: it says how well real whistle training works when the song set is fixed and known, not how it generalizes to new songs.
+Following the scoped design, E2b is fine-tuned on real MLEnd train-performer whistle$\to$hum and hum$\to$hum pairs and tested on held-out performers within the same 8 songs (D-044; CPU run). Selection uses val-performer whistle$\to$hums top-1. Scoring matches Section~\ref{sec:mlend}: spectral-peak whistle against the centroid of other people's hums, query performer left out (339 test whistles, 26 people; chance top-1 0.125). Nested subsets of 10/25/50/100\% of the 136 train performers give a low-data curve (one seed). This is a closed-set result by construction: it says how well real whistle training works when the song set is fixed and known, not how it generalizes to new songs.
 
 \ifclosedsetpending
 \begin{center}
@@ -216,20 +216,26 @@ Following the scoped design, a model is trained and tested on real whistles with
 \end{center}
 \fi
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
-\caption{Closed-set real-whistle training on MLEnd's 8 songs \real. Test performers are disjoint from training performers.}
+\caption{Closed-set real-whistle training on MLEnd's 8 songs \real (D-044). Whistle $\to$ other people's hums, 8-way; test performers disjoint from training. Top-1 shows clip 95\% CI; MRR is mean $1/(\mathrm{rank}+1)$ from the same ranks. Source: \texttt{docs/paper/results/d044/results.json}.}
 \label{tab:closedset}
 \small
-\begin{tabular}{lccc}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccc}
 \toprule
-Model & Top-1 & Top-3 & MRR \\
+Model & Train performers & Top-1 [clip 95\% CI] & Top-3 & MRR \\
 \midrule
-E2b (no MLEnd training) & 0.631 & 0.770 & 0.731 \\
-Closed-set real-whistle model & -- & -- & -- \\
+E2b zero-shot & 0 & 0.631 [0.581, 0.681] & 0.770 & 0.731 \\
+FT 10\% & 14 & 0.634 [0.584, 0.684] & 0.776 & 0.735 \\
+FT 25\% & 34 & 0.625 [0.575, 0.678] & 0.794 & 0.738 \\
+FT 50\% & 68 & 0.655 [0.605, 0.705] & 0.811 & 0.757 \\
+FT 100\% & 136 & 0.673 [0.622, 0.723] & 0.820 & 0.768 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+Full training reaches 228 of 339 top-1 (0.673) against 214 for E2b (0.631), and top-3 0.820 against 0.770. Clip CIs overlap; performer-bootstrap CIs are wide (E2b $[0.500, 0.753]$, full FT $[0.536, 0.801]$). The curve is roughly flat at 10--25\% and rises at 50--100\%. These weights are not adopted for open retrieval: the live model stays E2b.
 
 \subsection{MERT baseline \real}
 
@@ -263,7 +269,7 @@ D-040 selected checkpoints on HumTrans validation top-1 with a $+7$\st{} shift. 
 Code, configuration files, decision log and every result file cited here are on GitHub at \url{https://github.com/luiginotmario/hum2song}. Model checkpoints (E2b, D-040 to D-042, MERT runs) and the search index will be released on Hugging Face as \texttt{luigir5/hum2song-models}; derived data (melody features, song catalog, result files) will be released as \texttt{luigir5/hum2song-data}. Both repositories exist and are private at the time of writing; they are to be released.
 
 \section{Conclusion and future work}
-A melody-only contour encoder with a whistle-specific tracker is a sound base for whistle and wrong-lyrics search: lyrics and timbre cannot mislead it, and key is removed exactly. Rendering whistles and nonsense-syllable singing from real song melodies and re-tracking them improves retrieval of such queries on new songs by about 7 top-1 points at under one point of hum cost. It does not improve retrieval of real whistles, and real whistles of the test tunes teach the tunes rather than whistling. As CHAD found for hums, synthetic or proxy data is not enough: what is missing is real whistled and wrong-lyrics queries paired with recordings. Next steps are (i) collecting such queries for songs whose audio we can hold, (ii) selecting checkpoints on a real-query validation set, (iii) replacing the source-filter singer with a neural singer and measuring the synthetic-to-real gap before training, and (iv) more seeds.
+A melody-only contour encoder with a whistle-specific tracker is a sound base for whistle and wrong-lyrics search: lyrics and timbre cannot mislead it, and key is removed exactly. Rendering whistles and nonsense-syllable singing from real song melodies and re-tracking them improves retrieval of such queries on new songs by about 7 top-1 points at under one point of hum cost. It does not improve retrieval of real whistles in the open sense, and real whistles of the test tunes teach the tunes rather than whistling. On a closed set of the same 8 MLEnd songs with held-out performers, fine-tuning on real whistles raises top-1 from 0.631 to 0.673 (Table~\ref{tab:closedset}); that gain is not a claim about new songs. As CHAD found for hums, synthetic or proxy data is not enough for open-set transfer: what is missing is real whistled and wrong-lyrics queries paired with recordings. Next steps are (i) collecting such queries for songs whose audio we can hold, (ii) selecting checkpoints on a real-query validation set, (iii) replacing the source-filter singer with a neural singer and measuring the synthetic-to-real gap before training, and (iv) more seeds.
 
 \bibliographystyle{plainnat}
 \bibliography{refs}
