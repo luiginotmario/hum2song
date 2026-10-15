@@ -1781,7 +1781,7 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 
 **Revisit when.** Real whistles (or wrong-lyrics singing) can be scored against song recordings on a larger song set (Prolific / owned audio), or when more seeds are affordable on CPU/GPU without idle cost.
 
-## D-045 — ElevenLabs Music synthetic whistle / la-la queries (2026-10-15)
+## D-045 · ElevenLabs Music synthetic whistle / la-la queries (2026-10-15)
 
 **Context.** Luigi approved a 50-song batch (hard cap $18) of synthetic queries from the ElevenLabs Music API (`music_v2_5`), conditioned via `/v1/music/upload` on the htdemucs-separated real vocal of each section (recipe from r5–r8).
 
