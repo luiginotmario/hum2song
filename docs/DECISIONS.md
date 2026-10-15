@@ -1780,3 +1780,27 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Given up.** Open-set / new-song claims; song-recording references (MLEnd has none); multiple seeds; Prolific-scale data for this paper version.
 
 **Revisit when.** Real whistles (or wrong-lyrics singing) can be scored against song recordings on a larger song set (Prolific / owned audio), or when more seeds are affordable on CPU/GPU without idle cost.
+
+## D-045 — ElevenLabs Music synthetic whistle / la-la queries (2026-10-15)
+
+**Context.** Luigi approved a 50-song batch (hard cap $18) of synthetic queries from the ElevenLabs Music API (`music_v2_5`), conditioned via `/v1/music/upload` on the htdemucs-separated real vocal of each section (recipe from r5–r8).
+
+**Setup.** 3 × 20 s most vocal-dense windows per song (RMS of the separated vocal). Per accepted section: 1 whistle (xhigh, r6 whistle prompt) + 1 la-la (medium, alternating r7 female / young-male amateur prompts). Copyright-screen rejections were skipped, not circumvented. Resumable job: `synth_elevenlabs/job.py` (`state.json`). Judge: E2b (`contour_e2b_s0`), no GPU. The full E2b index is not on HF (the archive is MERT), so the judge used a closed set of 1,051 library songs (`youtube_charts_v1` + `youtube_v1` RMVPE vocal tracks, sliding 14/20 s windows every 3 s, max cosine per song).
+
+**Result.**
+- **Songs:** 32 attempted (all `ytb_classics` with audio on the box). HF holds no audio for `youtube_*`, only contours, so 50 was not reachable.
+- **Sections:** 37 accepted, 55 blocked by the copyright screen.
+- **Clips:** 74, all kept and ranked.
+- **Top-1 against 1,051 songs:**
+  - la-la: 6/37 (16%)
+  - whistle: 3/37 (8%)
+- **Top-10:**
+  - la-la: 11/37
+  - whistle: 11/37
+- **Credits:** about 35.3k (14.25k Starter + 21.06k Creator), roughly $6–7.
+
+**Decision.** Store all 74 clips with their ranks at HF `luigir5/hum2song-data/synth_elevenlabs/` (`manifest.csv`, `judged.json`). Treat them as a small, noisy synthetic set. The ranks, not the generation, are the filter. Do not use them as validation data.
+
+**Given up.** 50 songs (no audio for more); the full-index judge; sections blocked by the copyright screen.
+
+**Revisit when.** More owned/licensed audio is available, or an E2b full index is published.
