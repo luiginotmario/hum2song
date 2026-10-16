@@ -1804,3 +1804,24 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Given up.** 50 songs (no audio for more); the full-index judge; sections blocked by the copyright screen.
 
 **Revisit when.** More owned/licensed audio is available, or an E2b full index is published.
+
+## D-046 · ElevenLabs synthetic queries, phase B: library songs from YouTube (2026-10-15/16)
+**Context.** D-045 gave 74 clips from 32 classics. Luigi approved scaling toward ~1,000 clips / 200+ songs (≈$40, hard stop ≈$45), using songs from the 1,051-song judge set so E2b can rank them.
+
+**Setup.** 260 `youtube_charts_v1`/`youtube_v1` songs, ranked by how many 20 s windows of the library RMVPE vocal track were voiced (>60%), downloaded with yt-dlp on the box (some failed). Same recipe as D-045 (`synth_elevenlabs/job2.py`), with the first 6 min of each song separated by htdemucs. Stopped by Luigi on 2026-10-16 to move on to training.
+
+**Result.**
+- **Phase B:** 79 songs tried. Sections: 54 accepted, **183 blocked** by the copyright screen (77%). That leaves 106 clips (53 whistle, 53 la-la).
+- **Phase B top-1 against 1,051 songs:**
+  - la-la: 17/53 (32%)
+  - whistle: 7/53 (13%)
+- **Phase B top-10:**
+  - la-la: 22/53
+  - whistle: 11/53
+- **Total D-045 + D-046:** 180 clips on HF `luigir5/hum2song-data/synth_elevenlabs/` (`manifest.csv` with rank, top-10 and phase).
+- **Credits:** phase B used ~70.9k Creator credits; the total for D-045 + D-046 is ~106k (14.25k Starter + 91.9k Creator), ≈$22 in credits.
+- **Blocked uploads still cost credits** (half price). With 77% of sections blocked, most of the phase-B spend bought nothing; the cost per accepted section was ~1.3k credits.
+
+**Decision.** Stop generation. The copyright screen, not the budget, limits this source for chart songs. Use the 180 clips as a small synthetic training set (D-047).
+
+**Revisit when.** Conditioning audio is owned or licensed (no copyright block), or the screen changes.
