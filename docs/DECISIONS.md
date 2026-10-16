@@ -1825,3 +1825,18 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Decision.** Stop generation. The copyright screen, not the budget, limits this source for chart songs. Use the 180 clips as a small synthetic training set (D-047).
 
 **Revisit when.** Conditioning audio is owned or licensed (no copyright block), or the screen changes.
+
+## D-047 · CPU fine-tune of E2b on ElevenLabs + synthetic queries, scored on real MLEnd whistles (2026-10-16)
+**Context.** D-045/D-046 produced 180 ElevenLabs whistle / la-la clips. Question: does mixing them into fine-tuning beat E2b on **real** queries?
+
+**Setup.** `docs/paper/results/d047/run_d047.py` (CPU only, no GPU). Init E2b (`contour_e2b_s0`); batches 50/50 ElevenLabs pairs (166 usable) and the D-042 synthetic query set (68,714 pairs), `query_aug` as D-041/42; InfoNCE; LR $3\times10^{-5}$; 1,500 steps, batch 16+16. Checkpoint selected on MLEnd **val** performers (whistle→hums top-1); scored on MLEnd **test** performers with the D-044 closed-set protocol (339 whistles, bootstrap CIs) and the Hakuna/Potter held-out 90 (D-042).
+
+**Result.**
+- Val top-1 never beat step 0 (0.794): 0.726 / 0.736 / 0.742 / 0.736 / 0.745 / 0.710 at steps 250–1500. Best checkpoint = step 0 = E2b.
+- Test, E2b and D-047 (identical, since the selected weights are E2b): all-339 top-1 **0.631** [0.581, 0.681], top-3 0.770; held-out 90 top-1 **0.589** [0.489, 0.689].
+
+**Decision.** No win; nothing pushed to HF `luigir5/hum2song-models`. E2b stays live. The ElevenLabs clips (plus synthetic queries) hurt real-whistle retrieval in this setup.
+
+**Given up.** Further ElevenLabs-based training rounds on this small set.
+
+**Revisit when.** More real whistle / singing recordings are available (bought or Prolific), or synthetic clips can be generated at much larger scale without the copyright screen.
