@@ -1874,3 +1874,23 @@ Kept per song at P90: Frozen 41/42, Hakuna 42/44, Mamma 39/41, Panther 40/45, Po
 **Decision.** Filtering removes ~10% of clips (mostly Rain, StarWars, Potter) and lifts E2b only ~+1.7 pts top-1, inside the CIs. By this measure most MLEnd whistles do carry the contour about as well as other people's hums; the ~35% top-1 error is not mainly from tune-less clips. Report the P90 subset alongside full MLEnd; ranking E2b > D-048 last is unchanged.
 
 **Revisit when.** Human listening labels or Prolific recordings are available to validate the automatic filter.
+
+## D-049 / D-051 · Open-source synth GPU fine-tunes (YingMusic-Singer sung + DDSP whistle, new songs) vs E2b on real MLEnd whistles (2026-10-16)
+**Context.** D-048 (CPU) did not beat E2b. D-049 regenerated open-source synthetic queries on new, non-test songs (1,994 OSS pairs over 491 reference contours, 349 of them with real-human melody errors applied before rendering) and weighted them at 50% of every batch. D-051 ran the three arms on one Lambda `gpu_1x_a10` (watchdog `gpu_train.sh`; 4 failed launches fixed in turn: rsync paths, soundfile pin, missing f0/split files, batch-to-device; 5th run completed 23:20 EDT, instance terminated, 0 running).
+
+**Setup.** `run_d049_gpu.py`, 1,500 steps, batch 16, from E2b. A: OSS + D-042 qsynth mix, LR 1e-5, no perturbed clips (1,645 OSS pairs). B: OSS only, LR 3e-6, 63/85 tensors frozen. C: as A plus melody-error-perturbed clips (1,994 pairs). Eval `docs/paper/results/d049/eval_d049.py`: D-044 protocol on real MLEnd test whistles; full 339, Hakuna+Potter held-out 90, D-050 pre-registered P90 subset (304 / 82); 95% clip bootstrap CIs and paired bootstrap of top-1 difference vs E2b.
+
+**Result** (top-1 [95% CI]; top-3; paired Δ top-1 vs E2b [95% CI]):
+| model | full 339 | held-out 90 | P90 304 | P90 held-out 82 |
+|---|---|---|---|---|
+| E2b | 0.631 [0.581,0.681]; 0.770 | 0.589 [0.489,0.689]; 0.711 | 0.648 [0.592,0.701]; 0.776 | 0.610 [0.500,0.720]; 0.732 |
+| A best (= step 0) | = E2b | = E2b | = E2b | = E2b |
+| A last | 0.546; 0.749; Δ −0.086 [−0.130,−0.044] | 0.511; 0.733; Δ −0.078 [−0.156,0.000] | 0.553; 0.753; Δ −0.095 [−0.141,−0.049] | 0.537; 0.744; Δ −0.073 [−0.159,+0.012] |
+| B best (step 750) | 0.619; 0.779; Δ −0.012 [−0.038,+0.015] | 0.589; 0.789; Δ 0.000 [−0.044,+0.044] | 0.635; 0.786; Δ −0.013 [−0.039,+0.013] | 0.610; 0.805; Δ 0.000 [−0.049,+0.049] |
+| B last | 0.593; 0.773; Δ −0.038 [−0.074,−0.006] | 0.611; 0.811; Δ +0.022 [−0.033,+0.089] | 0.602; 0.780; Δ −0.046 [−0.082,−0.010] | 0.622; 0.829; Δ +0.012 [−0.049,+0.073] |
+| C best (= step 0) | = E2b | = E2b | = E2b | = E2b |
+| C last | 0.543; 0.726; Δ −0.088 [−0.133,−0.044] | 0.511; 0.756; Δ −0.078 [−0.167,+0.011] | 0.549; 0.724; Δ −0.099 [−0.148,−0.053] | 0.537; 0.744; Δ −0.073 [−0.171,+0.024] |
+
+**Decision.** No arm beats E2b on top-1 on any real-whistle set; no top-1 Δ CI is above zero. A and C's best synthetic-val checkpoint is step 0 and full training hurts real whistles significantly (≈ −9 pts). B (OSS-only, mostly frozen, low LR) is a statistical tie on top-1; its held-out top-3 is higher (0.711 → 0.789–0.829) but that is a secondary metric and was not significance-tested here. Melody-error perturbation (C vs A) did not help. Live model stays E2b. Paper reports this honestly as a negative transfer result.
+
+**Revisit when.** Real (non-MLEnd) whistle/singing recordings over many more songs exist, or a paired top-3 test on B is pre-registered.

@@ -1,0 +1,87 @@
+22:26:29 launched gpu_1x_a10 us-east-1 f27f0da551f544c7b9ac3cb356eabc4f
+22:31:33 active 129.159.180.206
+22:33:52 relaunch watchdog reusing instance (rsync path bug fixed)
+22:33:52 active 129.159.180.206
+Warning: Permanently added '129.159.180.206' (ED25519) to the list of known hosts.
+missing soundfile
+True
+22:35:10 A B C started
+22:36:12 A: | B: | C: |  
+22:36:12 FAIL A
+  File "/workspace/h2s/training/src/hum2song/audio.py", line 6, in <module>
+    import soundfile as sf
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/soundfile.py", line 27, in <module>
+    AudioData: TypeAlias = numpy.ndarray[tuple[int, ...], numpy.dtype[numpy.float32 | numpy.float64 | numpy.int32 | numpy.int16]]
+TypeError: 'numpy._DTypeMeta' object is not subscriptable
+22:36:12 trap -> terminate
+TERMINATE ['terminating'] 
+INSTANCES_RUNNING 1
+22:38:26 relaunch new instance (soundfile pin)
+22:38:29 launched gpu_1x_a10 us-east-1 37fded654eb24f8081c0262647f9cc6c
+22:43:33 active 157.151.157.144
+Warning: Permanently added '157.151.157.144' (ED25519) to the list of known hosts.
+missing soundfile
+True
+22:44:18 A B C started
+22:45:21 A: | B: | C: |  
+22:45:21 FAIL A
+  File "/workspace/h2s/docs/paper/results/d044/run_d044.py", line 39, in clips
+    keys = set(np.load(data / "f0/rmvpe_mlend.npz").files)
+  File "/usr/lib/python3/dist-packages/numpy/lib/npyio.py", line 417, in load
+    fid = stack.enter_context(open(os_fspath(file), "rb"))
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/d044/data/f0/rmvpe_mlend.npz'
+22:45:21 trap -> terminate
+TERMINATE ['terminating'] 
+INSTANCES_RUNNING 1
+22:47:59 relaunch (copy-links + smoke)
+22:48:02 launched gpu_1x_a10 us-east-1 964b76348c374254bdbef033c2461839
+22:52:26 active 129.80.161.172
+Warning: Permanently added '129.80.161.172' (ED25519) to the list of known hosts.
+missing soundfile
+True
+Warning: Permanently added '129.80.161.172' (ED25519) to the list of known hosts.
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/h2s/training/splits/mlend_performers.json'
+22:53:16 SMOKE FAIL
+22:53:16 trap -> terminate
+TERMINATE ['terminating'] 
+INSTANCES_RUNNING 1
+22:56:45 relaunch try4 (full h2s/training + d044/f0)
+22:56:49 launched gpu_1x_a10 us-east-1 4d6b8c065b634f57a5cb7ce39f10779a
+23:00:52 active 150.136.220.114
+Warning: Permanently added '150.136.220.114' (ED25519) to the list of known hosts.
+missing soundfile
+True
+Warning: Permanently added '150.136.220.114' (ED25519) to the list of known hosts.
+  File "/usr/lib/python3/dist-packages/torch/nn/modules/conv.py", line 370, in _conv_forward
+    return F.conv1d(
+RuntimeError: Input type (torch.FloatTensor) and weight type (torch.cuda.FloatTensor) should be the same or input should be a MKLDNN tensor and weight is a dense tensor
+23:02:05 SMOKE FAIL
+23:02:05 trap -> terminate
+TERMINATE ['terminating'] 
+INSTANCES_RUNNING 1
+23:05:03 relaunch try5 (batch to device fix)
+23:05:07 launched gpu_1x_a10 us-east-1 29420749cc6b49f480ab906da916df7f
+23:09:31 active 150.136.35.251
+Warning: Permanently added '150.136.35.251' (ED25519) to the list of known hosts.
+missing soundfile
+True
+Warning: Permanently added '150.136.35.251' (ED25519) to the list of known hosts.
+d049_best all8 top1 0.6313 [0.5811209439528023, 0.6814159292035398] top3 0.7699 | HP n=90 top1 0.5889 [0.4888888888888889, 0.6888888888888889] | nonoverlap n=171 top1 0.6491 [0.5789473684210527, 0.7192982456140351]
+d049_last all8 top1 0.6342 [0.584070796460177, 0.6843657817109144] top3 0.7699 | HP n=90 top1 0.6000 [0.5, 0.7] | nonoverlap n=171 top1 0.6491 [0.5789473684210527, 0.7192982456140351]
+DONE
+23:10:48 smoke ok
+23:10:52 A B C started
+23:11:58 A:step 0 val 0.7935 | B:step 250 loss 3.088 val 0.7935 | C:step 0 val 0.7935 |  
+23:13:10 A:step 250 loss 0.948 val 0.7645 | B:step 500 loss 2.504 val 0.7935 | C:step 250 loss 0.681 val 0.7613 |  
+23:14:14 A:step 250 loss 0.948 val 0.7645 | B:step 750 loss 1.718 val 0.7968 | C:step 250 loss 0.681 val 0.7613 |  
+23:15:26 A:step 500 loss 1.317 val 0.7516 | B:step 1000 loss 1.774 val 0.7903 | C:step 500 loss 0.871 val 0.7419 |  
+23:16:37 A:step 750 loss 1.302 val 0.7484 | B:DONE | C:step 750 loss 1.072 val 0.7419 |  
+23:17:49 A:step 1000 loss 1.176 val 0.7323 | B:DONE | C:step 1000 loss 1.010 val 0.7323 |  
+23:19:01 A:step 1250 loss 0.544 val 0.7355 | B:DONE | C:step 1250 loss 0.568 val 0.7226 |  
+23:20:14 A:DONE | B:DONE | C:DONE |  DONE
+23:20:16 COMPLETE
+23:20:16 trap -> terminate
+TERMINATE ['terminating'] 
+INSTANCES_RUNNING 1
