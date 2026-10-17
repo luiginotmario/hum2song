@@ -1,0 +1,17 @@
+/workspace/h2s/docs/paper/results/d050/run_d050.py:23: RuntimeWarning: Mean of empty slice
+  x=cont[c.path]; n=len(x)//5; x=np.nanmean(x[:n*5].reshape(n,5),1) if n else x
+/workspace/h2s/docs/paper/results/d050/run_d050.py:23: RuntimeWarning: Mean of empty slice
+  x=cont[c.path]; n=len(x)//5; x=np.nanmean(x[:n*5].reshape(n,5),1) if n else x
+thr {75: 1.0910811392742654, 90: 1.2030222626227614, 95: 1.2785520290601755}
+full 339 {'Frozen': 42, 'Hakuna': 44, 'Mamma': 41, 'Panther': 45, 'Potter': 46, 'Rain': 35, 'Showman': 43, 'StarWars': 43}
+   e2b all1 0.631[0.581,0.681] n=339 all3 0.770[0.723,0.814] n=339 hp901 0.589[0.489,0.689] n=90 hp903 0.711[0.611,0.800] n=90
+   d048_last all1 0.546[0.496,0.599] n=339 all3 0.749[0.702,0.794] n=339 hp901 0.533[0.433,0.633] n=90 hp903 0.756[0.667,0.844] n=90
+P75 291 {'Frozen': 41, 'Hakuna': 42, 'Mamma': 39, 'Panther': 38, 'Potter': 35, 'Rain': 25, 'Showman': 42, 'StarWars': 29}
+   e2b all1 0.636[0.581,0.691] n=291 all3 0.766[0.718,0.814] n=291 hp901 0.584[0.481,0.688] n=77 hp903 0.714[0.610,0.818] n=77
+   d048_last all1 0.533[0.474,0.591] n=291 all3 0.746[0.694,0.794] n=291 hp901 0.506[0.390,0.623] n=77 hp903 0.727[0.623,0.831] n=77
+P90 304 {'Frozen': 41, 'Hakuna': 42, 'Mamma': 39, 'Panther': 40, 'Potter': 40, 'Rain': 28, 'Showman': 42, 'StarWars': 32}
+   e2b all1 0.648[0.592,0.701] n=304 all3 0.776[0.730,0.822] n=304 hp901 0.610[0.500,0.720] n=82 hp903 0.732[0.634,0.829] n=82
+   d048_last all1 0.549[0.493,0.605] n=304 all3 0.753[0.704,0.803] n=304 hp901 0.537[0.427,0.646] n=82 hp903 0.744[0.646,0.829] n=82
+P95 310 {'Frozen': 41, 'Hakuna': 42, 'Mamma': 39, 'Panther': 42, 'Potter': 40, 'Rain': 30, 'Showman': 42, 'StarWars': 34}
+   e2b all1 0.648[0.594,0.700] n=310 all3 0.781[0.732,0.826] n=310 hp901 0.610[0.500,0.720] n=82 hp903 0.732[0.634,0.829] n=82
+   d048_last all1 0.555[0.497,0.610] n=310 all3 0.755[0.706,0.803] n=310 hp901 0.537[0.427,0.646] n=82 hp903 0.744[0.646,0.829] n=82

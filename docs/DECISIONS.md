@@ -1856,3 +1856,21 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Given up.** Another round of the same CPU recipe on this OSS batch.
 
 **Revisit when.** Real whistle / singing recordings are available (Prolific, D-043), or a much larger / more diverse synthetic set can be generated and mixed with real data.
+
+## D-050 · Melody-filtered MLEnd real-whistle test subset (2026-10-16)
+**Context.** Luigi listened to MLEnd test whistles and found many barely carry the tune. Question: how does E2b score on whistles where the melody is objectively present?
+
+**Setup.** `docs/paper/results/d050/run_d050.py` (CPU only). Filter fixed before scoring and independent of any model: (C1) spectral-peak whistle voiced ratio ≥ 0.25; (C2) melody cost ≤ threshold. Melody cost = median, over 40 hums of the same song by **train-split** performers, of key-invariant subsequence DTW (100 ms median-centred semitones, |diff| capped at 3 st, normalised by query length). Threshold = P90 of the same cost for **val-split hums** (P75 / P95 as sensitivity). Ranks: D-044 protocol on the full test set, then subset. Per-clip features in `per_clip.csv`.
+
+**Result** (top-1 [95% clip CI]; top-3):
+| subset | kept (339) | E2b all | E2b HP | D-048 last all | D-048 last HP |
+|---|---|---|---|---|---|
+| full | 339 / HP 90 | 0.631 [0.581,0.681]; 0.770 | 0.589 [0.489,0.689]; 0.711 | 0.546 [0.496,0.599]; 0.749 | 0.533 [0.433,0.633]; 0.756 |
+| P75 | 291 / 77 | 0.636 [0.581,0.691]; 0.766 | 0.584 [0.481,0.688]; 0.714 | 0.533; 0.746 | 0.506; 0.727 |
+| **P90 (pre-reg.)** | **304 / 82** | **0.648 [0.592,0.701]; 0.776** | **0.610 [0.500,0.720]; 0.732** | 0.549 [0.493,0.605]; 0.753 | 0.537 [0.427,0.646]; 0.744 |
+| P95 | 310 / 82 | 0.648 [0.594,0.700]; 0.781 | 0.610 [0.500,0.720]; 0.732 | 0.555; 0.755 | 0.537; 0.744 |
+Kept per song at P90: Frozen 41/42, Hakuna 42/44, Mamma 39/41, Panther 40/45, Potter 40/46, Rain 28/35, Showman 42/43, StarWars 32/43.
+
+**Decision.** Filtering removes ~10% of clips (mostly Rain, StarWars, Potter) and lifts E2b only ~+1.7 pts top-1, inside the CIs. By this measure most MLEnd whistles do carry the contour about as well as other people's hums; the ~35% top-1 error is not mainly from tune-less clips. Report the P90 subset alongside full MLEnd; ranking E2b > D-048 last is unchanged.
+
+**Revisit when.** Human listening labels or Prolific recordings are available to validate the automatic filter.
