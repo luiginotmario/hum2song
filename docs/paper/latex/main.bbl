@@ -1,4 +1,4 @@
-\begin{thebibliography}{20}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -38,6 +38,12 @@ Xingjian Du, Pei Zou, Mingyu Liu, Xia Liang, Minghang Chu, and Bilei Zhu.
   Signal Processing (ICASSP)}, pages 1111--1115, 2024.
 \newblock \doi{10.1109/ICASSP48485.2024.10448117}.
 
+\bibitem[Engel et~al.(2020)Engel, Hantrakul, Gu, and Roberts]{engel2020ddsp}
+Jesse Engel, Lamtharn Hantrakul, Chenjie Gu, and Adam Roberts.
+\newblock {DDSP}: Differentiable digital signal processing.
+\newblock In \emph{Proc. International Conference on Learning Representations
+  (ICLR)}, 2020.
+
 \bibitem[Frank(2020)]{frank2020hum}
 Christian Frank.
 \newblock The machine learning behind hum to search.
@@ -53,6 +59,16 @@ Beat Gfeller, Christian Frank, Dominik Roblek, Matt Sharifi, Marco
 \newblock \emph{IEEE/ACM Transactions on Audio, Speech, and Language
   Processing}, 28, 2020.
 \newblock arXiv:1910.11664.
+
+\bibitem[Hao et~al.(2026)Hao, Zheng, Ma, Jiang, Chen, Tian, Chen, Chen, and
+  Xie]{yingmusic2026}
+Chunbo Hao, Junjie Zheng, Guobin Ma, Yuepeng Jiang, Huakang Chen, Wenjie Tian,
+  Gongyu Chen, Zihao Chen, and Lei Xie.
+\newblock {YingMusic-Singer-Plus}: Controllable singing voice synthesis with
+  flexible lyric manipulation and annotation-free melody guidance, 2026.
+\newblock Code and weights:
+  \url{https://github.com/ASLP-lab/YingMusic-Singer-Plus}, CC BY 4.0 (VAE under
+  the Stability AI Community License).
 
 \bibitem[Jang()]{mirqbsh}
 Jyh-Shing~Roger Jang.
