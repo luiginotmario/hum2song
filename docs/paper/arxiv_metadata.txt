@@ -1,0 +1,51 @@
+arXiv submission metadata: hum2song paper (paste-ready, ASCII only)
+=====================================================================
+
+Title:
+Whistle and Wrong Lyrics: Synthetic Queries Are Not Enough for Real-World Query-by-Melody
+
+Authors:
+Luigi Rivolta
+
+Abstract (plain text, no LaTeX, 1798 of max 1920 characters):
+People look up a song by humming it, but also by whistling it or singing it with the wrong words. Published query-by-humming systems and benchmarks focus on hums and sung queries, and no public dataset pairs whistles or wrong-lyrics singing with song recordings. We study both query types with a melody-only retrieval system: a key-normalized pitch track embedded by a 5.2M-parameter contour encoder, with a spectral-peak tracker for whistles. First, a physics-grounded generator renders synthetic whistles and nonsense-syllable singing from the vocal melodies of 11,083 songs. Training on them raises top-1 retrieval of held-out synthetic queries against an 11,050-song gallery from 0.180 to 0.251 for whistles and from 0.193 to 0.264 for wrong-lyrics singing, but the gain does not transfer: on the MLEnd test performers the best synthetic-only model gets 210 of 339 real whistles right at top-1, against 214 for the baseline. Second, a closed-set fine-tune on real MLEnd whistles with performer-disjoint splits raises whistle-to-hum top-1 from 0.631 (95% CI 0.581-0.681) to 0.673 (0.622-0.723), on known songs only. Third, two further generations of synthetic queries also fail to transfer: melody-conditioned whistles and la-la singing from a commercial neural music model leave real-whistle top-1 at 0.631, and an open-source pipeline (YingMusic-Singer-Plus singing with partly wrong, mumbled or nonsense lyrics, a DDSP whistle synthesizer, and a melody-error model fitted on real performers) gives at best 0.619 (paired difference -0.012, 95% CI -0.038 to +0.015). Across physics-based, commercial neural and open-source neural synthetic data, nothing transferred to real whistles, which points to collecting real queries as the missing step. Code is public; models and data will be released.
+
+Comments:
+15 pages, 2 figures, 6 tables. Code: https://github.com/luiginotmario/hum2song
+
+Primary category:
+cs.SD (Computer Science > Sound)
+
+Cross-lists:
+eess.AS (Audio and Speech Processing), cs.IR (Information Retrieval), cs.LG (Machine Learning)
+
+Why:
+- cs.SD covers "analysis and synthesis" of sound, "computer music" and "sound signal processing"; query-by-humming / music information retrieval papers are normally posted here, and the paper's core is pitch tracking of whistles and singing plus synthetic audio generation.
+- eess.AS: processing and classification of audio/singing signals and evaluation of the system.
+- cs.IR: the task is retrieval (top-1/top-3 over an 11,050-song gallery).
+- cs.LG: contour-encoder training, fine-tuning and the synthetic-to-real transfer result.
+(Moderators may add or remove cross-lists.)
+
+ACM-class:
+H.3.3; H.5.5
+(H.3.3 Information Search and Retrieval; H.5.5 Sound and Music Computing)
+
+MSC-class:
+not applicable (math archive only)
+
+Report-no / Journal-ref / DOI:
+leave empty
+
+Licence (recommended):
+CC BY 4.0 (most open, allowed by most journals for preprints; irrevocable once chosen)
+
+Endorsement:
+Likely needed. arXiv requires endorsement for a first submission to a category. Without a
+claimed prior arXiv paper and an institutional email, Luigi needs a personal endorsement from an
+established author in the cs endorsement domain (primary cs.SD). Start the submission, receive the
+endorsement-request email with the code, and send it to one endorser who knows the area (e.g. an
+author of a cited arXiv QbH/MIR paper; abstract pages show "Which authors of this paper are endorsers?").
+
+"Are you an author of this paper?": Yes (Luigi must self-submit from his own arXiv account).
+
+Files to upload: /workspace/hum2song_arxiv_src.tar.gz (main.tex, main.bbl, refs.bib, figures/*.pdf); processor: pdfLaTeX (auto-detected).

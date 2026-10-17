@@ -10,6 +10,7 @@
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
+\setlength{\emergencystretch}{2em}
 
 % Labels used on every number.
 \newcommand{\syn}{\textsc{[synthetic]}}
@@ -35,7 +36,9 @@ People look up a song by humming it, but also by whistling it or singing it with
 
 \section{Introduction}
 
-When a tune is stuck in your head you often do not know the words. You whistle it, or sing it with whatever words come to mind. The retrieval problem is the same each time: find the recording whose melody matches the query's melody, whatever the timbre, words, key and tempo.
+You probably know the feeling: a song has been stuck in your head all day, you know exactly how it goes, but you cannot remember what it is called, and when you hum it to a friend they look at you as if you have lost your mind. A tune that loops in your head like this is called an \emph{earworm}. Music recognition apps such as Shazam cannot help, because they need the recording itself to be playing, and the whole problem is that it is not. This paper is an attempt at a Shazam for exactly that situation, when all you have is the tune in your head.
+
+Often you do not even know the words. You whistle it, or sing it with whatever words come to mind. The retrieval problem is the same each time: find the recording whose melody matches the query's melody, whatever the timbre, words, key and tempo.
 
 Google's Hum to Search reports that a model trained mostly on sung clips ``worked well enough for people singing, but not for people humming or whistling'' \citep{frank2020hum}. The open query-by-humming (QbH) literature, including CHAD \citep{amatov2023chad} and ByteHum \citep{du2024bytehum}, evaluates hummed and sung queries, not whistles. We found no public dataset of whistled or wrong-lyrics queries paired with the song recordings.
 
@@ -348,6 +351,9 @@ Code, configuration files, decision log and every result file cited here are on 
 
 \section{Conclusion and future work}
 A melody-only contour encoder with a whistle-specific tracker is a sound base for whistle and wrong-lyrics search: lyrics and timbre cannot mislead it, and key is removed exactly. Rendering whistles and nonsense-syllable singing from real song melodies and re-tracking them improves retrieval of such queries on new songs by about 7 top-1 points at under one point of hum cost. It does not improve retrieval of real whistles in the open sense, and real whistles of the test tunes teach the tunes rather than whistling. On a closed set of the same 8 MLEnd songs with held-out performers, fine-tuning on real whistles raises top-1 from 0.631 to 0.673 (Table~\ref{tab:closedset}); that gain is not a claim about new songs. Melody-conditioned neural renderings from a commercial model (Section~\ref{sec:elevenlabs}) follow the tune but did not move real-whistle retrieval (0.631 top-1, unchanged). Open-source neural sung and whistled queries over 167 songs, with a melody-error model fitted on real performers (Section~\ref{sec:oss}), did not either: the best run ties E2b (paired top-1 difference $-0.012$ $[-0.038, +0.015]$) and full training on the mixed data loses about 9 points. Three generations of synthetic data (physics-based, commercial neural, open-source neural with learned human errors) failed to transfer to real whistles on a benchmark of amateur performers. As CHAD found for hums, synthetic or proxy data is not enough for open-set transfer: what is missing is real whistled and wrong-lyrics queries paired with recordings. Next steps are (i) collecting such queries for songs whose audio we can hold, (ii) selecting checkpoints on a real-query validation set, (iii) measuring the synthetic-to-real gap before training rather than after, and (iv) more seeds.
+
+\section*{Acknowledgments}
+The author thanks Grok Bot, an AI assistant, for substantial help with experiment execution, data pipelines, analysis, and drafting of this manuscript. The author reviewed all content and takes full responsibility for it.
 
 \bibliographystyle{plainnat}
 \bibliography{refs}

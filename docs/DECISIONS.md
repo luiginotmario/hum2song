@@ -1894,3 +1894,9 @@ Kept per song at P90: Frozen 41/42, Hakuna 42/44, Mamma 39/41, Panther 40/45, Po
 **Decision.** No arm beats E2b on top-1 on any real-whistle set; no top-1 Δ CI is above zero. A and C's best synthetic-val checkpoint is step 0 and full training hurts real whistles significantly (≈ −9 pts). B (OSS-only, mostly frozen, low LR) is a statistical tie on top-1; its held-out top-3 is higher (0.711 → 0.789–0.829) but that is a secondary metric and was not significance-tested here. Melody-error perturbation (C vs A) did not help. Live model stays E2b. Paper reports this honestly as a negative transfer result.
 
 **Revisit when.** Real (non-MLEnd) whistle/singing recordings over many more songs exist, or a paired top-3 test on B is pre-registered.
+
+## D-052: Paper hook, AI acknowledgment, arXiv audit (2026-10-16)
+
+**Decision.** Open the Introduction with an earworm hook (Luigi's idea). Credit Grok Bot in an Acknowledgments section, not as an author: arXiv's moderation policy says generative AI tools must not be listed as authors and significant use must be reported in the work. Added `\emergencystretch` to fix an overfull line. Paste-ready ASCII metadata in `docs/paper/arxiv_metadata.txt` (plain-text abstract 1798 of 1920 chars, primary cs.SD, cross-lists eess.AS, cs.IR, cs.LG, CC BY 4.0 recommended). No technical content or numbers changed.
+
+**Revisit when.** Luigi supplies the author email and endorsement status.
