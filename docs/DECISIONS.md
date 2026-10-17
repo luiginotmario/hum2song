@@ -1840,3 +1840,19 @@ Run: `configs/train_contour_qsynth_d041.yaml` → `ckpt/contour_qsynth_d041_s0/`
 **Given up.** Further ElevenLabs-based training rounds on this small set.
 
 **Revisit when.** More real whistle / singing recordings are available (bought or Prolific), or synthetic clips can be generated at much larger scale without the copyright screen.
+
+## D-048 · CPU fine-tune of E2b on open-source synthetic queries (YingMusic-Singer sung + DDSP whistles), scored on real MLEnd whistles (2026-10-16)
+**Context.** After D-047 (ElevenLabs clips, no win), Luigi approved an open-source recipe: YingMusic-Singer for sung queries (partial / wrong lyrics, continuous along the melody, multiple sections) and the DDSP whistle model trained on the ElevenLabs whistles. Batch generated on Lambda (`synth_oss`, uploaded to HF `luigir5/hum2song-data/synth_oss`). Question: does this beat E2b on **real** whistles?
+
+**Setup.** `docs/paper/results/d048/run_d048.py` (CPU only). 948 usable OSS pairs (639 sung, 309 whistle; 105 songs) from 1,316 generated clips (`prep_oss.py`). Same recipe as D-047: init E2b (`contour_e2b_s0`); batches 50/50 OSS pairs and the D-042 synthetic query set (68,714 pairs), `query_aug` as D-041/42; InfoNCE; LR $3\times10^{-5}$; 1,500 steps, batch 16+16. Checkpoint selected on MLEnd **val** performers (whistle→hums top-1); scored on MLEnd **test** performers with the D-044 closed-set protocol (339 whistles, bootstrap CIs) and the Hakuna/Potter held-out 90 (D-042). `eval_d048.py` scores both the best and the last checkpoint.
+
+**Result.**
+- Val top-1 never beat step 0 (0.794): 0.707 / 0.710 / 0.729 / 0.723 / 0.713 / 0.723 at steps 250–1500. Best checkpoint = step 0 = E2b.
+- E2b (= D-048 best): all-339 top-1 **0.631** [0.581, 0.681], top-3 0.770 [0.723, 0.814]; held-out 90 top-1 **0.589** [0.489, 0.689], top-3 0.711 [0.611, 0.800].
+- D-048 last (step 1500): all-339 top-1 **0.546** [0.496, 0.599], top-3 0.749 [0.702, 0.794]; held-out 90 top-1 **0.533** [0.433, 0.633], top-3 0.756 [0.667, 0.844].
+
+**Decision.** No win; the trained weights are worse on top-1 (−8.6 pts on 339, −5.6 pts on 90). Nothing pushed to HF `luigir5/hum2song-models`; E2b stays live. Like D-047, fine-tuning on synthetic whistle / singing queries (now open-source, higher volume) does not transfer to real whistles in this setup.
+
+**Given up.** Another round of the same CPU recipe on this OSS batch.
+
+**Revisit when.** Real whistle / singing recordings are available (Prolific, D-043), or a much larger / more diverse synthetic set can be generated and mixed with real data.
