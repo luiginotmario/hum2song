@@ -1900,3 +1900,12 @@ Kept per song at P90: Frozen 41/42, Hakuna 42/44, Mamma 39/41, Panther 40/45, Po
 **Decision.** Open the Introduction with an earworm hook (Luigi's idea). Credit Grok Bot in an Acknowledgments section, not as an author: arXiv's moderation policy says generative AI tools must not be listed as authors and significant use must be reported in the work. Added `\emergencystretch` to fix an overfull line. Paste-ready ASCII metadata in `docs/paper/arxiv_metadata.txt` (plain-text abstract 1798 of 1920 chars, primary cs.SD, cross-lists eess.AS, cs.IR, cs.LG, CC BY 4.0 recommended). No technical content or numbers changed.
 
 **Revisit when.** Luigi supplies the author email and endorsement status.
+
+## D-053: Public Hugging Face model repo (2026-10-18)
+
+**Context.** The paper says models will be released. Luigi approved making the model public; data stays private.
+
+**Decision.** New public repo `luigir5/hum2song` with only the two checkpoints the paper reports, each as `best.pt` (model state_dict + config + step, no optimizer; loads with `load_checkpoint`), `model.safetensors` and `config.json`:
+- `e2b/`: `contour_e2b_s0/best.pt` (step 800).
+- `whistle_closedset_ft/`: D-044 FT 100%, seed 0. The original D-044 run never saved weights, so it was re-run on CPU with the same script, data and seed (`--fracs 1.0 --steps 300`) plus a save; it reproduced exactly (val 0.8806 at step 300, test whistle->hums top-1 0.6726, top-3 0.8201).
+Model card with paper numbers, provenance (HumTrans, CHAD, MLEnd) and the negative synthetic result. Weights CC BY 4.0 (the code repo has no licence file). No audio, index or datasets. `luigir5/hum2song-models` and `luigir5/hum2song-data` stay private. Verified anonymous download and load. arXiv link to be added once announced.
