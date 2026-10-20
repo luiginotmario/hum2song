@@ -7,3 +7,23 @@ A fine-tuned [MERT-v1-95M](https://huggingface.co/m-a-p/MERT-v1-95M) turns audio
 Status: Phase 1 (data, stage-A training, retrieval eval) is in [`training/`](training/README.md). The server, web UI, and iOS app are placeholders. See [`docs/SPEC.md`](docs/SPEC.md) for the build spec and [`docs/PLAN.md`](docs/PLAN.md) for research notes, datasets, and baselines.
 
 Personal research project. Model weights derived from MERT inherit its CC BY-NC 4.0 license.
+
+## Paper and model
+
+Paper: "Whistle and Wrong Lyrics: Synthetic Queries Are Not Enough for Real-World Query-by-Melody", Luigi Rivolta, 2026. arXiv:2610.25371, https://arxiv.org/abs/2610.25371
+
+Public model weights (E2b contour encoder and whistle fine-tune): https://huggingface.co/luigir5/hum2song
+
+### Citation
+
+```bibtex
+@misc{rivolta2026whistle,
+  title         = {Whistle and Wrong Lyrics: Synthetic Queries Are Not Enough for Real-World Query-by-Melody},
+  author        = {Rivolta, Luigi},
+  year          = {2026},
+  eprint        = {2610.25371},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SD},
+  url           = {https://arxiv.org/abs/2610.25371}
+}
+```

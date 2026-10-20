@@ -1909,3 +1909,7 @@ Kept per song at P90: Frozen 41/42, Hakuna 42/44, Mamma 39/41, Panther 40/45, Po
 - `e2b/`: `contour_e2b_s0/best.pt` (step 800).
 - `whistle_closedset_ft/`: D-044 FT 100%, seed 0. The original D-044 run never saved weights, so it was re-run on CPU with the same script, data and seed (`--fracs 1.0 --steps 300`) plus a save; it reproduced exactly (val 0.8806 at step 300, test whistle->hums top-1 0.6726, top-3 0.8201).
 Model card with paper numbers, provenance (HumTrans, CHAD, MLEnd) and the negative synthetic result. Weights CC BY 4.0 (the code repo has no licence file). No audio, index or datasets. `luigir5/hum2song-models` and `luigir5/hum2song-data` stay private. Verified anonymous download and load. arXiv link to be added once announced.
+
+## D-054: arXiv link and citation (2026-10-20)
+
+**Decision.** The paper is live as arXiv:2610.25371 (https://arxiv.org/abs/2610.25371). Added the link and a BibTeX entry (eprint 2610.25371, primary cs.SD) to README.md and to the public Hugging Face model card `luigir5/hum2song`, replacing its placeholder. README.md also links the public model repo.
